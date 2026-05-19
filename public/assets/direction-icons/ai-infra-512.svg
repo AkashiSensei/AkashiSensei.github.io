@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" fill="none">
+  <defs>
+    <style>
+      .chip-panel { fill: #0F172A; }
+      .trace { stroke: #22D3EE; }
+      .trace-muted { stroke: #93C5FD; }
+      .rack-line { stroke: #CBD5E1; }
+      .bus { stroke: #94A3B8; }
+      .node { fill: #F8FAFC; }
+      .accent-a { fill: #2563EB; }
+      .accent-b { fill: #10B981; }
+      .accent-c { fill: #F59E0B; }
+      @media (prefers-color-scheme: dark) {
+        .chip-panel { fill: #E2E8F0; }
+        .trace { stroke: #06B6D4; }
+        .trace-muted { stroke: #60A5FA; }
+        .rack-line { stroke: #475569; }
+        .bus { stroke: #64748B; }
+        .node { fill: #E2E8F0; }
+        .accent-a { fill: #60A5FA; }
+        .accent-b { fill: #34D399; }
+        .accent-c { fill: #FBBF24; }
+      }
+    </style>
+    <linearGradient id="chipGradient" x1="139" y1="128" x2="306" y2="310" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#38BDF8"/>
+      <stop offset="1" stop-color="#2563EB"/>
+    </linearGradient>
+    <linearGradient id="rackGradient" x1="262" y1="202" x2="398" y2="364" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F8FAFC"/>
+      <stop offset="1" stop-color="#D1FAE5"/>
+    </linearGradient>
+    <filter id="softShadow" x="0" y="0" width="512" height="512" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="18" stdDeviation="18" flood-color="#0F172A" flood-opacity=".18"/>
+    </filter>
+  </defs>
+
+  <g filter="url(#softShadow)" transform="translate(256 256) scale(1.18) translate(-256 -256)">
+    <rect x="124" y="118" width="196" height="196" rx="34" fill="url(#chipGradient)"/>
+    <rect class="chip-panel" x="164" y="158" width="116" height="116" rx="22" fill="#0F172A" fill-opacity=".9"/>
+    <path class="trace" d="M190 224c0-31 64-31 64 0s-64 31-64 0z" stroke="#22D3EE" stroke-width="12"/>
+    <path class="trace-muted" d="M222 190v68" stroke="#93C5FD" stroke-linecap="round" stroke-width="12"/>
+    <path class="trace-muted" d="M152 97v34M196 97v34M240 97v34M284 97v34M152 301v34M196 301v34M240 301v34M284 301v34M103 146h34M103 190h34M103 234h34M103 278h34M307 146h34M307 190h34M307 234h34M307 278h34" stroke="#93C5FD" stroke-linecap="round" stroke-width="12"/>
+
+    <rect class="rack-line" x="278" y="226" width="112" height="140" rx="24" fill="url(#rackGradient)" stroke="#CBD5E1" stroke-width="10"/>
+    <rect class="accent-a" x="302" y="256" width="64" height="12" rx="6" fill="#2563EB"/>
+    <rect class="accent-b" x="302" y="292" width="64" height="12" rx="6" fill="#10B981"/>
+    <rect class="accent-c" x="302" y="328" width="42" height="12" rx="6" fill="#F59E0B"/>
+
+    <path class="bus" d="M222 336v48h112" stroke="#94A3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/>
+    <circle class="node" cx="222" cy="384" r="22" fill="#F8FAFC"/>
+    <circle class="node" cx="334" cy="384" r="22" fill="#F8FAFC"/>
+    <circle class="accent-a" cx="222" cy="384" r="10" fill="#2563EB"/>
+    <circle class="accent-b" cx="334" cy="384" r="10" fill="#10B981"/>
+  </g>
+</svg>

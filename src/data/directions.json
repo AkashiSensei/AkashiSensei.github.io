@@ -1,0 +1,47 @@
+[
+  {
+    "id": "full-stack",
+    "icon": "/assets/direction-icons/full-stack-engineer-512.svg",
+    "titleKey": "directions.items.full-stack.title",
+    "summaryKey": "directions.items.full-stack.summary"
+  },
+  {
+    "id": "cloud-computing",
+    "icon": "/assets/direction-icons/cloud-computing-512.svg",
+    "titleKey": "directions.items.cloud-computing.title",
+    "summaryKey": "directions.items.cloud-computing.summary"
+  },
+  {
+    "id": "ai-infra",
+    "icon": "/assets/direction-icons/ai-infra-512.svg",
+    "titleKey": "directions.items.ai-infra.title",
+    "summaryKey": "directions.items.ai-infra.summary"
+  },
+  {
+    "id": "creative-design",
+    "icon": "/assets/direction-icons/creative-design-512.svg",
+    "titleKey": "directions.items.creative-design.title",
+    "summaryKey": "directions.items.creative-design.summary"
+  },
+  {
+    "id": "agent",
+    "icon": "/assets/direction-icons/agent-512.svg",
+    "titleKey": "directions.items.agent.title",
+    "summaryKey": "directions.items.agent.summary",
+    "planned": true
+  },
+  {
+    "id": "startup",
+    "icon": "/assets/direction-icons/startup-512.svg",
+    "titleKey": "directions.items.startup.title",
+    "summaryKey": "directions.items.startup.summary",
+    "planned": true
+  },
+  {
+    "id": "finance-quant",
+    "icon": "/assets/direction-icons/finance-quant-512.svg",
+    "titleKey": "directions.items.finance-quant.title",
+    "summaryKey": "directions.items.finance-quant.summary",
+    "planned": true
+  }
+]

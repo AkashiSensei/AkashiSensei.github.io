@@ -1,4 +1,5 @@
 import { Layout } from "@/components/Layout"
+import { DirectionsSection } from "@/components/DirectionsSection"
 import { Button } from "@/components/ui/button"
 import { useTranslation } from "react-i18next"
 import { MessageCircle, Mail } from "lucide-react"
@@ -87,6 +88,7 @@ function App() {
             </Dialog>
           </div>
         </section>
+        <DirectionsSection />
       </div>
     </Layout>
   )

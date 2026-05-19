@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" fill="none">
+  <defs>
+    <style>
+      .panel { fill: #F8FAFC; stroke: #CBD5E1; }
+      .grid { stroke: #CBD5E1; }
+      .curve { stroke: #2563EB; }
+      .candle-a { fill: #10B981; }
+      .candle-b { fill: #FB7185; }
+      .node { fill: #F8FAFC; }
+      .node-a { fill: #2563EB; }
+      .node-b { fill: #10B981; }
+      .node-c { fill: #F59E0B; }
+      @media (prefers-color-scheme: dark) {
+        .panel { fill: #0F172A; stroke: #475569; }
+        .grid { stroke: #334155; }
+        .curve { stroke: #60A5FA; }
+        .candle-a { fill: #34D399; }
+        .candle-b { fill: #FDA4AF; }
+        .node { fill: #E2E8F0; }
+        .node-a { fill: #60A5FA; }
+        .node-b { fill: #34D399; }
+        .node-c { fill: #FBBF24; }
+      }
+    </style>
+    <linearGradient id="coin" x1="300" y1="120" x2="398" y2="238" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FDE68A"/>
+      <stop offset="1" stop-color="#F59E0B"/>
+    </linearGradient>
+    <filter id="softShadow" x="0" y="0" width="512" height="512" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="18" stdDeviation="18" flood-color="#0F172A" flood-opacity=".18"/>
+    </filter>
+  </defs>
+
+  <g filter="url(#softShadow)" transform="translate(256 256) scale(1.18) translate(-256 -256)">
+    <rect class="panel" x="98" y="126" width="280" height="232" rx="32" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="10"/>
+    <path class="grid" d="M138 188h200M138 244h200M138 300h200M188 158v164M248 158v164M308 158v164" stroke="#CBD5E1" stroke-linecap="round" stroke-width="6"/>
+
+    <path class="curve" d="M140 294c35-50 64-66 98-32 30 30 62 15 103-64" stroke="#2563EB" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/>
+    <rect class="candle-a" x="170" y="212" width="18" height="72" rx="9" fill="#10B981"/>
+    <rect class="candle-b" x="230" y="184" width="18" height="92" rx="9" fill="#FB7185"/>
+    <rect class="candle-a" x="290" y="206" width="18" height="56" rx="9" fill="#10B981"/>
+
+    <circle cx="352" cy="180" r="52" fill="url(#coin)"/>
+    <path d="M352 147v66M329 164h37c15 0 22 8 22 18s-7 18-22 18h-37" stroke="#FFFBEB" stroke-linecap="round" stroke-linejoin="round" stroke-width="12"/>
+
+    <path d="M160 386h176" stroke="#94A3B8" stroke-linecap="round" stroke-width="16"/>
+    <circle class="node" cx="160" cy="386" r="22" fill="#F8FAFC"/>
+    <circle class="node" cx="248" cy="386" r="22" fill="#F8FAFC"/>
+    <circle class="node" cx="336" cy="386" r="22" fill="#F8FAFC"/>
+    <circle class="node-a" cx="160" cy="386" r="10" fill="#2563EB"/>
+    <circle class="node-b" cx="248" cy="386" r="10" fill="#10B981"/>
+    <circle class="node-c" cx="336" cy="386" r="10" fill="#F59E0B"/>
+  </g>
+</svg>
