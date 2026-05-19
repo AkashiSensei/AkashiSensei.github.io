@@ -49,6 +49,9 @@ Thumbs.db
 *.sln
 *.sw?
 
+# Local scratch (e.g. mistaken create-vite path)
+tmp
+
 # Optional deploy / monorepo tooling
 .turbo
 .vercel

@@ -1,17 +1,19 @@
 # ROADMAP
-(Log of milestones and key architectural decisions)
+
+(Log of milestones and key architectural decisions.)
 
 ## Milestones
 
 - [x] Initial repository setup
 - [x] Initial context governance (`.context/`)
 - [x] Requirements analysis — RAW ↔ SPEC aligned, ready for implementation
-- [ ] React project scaffold (Vite, TypeScript, shadcn/ui, Tailwind)
+- [x] React project scaffold (Vite, TypeScript, shadcn/ui, Tailwind)
 - [ ] Personal homepage MVP (homepage Highlights, first content modules, GitHub Pages deploy)
 
 ## History
 
-- 2026-05-19 | Context governance + requirements analysis | Established `.context/` (RAW, SPEC, README); aligned SPEC with React + shadcn/ui, nine content modules, per-module homepage Highlights, data-driven entries, GitHub Pages user site (`base: '/'`)
+- 2026-05-19 | [Archived: React scaffold + shadcn baseline](archive/20260519_React-Vite-shadcn-scaffold.md) | Landed Vite/React/TS/Tailwind v4 with shadcn/ui (Nova/Radix): `base: '/'`, `@/` alias, Hello World + sample Button, Geist variable font; local build verified; ACTIVE_TASK snapshot at link.
+- 2026-05-19 | Context governance + requirements analysis | Established `.context/` (RAW, SPEC, README); aligned SPEC with React + shadcn/ui, nine content modules, per-module homepage Highlights, data-driven entries, GitHub Pages user site (`base: '/'`).
 
 ## Decisions
 
