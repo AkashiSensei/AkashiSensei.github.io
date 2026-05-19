@@ -12,6 +12,7 @@
 
 ## History
 
+- 2026-05-19 | [Archived: Homepage glass shell, i18n, contact](archive/20260519_Homepage-glass-nav-i18n-contact.md) | Homepage intro + zh/en locales; glass nav (mobile bottom / desktop top); theme + contact Dialog; SPEC/RAW updates; Vite LAN `host`; workbench icons excluded from commit.
 - 2026-05-19 | [Archived: React scaffold + shadcn baseline](archive/20260519_React-Vite-shadcn-scaffold.md) | Landed Vite/React/TS/Tailwind v4 with shadcn/ui (Nova/Radix): `base: '/'`, `@/` alias, Hello World + sample Button, Geist variable font; local build verified; ACTIVE_TASK snapshot at link.
 - 2026-05-19 | Context governance + requirements analysis | Established `.context/` (RAW, SPEC, README); aligned SPEC with React + shadcn/ui, nine content modules, per-module homepage Highlights, data-driven entries, GitHub Pages user site (`base: '/'`).
 

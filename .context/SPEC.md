@@ -3,7 +3,7 @@
 
 ## 1. Project Overview
 
-Personal homepage (resume extension) for job-seeking, with secondary goals of community connection and peer sharing. Primary audience: interviewers; secondary: open-source peers and students. Pure static frontend deployed to **GitHub Pages user site** (not a project site) via GitHub Actions.
+Personal homepage for job-seeking and peer sharing, **public by design**—no private documents (e.g. resume files) on the site; use safe contact channels only. Secondary goals: community connection and open-source visibility. Primary audience: interviewers; secondary: open-source peers and students. Pure static frontend deployed to **GitHub Pages user site** (not a project site) via GitHub Actions.
 
 ## 2. Core Technical Stack
 
@@ -28,6 +28,14 @@ Personal homepage (resume extension) for job-seeking, with secondary goals of co
 - React Router paths are from site root (e.g. `/projects`); hash routing not required unless explicitly changed
 - Changing to a project-site layout would be out of scope unless repository/hosting model changes; then update `base`, router basename, and this section together
 
+### 2.2 Content data & localization (single source of truth)
+
+- **Entities**: Each content module keeps **one canonical dataset** (structured files, e.g. JSON). Every entry has a **stable `id`**. Homepage Highlights and module listing/detail pages **must reference the same records**—homepage curation uses flags or ordering (e.g. `highlight`, `featured`, sort index), **not** a duplicate copy of the same entity maintained only for the homepage.
+- **Layout**: Keep structured **data separate from UI chrome strings** (e.g. a dedicated tree for entity JSON vs. `locales/` for app copy); do not grow large entity bodies inside React source files.
+- **Translations**:
+  - **UI chrome** (nav, buttons, generic labels): as copy volume grows, split i18n into **multiple namespaces or files by concern** (e.g. `common`, `nav`, `home`) instead of one monolithic file per language—reduces merge conflicts and clarifies ownership.
+  - **Per-entity copy** (titles, summaries on cards): either store **locale-specific fields** in parallel files keyed by the same `id`, or store **i18n keys** in data (`titleKey`, etc.) resolved at render time—**pick one pattern per module** and keep it consistent.
+
 ## 3. Design & UI
 
 - Visual: Minimal, content-first; light/dark themes; subtle multi-color gradients; frosted-glass surfaces (glassmorphism)—Liquid Glass–inspired tone only, no literal liquid-glass effects
@@ -35,7 +43,7 @@ Personal homepage (resume extension) for job-seeking, with secondary goals of co
 - Component approach: **shadcn/ui**—copy-in components the project owns, built on Radix UI primitives; customize tokens and classes for the glass look. Not a from-scratch design system in v1
 - Avoid building complex widgets by hand; use shadcn/Radix for accessibility on used primitives only
 - **Scope**: Presentation and navigation only—cards, tags, buttons, links, layout shell, theme toggle, locale switcher, list/gallery containers. **No** complex forms or heavy interactive flows in v1
-- Mobile-first: mobile experience **prioritizes** over desktop
+- Mobile-first: mobile experience **prioritizes** over desktop. **CRITICAL**: Developers must test and verify all layouts on narrow screens (down to 320px) before considering desktop complete. No horizontal overflow or cut-off interactive elements are allowed.
 
 ## 4. Internationalization
 
@@ -50,19 +58,20 @@ Each module may have a listing page with **list** or **gallery** view modes.
 |-------------|---------|
 | 项目 | Code work outside coursework |
 | 课设 | Course projects; reference repos for juniors/seniors |
-| 工作台 | Third-party software, services, and platforms **I use**—stable toolchain, not homepage “now” |
+| 工作台 | Third-party software, services, and platforms **I use**—stable toolchain; distinct from **方向** (thematic interests / focus), not a narrative “status” page |
 | 小工具 | Small tools/repos I **authored or contributed to** (see §6) |
 | 知识沉淀 | Blogs, article links, engineering notes, paper reading repos, etc. |
 | 工作经历 | Internships and employment |
 | 能力 | Cross-cutting strengths (not tool/product entries) |
+| 方向 | Thematic **interests** and **active focus areas**—what I explore and prioritize now; structured topics that may link to 项目, 知识沉淀, etc. **Not** the same as 工作台 (stable third-party tools) |
 | 信条 | Principles and trade-offs |
 | 学术成果 | Placeholder until papers/patents/soft copyrights exist |
 
 **Homepage**:
 
-- Intro, current focus, resume PDF, contact; link out to GitHub Profile for more activity
+- Intro, **public** contact (no resume or other privacy-heavy attachments on the public site); link out to GitHub Profile for more activity
 - **Per-module Highlights**: For each active content module (§5 table), show a curated subset of entries on the homepage—entries marked in data (e.g. `highlight: true` or `featured` ordering). Typical cap: 1–3 items per module; module title + “view all” link to the module listing page
-- **学术成果**: Omit homepage Highlight block until entries exist
+- **学术成果** / **方向**（无条目时）: Omit homepage Highlight block until at least one entry exists
 - Highlights are editorial curation, not automatic “latest N”; empty modules may show only the section header + link or hide the block
 
 ## 6. Entries, Relations & Integrations
@@ -75,7 +84,7 @@ Each module may have a listing page with **list** or **gallery** view modes.
 
 ### Relations & tags
 
-- Cross-module links on cards (e.g. project → knowledge, 工作台, 小工具, 能力); desktop hover preview deferred; mobile tap-to-expand; tags navigate to targets
+- Cross-module links on cards (e.g. project → knowledge, 工作台, 小工具, 能力, 方向); desktop hover preview deferred; mobile tap-to-expand; tags navigate to targets
 - Static labels allowed (e.g. archived)
 
 ### GitHub stars

@@ -1,4 +1,8 @@
-# AkashiSensei.github.io
+# Akashi · 个人主页
+
+站点展示名为 **Akashi**；仓库仍为 `AkashiSensei.github.io`（GitHub Pages 用户站）。
+
+面向访客的**可编辑文案**集中在 `src/content/locales/`（见该目录下 `README.md`）。
 
 个人主页，用于求职和交友，支持网页端和手机端查看，并提供多语言内容展示。
 

@@ -1,0 +1,34 @@
+{
+  "site": {
+    "displayName": "Akashi"
+  },
+  "nav": {
+    "projects": "Projects",
+    "coursework": "Coursework",
+    "workspace": "Workspace",
+    "knowledge": "Knowledge"
+  },
+  "home": {
+    "title": "Hi, I'm $t(site.displayName)",
+    "description": "I'm a software engineering master's student who loves open source and sharing what I build.\nI'm working to grow into an engineer who ships products with genuinely better user experiences.\nI'm especially interested in AI infrastructure across the stack and in agent-based systems, and I'm actively learning and exploring both.",
+    "contact": "Contact Me",
+    "contactDialog": {
+      "title": "Contact Details",
+      "description": "You can reach me through the following public channels:",
+      "privacyNote": "To reduce spam, I don't list my primary day-to-day contacts here. The public channels shown above can still reach me—thanks for your understanding.",
+      "whatsapp": "WhatsApp",
+      "email1": "Email (163)",
+      "email2": "Email (Gmail)"
+    }
+  },
+  "a11y": {
+    "toggleLanguage": "Switch language",
+    "toggleTheme": "Switch between dark and light mode",
+    "toggleMenu": "Open or close the navigation menu",
+    "toggleThemeSr": "Toggle theme"
+  },
+  "ui": {
+    "langSwitchToEn": "EN",
+    "langSwitchToZh": "中"
+  }
+}

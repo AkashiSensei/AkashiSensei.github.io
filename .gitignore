@@ -52,6 +52,9 @@ Thumbs.db
 # Local scratch (e.g. mistaken create-vite path)
 tmp
 
+# Workbench icon assets (in progress; do not commit until curated)
+public/assets/workbench-icons/
+
 # Optional deploy / monorepo tooling
 .turbo
 .vercel

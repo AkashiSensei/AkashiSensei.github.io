@@ -81,14 +81,17 @@
     --sidebar-accent-foreground: oklch(0.205 0 0);
     --sidebar-border: oklch(0.922 0 0);
     --sidebar-ring: oklch(0.708 0 0);
+    --bg-gradient-1: oklch(0.90 0.08 240 / 60%);
+    --bg-gradient-2: oklch(0.92 0.06 320 / 60%);
+    --bg-gradient-3: oklch(0.91 0.06 180 / 60%);
 }
 
 .dark {
-    --background: oklch(0.145 0 0);
+    --background: oklch(0.15 0.03 260); /* 宇宙深蓝 */
     --foreground: oklch(0.985 0 0);
-    --card: oklch(0.205 0 0);
+    --card: oklch(0.2 0.02 260);
     --card-foreground: oklch(0.985 0 0);
-    --popover: oklch(0.205 0 0);
+    --popover: oklch(0.2 0.02 260);
     --popover-foreground: oklch(0.985 0 0);
     --primary: oklch(0.922 0 0);
     --primary-foreground: oklch(0.205 0 0);
@@ -115,6 +118,9 @@
     --sidebar-accent-foreground: oklch(0.985 0 0);
     --sidebar-border: oklch(1 0 0 / 10%);
     --sidebar-ring: oklch(0.556 0 0);
+    --bg-gradient-1: oklch(0.35 0.12 270 / 40%); /* 宇宙深紫/靛蓝 */
+    --bg-gradient-2: oklch(0.30 0.12 320 / 40%); /* 星云紫红 */
+    --bg-gradient-3: oklch(0.35 0.10 210 / 40%); /* 深邃青蓝 */
 }
 
 @layer base {
@@ -123,7 +129,12 @@
     }
   body {
     @apply bg-background text-foreground;
-    }
+    background-image: 
+      radial-gradient(circle at 15% 50%, var(--bg-gradient-1), transparent 20%),
+      radial-gradient(circle at 85% 30%, var(--bg-gradient-2), transparent 20%),
+      radial-gradient(circle at 50% 90%, var(--bg-gradient-3), transparent 20%);
+    background-attachment: fixed;
+  }
   html {
     @apply font-sans;
     }
