@@ -1,0 +1,14 @@
+{
+  "title": "您好，我是 $t(common:site.displayName)",
+  "description": "我是一名软件工程在读硕士，热爱开源与技术分享。\n我希望成长为能交付优秀体验的工程师，并在这条路上持续精进。\n我对 AI Infra 技术栈各层以及 Agent 等方向有浓厚兴趣，目前正在主动学习与探索。\n\n感谢您的访问，期待您能够成为我的老师和朋友。\n本站仍在建设中，内容可能还不完善或者有错误，感谢理解。",
+  "contact": "联系我",
+  "github": "动态",
+  "contactDialog": {
+    "title": "联系方式",
+    "description": "你可以通过以下公开渠道找到我：",
+    "privacyNote": "为避免骚扰，此处不列出我最常用的联系方式；上面列出的公开渠道同样可以联系到我，感谢理解。",
+    "whatsapp": "WhatsApp",
+    "email1": "邮箱 (163)",
+    "email2": "邮箱 (Gmail)"
+  }
+}

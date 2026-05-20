@@ -1,10 +1,11 @@
 import { useState, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "@/components/theme-provider";
+import { AppLink } from "@/components/AppLink";
 import { Sun, Moon, Menu, X } from "lucide-react";
 
 export function Navbar() {
-  const { t, i18n } = useTranslation();
+  const { t, i18n } = useTranslation(["common", "nav"]);
   const { theme, setTheme } = useTheme();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navRef = useRef<HTMLDivElement>(null);
@@ -35,22 +36,43 @@ export function Navbar() {
   };
 
   const navLinks = [
-    { href: "#", label: t('nav.projects') },
-    { href: "#", label: t('nav.coursework') },
-    { href: "#", label: t('nav.workspace') },
-    { href: "#", label: t('nav.knowledge') },
+    { href: "#", label: t("nav:projects") },
+    { href: "#", label: t("nav:coursework") },
+    { href: "/workbench", label: t("nav:workspace") },
+    { href: "#", label: t("nav:knowledge") },
   ];
+
+  const renderNavLink = (href: string, label: string, className: string, onNavigate?: () => void) => {
+    if (href.startsWith("/")) {
+      return (
+        <AppLink to={href} className={className} onClick={onNavigate}>
+          {label}
+        </AppLink>
+      );
+    }
+
+    return (
+      <a href={href} className={className} onClick={onNavigate}>
+        {label}
+      </a>
+    );
+  };
 
   return (
     <div ref={navRef} className="fixed bottom-4 md:bottom-auto md:top-4 inset-x-4 max-w-5xl mx-auto z-50">
       <nav className="relative flex items-center justify-between px-4 py-2 sm:px-6 sm:py-3 rounded-full bg-white/40 dark:bg-white/10 backdrop-blur-md border border-white/40 dark:border-white/10 shadow-sm transition-all duration-300 z-50">
         <div className="flex items-center gap-2 sm:gap-4">
-          <a href="/" className="font-semibold text-base sm:text-lg tracking-tight hover:opacity-80 transition-opacity">
+          <AppLink
+            to="/"
+            className="font-semibold text-base sm:text-lg tracking-tight hover:opacity-80 transition-opacity"
+          >
             {t("site.displayName")}
-          </a>
+          </AppLink>
           <div className="hidden md:flex items-center gap-6 ml-6 text-sm font-medium text-foreground/80">
             {navLinks.map((link, idx) => (
-              <a key={idx} href={link.href} className="hover:text-foreground transition-colors">{link.label}</a>
+              <span key={idx}>
+                {renderNavLink(link.href, link.label, "hover:text-foreground transition-colors")}
+              </span>
             ))}
           </div>
         </div>
@@ -88,14 +110,14 @@ export function Navbar() {
         <div className="md:hidden absolute bottom-full left-0 right-0 mb-2 p-3 rounded-3xl bg-white/40 dark:bg-white/10 backdrop-blur-md border border-white/40 dark:border-white/10 shadow-sm transition-all duration-300 origin-bottom">
           <div className="flex flex-col gap-1 text-sm font-medium">
             {navLinks.map((link, idx) => (
-              <a 
-                key={idx} 
-                href={link.href} 
-                className="px-4 py-2 rounded-xl hover:bg-muted/50 transition-colors text-foreground text-center"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                {link.label}
-              </a>
+              <span key={idx} className="block">
+                {renderNavLink(
+                  link.href,
+                  link.label,
+                  "block px-4 py-2 rounded-xl hover:bg-muted/50 transition-colors text-foreground text-center",
+                  () => setMobileMenuOpen(false),
+                )}
+              </span>
             ))}
           </div>
         </div>

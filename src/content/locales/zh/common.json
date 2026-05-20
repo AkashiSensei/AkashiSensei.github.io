@@ -1,0 +1,15 @@
+{
+  "site": {
+    "displayName": "Akashi"
+  },
+  "a11y": {
+    "toggleLanguage": "切换语言",
+    "toggleTheme": "切换深色或浅色模式",
+    "toggleMenu": "展开或收起导航菜单",
+    "toggleThemeSr": "切换主题"
+  },
+  "ui": {
+    "langSwitchToEn": "EN",
+    "langSwitchToZh": "中"
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "title": "Workbench",
+  "subtitle": "Third-party software and workflow platforms I rely on for learning, development, creative work, and knowledge capture.",
+  "viewAll": "View All",
+  "viewAllTitle": "Full Workbench",
+  "viewAllDescription": "Browse all software groups, toolchains, and workflow setups.",
+  "items": {
+    "ai-assist": {
+      "title": "AI Assist Tools",
+      "summary": "AI coding and assist workflows for understanding code, refactoring, review, and fast experiments.",
+      "points": [
+        "Use different AI IDEs and command-line agents for exploration, implementation, and review.",
+        "Covers Cursor, Codex, Qclaw, and Trae CN among the tools I use today.",
+        "Pair with traditional editors so the workflow is not locked to a single product."
+      ]
+    },
+    "creative-adobe": {
+      "title": "Creative Software",
+      "summary": "The Adobe creative suite for image, video, audio, and multimedia production.",
+      "points": [
+        "Covers retouching, vector, editing, motion, audio, and encoding workflows.",
+        "Creative Cloud leads the group as the subscription and asset sync entry point.",
+        "Supports long-running visual work such as posters and video."
+      ]
+    },
+    "office-productivity": {
+      "title": "Office & Productivity",
+      "summary": "Microsoft 365, Lark, Acrobat, and WPS for documents and collaboration.",
+      "points": [
+        "Word, Excel, PowerPoint, OneDrive, and OneNote for formal documents and sync.",
+        "Lark for team communication and some collaboration scenarios.",
+        "Acrobat for PDF; WPS as a cross-platform office supplement."
+      ]
+    },
+    "3d-software": {
+      "title": "3D Software",
+      "summary": "Blender and Cinema 4D for 3D modeling, rendering, and spatial expression.",
+      "points": [
+        "Blender for open-source 3D pipelines and concept work.",
+        "Cinema 4D for some commercial 3D and motion scenarios.",
+        "Works alongside the creative group for assets that need spatial expression."
+      ]
+    },
+    "analysis-tools": {
+      "title": "Analysis Tools",
+      "summary": "GPU profiling and network capture tools for debugging and performance work.",
+      "points": [
+        "Nsight Compute and Nsight Systems for CUDA / GPU performance analysis.",
+        "Wireshark for network protocol and traffic inspection.",
+        "Used on demand when tuning systems or tracing issues."
+      ]
+    },
+    "dev-tools": {
+      "title": "Development Tools",
+      "summary": "Editors and IDEs for everyday coding, debugging, and API collaboration.",
+      "points": [
+        "VS Code as a lightweight general-purpose editor.",
+        "IDEA and PyCharm for Java and Python stacks respectively.",
+        "Apifox for API debugging and documentation; Xcode for Apple-platform development."
+      ]
+    },
+    "knowledge-tools": {
+      "title": "Knowledge Tools",
+      "summary": "Note-taking and knowledge bases for capture, organization, references, and thinking.",
+      "points": [
+        "Evernote and FlowUS for quick capture and structured notes.",
+        "Obsidian and Zotero for local knowledge graphs and references.",
+        "MindNow for mind maps and idea expansion; Typora for Markdown writing and layout."
+      ]
+    },
+    "virtual-remote": {
+      "title": "Virtual & Remote",
+      "summary": "Containers, VMs, terminals, and remote desktop tooling.",
+      "points": [
+        "Docker for containerized development and deployment experiments.",
+        "Parallels Desktop to run Windows and other environments on macOS.",
+        "Termora as the terminal; Windows App for remote Windows hosts."
+      ]
+    }
+  }
+}

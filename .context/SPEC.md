@@ -34,7 +34,7 @@ Personal homepage for job-seeking and peer sharing, **public by design**—no pr
 - **Layout**: Keep structured **data separate from UI chrome strings** (e.g. a dedicated tree for entity JSON vs. `locales/` for app copy); do not grow large entity bodies inside React source files.
 - **Translations**:
   - **UI chrome** (nav, buttons, generic labels): as copy volume grows, split i18n into **multiple namespaces or files by concern** (e.g. `common`, `nav`, `home`) instead of one monolithic file per language—reduces merge conflicts and clarifies ownership.
-  - **Per-entity copy** (titles, summaries on cards): either store **locale-specific fields** in parallel files keyed by the same `id`, or store **i18n keys** in data (`titleKey`, etc.) resolved at render time—**pick one pattern per module** and keep it consistent.
+  - **Per-entity copy** (titles, summaries, captions, multi-line descriptions): keep it addressable by stable entity `id`. Prefer id-derived translation keys or parallel locale records keyed by the same `id` instead of hand-maintaining per-entry key strings in structured data; **pick one pattern per module** and keep it consistent.
 
 ## 3. Design & UI
 
@@ -73,6 +73,12 @@ Each module may have a listing page with **list** or **gallery** view modes.
 - **Per-module Highlights**: For each active content module (§5 table), show a curated subset of entries on the homepage—entries marked in data (e.g. `highlight: true` or `featured` ordering). Typical cap: 1–3 items per module; module title + “view all” link to the module listing page
 - **学术成果** / **方向**（无条目时）: Omit homepage Highlight block until at least one entry exists
 - Highlights are editorial curation, not automatic “latest N”; empty modules may show only the section header + link or hide the block
+
+### 工作台 grouping
+
+- 工作台 entries may be modeled as **software groups**: curated groups of third-party software, services, and platforms used together in a stable workflow.
+- Software groups must be reusable across homepage Highlights and the full 工作台 page. Homepage may show a small curated horizontal set plus a “view all” entry; the 工作台 page shows all groups in a more complete top-to-bottom listing.
+- Software-group cards should be reusable between homepage and 工作台 page, with layout variants controlled by props or page context rather than duplicating card implementations.
 
 ## 6. Entries, Relations & Integrations
 
