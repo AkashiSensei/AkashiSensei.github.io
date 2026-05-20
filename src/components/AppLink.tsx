@@ -3,11 +3,11 @@ import { type ComponentProps } from "react"
 import { cn } from "@/lib/utils"
 import { navigate } from "@/lib/navigation"
 
-type AppLinkProps = ComponentProps<"a"> & {
+type AppLinkProps = Omit<ComponentProps<"a">, "href"> & {
   to: string
 }
 
-export function AppLink({ to, href, onClick, className, children, ...props }: AppLinkProps) {
+export function AppLink({ to, onClick, className, children, ...props }: AppLinkProps) {
   return (
     <a
       {...props}

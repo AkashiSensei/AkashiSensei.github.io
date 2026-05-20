@@ -1,9 +1,9 @@
 import { useTranslation } from "react-i18next";
 import directionsData from "@/data/directions.json";
+import { DirectionIcon } from "@/components/DirectionIcon";
 
 type DirectionItem = {
   id: string;
-  icon: string;
   planned?: boolean;
 };
 
@@ -38,19 +38,18 @@ export function DirectionsSection() {
           >
             {/* Mobile background icon (faded & blurred to simulate frosted glass) */}
             <div className={`absolute -right-6 top-1/2 -translate-y-1/2 w-32 h-32 opacity-[0.15] dark:opacity-[0.08] sm:hidden pointer-events-none z-0 ${item.planned ? "grayscale" : ""}`}>
-              <img 
-                src={item.icon} 
-                alt="" 
-                className="w-full h-full object-contain blur-[2px]" 
+              <DirectionIcon
+                id={item.id}
+                className="w-full h-full blur-[2px]"
               />
             </div>
 
             {/* Desktop icon */}
             <div className={`hidden sm:flex w-10 h-10 shrink-0 items-center justify-center z-10 ${item.planned ? "grayscale opacity-80" : ""}`}>
-              <img 
-                src={item.icon} 
-                alt={t(`items.${item.id}.title`)}
-                className="w-full h-full object-contain scale-[1.5] group-hover:scale-[1.6] transition-transform duration-500 ease-out" 
+              <DirectionIcon
+                id={item.id}
+                aria-label={t(`items.${item.id}.title`)}
+                className="w-full h-full scale-[1.5] transition-transform duration-500 ease-out group-hover:scale-[1.6]"
               />
             </div>
 
