@@ -1,0 +1,107 @@
+{
+  "title": "Projects",
+  "subtitle": "Code projects where I turn research, platform engineering, tooling, and product thinking into usable systems.",
+  "viewAll": "View All",
+  "viewAllTitle": "All Projects",
+  "viewAllDescription": "Browse the full project list, related repositories, and current status.",
+  "repoLabel": "Repository",
+  "status": {
+    "active": "Active",
+    "early": "Early Stage",
+    "private": "Private Repo",
+    "public": "Public Repo"
+  },
+  "items": {
+    "npu-computing-forecast": {
+      "title": "Ascend NPU Compute Forecasting Framework",
+      "summary": "An experiment framework for teams running recommendation models on Ascend NPUs. It turns capacity planning from experience-based guessing into observable, reproducible, model-ready data.",
+      "points": [
+        "Helps users estimate how model structure, batch size, and embedding scale affect NPU resource usage before occupying expensive hardware.",
+        "Turns one-off experiments into repeatable data collection workflows, reducing manual launch, note-taking, and log alignment errors.",
+        "Provides data foundations for scheduling, capacity planning, and model selection rather than only single-run benchmark numbers.",
+        "Uses configuration-driven experiment lifecycles with runtime snapshots so model and parameter combinations remain reproducible.",
+        "Collects NPU, CPU, cgroup, timestamp, and training metrics through DCMI, npu-smi, and host monitors.",
+        "Adapts WDL, DeepFM, DLRM, and DCN style models behind extensible model modules.",
+        "Connects hardware observation, experiment design, and model-ready feature extraction in one workflow."
+      ]
+    },
+    "crater": {
+      "title": "Crater Cloud-Native AI Platform",
+      "summary": "A Kubernetes-based AI training and inference platform from RAIDS Lab for labs and teams sharing GPU clusters. It combines compute allocation, development environments, workloads, monitoring, and documentation into one platform experience.",
+      "points": [
+        "Lets researchers create Jupyter, Ray jobs, training tasks, and inference-related workloads without directly handling Kubernetes details.",
+        "Helps cluster administrators manage heterogeneous compute through UI, Helm charts, documentation, and monitoring.",
+        "Improves visibility and usability for shared GPU resources through scheduling, logs, monitoring, and platform abstractions.",
+        "Contributed to a real open-source platform through PRs spanning frontend, documentation, configuration, and platform engineering issues.",
+        "Works across Kubernetes, Helm, GPU scheduling, Jupyter, Ray, and vLLM-oriented platform workflows.",
+        "Maintains consistency between frontend, backend, documentation, deployment charts, and developer tooling.",
+        "Shows the ability to work inside a large collaborative codebase with deployment and regression concerns."
+      ]
+    },
+    "crater-cli": {
+      "title": "Crater CLI",
+      "summary": "A Go CLI subproject in Crater for platform users, administrators, scripts, and AI agents. It turns platform operations, authentication, configuration, completion, and usage rules into a stable command-line interface.",
+      "points": [
+        "Lets users complete login, configuration, and shell completion workflows in the terminal without depending on the web UI.",
+        "Gives scripts and CI stable JSON, exit codes, and error codes instead of forcing them to parse human text.",
+        "Gives AI agents clear operational boundaries so they can avoid unsafe actions against real accounts, credentials, and environments.",
+        "Organizes auth, config, completion, session, state, credential, and API modules around a Cobra command tree.",
+        "Defines structured errors, exit codes, pretty JSON output, and bilingual messages for users, scripts, and agents.",
+        "Adds unit tests, snapshot/golden tests, and sandboxing to avoid real credentials, network, and local state during regression checks.",
+        "Packages CLI usage guidance as distributable Skills so AI agents can call the platform safely."
+      ]
+    },
+    "undergraduate-thesis": {
+      "title": "Undergraduate Thesis: GPU Profiling Operator-Kernel Analysis",
+      "summary": "Tools for analyzing ONNX Runtime GPU profiling traces and mapping model operators to low-level GPU kernels, helping researchers reduce manual guesswork in performance analysis.",
+      "points": [
+        "Helps users locate expensive operators and related kernels inside large profiling traces instead of reading raw logs by hand.",
+        "Turns traces, statistics, and charts into reviewable evidence for thesis experiments and performance discussions.",
+        "Can be adapted to other model training or inference profiling scenarios because the value is in the reusable analysis workflow.",
+        "Extracts structured information from profiling traces and connects operator-level semantics with kernel-level performance data.",
+        "Uses Python analysis and visualization tooling to reduce manual GPU performance investigation work.",
+        "Bridges deep learning runtime behavior, GPU performance analysis, and research reporting.",
+        "Presents kernel_analyzer and kernel_data_plotter as one complete thesis project instead of isolated scripts."
+      ]
+    },
+    "model-requirements-evaluator": {
+      "title": "Inference Model Resource Evaluation Frontend",
+      "summary": "The frontend for an operating systems competition project. It helps users evaluate inference deployment cost by organizing models, GPUs, calculation workflows, and chart results into an operable web UI.",
+      "points": [
+        "Lets users compare model and GPU configurations visually instead of only reading backend responses or static tables.",
+        "Visualizes latency, throughput, memory, and phase progress so users can understand trade-offs behind evaluation results.",
+        "Turns backend capability into an interactive product surface for competition demos and judging.",
+        "Built with Vue 3, TypeScript, Vite, and Element Plus across model management, GPU management, and evaluation calculator views.",
+        "Uses ECharts and ECharts-GL for latency, throughput, memory, and phase progress visualization.",
+        "Keeps backend calls organized through model, GPU, evaluation, and chart service layers.",
+        "Turns algorithm/backend capability into a demonstrable and operable product surface for a competition setting."
+      ]
+    },
+    "tododag": {
+      "title": "ToDoDAG",
+      "summary": "A DAG-based task management app for people overwhelmed by complex dependencies and long-running goals. It makes dependencies explicit so users can identify which tasks are actionable right now.",
+      "points": [
+        "Helps users turn a stressful pile of tasks into Ready, Blocked, and Completed states so they know where to start.",
+        "Fits workflows such as thesis work, projects, job search, and coursework where tasks often depend on prerequisites.",
+        "Plans for local-first storage and private iCloud sync so personal planning data does not need a third-party server.",
+        "Centers the product model around Ready, Blocked, and Completed states, with cycle prevention and reliable persistence as core requirements.",
+        "Starts on macOS, with planned expansion to iOS, iPadOS, and watchOS using local-first storage and private iCloud sync.",
+        "Currently in an early planning/prototype stage with clear product boundaries and Apple-native UX constraints.",
+        "Shows product definition and data-structure thinking before implementation work begins."
+      ]
+    },
+    "personal-homepage": {
+      "title": "Personal Homepage and Content System",
+      "summary": "This site is also a long-running frontend project for HR, interviewers, open-source peers, and students. It organizes job-search material, open-source activity, content modules, and multilingual browsing as a maintainable static website.",
+      "points": [
+        "Lets HR and interviewers understand my projects, direction, toolchain, and working style without searching across scattered repositories.",
+        "Lets visitors read in familiar languages while keeping sensitive resume files off the public site.",
+        "Turns personal presentation from a one-off page into a maintainable content system for projects, coursework, articles, and tools.",
+        "Built with React, TypeScript, Vite, Tailwind, and shadcn-style components, deployed to a GitHub Pages user site.",
+        "Supports light/dark themes, bilingual content, mobile-first layout, and reusable data for homepage highlights and module pages.",
+        "Keeps projects, workbench entries, directions, and future modules in structured content rather than hardcoded page components.",
+        "Uses .context task governance to preserve requirements, roadmap, active work, and archived decisions."
+      ]
+    }
+  }
+}

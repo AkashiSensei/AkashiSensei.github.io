@@ -1,5 +1,6 @@
 import { Layout } from "@/components/Layout"
 import { DirectionsSection } from "@/components/DirectionsSection"
+import { ProjectHighlights } from "@/components/ProjectHighlights"
 import { SmallToolHighlights } from "@/components/SmallToolHighlights"
 import { WorkbenchHighlights } from "@/components/WorkbenchHighlights"
 import { Button } from "@/components/ui/button"
@@ -123,6 +124,7 @@ export function HomePage() {
           </div>
         </section>
         <DirectionsSection />
+        <ProjectHighlights />
         <WorkbenchHighlights />
         <SmallToolHighlights />
       </div>

@@ -36,11 +36,9 @@ export function Navbar() {
   };
 
   const navLinks = [
-    { href: "#", label: t("nav:projects") },
-    { href: "#", label: t("nav:coursework") },
+    { href: "/projects", label: t("nav:projects") },
     { href: "/workbench", label: t("nav:workspace") },
     { href: "/tools", label: t("nav:tools") },
-    { href: "#", label: t("nav:knowledge") },
   ];
 
   const renderNavLink = (href: string, label: string, className: string, onNavigate?: () => void) => {
