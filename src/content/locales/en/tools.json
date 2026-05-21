@@ -1,0 +1,66 @@
+{
+  "title": "Small Tools",
+  "subtitle": "Small repositories I authored or contributed to for engineering, research, job-search materials, and agent collaboration. They come from recurring workflow problems: context drift, scattered research, repeated resume maintenance, and the need to bring agents into tasks reliably.",
+  "viewAll": "View All",
+  "viewAllTitle": "Full Tool List",
+  "viewAllDescription": "Browse the small tools behind my context management, research, and agent collaboration workflows.",
+  "labels": {
+    "author": "Author",
+    "contributor": "Contributor",
+    "doing": "Doing",
+    "archived": "Archived",
+    "privateTool": "Private Tool"
+  },
+  "items": {
+    "project-context-meta-skill": {
+      "title": "Project Context Meta-Skill",
+      "summary": "A context-governance tool for long-running AI-assisted engineering work. It is not just about giving the agent more memory; it separates user intent, stable specifications, historical decisions, and current focus so a task remains traceable across conversations and phases.",
+      "points": [
+        "Separates RAW_REQUIREMENTS, SPEC, ROADMAP, and ACTIVE_TASK into different responsibilities: request capture, stable system behavior, decision history, and current execution focus.",
+        "Packages task startup, spec sync, task archiving, and commit assistance as reusable skills that can move between projects.",
+        "Builds challenge, trade-off analysis, and scope checks into the workflow so vague goals and over-engineering surface early.",
+        "The practical value is less repeated context explanation and fewer regressions caused by long-session context drift."
+      ]
+    },
+    "research-skills": {
+      "title": "Engineering Research Skills",
+      "summary": "A research workflow for engineering, product, market, and scientific judgment. It targets situations where the question is broad, the information is noisy, and the final output still needs to support a decision.",
+      "points": [
+        "Turns ad hoc searching into a reusable process across Codex, Cursor, OpenClaw, and similar AI tools.",
+        "Uses AnySearch as the default real-time retrieval entry point for technical selection, product opportunity analysis, competitor research, and paper or open-source evaluation.",
+        "Requires outputs to include not only collected facts, but also evidence, boundaries, risks, and actionable recommendations.",
+        "The value is turning uncertain information into material that can be discussed, challenged, and used for the next engineering step."
+      ]
+    },
+    "latex-resume": {
+      "title": "LaTeX Resume Builder",
+      "summary": "A private in-progress resume project exploring how to generate multilingual, role-targeted resumes with LaTeX. It addresses a real maintenance problem: the same experience needs different language variants, role emphasis, and length constraints without drifting out of sync.",
+      "points": [
+        "Explores structured content for Chinese, English, and other variants by separating experience content, project descriptions, skill phrasing, and layout control.",
+        "Targets fast adaptation for different roles by changing the emphasis across projects, skills, and experience without manually rebuilding each file.",
+        "Uses LaTeX for stable formatting and version control, making the resume closer to a long-lived content asset than a one-off document.",
+        "May eventually become a skill, template system, or another automation tool for a reusable job-search material workflow."
+      ]
+    },
+    "anysearch-skill": {
+      "title": "AnySearch Skill Contribution",
+      "summary": "A contribution to the upstream AnySearch Skill, bringing real-time retrieval into AI agent workflows. The core need is clear: when agents research, debug, or evaluate, they need a stable way to access current web results and page content instead of relying on static model memory.",
+      "points": [
+        "The contribution was merged upstream, showing the full open-source path from forked implementation to accepted community change.",
+        "Supports multiple runtimes including Python, Node.js, PowerShell, and Shell to reduce integration friction across systems and agent environments.",
+        "Covers general search, vertical search, parallel batch search, and page extraction so research can move from asking the model to checking evidence.",
+        "The value is turning web retrieval into a stable tool interface instead of a one-off command or manual copy-paste step."
+      ]
+    },
+    "crater-prompt": {
+      "title": "Crater Agent Prompts",
+      "summary": "An archived prompt repository created before the skill mechanism existed, used to guide AI agents in Crater development. It came from a concrete need: helping an AI assistant understand a complex project's context, norms, and constraints without restarting from scratch each time.",
+      "points": [
+        "Turns Crater project experience, recurring requirements, and collaboration habits into prompts that an agent can consume directly.",
+        "Helps agents enter the existing engineering context faster, reducing invalid implementations caused by missing project constraints.",
+        "Although document-oriented, it served as an early tool by externalizing implicit experience into a reusable collaboration entry point.",
+        "Preserves the evolution from prompt assets toward structured agent skills."
+      ]
+    }
+  }
+}

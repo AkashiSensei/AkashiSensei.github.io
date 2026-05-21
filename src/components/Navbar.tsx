@@ -39,6 +39,7 @@ export function Navbar() {
     { href: "#", label: t("nav:projects") },
     { href: "#", label: t("nav:coursework") },
     { href: "/workbench", label: t("nav:workspace") },
+    { href: "/tools", label: t("nav:tools") },
     { href: "#", label: t("nav:knowledge") },
   ];
 

@@ -2,6 +2,7 @@ import { useEffect } from "react"
 
 import { usePathname } from "@/lib/navigation"
 import { HomePage } from "@/pages/HomePage"
+import { ToolsPage } from "@/pages/ToolsPage"
 import { WorkbenchPage } from "@/pages/WorkbenchPage"
 
 function App() {
@@ -13,6 +14,10 @@ function App() {
 
   if (pathname === "/workbench") {
     return <WorkbenchPage />
+  }
+
+  if (pathname === "/tools") {
+    return <ToolsPage />
   }
 
   return <HomePage />

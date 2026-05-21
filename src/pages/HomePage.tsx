@@ -1,5 +1,6 @@
 import { Layout } from "@/components/Layout"
 import { DirectionsSection } from "@/components/DirectionsSection"
+import { SmallToolHighlights } from "@/components/SmallToolHighlights"
 import { WorkbenchHighlights } from "@/components/WorkbenchHighlights"
 import { Button } from "@/components/ui/button"
 import { useTranslation } from "react-i18next"
@@ -123,8 +124,8 @@ export function HomePage() {
         </section>
         <DirectionsSection />
         <WorkbenchHighlights />
+        <SmallToolHighlights />
       </div>
     </Layout>
   )
 }
-

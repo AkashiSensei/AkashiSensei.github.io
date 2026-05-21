@@ -5,11 +5,13 @@ import enCommon from "./content/locales/en/common.json"
 import enDirections from "./content/locales/en/directions.json"
 import enHome from "./content/locales/en/home.json"
 import enNav from "./content/locales/en/nav.json"
+import enTools from "./content/locales/en/tools.json"
 import enWorkbench from "./content/locales/en/workbench.json"
 import zhCommon from "./content/locales/zh/common.json"
 import zhDirections from "./content/locales/zh/directions.json"
 import zhHome from "./content/locales/zh/home.json"
 import zhNav from "./content/locales/zh/nav.json"
+import zhTools from "./content/locales/zh/tools.json"
 import zhWorkbench from "./content/locales/zh/workbench.json"
 
 const resources = {
@@ -19,6 +21,7 @@ const resources = {
     home: zhHome,
     directions: zhDirections,
     workbench: zhWorkbench,
+    tools: zhTools,
   },
   en: {
     common: enCommon,
@@ -26,6 +29,7 @@ const resources = {
     home: enHome,
     directions: enDirections,
     workbench: enWorkbench,
+    tools: enTools,
   },
 } as const
 
@@ -35,7 +39,7 @@ i18n.use(initReactI18next).init({
   fallbackLng: "en",
   defaultNS: "common",
   fallbackNS: "common",
-  ns: ["common", "nav", "home", "directions", "workbench"],
+  ns: ["common", "nav", "home", "directions", "workbench", "tools"],
   interpolation: {
     escapeValue: false,
   },
