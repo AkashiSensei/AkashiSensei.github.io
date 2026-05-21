@@ -2,11 +2,13 @@ export type SmallTool = {
   id: string
   repoName?: string
   repoUrl?: string
+  githubRepo?: string
   role: "author" | "contributor"
   status?: "doing"
   archived?: boolean
   featured?: boolean
   featuredOrder?: number
+  highlightPointIndexes?: number[]
   screenshot?: {
     src: string
     alt: string
@@ -18,6 +20,7 @@ export const smallTools: SmallTool[] = [
     id: "project-context-meta-skill",
     repoName: "AkashiSensei/project-context-meta-skill",
     repoUrl: "https://github.com/AkashiSensei/project-context-meta-skill",
+    githubRepo: "AkashiSensei/project-context-meta-skill",
     role: "author",
     featured: true,
     featuredOrder: 1,
@@ -26,6 +29,7 @@ export const smallTools: SmallTool[] = [
     id: "research-skills",
     repoName: "AkashiSensei/research-skills",
     repoUrl: "https://github.com/AkashiSensei/research-skills",
+    githubRepo: "AkashiSensei/research-skills",
     role: "author",
     featured: true,
     featuredOrder: 2,
@@ -41,6 +45,7 @@ export const smallTools: SmallTool[] = [
     id: "anysearch-skill",
     repoName: "anysearch-ai/anysearch-skill",
     repoUrl: "https://github.com/anysearch-ai/anysearch-skill",
+    githubRepo: "anysearch-ai/anysearch-skill",
     role: "contributor",
     featured: true,
     featuredOrder: 4,
@@ -49,6 +54,7 @@ export const smallTools: SmallTool[] = [
     id: "crater-prompt",
     repoName: "AkashiSensei/crater-prompt",
     repoUrl: "https://github.com/AkashiSensei/crater-prompt",
+    githubRepo: "AkashiSensei/crater-prompt",
     role: "author",
     archived: true,
   },

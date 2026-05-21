@@ -2,8 +2,8 @@
   "title": "小工具",
   "subtitle": "我为工程、调研、求职材料和智能体协作写下或参与过的小型工具。它们不一定是完整产品，但都来自真实流程里的反复问题：上下文会丢、调研会散、材料会重复维护、智能体需要被更稳定地带入任务。",
   "viewAll": "查看全部",
-  "viewAllTitle": "完整小工具",
-  "viewAllDescription": "查看这些仓库如何支撑我的工程上下文、调研流程和智能体协作方式。",
+  "viewAllTitle": "全部小工具",
+  "viewAllDescription": "查看支撑工程、调研与协作的小型仓库。",
   "labels": {
     "author": "自研",
     "contributor": "Contributor",

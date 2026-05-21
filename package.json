@@ -5,6 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "fetch:github-repo-stats": "node scripts/fetch-github-repo-stats.mjs",
+    "prebuild": "npm run fetch:github-repo-stats",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"

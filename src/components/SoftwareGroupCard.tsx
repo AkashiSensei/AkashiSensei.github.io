@@ -1,8 +1,9 @@
 import { useTranslation } from "react-i18next"
 
+import { FeaturePointList } from "@/components/FeaturePointList"
+import { GlassPanel } from "@/components/GlassPanel"
 import { type WorkbenchGroup } from "@/data/workbench"
 import { cn } from "@/lib/utils"
-import { GlassPanel } from "@/components/GlassPanel"
 
 type SoftwareGroupCardProps = {
   group: WorkbenchGroup
@@ -46,14 +47,10 @@ export function SoftwareGroupCard({ group, className }: SoftwareGroupCardProps) 
           {t(`items.${group.id}.summary`)}
         </p>
 
-        <ul className="flex flex-col gap-2 text-sm leading-relaxed text-foreground/75 dark:text-foreground/85">
-          {points.map((point) => (
-            <li key={point} className="flex gap-2">
-              <span className="mt-[0.65em] h-1.5 w-1.5 shrink-0 rounded-full bg-foreground/40 dark:bg-foreground/50" />
-              <span>{point}</span>
-            </li>
-          ))}
-        </ul>
+        <FeaturePointList
+          points={points}
+          highlightedIndexes={group.highlightPointIndexes}
+        />
       </div>
     </GlassPanel>
   )

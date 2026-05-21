@@ -1,0 +1,82 @@
+{
+  "generatedAt": "2026-05-21T16:57:14.591Z",
+  "repos": {
+    "AkashiSensei/AkashiSensei.github.io": {
+      "commits": 10,
+      "defaultBranch": "main",
+      "fetchedAt": "2026-05-21T07:29:03.130Z",
+      "isPrivate": false,
+      "stars": 0
+    },
+    "AkashiSensei/ToDoDAG": {
+      "commits": 2,
+      "defaultBranch": "main",
+      "fetchedAt": "2026-05-21T07:29:04.823Z",
+      "isPrivate": true,
+      "stars": 0
+    },
+    "AkashiSensei/crater": {
+      "commits": 2557,
+      "defaultBranch": "main",
+      "fetchedAt": "2026-05-21T07:29:06.781Z",
+      "isPrivate": false,
+      "stars": 2
+    },
+    "AkashiSensei/crater-prompt": {
+      "commits": 24,
+      "defaultBranch": "main",
+      "fetchedAt": "2026-05-21T07:29:08.252Z",
+      "isPrivate": false,
+      "stars": 2
+    },
+    "AkashiSensei/model-requirements-evaluator-frontend": {
+      "commits": 24,
+      "defaultBranch": "main",
+      "fetchedAt": "2026-05-21T07:29:14.161Z",
+      "isPrivate": true,
+      "stars": 0
+    },
+    "AkashiSensei/npu_computing_forecast": {
+      "commits": 102,
+      "defaultBranch": "main",
+      "fetchedAt": "2026-05-21T07:29:16.120Z",
+      "isPrivate": true,
+      "stars": 0
+    },
+    "AkashiSensei/project-context-meta-skill": {
+      "commits": 14,
+      "defaultBranch": "main",
+      "fetchedAt": "2026-05-21T07:29:17.566Z",
+      "isPrivate": false,
+      "stars": 0
+    },
+    "AkashiSensei/research-skills": {
+      "commits": 3,
+      "defaultBranch": "main",
+      "fetchedAt": "2026-05-21T07:29:19.821Z",
+      "isPrivate": false,
+      "stars": 0
+    },
+    "AkashiSensei/zhejianglab-crater": {
+      "commits": 2631,
+      "defaultBranch": "main",
+      "fetchedAt": "2026-05-21T07:29:21.293Z",
+      "isPrivate": false,
+      "stars": 0
+    },
+    "anysearch-ai/anysearch-skill": {
+      "commits": 17,
+      "defaultBranch": "main",
+      "fetchedAt": "2026-05-21T07:29:22.784Z",
+      "isPrivate": false,
+      "stars": 675
+    },
+    "raids-lab/crater": {
+      "commits": 2695,
+      "defaultBranch": "main",
+      "fetchedAt": "2026-05-21T07:29:24.255Z",
+      "isPrivate": false,
+      "stars": 516
+    }
+  }
+}

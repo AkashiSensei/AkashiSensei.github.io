@@ -1,6 +1,8 @@
 import { ArrowUpRight } from "lucide-react"
 import { useTranslation } from "react-i18next"
 
+import { FeaturePointList } from "@/components/FeaturePointList"
+import { GitHubRepoStats } from "@/components/GitHubRepoStats"
 import { GlassPanel } from "@/components/GlassPanel"
 import { type SmallTool } from "@/data/tools"
 import { cn } from "@/lib/utils"
@@ -62,6 +64,7 @@ export function SmallToolCard({ tool, className }: SmallToolCardProps) {
             >
               <span className="min-w-0 truncate">{tool.repoName}</span>
               <ArrowUpRight className="h-4 w-4 shrink-0 transition-transform group-hover/repo:-translate-y-0.5 group-hover/repo:translate-x-0.5" />
+              <GitHubRepoStats repo={tool.githubRepo} />
             </a>
           ) : (
             <span className="inline-flex min-w-0 w-fit max-w-full text-sm font-semibold text-foreground/60 dark:text-foreground/75">
@@ -75,14 +78,10 @@ export function SmallToolCard({ tool, className }: SmallToolCardProps) {
             {t(`items.${tool.id}.summary`)}
           </p>
 
-          <ul className="flex flex-col gap-2 text-sm leading-relaxed text-foreground/75 dark:text-foreground/85">
-            {points.map((point) => (
-              <li key={point} className="flex gap-2">
-                <span className="mt-[0.65em] h-1.5 w-1.5 shrink-0 rounded-full bg-foreground/40 dark:bg-foreground/50" />
-                <span>{point}</span>
-              </li>
-            ))}
-          </ul>
+          <FeaturePointList
+            points={points}
+            highlightedIndexes={tool.highlightPointIndexes}
+          />
         </div>
       </div>
     </GlassPanel>

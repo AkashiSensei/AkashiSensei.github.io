@@ -9,9 +9,16 @@
       "title": "AI Assist Tools",
       "summary": "AI coding and assist workflows for understanding code, refactoring, review, and fast experiments.",
       "points": [
-        "Use different AI IDEs and command-line agents for exploration, implementation, and review.",
-        "Covers Cursor, Codex, Qclaw, and Trae CN among the tools I use today.",
-        "Pair with traditional editors so the workflow is not locked to a single product."
+        "Cursor Pro subscription",
+        "ChatGPT Pro 5x subscription",
+        "Minimax Plus fast-tier subscription",
+        "Copilot Pro Education subscription",
+        "Xiaomi MiMo Max creator incentive plan",
+        "Actively embrace the AI development era, spending hundreds of millions to billions of tokens each month while building practical experience with AI tools and solving the problems that appear in real work.",
+        "Mainly use Cursor for complex or research-heavy tasks that need continuous human steering and adjustment.",
+        "Mainly use Codex for coding tasks with clear goals and a well-understood implementation path.",
+        "Use QClaw and ChatGPT to remotely control the host machine from mobile devices and continue work away from the desk.",
+        "Use GitHub Copilot and Cursor Bugbot for PR review."
       ]
     },
     "creative-adobe": {
