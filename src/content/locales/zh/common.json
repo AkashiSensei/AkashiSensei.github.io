@@ -11,5 +11,10 @@
   "ui": {
     "langSwitchToEn": "EN",
     "langSwitchToZh": "中"
+  },
+  "githubRepoStats": {
+    "defaultBranch": "默认分支",
+    "tooltip": "GitHub 数据获取于 {{time}}\nStar 数：{{stars}}\n{{branch}} 分支提交数：{{commits}}",
+    "unavailable": "不可用"
   }
 }

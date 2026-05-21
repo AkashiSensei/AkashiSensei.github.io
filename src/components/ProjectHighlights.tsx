@@ -28,15 +28,15 @@ export function ProjectHighlights() {
         </p>
       </div>
 
-      <div className="-mx-6 flex snap-x snap-mandatory gap-3 overflow-x-auto px-6 pb-2 scroll-px-6 sm:mx-0 sm:px-0 sm:scroll-px-0">
+      <div className="relative left-1/2 flex w-screen -translate-x-1/2 snap-x snap-mandatory gap-3 overflow-x-auto px-6 pb-2 scroll-px-6 sm:px-[max(1.5rem,calc((100vw-64rem)/2+1rem))] sm:scroll-px-[max(1.5rem,calc((100vw-64rem)/2+1rem))]">
         {featuredProjects.map((project) => (
           <ProjectCard
             key={project.id}
             project={project}
-            className="w-full shrink-0 snap-start sm:w-[calc(50%-0.375rem)]"
+            className="w-[calc(100vw-3rem)] shrink-0 snap-start sm:w-[min(calc((100vw-3rem-0.75rem)/2),calc((64rem-2rem-0.75rem)/2))]"
           />
         ))}
-        <ViewAllCard className="w-[55vw] shrink-0 snap-start sm:w-[12rem] lg:w-[8.5rem]" />
+        <ViewAllCard className="w-44 shrink-0 snap-start" />
       </div>
     </section>
   )

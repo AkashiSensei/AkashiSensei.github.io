@@ -36,7 +36,7 @@ export function SmallToolHighlights() {
             className="w-full shrink-0 snap-start sm:w-[calc(50%-0.375rem)] lg:min-w-0 lg:flex-1 lg:w-auto"
           />
         ))}
-        <ViewAllCard className="w-[55vw] shrink-0 snap-start sm:w-[12rem] lg:min-w-0 lg:w-[8.5rem]" />
+        <ViewAllCard className="w-44 shrink-0 snap-start" />
       </div>
     </section>
   )

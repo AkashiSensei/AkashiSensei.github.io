@@ -9,6 +9,7 @@ export type WorkbenchGroup = {
   id: string
   featured?: boolean
   featuredOrder?: number
+  highlightPointIndexes?: number[]
   software: WorkbenchSoftware[]
 }
 
@@ -19,6 +20,7 @@ export const workbenchGroups: WorkbenchGroup[] = [
     id: "ai-assist",
     featured: true,
     featuredOrder: 1,
+    highlightPointIndexes: [0, 1, 2, 3, 4],
     software: [
       { id: "cursor", name: "Cursor", icon: `${iconBase}/cursor-512.webp` },
       { id: "codex", name: "Codex", icon: `${iconBase}/codex-512.webp` },
@@ -39,6 +41,7 @@ export const workbenchGroups: WorkbenchGroup[] = [
   },
   {
     id: "office-productivity",
+    highlightPointIndexes: [0],
     software: [
       { id: "microsoft-word", name: "Microsoft Word", icon: `${iconBase}/microsoft-word-512.webp` },
       { id: "microsoft-excel", name: "Microsoft Excel", icon: `${iconBase}/microsoft-excel-512.webp` },
@@ -86,6 +89,7 @@ export const workbenchGroups: WorkbenchGroup[] = [
     id: "creative-adobe",
     featured: true,
     featuredOrder: 3,
+    highlightPointIndexes: [0],
     software: [
       { id: "adobe-creative-cloud", name: "Adobe Creative Cloud", icon: `${iconBase}/adobe-creative-cloud-512.webp` },
       { id: "adobe-ps", name: "Adobe Photoshop", icon: `${iconBase}/adobe-ps-512.webp` },
