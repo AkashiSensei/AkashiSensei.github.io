@@ -12,6 +12,7 @@
 
 ## History
 
+- 2026-05-22 | GitHub Pages workflow deployment | Added Actions-based Vite build/deploy flow for GitHub Pages, PR build validation, and CI token passthrough for build-time GitHub stats.
 - 2026-05-22 | Homepage metadata and Akashi subtitle | Updated favicon from local icon asset, added route-specific page titles, and added the fixed Japanese homepage subtitle with localized hover translations.
 - 2026-05-21 | [Archived: Projects homepage and page](archive/20260521_Projects-homepage-and-page.md) | Added data-driven 项目 module with curated GitHub project entries, homepage highlights, `/projects` page, card variants, zh/en copy, and route/nav integration.
 - 2026-05-21 | [Archived: Small tools homepage and page](archive/20260521_Small-tools-homepage-and-page.md) | Added data-driven 小工具 module with homepage highlights, `/tools` masonry page, optional screenshot/private-link card support, and zh/en copy.
