@@ -10,12 +10,11 @@ type SmallToolGridProps = {
 
 export function SmallToolGrid({ tools }: SmallToolGridProps) {
   const { t } = useTranslation("tools")
-  const [columns, setColumns] = useState(3)
+  const [columns, setColumns] = useState(2)
 
   useEffect(() => {
     const updateColumns = () => {
-      if (window.innerWidth >= 1024) setColumns(3)
-      else if (window.innerWidth >= 640) setColumns(2)
+      if (window.innerWidth >= 768) setColumns(2)
       else setColumns(1)
     }
 
@@ -29,7 +28,8 @@ export function SmallToolGrid({ tools }: SmallToolGridProps) {
     const colHeights = Array.from({ length: columns }, () => 0)
 
     tools.forEach((tool) => {
-      let estimatedHeight = tool.screenshot ? 310 : 160
+      const screenshotCount = tool.screenshots?.length ?? (tool.screenshot ? 1 : 0)
+      let estimatedHeight = screenshotCount > 0 ? 330 : 160
 
       const title = t(`items.${tool.id}.title`) as string
       estimatedHeight += Math.ceil((title?.length || 0) / 14) * 28
@@ -68,7 +68,11 @@ export function SmallToolGrid({ tools }: SmallToolGridProps) {
             <SmallToolCard
               key={tool.id}
               tool={tool}
-              className={tool.screenshot ? "h-auto max-h-[52rem]" : "h-auto max-h-[40rem]"}
+              className={
+                (tool.screenshots?.length ?? (tool.screenshot ? 1 : 0)) > 0
+                  ? "h-auto max-h-[52rem]"
+                  : "h-auto max-h-[40rem]"
+              }
             />
           ))}
         </div>

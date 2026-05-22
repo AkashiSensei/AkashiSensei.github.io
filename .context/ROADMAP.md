@@ -14,6 +14,7 @@
 ## History
 
 - 2026-05-22 | GitHub Pages workflow deployment | Added Actions-based Vite build/deploy flow for GitHub Pages, PR build validation, and CI token passthrough for build-time GitHub stats.
+- 2026-05-22 | [Archived: Small tools copy and gallery polish](archive/20260522_Small-tools-copy-and-gallery-polish.md) | Refined bilingual Small Tools copy, added tool screenshot galleries, aligned Small Tools and Workbench homepage rails with Projects, and matched `/tools` to the two-column project layout.
 - 2026-05-22 | Homepage metadata and Akashi subtitle | Updated favicon from local icon asset, added route-specific page titles, and added the fixed Japanese homepage subtitle with localized hover translations.
 - 2026-05-22 | [Archived: Card tag gallery content refresh](archive/20260522_Card-tag-gallery-content-refresh.md) | Unified card point/tag rendering, added project galleries and GitHub stats, refreshed bilingual project copy/assets, and polished project layouts/status badges.
 - 2026-05-21 | [Archived: Projects homepage and page](archive/20260521_Projects-homepage-and-page.md) | Added data-driven 项目 module with curated GitHub project entries, homepage highlights, `/projects` page, card variants, zh/en copy, and route/nav integration.
