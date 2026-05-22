@@ -1,5 +1,6 @@
 {
   "title": "Hi, I'm $t(common:site.displayName)",
+  "subtitleTranslation": "It's Akashi's turn now.",
   "description": "I'm a software engineering master's student who loves open source and sharing what I build.\nI'm working to grow into an engineer who ships products with genuinely better user experiences.\nI'm especially interested in AI infrastructure across the stack and in agent-based systems, and I'm actively learning and exploring both.\n\nThank you for visiting. I hope you might become my teacher and my friend.\nThis site is still under construction. Some content may be incomplete or incorrect, and I appreciate your understanding.",
   "contact": "Contact Me",
   "github": "Profile",

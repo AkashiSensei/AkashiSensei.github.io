@@ -58,12 +58,12 @@ export function Navbar() {
   };
 
   return (
-    <div ref={navRef} className="fixed bottom-4 md:bottom-auto md:top-4 inset-x-4 max-w-5xl mx-auto z-50">
-      <nav className="relative flex items-center justify-between px-4 py-2 sm:px-6 sm:py-3 rounded-full bg-white/40 dark:bg-white/10 backdrop-blur-md border border-white/40 dark:border-white/10 shadow-sm transition-all duration-300 z-50">
+    <div ref={navRef} className="fixed bottom-5 sm:bottom-6 md:bottom-auto md:top-4 inset-x-5 sm:inset-x-6 md:inset-x-4 max-w-5xl mx-auto z-50">
+      <nav className="relative flex items-center justify-between px-5 py-3.5 md:px-6 md:py-3 rounded-full bg-white/40 dark:bg-white/10 backdrop-blur-md border border-white/40 dark:border-white/10 shadow-sm transition-all duration-300 z-50">
         <div className="flex items-center gap-2 sm:gap-4">
           <AppLink
             to="/"
-            className="font-semibold text-base sm:text-lg tracking-tight hover:opacity-80 transition-opacity"
+            className="font-semibold text-lg md:text-lg tracking-tight hover:opacity-80 transition-opacity"
           >
             {t("site.displayName")}
           </AppLink>
@@ -75,31 +75,31 @@ export function Navbar() {
             ))}
           </div>
         </div>
-        <div className="flex items-center gap-1 sm:gap-2 text-sm font-medium text-foreground/80">
+        <div className="flex items-center gap-1.5 sm:gap-2 text-sm font-medium text-foreground/80">
           <button 
             onClick={toggleLanguage}
-            className="flex items-center justify-center w-8 h-8 rounded-full hover:bg-muted/50 transition-colors font-medium text-xs sm:text-sm"
+            className="flex h-10 w-10 items-center justify-center rounded-full text-sm font-medium hover:bg-muted/50 transition-colors md:h-8 md:w-8 md:text-sm"
             title={t("a11y.toggleLanguage")}
           >
             {i18n.language === "zh" ? t("ui.langSwitchToEn") : t("ui.langSwitchToZh")}
           </button>
           <button 
             onClick={toggleTheme}
-            className="flex items-center justify-center w-8 h-8 rounded-full hover:bg-muted/50 transition-colors"
+            className="flex h-10 w-10 items-center justify-center rounded-full hover:bg-muted/50 transition-colors md:h-8 md:w-8"
             title={t("a11y.toggleTheme")}
           >
-            <Sun className="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-            <Moon className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+            <Sun className="h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 md:h-4 md:w-4" />
+            <Moon className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100 md:h-4 md:w-4" />
             <span className="sr-only">{t("a11y.toggleThemeSr")}</span>
           </button>
 
           {/* 移动端汉堡菜单按钮 */}
           <button 
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden flex items-center justify-center w-8 h-8 rounded-full hover:bg-muted/50 transition-colors ml-1"
+            className="ml-1 flex h-10 w-10 items-center justify-center rounded-full hover:bg-muted/50 transition-colors md:hidden"
             title={t("a11y.toggleMenu")}
           >
-            {mobileMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+            {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
         </div>
       </nav>

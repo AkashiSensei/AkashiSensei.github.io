@@ -34,18 +34,30 @@ function GitHubMark({ className }: { className?: string }) {
 
 export function HomePage() {
   const { t } = useTranslation("home");
+  const descriptionParagraphs = t("description").split("\n\n");
 
   return (
     <Layout>
       <div className="flex flex-col gap-12 mt-8 sm:mt-16">
-        <section className="space-y-6 max-w-2xl">
-          <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
+        <section className="flex max-w-2xl flex-col gap-6 md:gap-7">
+          <h1 className="text-4xl md:text-5xl font-bold tracking-tight leading-tight">
             {t('title')}
           </h1>
-          <p className="text-lg text-foreground/80 leading-[1.75] whitespace-pre-line pt-2 sm:pt-3">
-            {t('description')}
+          <p
+            className="text-xl md:text-2xl font-medium text-foreground/55"
+            title={t("subtitleTranslation")}
+          >
+            「明石の出番ですね。」
           </p>
-          <div className="flex flex-wrap gap-4 pt-2">
+          {descriptionParagraphs.map((paragraph) => (
+            <p
+              key={paragraph}
+              className="text-lg text-foreground/80 leading-[1.75] whitespace-pre-line"
+            >
+              {paragraph}
+            </p>
+          ))}
+          <div className="flex flex-wrap gap-4">
             <Dialog>
               <DialogTrigger asChild>
                 <Button variant="outline" className="rounded-full px-6 bg-white/40 dark:bg-white/10 backdrop-blur-md border-white/40 dark:border-white/10 shadow-sm hover:bg-white/60 dark:hover:bg-white/20 transition-colors">
