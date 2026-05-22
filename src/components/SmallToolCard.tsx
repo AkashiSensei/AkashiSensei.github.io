@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next"
 import { FeaturePointList } from "@/components/FeaturePointList"
 import { GitHubRepoStats } from "@/components/GitHubRepoStats"
 import { GlassPanel } from "@/components/GlassPanel"
+import { SmallToolImageGallery } from "@/components/SmallToolImageGallery"
 import { type SmallTool } from "@/data/tools"
 import { cn } from "@/lib/utils"
 
@@ -12,48 +13,52 @@ type SmallToolCardProps = {
   className?: string
 }
 
+const roleClassName = {
+  author:
+    "border-emerald-300/60 bg-emerald-100/70 text-emerald-800 dark:border-emerald-300/30 dark:bg-emerald-300/15 dark:text-emerald-200",
+  contributor:
+    "border-sky-300/60 bg-sky-100/70 text-sky-800 dark:border-sky-300/30 dark:bg-sky-300/15 dark:text-sky-200",
+} satisfies Record<SmallTool["role"], string>
+
 export function SmallToolCard({ tool, className }: SmallToolCardProps) {
   const { t } = useTranslation("tools")
   const points = t(`items.${tool.id}.points`, { returnObjects: true }) as string[]
+  const hasImages = Boolean(tool.screenshots?.length || tool.screenshot)
 
   return (
     <GlassPanel
       className={cn(
         "flex h-full flex-col overflow-hidden transition-colors hover:bg-white/55 dark:hover:bg-white/10",
-        tool.screenshot ? "max-h-[44rem]" : "max-h-[32rem]",
+        hasImages ? "max-h-[44rem]" : "max-h-[32rem]",
         className,
       )}
     >
-      {tool.screenshot ? (
+      {tool.screenshots?.length ? (
+        <SmallToolImageGallery images={tool.screenshots} />
+      ) : tool.screenshot ? (
         <img
           src={tool.screenshot.src}
           alt={tool.screenshot.alt}
-          className="aspect-[16/9] w-full shrink-0 object-cover"
+          className="aspect-[16/9] w-full object-cover"
           loading="lazy"
         />
       ) : null}
 
       <div className="flex min-h-0 flex-1 flex-col gap-3 p-4">
-        <div className="flex shrink-0 flex-col gap-2">
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="rounded-full border border-white/40 bg-white/35 px-2.5 py-1 text-xs font-semibold text-foreground/65 dark:border-white/10 dark:bg-white/5 dark:text-foreground/75">
+        <div className="flex shrink-0 flex-col gap-3">
+          <div className="flex items-center gap-2">
+            <h3 className="min-w-0 text-xl font-bold leading-tight text-foreground/90">
+              {t(`items.${tool.id}.title`)}
+            </h3>
+            <span
+              className={cn(
+                "shrink-0 rounded-full border px-2.5 py-1 text-xs font-semibold leading-none",
+                roleClassName[tool.role],
+              )}
+            >
               {t(`labels.${tool.role}`)}
             </span>
-            {tool.archived ? (
-              <span className="rounded-full border border-white/40 bg-white/35 px-2.5 py-1 text-xs font-semibold text-foreground/65 dark:border-white/10 dark:bg-white/5 dark:text-foreground/75">
-                {t("labels.archived")}
-              </span>
-            ) : null}
-            {tool.status ? (
-              <span className="rounded-full border border-white/40 bg-white/35 px-2.5 py-1 text-xs font-semibold text-foreground/65 dark:border-white/10 dark:bg-white/5 dark:text-foreground/75">
-                {t(`labels.${tool.status}`)}
-              </span>
-            ) : null}
           </div>
-
-          <h3 className="text-xl font-bold leading-tight text-foreground/90">
-            {t(`items.${tool.id}.title`)}
-          </h3>
 
           {tool.repoUrl && tool.repoName ? (
             <a

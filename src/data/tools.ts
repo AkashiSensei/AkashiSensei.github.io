@@ -13,6 +13,12 @@ export type SmallTool = {
     src: string
     alt: string
   }
+  screenshots?: {
+    src: string
+    alt: string
+    width: number
+    height: number
+  }[]
 }
 
 export const smallTools: SmallTool[] = [
@@ -24,6 +30,32 @@ export const smallTools: SmallTool[] = [
     role: "author",
     featured: true,
     featuredOrder: 1,
+    screenshots: [
+      {
+        src: "/assets/tools/project-context-meta-skill/roadmap.webp",
+        alt: "Project context roadmap",
+        width: 2670,
+        height: 1884,
+      },
+      {
+        src: "/assets/tools/project-context-meta-skill/raw-requirements.webp",
+        alt: "Original requirements capture",
+        width: 2670,
+        height: 1884,
+      },
+      {
+        src: "/assets/tools/project-context-meta-skill/active-task.webp",
+        alt: "Active task focus document",
+        width: 2670,
+        height: 1884,
+      },
+      {
+        src: "/assets/tools/project-context-meta-skill/spec-constraints.webp",
+        alt: "Requirements specification and constraints",
+        width: 2670,
+        height: 1884,
+      },
+    ],
   },
   {
     id: "research-skills",
@@ -33,6 +65,38 @@ export const smallTools: SmallTool[] = [
     role: "author",
     featured: true,
     featuredOrder: 2,
+    screenshots: [
+      {
+        src: "/assets/tools/research-skills/codex-result.webp",
+        alt: "Codex research result screenshot",
+        width: 2114,
+        height: 1548,
+      },
+      {
+        src: "/assets/tools/research-skills/codex-process.webp",
+        alt: "Codex research process screenshot",
+        width: 2114,
+        height: 1548,
+      },
+      {
+        src: "/assets/tools/research-skills/codex-complete.webp",
+        alt: "Codex completed research workflow screenshot",
+        width: 2114,
+        height: 1548,
+      },
+      {
+        src: "/assets/tools/research-skills/cursor-anysearch-process.webp",
+        alt: "Cursor AnySearch research process screenshot",
+        width: 2114,
+        height: 1548,
+      },
+      {
+        src: "/assets/tools/research-skills/cursor-anysearch-result.webp",
+        alt: "Cursor AnySearch research result screenshot",
+        width: 2114,
+        height: 1548,
+      },
+    ],
   },
   {
     id: "latex-resume",
