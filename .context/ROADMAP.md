@@ -13,6 +13,7 @@
 
 ## History
 
+- 2026-05-23 | Nightly GitHub repo stats refresh | Scheduled the GitHub Pages deployment workflow to rebuild daily at 03:00 Asia/Shanghai so commit and star counts refresh in the deployed static site without creating automated commits.
 - 2026-05-22 | GitHub Pages workflow deployment | Added Actions-based Vite build/deploy flow for GitHub Pages, PR build validation, and CI token passthrough for build-time GitHub stats.
 - 2026-05-22 | [Archived: Small tools copy and gallery polish](archive/20260522_Small-tools-copy-and-gallery-polish.md) | Refined bilingual Small Tools copy, added tool screenshot galleries, aligned Small Tools and Workbench homepage rails with Projects, and matched `/tools` to the two-column project layout.
 - 2026-05-22 | Homepage metadata and Akashi subtitle | Updated favicon from local icon asset, added route-specific page titles, and added the fixed Japanese homepage subtitle with localized hover translations.
