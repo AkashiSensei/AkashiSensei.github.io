@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next"
 import { FeaturePointList } from "@/components/FeaturePointList"
 import { GitHubRepoStats } from "@/components/GitHubRepoStats"
 import { GlassPanel } from "@/components/GlassPanel"
+import { LazyImage } from "@/components/LazyImage"
 import { SmallToolImageGallery } from "@/components/SmallToolImageGallery"
 import { type SmallTool } from "@/data/tools"
 import { cn } from "@/lib/utils"
@@ -21,7 +22,7 @@ const roleClassName = {
 } satisfies Record<SmallTool["role"], string>
 
 export function SmallToolCard({ tool, className }: SmallToolCardProps) {
-  const { t } = useTranslation("tools")
+  const { t } = useTranslation(["tools", "common"])
   const points = t(`items.${tool.id}.points`, { returnObjects: true }) as string[]
   const hasImages = Boolean(tool.screenshots?.length || tool.screenshot)
 
@@ -36,11 +37,13 @@ export function SmallToolCard({ tool, className }: SmallToolCardProps) {
       {tool.screenshots?.length ? (
         <SmallToolImageGallery images={tool.screenshots} />
       ) : tool.screenshot ? (
-        <img
+        <LazyImage
           src={tool.screenshot.src}
           alt={tool.screenshot.alt}
-          className="aspect-[16/9] w-full object-cover"
-          loading="lazy"
+          placeholderTitle={tool.screenshot.alt}
+          loadingLabel={t("common:imageLoading")}
+          containerClassName="aspect-[16/9] w-full"
+          imageClassName="h-full w-full object-cover"
         />
       ) : null}
 

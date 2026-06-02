@@ -3,9 +3,152 @@ import path from "node:path"
 import { fileURLToPath } from "node:url"
 
 const root = path.dirname(path.dirname(fileURLToPath(import.meta.url)))
-const sourceFiles = ["src/data/projects.ts", "src/data/tools.ts"]
+const sourceFiles = [
+  "src/data/projects.ts",
+  "src/data/course-projects.ts",
+  "src/data/tools.ts",
+]
 const outputPath = path.join(root, "src/data/generated/github-repo-stats.json")
 const legacyOutputPath = path.join(root, "src/data/generated/github-stars.json")
+const repoBranchOverrides = {
+  "AkashiSensei/os2023": "lab6",
+}
+const hardcodedRepoStats = {
+  "AkashiSensei/BUAA-Parallel-2025-basic": {
+    commits: 13,
+    defaultBranch: "main",
+    isPrivate: true,
+  },
+  "AkashiSensei/predicting-road-accident-risk-buaa": {
+    commits: 14,
+    defaultBranch: "main",
+    isPrivate: true,
+  },
+  "BUAA-SEF-Team15/Learning_and_Living_Platform_BackEnd": {
+    commits: 360,
+    defaultBranch: "main",
+    isPrivate: true,
+  },
+  "BUAA-SEF-Team15/Learning_and_Living_Platform_FrontEnd": {
+    commits: 281,
+    defaultBranch: "main",
+    isPrivate: true,
+  },
+  "Yiyan2023/CareerYiyan-frontend": {
+    commits: 6,
+    defaultBranch: "main",
+    isPrivate: true,
+  },
+  "Yiyan2023/Yiyan-frontend": {
+    commits: 32,
+    defaultBranch: "main",
+    isPrivate: true,
+  },
+  "Yiyan2023/administration": {
+    commits: 3,
+    defaultBranch: "main",
+    isPrivate: true,
+  },
+  "Yiyan2023/backend-literatureDetails": {
+    commits: 3,
+    defaultBranch: "main",
+    isPrivate: true,
+  },
+  "Yiyan2023/backend-research": {
+    commits: 96,
+    defaultBranch: "main",
+    isPrivate: true,
+  },
+  "Yiyan2023/backend-researcherPortal": {
+    commits: 6,
+    defaultBranch: "main",
+    isPrivate: true,
+  },
+  "Yiyan2023/backend-search": {
+    commits: 7,
+    defaultBranch: "main",
+    isPrivate: true,
+  },
+  "Yiyan2023/backend-userManagement": {
+    commits: 15,
+    defaultBranch: "main",
+    isPrivate: true,
+  },
+}
+const fallbackCourseProjectRepoStats = {
+  "AkashiSensei/BUAA-Parallel-Programming-2026-hw": {
+    commits: 4,
+    defaultBranch: "main",
+    isPrivate: false,
+    stars: 0,
+  },
+  "AkashiSensei/BUAA-VR-Experiments-2026-hw": {
+    commits: 2,
+    defaultBranch: "main",
+    isPrivate: false,
+    stars: 1,
+  },
+  "AkashiSensei/Learning_and_Living_Platform_Submit": {
+    commits: 7,
+    defaultBranch: "main",
+    isPrivate: false,
+    stars: 3,
+  },
+  "AkashiSensei/Learning_and_Living_Platform_Support": {
+    commits: 287,
+    defaultBranch: "main",
+    isPrivate: false,
+    stars: 6,
+  },
+  "AkashiSensei/OOP_2022_Iteration": {
+    commits: 5,
+    defaultBranch: "main",
+    isPrivate: false,
+    stars: 0,
+  },
+  "AkashiSensei/Rotating_Calipers_Visualization": {
+    commits: 3,
+    defaultBranch: "main",
+    isPrivate: false,
+    stars: 0,
+  },
+  "AkashiSensei/kernel_analyzer": {
+    commits: 34,
+    defaultBranch: "main",
+    isPrivate: false,
+    stars: 0,
+  },
+  "AkashiSensei/kernel_data_plotter": {
+    commits: 2,
+    defaultBranch: "main",
+    isPrivate: false,
+    stars: 0,
+  },
+  "AkashiSensei/os2023": {
+    commits: 29,
+    defaultBranch: "lab6",
+    isPrivate: false,
+    stars: 15,
+  },
+  "BUAA-OOP-JAVA-TermAssignment/Archive_System": {
+    commits: 179,
+    defaultBranch: "main",
+    isPrivate: false,
+    stars: 1,
+  },
+  "BUAA-OOP-JAVA-TermAssignment/Archive_System_Server": {
+    commits: 70,
+    defaultBranch: "main",
+    isPrivate: false,
+    stars: 1,
+  },
+  "Yiyan2023/CareerYiyan-backend": {
+    commits: 3,
+    defaultBranch: "main",
+    isPrivate: false,
+    stars: 0,
+  },
+}
 
 async function loadLocalEnv() {
   for (const envFile of [".env.local", ".env"]) {
@@ -51,14 +194,23 @@ async function readPreviousSnapshot() {
   return { repos: {} }
 }
 
+async function collectReposFromFile(file) {
+  const repos = new Set()
+  const source = await readFile(path.join(root, file), "utf8")
+
+  for (const match of source.matchAll(/githubRepo:\s*"([^"]+)"/g)) {
+    repos.add(match[1])
+  }
+
+  return repos
+}
+
 async function collectRepos() {
   const repos = new Set()
 
   for (const file of sourceFiles) {
-    const source = await readFile(path.join(root, file), "utf8")
-
-    for (const match of source.matchAll(/githubRepo:\s*"([^"]+)"/g)) {
-      repos.add(match[1])
+    for (const repo of await collectReposFromFile(file)) {
+      repos.add(repo)
     }
   }
 
@@ -131,11 +283,12 @@ async function fetchDefaultBranchCommitCount(repo, defaultBranch) {
 
 async function fetchRepoStats(repo) {
   const { data } = await fetchJson(`https://api.github.com/repos/${repo}`)
-  const commits = await fetchDefaultBranchCommitCount(repo, data.default_branch)
+  const statsBranch = repoBranchOverrides[repo] ?? data.default_branch
+  const commits = await fetchDefaultBranchCommitCount(repo, statsBranch)
 
   return {
     commits,
-    defaultBranch: data.default_branch,
+    defaultBranch: statsBranch,
     fetchedAt: new Date().toISOString(),
     isPrivate: Boolean(data.private),
     stars: data.stargazers_count,
@@ -146,6 +299,7 @@ await loadLocalEnv()
 
 const previous = await readPreviousSnapshot()
 const repos = await collectRepos()
+const courseProjectRepos = await collectReposFromFile("src/data/course-projects.ts")
 const generatedAt = new Date().toISOString()
 const snapshot = {
   generatedAt,
@@ -153,10 +307,29 @@ const snapshot = {
 }
 
 for (const repo of repos) {
+  const isCourseProjectRepo = courseProjectRepos.has(repo)
+  const hardcoded = isCourseProjectRepo ? hardcodedRepoStats[repo] : undefined
+  const fallback = isCourseProjectRepo
+    ? fallbackCourseProjectRepoStats[repo]
+    : undefined
+
   try {
-    snapshot.repos[repo] = await fetchRepoStats(repo)
+    if (hardcoded) {
+      snapshot.repos[repo] = {
+        ...hardcoded,
+        fetchedAt: generatedAt,
+      }
+    } else {
+      snapshot.repos[repo] = await fetchRepoStats(repo)
+    }
   } catch (error) {
-    if (previous.repos?.[repo]) {
+    if (fallback) {
+      snapshot.repos[repo] = {
+        ...fallback,
+        fetchedAt: generatedAt,
+      }
+      console.warn(`Used fallback course project GitHub repo stats for ${repo}: ${error.message}`)
+    } else if (previous.repos?.[repo]) {
       snapshot.repos[repo] = previous.repos[repo]
       console.warn(`Kept previous GitHub repo stats for ${repo}: ${error.message}`)
     } else {

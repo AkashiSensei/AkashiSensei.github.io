@@ -6,16 +6,22 @@ import {
   DialogContent,
   DialogTitle,
 } from "@/components/ui/dialog"
+import { LazyImage } from "@/components/LazyImage"
 import { type ProjectImage } from "@/data/projects"
 import { cn } from "@/lib/utils"
 
 type ProjectImageGalleryProps = {
   images: ProjectImage[]
   className?: string
+  translationNamespace?: "projects" | "courseProjects"
 }
 
-export function ProjectImageGallery({ images, className }: ProjectImageGalleryProps) {
-  const { t } = useTranslation("projects")
+export function ProjectImageGallery({
+  images,
+  className,
+  translationNamespace = "projects",
+}: ProjectImageGalleryProps) {
+  const { t } = useTranslation([translationNamespace, "common"])
   const [selectedImage, setSelectedImage] = useState<ProjectImage | null>(null)
   const firstImage = images[0]
 
@@ -40,11 +46,13 @@ export function ProjectImageGallery({ images, className }: ProjectImageGalleryPr
             onClick={() => setSelectedImage(image)}
             aria-label={t("imagePreview.open", { image: t(image.altKey) })}
           >
-            <img
+            <LazyImage
               src={image.src}
               alt={t(image.altKey)}
-              loading="lazy"
-              className="block h-full w-full object-contain"
+              placeholderTitle={t(image.altKey)}
+              loadingLabel={t("common:imageLoading")}
+              containerClassName="h-full w-full"
+              imageClassName="block h-full w-full object-contain"
             />
           </button>
         ))}

@@ -37,6 +37,7 @@ export function Navbar() {
 
   const navLinks = [
     { href: "/projects", label: t("nav:projects") },
+    { href: "/course-projects", label: t("nav:coursework") },
     { href: "/workbench", label: t("nav:workspace") },
     { href: "/tools", label: t("nav:tools") },
   ];

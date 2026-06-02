@@ -44,6 +44,7 @@ Personal homepage for job-seeking and peer sharing, **public by design**—no pr
 - Avoid building complex widgets by hand; use shadcn/Radix for accessibility on used primitives only
 - **Scope**: Presentation and navigation only—cards, tags, buttons, links, layout shell, theme toggle, locale switcher, list/gallery containers. **No** complex forms or heavy interactive flows in v1
 - Mobile-first: mobile experience **prioritizes** over desktop. **CRITICAL**: Developers must test and verify all layouts on narrow screens (down to 320px) before considering desktop complete. No horizontal overflow or cut-off interactive elements are allowed.
+- Image assets used by site UI/content cards should be converted to **WebP** before being referenced from data or components. Keep source screenshots/photos out of runtime paths unless there is a specific reason WebP is unsuitable.
 
 ## 4. Internationalization
 
