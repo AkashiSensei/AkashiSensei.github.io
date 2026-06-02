@@ -25,7 +25,7 @@ export type ProjectImage = {
 
 export type Project = {
   id: string
-  repoName: string
+  repoName?: string
   externalUrl?: string
   githubRepo?: string
   repoTags?: ProjectRepoTag[]

@@ -2,6 +2,7 @@ import { useEffect } from "react"
 
 import { usePathname } from "@/lib/navigation"
 import { HomePage } from "@/pages/HomePage"
+import { CourseProjectsPage } from "@/pages/CourseProjectsPage"
 import { ProjectsPage } from "@/pages/ProjectsPage"
 import { ToolsPage } from "@/pages/ToolsPage"
 import { WorkbenchPage } from "@/pages/WorkbenchPage"
@@ -9,6 +10,7 @@ import { WorkbenchPage } from "@/pages/WorkbenchPage"
 const pageTitles: Record<string, string> = {
   "/": "Akashi - Homepage",
   "/projects": "Akashi - Projects",
+  "/course-projects": "Akashi - Course Projects",
   "/workbench": "Akashi - Workspace",
   "/tools": "Akashi - Tools",
 }
@@ -26,6 +28,10 @@ function App() {
 
   if (pathname === "/projects") {
     return <ProjectsPage />
+  }
+
+  if (pathname === "/course-projects") {
+    return <CourseProjectsPage />
   }
 
   if (pathname === "/workbench") {

@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next"
 import { FeaturePointList } from "@/components/FeaturePointList"
 import { GitHubRepoStats } from "@/components/GitHubRepoStats"
 import { GlassPanel } from "@/components/GlassPanel"
+import { LazyImage } from "@/components/LazyImage"
 import { ProjectImageGallery } from "@/components/ProjectImageGallery"
 import { type Project } from "@/data/projects"
 import { getSemanticTagClassName } from "@/lib/tag-styles"
@@ -13,6 +14,7 @@ type ProjectCardProps = {
   project: Project
   className?: string
   variant?: "compact" | "full"
+  translationNamespace?: "projects" | "courseProjects"
 }
 
 const lifecycleStatusClassName = {
@@ -24,12 +26,38 @@ const lifecycleStatusClassName = {
     "border-zinc-300/70 bg-zinc-100/80 text-zinc-700 dark:border-zinc-300/25 dark:bg-zinc-300/10 dark:text-zinc-200",
 } satisfies Record<Project["lifecycleStatus"], string>
 
+const defaultTagClassName =
+  "border-white/45 bg-white/25 text-foreground/60 dark:border-white/10 dark:bg-white/[0.04] dark:text-foreground/70"
+
+const courseProjectSemesterTagClassName: Record<string, string> = {
+  "2026春":
+    "border-emerald-300/45 bg-emerald-100/70 text-emerald-800 shadow-sm shadow-emerald-900/5 dark:border-emerald-300/25 dark:bg-emerald-300/12 dark:text-emerald-200",
+  "2025秋":
+    "border-amber-300/50 bg-amber-100/75 text-amber-850 shadow-sm shadow-amber-900/5 dark:border-amber-300/25 dark:bg-amber-300/12 dark:text-amber-200",
+  "2025春":
+    "border-cyan-300/45 bg-cyan-100/70 text-cyan-800 shadow-sm shadow-cyan-900/5 dark:border-cyan-300/25 dark:bg-cyan-300/12 dark:text-cyan-200",
+  "2024夏":
+    "border-rose-300/45 bg-rose-100/70 text-rose-800 shadow-sm shadow-rose-900/5 dark:border-rose-300/25 dark:bg-rose-300/12 dark:text-rose-200",
+  "2024春":
+    "border-sky-300/45 bg-sky-100/70 text-sky-800 shadow-sm shadow-sky-900/5 dark:border-sky-300/25 dark:bg-sky-300/12 dark:text-sky-200",
+  "2023秋":
+    "border-violet-300/45 bg-violet-100/70 text-violet-800 shadow-sm shadow-violet-900/5 dark:border-violet-300/25 dark:bg-violet-300/12 dark:text-violet-200",
+  "2023春":
+    "border-teal-300/45 bg-teal-100/70 text-teal-800 shadow-sm shadow-teal-900/5 dark:border-teal-300/25 dark:bg-teal-300/12 dark:text-teal-200",
+  "2022秋":
+    "border-fuchsia-300/45 bg-fuchsia-100/70 text-fuchsia-800 shadow-sm shadow-fuchsia-900/5 dark:border-fuchsia-300/25 dark:bg-fuchsia-300/12 dark:text-fuchsia-200",
+}
+
+const fallbackCourseProjectSemesterTagClassName =
+  "border-indigo-300/45 bg-indigo-100/70 text-indigo-800 shadow-sm shadow-indigo-900/5 dark:border-indigo-300/25 dark:bg-indigo-300/12 dark:text-indigo-200"
+
 export function ProjectCard({
   project,
   className,
   variant = "compact",
+  translationNamespace = "projects",
 }: ProjectCardProps) {
-  const { t } = useTranslation("projects")
+  const { t } = useTranslation([translationNamespace, "common"])
   const points = t(`items.${project.id}.points`, { returnObjects: true }) as string[]
   const visiblePoints = variant === "compact" ? points.slice(0, 3) : points
   const hiddenPointCount = points.length - visiblePoints.length
@@ -54,13 +82,18 @@ export function ProjectCard({
       )}
     >
       {project.images?.length ? (
-        <ProjectImageGallery images={project.images} />
+        <ProjectImageGallery
+          images={project.images}
+          translationNamespace={translationNamespace}
+        />
       ) : project.screenshot ? (
-        <img
+        <LazyImage
           src={project.screenshot.src}
           alt={t(project.screenshot.altKey)}
-          loading="lazy"
-          className="aspect-[16/9] w-full object-cover"
+          placeholderTitle={t(project.screenshot.altKey)}
+          loadingLabel={t("common:imageLoading")}
+          containerClassName="aspect-[16/9] w-full"
+          imageClassName="h-full w-full object-cover"
         />
       ) : null}
 
@@ -148,23 +181,40 @@ export function ProjectCard({
                   ))}
                 </span>
               ) : null}
-              <span className="inline-flex min-w-0 items-center gap-1.5">
-                <span className="min-w-0 truncate">{project.repoName}</span>
-                <GitHubRepoStats repo={project.githubRepo} />
-              </span>
+              {project.repoName ? (
+                <span className="inline-flex min-w-0 items-center gap-1.5">
+                  <span className="min-w-0 truncate">{project.repoName}</span>
+                  <GitHubRepoStats repo={project.githubRepo} />
+                </span>
+              ) : null}
             </span>
           )}
         </div>
 
         <div className="flex flex-wrap gap-1.5">
-          {project.tags.map((tag) => (
+          {project.tags.map((tag, tagIndex) => {
+            const isCourseProjectTimeTag =
+              translationNamespace === "courseProjects" && tagIndex < 2
+            const semesterTagClassName =
+              courseProjectSemesterTagClassName[project.tags[1]] ??
+              fallbackCourseProjectSemesterTagClassName
+            const tagLabel = isCourseProjectTimeTag
+              ? t(`semesterTags.${tag}`, { defaultValue: tag })
+              : tag
+
+            return (
             <span
               key={tag}
-              className="rounded-full border border-white/45 bg-white/25 px-2.5 py-1 text-xs font-medium text-foreground/60 dark:border-white/10 dark:bg-white/[0.04] dark:text-foreground/70"
+              className={cn(
+                "rounded-full border px-2.5 py-1 text-xs font-semibold",
+                isCourseProjectTimeTag
+                  ? semesterTagClassName
+                  : defaultTagClassName,
+              )}
             >
-              {tag}
+              {tagLabel}
             </span>
-          ))}
+          )})}
         </div>
 
         <div

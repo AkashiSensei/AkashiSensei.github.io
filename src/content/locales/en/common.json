@@ -12,6 +12,7 @@
     "langSwitchToEn": "EN",
     "langSwitchToZh": "中"
   },
+  "imageLoading": "Loading image",
   "githubRepoStats": {
     "defaultBranch": "default branch",
     "tooltip": "GitHub data fetched at {{time}}\nStars: {{stars}}\n{{branch}} branch commits: {{commits}}",

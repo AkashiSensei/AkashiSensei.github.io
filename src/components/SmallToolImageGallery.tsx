@@ -5,8 +5,10 @@ import {
   DialogContent,
   DialogTitle,
 } from "@/components/ui/dialog"
+import { LazyImage } from "@/components/LazyImage"
 import { type SmallTool } from "@/data/tools"
 import { cn } from "@/lib/utils"
+import { useTranslation } from "react-i18next"
 
 type SmallToolScreenshot = NonNullable<SmallTool["screenshots"]>[number]
 
@@ -19,6 +21,7 @@ export function SmallToolImageGallery({
   images,
   className,
 }: SmallToolImageGalleryProps) {
+  const { t } = useTranslation("common")
   const [selectedImage, setSelectedImage] = useState<SmallToolScreenshot | null>(null)
   const firstImage = images[0]
 
@@ -43,11 +46,13 @@ export function SmallToolImageGallery({
             onClick={() => setSelectedImage(image)}
             aria-label={image.alt}
           >
-            <img
+            <LazyImage
               src={image.src}
               alt={image.alt}
-              loading="lazy"
-              className="block h-full w-full object-contain"
+              placeholderTitle={image.alt}
+              loadingLabel={t("imageLoading")}
+              containerClassName="h-full w-full"
+              imageClassName="block h-full w-full object-contain"
             />
           </button>
         ))}

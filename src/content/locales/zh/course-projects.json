@@ -1,0 +1,311 @@
+{
+  "title": "课设",
+  "subtitle": "课程设计、课程实验、团队大作业与本科毕设项目。它们记录了我在不同阶段把课程要求转化为可运行系统、实验代码和工程文档的过程。",
+  "viewAll": "查看全部",
+  "viewAllTitle": "所有课设",
+  "viewAllDescription": "按时间倒序浏览课程项目、实验仓库与团队作业。",
+  "repoLabel": "仓库",
+  "morePoints": "还有 {{count}} 条亮点",
+  "status": {
+    "active": "持续推进",
+    "early": "早期规划",
+    "private": "私有仓库",
+    "public": "公开仓库"
+  },
+  "lifecycleStatus": {
+    "starting": "起步中",
+    "ongoing": "进行中",
+    "completed": "已完成"
+  },
+  "repoTags": {
+    "backend": "后端",
+    "customized": "定制",
+    "frontend": "前端",
+    "main": "主仓库",
+    "fork": "Fork",
+    "private": "私有",
+    "public": "公开"
+  },
+  "imagePreview": {
+    "open": "打开大图预览：{{image}}",
+    "title": "课设图片预览"
+  },
+  "semesterTags": {
+    "研一下": "研一下",
+    "研一上": "研一上",
+    "大四下": "大四下",
+    "大三暑期": "大三暑期",
+    "大三下": "大三下",
+    "大三上": "大三上",
+    "大二暑期": "大二暑期",
+    "大二下": "大二下",
+    "大二上": "大二上",
+    "2026春": "2026春",
+    "2025秋": "2025秋",
+    "2025春": "2025春",
+    "2024夏": "2024夏",
+    "2024春": "2024春",
+    "2023秋": "2023秋",
+    "2023夏": "2023夏",
+    "2023春": "2023春",
+    "2022秋": "2022秋"
+  },
+  "items": {
+    "parallel-programming-2026": {
+      "title": "《并行程序设计 A》课程作业",
+      "summary": "北航研究生《并行程序设计A》课程作业仓库，围绕并行程序设计中的实验题目组织代码、脚本和运行记录。",
+      "images": {
+        "mpiMatrixProcessTimeline": "MPI 大规模矩阵乘进程时间线",
+        "mpiMatrixTimeResult": "MPI 大规模矩阵乘时间结果",
+        "parallelQuicksortResult": "并行快排结果"
+      },
+      "points": [
+        "以 C、Makefile、Shell 和 Python 组织实验代码与辅助脚本，便于复现实验流程。",
+        "面向并行程序设计课程中的典型问题和经典库，记录从串行实现到并行实现的代码演进。"
+      ]
+    },
+    "vr-experiments-2026": {
+      "title": "《虚拟现实综合实验》任务",
+      "summary": "北航研究生《虚拟现实综合实验》课程作业仓库。",
+      "images": {
+        "dogRun": "小狗行走动画",
+        "dogModel": "小狗模型",
+        "dogSkeleton": "小狗骨骼",
+        "dogAction": "小狗动作"
+      },
+      "points": [
+        "围绕虚拟现实课程实验整理工程文件和说明材料。"
+      ]
+    },
+    "os2023": {
+      "title": "MOS 操作系统实验",
+      "summary": "北航《操作系统》实验，分为 6 个大实验，每次实验包括课下代码补全和课上代码补全/新功能实现考试。",
+      "images": {
+        "labGrades": "实验成绩",
+        "lab2MainContent": "Lab2 主要内容",
+        "lab3MainContent": "Lab3 主要内容",
+        "shellTimeBaseline": "Shell 程序耗时（对照组）",
+        "shellTimeRefill": "Shell 程序耗时（快重填）",
+        "refillChallengesSolution1": "快重填难点与解决方案（一）",
+        "refillChallengesSolution2": "快重填难点与解决方案（二）",
+        "refillCode": "快重填部分代码"
+      },
+      "points": [
+        "大量阅读操作系统代码，深入理解操作系统工作过程。",
+        "不断给自己提出问题、回答问题，记录下大量实验笔记。",
+        "通过 GXemul 模拟 MIPS R3000 处理器，C 和 MIPS 汇编语言实现。",
+        "包含页式内存管理、进程管理、进程间通信、异常处理、文件系统和 Shell 等基本操作系统功能。",
+        "作为加分项，我研究页表结构，操作 $k0 $k1 寄存器和协处理器，提供了页表快重填的完整实现，减少了 TLB miss 时的进程上下文保存，特定情况下能获得约 4 倍的执行效率提升。"
+      ]
+    },
+    "parallel-architecture-2025": {
+      "title": "《并行处理与体系结构》实验作业",
+      "summary": "北航研究生《并行处理与体系结构》大作业基础题实验代码与报告，围绕卷积计算和性能优化展开。",
+      "images": {
+        "ompDataScalePerformance": "数据规模对 OMP 程序性能影响",
+        "ompThreadCountPerformance": "线程数对 OMP 程序性能影响",
+        "ompThreadBindingPerformance": "OMP 线程绑定对性能的影响",
+        "numaBindingCpuUsage": "NUMA 绑定前后 CPU 占用情况对比",
+        "drcctprofFftResult": "DrCCTProf 检测 FFT 结果",
+        "perfFftOptimizationTable": "Perf 指导的 FFT 程序优化前后性能对比表",
+        "luPerfHotspots": "LU 原始程序 64 线程 Perf 热点",
+        "luDrcctprofComparison": "LU 优化前后 DrCCTProf 分析结果对比"
+      },
+      "points": [
+        "设计并使用 OpenMP 实现包含各类并行瓶颈的程序，并对瓶颈进行优化，测试优化前后的程序在不同线程和数据规模下的表现。",
+        "通过实验观察编译器优化、OpenMP 线程绑定、NUMA 绑定对于并行程序性能的影响。",
+        "使用调用路径及性能分析工具 DrCCTProf、Linux Performance Counters，对经典并行算法实现进行分析，识别其瓶颈进行优化，并通过实验验证优化结果。"
+      ]
+    },
+    "road-accident-risk": {
+      "title": "道路事故风险预测",
+      "summary": "北航研究生《机器学习》课程实验作业。面向道路事故风险预测的数据分析与建模项目，包含数据预处理、分析、模型与报告材料。",
+      "images": {
+        "gpuTrainingRmse": "GPU 训练 RMSE 曲线",
+        "kaggleRanking": "Kaggle 排名",
+        "targetDistribution": "目标变量分布分析",
+        "numericFeatureDistribution": "数值特征分布",
+        "numericFeatureTargetCorrelation": "数值特征与目标变量相关性"
+      },
+      "points": [
+        "使用 Python 进行数据预处理与分析，指导特征工程。",
+        "基于领域知识，综合了多个关键风险因素，创建了交叉特征和基本风险特征。",
+        "使用 XGBoost 构建风险预测模型，并使用 Optuna 进行超参数搜索。"
+      ]
+    },
+    "kernel-analysis-thesis": {
+      "title": "面向智能计算任务的细粒度性能分析技术研究与实现",
+      "summary": "北航软件工程本科毕业设计项目。",
+      "images": {
+        "architectureWorkflow": "系统架构与流程图",
+        "backgroundSignificance": "课题背景与意义",
+        "researchStatus": "国内外研究现状分析",
+        "modelingTaxonomy": "性能建模分类方法",
+        "dataFlow": "细粒度性能预测模型数据流动",
+        "kernelLevelComputationGraph": "Kernel 级计算图",
+        "operatorKernelMapping": "算子到 GPU Kernel 映射分析流程",
+        "analysisTool": "自动化细粒度性能分析工具",
+        "nsysTimelineNvtx": "Nsys 时间线分析 with NVTX",
+        "ncuKernelMetrics": "NCU Kernel 指标分析",
+        "ncuKernelResources": "NCU Kernel 资源占用",
+        "ruleBasedPredictorFlow": "规则库核心构建流程",
+        "yolov8GridPrediction": "YOLOv8 Grid 大小预测能力",
+        "yolov8ThroughputPrediction": "YOLOv8 GPU 计算吞吐利用率预测能力",
+        "yolov8nRuntimeVariance": "YOLOv8n Kernel 运行时性能数据波动"
+      },
+      "points": [
+        "对深度模型计算图进行拆解，将其中算子映射到 GPU kernel 执行序列中的具体 kernel，生成细粒度算子负载图，或称内核级计算图，并研究探索算子到kernel映射关系的规律和影响因素，为建模提供指导与依据。",
+        "构建任务多维度特征预测模型，捕获智能计算任务在精细粒度上的计算与访存特征，并通过实验验证其效果，为后续干扰分析和任务调度提供支持。",
+        "开发自动化工具，尽可能的提高性能分析以及建模流程的自动化程度，提高分析与建模效率。"
+      ]
+    },
+    "rotating-calipers": {
+      "title": "平面最远点对算法可视化",
+      "summary": "北航《算法分析与设计》课程大作业，用 Java 实现平面最远点对的求解过程可视化。",
+      "images": {
+        "executionProcess": "执行过程"
+      },
+      "points": [
+        "允许用户随意在平面上创建点，然后展示构建凸包和旋转卡壳求解最远点对的过程。"
+      ]
+    },
+    "oop-iteration-2022": {
+      "title": "软件学院云平台（青春版）",
+      "summary": "北航《面向对象程序设计（Java）》迭代大作业项目，需求分 4 次发布。分为教师端和学生端，可以实现传统scs的大部分功能。",
+      "points": [
+        "通过多轮迭代任务,练习 Java 面向对象建模与代码组织。",
+        "教师端可以对课程的增删改查，对课程所属的实验的增删改查，教师还可以为课程添加学生和助教。",
+        "学生可以查看与参与的课程并提交实验作业，助教可以协同老师管理课程等。"
+      ]
+    },
+    "career-yiyan": {
+      "title": "Career YIYAN 求职招聘网站",
+      "summary": "北航《软件工程综合实践》小学期项目。覆盖企业招聘，用户求职的完整流程，并通过动态、私信、通知和大模型辅助功能，提升用户体验。",
+      "images": {
+        "home": "主页",
+        "jobRecommendation": "岗位推荐",
+        "llmOptimizationAdvice": "大模型简历优化建议",
+        "companyProfile": "企业主页",
+        "personalInfo": "个人信息",
+        "editJob": "编辑岗位信息",
+        "commentFeed": "评论动态",
+        "privateChat": "私聊",
+        "notifications": "通知消息"
+      },
+      "points": [
+        "严格践行 Scrum 敏捷模式推进，通过课程组提供的平台管理 Scrum 看板，在 11 天内完成两轮需求迭代。",
+        "深入参与 Scrum 全流程，每日开展 Scrum 站会，持续跟踪用户故事点，并进行结对开发、代码自动评审与检查、代码人工评审等。",
+        "企业可以管理员工、企业信息、招聘岗位和信息，求职者可以上传和管理个人简历，并向目标企业投递。",
+        "用户和企业可以发布、点赞、评论动态，方便彼此更全面的了解。",
+        "用户可以私信以及管理私信，方便求职者和 HR 更加密切的交流。",
+        "实现通知系统，避免用户错过私信、动态的点赞和评论。",
+        "使用大模型，为用户上传的简历提出修改意见。"
+      ]
+    },
+    "cloud-yiyan": {
+      "title": "云易研软工团队协作与管理平台",
+      "summary": "北航《软件工程基础实践》小学期项目。具备团队项目管理、文档协同编辑、聊天、页面原型设计、消息通知等功能的团队协作 Web 平台。",
+      "images": {
+        "home": "主页",
+        "projectManagement": "项目管理",
+        "teamManagement": "团队管理",
+        "teamDocuments": "团队文档",
+        "collaborativeRichText": "协同编辑富文本文档",
+        "documentSharingPreview": "文档分享和预览",
+        "embeddedChat": "内嵌聊天工具",
+        "prototypeManagement": "原型设计管理",
+        "prototypeEditor": "页面原型设计编辑",
+        "messageReminder": "消息提醒",
+        "messageNotifications": "消息通知",
+        "userCenter": "用户个人中心"
+      },
+      "points": [
+        "严格践行敏捷开发模式，每日进行站会、完成日报，并使用阿里云效 DevOps 平台管理进度，在 10 天内完成两轮需求迭代。",
+        "以项目为团队管理、聊天、文档、原型设计等的单位，允许用户创建、加入、管理项目。",
+        "提供支持富文本以及多用户在线协同编辑的项目文档，用户也能够在文档中提及别的用户，或是以期望的权限共享文档给项目外部用户。",
+        "提供聊天与通讯功能，用户可以与别的用户，或者在创建的群组中发送文字、图片、文件等消息，并能够查看送达和已读状态。",
+        "提供在线原型设计功能，可以创建并编辑项目 Web 页面原型设计，作为后续页面开发的准绳。",
+        "实现消息通知系统，当用户在文档中被提及，或是有新的聊天消息时通知用户。",
+        "整理包含团队每位成员心得的开发与技术总结，沉淀和共享知识，为后续团队开发贡献经验。"
+      ]
+    },
+    "yiyan-microservices": {
+      "title": "YIYAN 学术成果分享平台",
+      "summary": "北航《软件系统分析与设计》课程大作业项目。基于 Vue、Java、Kubernetes 和 Elastic Search 的高效、高并发、高可用的学术成果分享平台。",
+      "images": {
+        "advancedSearchHome": "高级搜索首页",
+        "literatureDetail": "文献详情",
+        "authorSearch": "作者检索",
+        "recommendationsFavorites": "推荐与收藏",
+        "columns": "专栏",
+        "researcherPortal": "科研人员门户",
+        "institutionPortal": "科研机构门户",
+        "k8sDeployment": "K8s 部署"
+      },
+      "points": [
+        "经历从需求调研、需求建模、建立分析模型、架构调研设计、数据设计、编码与部署的完整流程，并形成文档留存。",
+        "将不同的模块拆分成微服务，并根据其任务特性调度到合适的节点上运行。",
+        "支持文献全文搜索和高级搜索，通过 AND/OR/NOT 等运算符连接关键词进行组合查询。",
+        "对科研人员研究方向、合作关系以及文献的引用关系进行分析并展示。",
+        "根据用户的历史阅读、下载与收藏，为用户定制化推荐文献。",
+        "允许读者发布对文献的讨论，或是在专栏文章中引用文献，撰写分析与介绍。"
+      ]
+    },
+    "compiler": {
+      "title": "SysY MIPS 编译器",
+      "summary": "北航《编译技术》课程试验作业。使用 Java 实现的 SysY 语言 32 位 MIPS 编译器，包含词法分析、语法分析、中间代码生成、目标代码生成和错误处理等部分。",
+      "images": {
+        "symbolTableDetail2": "详细输出：实时符号表（二）",
+        "sysyOverview": "SysY 语言概要",
+        "compilerOptions": "编译器配置项",
+        "lexerClassDiagram": "词法分析器类图",
+        "recursiveSyntaxOutput": "详细输出：递归语法结构",
+        "symbolTableDetail1": "详细输出：实时符号表（一）",
+        "targetCodeOutput": "详细输出：目标代码生成"
+      },
+      "points": [
+        "SysY 语言是 C 语言的子集，不包含指针变量和浮点数。",
+        "通过配置项控制编译器行为，包括优化、各个阶段详细输出等等。",
+        "支持带有递归结构的详细输出，展示实时符号表等，方便调试。",
+        "使用常量传播、运算强度削弱、指针常量优化等编译优化技术，提高目标代码的性能。"
+      ]
+    },
+    "learning-living-platform": {
+      "title": "易言学习生活平台",
+      "summary": "北航《软件工程基础》课程大作业。前后端分离的北航软件工程团队项目。允许用户分享、下载各类教育资源，或是加入在线学习社区，交流分享所闻所想。",
+      "images": {
+        "home": "主页",
+        "highlights": "亮点展示",
+        "login": "登录页面",
+        "profile": "个人主页",
+        "postList": "帖子列表",
+        "postDetail": "帖子详情",
+        "resourceList": "资源列表",
+        "resourceDetail": "资源详情",
+        "newResource": "新建资源",
+        "analytics": "数据统计与分析"
+      },
+      "points": [
+        "使用瀑布模型进行项目管理，并形成从需求分析，系统设计到最终部署和维护的全流程规范文档。",
+        "适合任务风格、提示详尽、内嵌了使用指导的前端设计，为用户带来最佳体验。",
+        "使用 JWT Token 进行身份验证，使用心跳机制检测用户是否在线。",
+        "自研资源删除队列算法，确保未被引用的死资源不会在平台存储内堆积。",
+        "前后端、数据库均部署在云端，通过 nginx 进行负载均衡，并通过 GitHub Actions 实现 CI/CD。"
+      ]
+    },
+    "archive-system": {
+      "title": "Java 档案管理系统",
+      "summary": "北航《面向对象程序设计（Java）》大作业项目。面向图书馆或档案馆的前后端分离档案管理系统。",
+      "images": {
+        "searchResults": "搜索结果界面",
+        "searchResultsExpanded": "搜索结果展开界面",
+        "userRegistration": "用户注册界面"
+      },
+      "points": [
+        "初学 Java 时的大作业，支持用户管理、档案上传、下载、搜索、删除等功能。",
+        "使用 Java Swing 实现 GUI，并通过 FlatLaf 提供不同风格和主题选择。",
+        "使用 Git 进行版本管理，为用户提供详尽的引导和提示信息，增强用户使用体验。"
+      ]
+    }
+  }
+}

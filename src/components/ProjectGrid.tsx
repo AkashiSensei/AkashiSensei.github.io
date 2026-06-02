@@ -6,10 +6,14 @@ import { type Project } from "@/data/projects"
 
 type ProjectGridProps = {
   projects: Project[]
+  translationNamespace?: "projects" | "courseProjects"
 }
 
-export function ProjectGrid({ projects }: ProjectGridProps) {
-  const { t } = useTranslation("projects")
+export function ProjectGrid({
+  projects,
+  translationNamespace = "projects",
+}: ProjectGridProps) {
+  const { t } = useTranslation(translationNamespace)
   const [columns, setColumns] = useState(2)
 
   useEffect(() => {
@@ -76,6 +80,7 @@ export function ProjectGrid({ projects }: ProjectGridProps) {
               key={project.id}
               project={project}
               variant="full"
+              translationNamespace={translationNamespace}
               className="h-auto"
             />
           ))}
