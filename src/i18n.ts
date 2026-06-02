@@ -41,9 +41,38 @@ const resources = {
   },
 } as const
 
-i18n.use(initReactI18next).init({
+function getInitialLanguage() {
+  if (typeof navigator === "undefined") {
+    return "en"
+  }
+
+  const browserLanguages = navigator.languages.length > 0
+    ? navigator.languages
+    : [navigator.language]
+
+  return browserLanguages.some((language) => language.toLowerCase().startsWith("zh"))
+    ? "zh"
+    : "en"
+}
+
+function getHtmlLanguage(language: string) {
+  return language.toLowerCase().startsWith("zh") ? "zh-CN" : "en"
+}
+
+function syncDocumentLanguage(language: string) {
+  if (typeof document === "undefined") {
+    return
+  }
+
+  document.documentElement.lang = getHtmlLanguage(language)
+}
+
+i18n.use(initReactI18next)
+i18n.on("languageChanged", syncDocumentLanguage)
+
+void i18n.init({
   resources,
-  lng: "zh",
+  lng: getInitialLanguage(),
   fallbackLng: "en",
   defaultNS: "common",
   fallbackNS: "common",
@@ -51,6 +80,8 @@ i18n.use(initReactI18next).init({
   interpolation: {
     escapeValue: false,
   },
+}).then(() => {
+  syncDocumentLanguage(i18n.resolvedLanguage ?? i18n.language)
 })
 
 export default i18n

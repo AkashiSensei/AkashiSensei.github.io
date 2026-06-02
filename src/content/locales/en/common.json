@@ -6,7 +6,8 @@
     "toggleLanguage": "Switch language",
     "toggleTheme": "Switch between dark and light mode",
     "toggleMenu": "Open or close the navigation menu",
-    "toggleThemeSr": "Toggle theme"
+    "toggleThemeSr": "Toggle theme",
+    "viewContact": "View contact details"
   },
   "ui": {
     "langSwitchToEn": "EN",

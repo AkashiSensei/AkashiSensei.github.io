@@ -2,7 +2,8 @@ import { useState, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "@/components/theme-provider";
 import { AppLink } from "@/components/AppLink";
-import { Sun, Moon, Menu, X } from "lucide-react";
+import { ContactDialog } from "@/components/ContactDialog";
+import { Sun, Moon, Menu, X, Mail } from "lucide-react";
 
 export function Navbar() {
   const { t, i18n } = useTranslation(["common", "nav"]);
@@ -27,7 +28,8 @@ export function Navbar() {
   }, [mobileMenuOpen]);
 
   const toggleLanguage = () => {
-    const nextLang = i18n.language === 'zh' ? 'en' : 'zh';
+    const currentLanguage = i18n.resolvedLanguage ?? i18n.language;
+    const nextLang = currentLanguage.startsWith("zh") ? "en" : "zh";
     i18n.changeLanguage(nextLang);
   };
 
@@ -82,7 +84,7 @@ export function Navbar() {
             className="flex h-10 w-10 items-center justify-center rounded-full text-sm font-medium hover:bg-muted/50 transition-colors md:h-8 md:w-8 md:text-sm"
             title={t("a11y.toggleLanguage")}
           >
-            {i18n.language === "zh" ? t("ui.langSwitchToEn") : t("ui.langSwitchToZh")}
+            {(i18n.resolvedLanguage ?? i18n.language).startsWith("zh") ? t("ui.langSwitchToEn") : t("ui.langSwitchToZh")}
           </button>
           <button 
             onClick={toggleTheme}
@@ -93,6 +95,15 @@ export function Navbar() {
             <Moon className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100 md:h-4 md:w-4" />
             <span className="sr-only">{t("a11y.toggleThemeSr")}</span>
           </button>
+          <ContactDialog>
+            <button
+              className="flex h-10 w-10 items-center justify-center rounded-full hover:bg-muted/50 transition-colors md:h-8 md:w-8"
+              title={t("a11y.viewContact")}
+            >
+              <Mail className="h-5 w-5 md:h-4 md:w-4" />
+              <span className="sr-only">{t("a11y.viewContact")}</span>
+            </button>
+          </ContactDialog>
 
           {/* 移动端汉堡菜单按钮 */}
           <button 
