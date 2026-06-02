@@ -6,7 +6,8 @@
     "toggleLanguage": "切换语言",
     "toggleTheme": "切换深色或浅色模式",
     "toggleMenu": "展开或收起导航菜单",
-    "toggleThemeSr": "切换主题"
+    "toggleThemeSr": "切换主题",
+    "viewContact": "查看联系方式"
   },
   "ui": {
     "langSwitchToEn": "EN",

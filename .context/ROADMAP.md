@@ -13,6 +13,7 @@
 
 ## History
 
+- 2026-06-02 | Browser language default selection | Updated i18n startup to show Chinese for `zh*` browser/system languages and English for all other languages, while keeping manual language switching and syncing the document `lang` attribute.
 - 2026-06-02 | [Archived: Course projects module](archive/20260602_Course-projects-module.md) | Added a first-class Course Projects module with curated homepage cards, `/course-projects`, media galleries, semester tags, stats handling, and bilingual copy.
 - 2026-05-23 | Nightly GitHub repo stats refresh | Scheduled the GitHub Pages deployment workflow to rebuild daily at 03:00 Asia/Shanghai so commit and star counts refresh in the deployed static site without creating automated commits.
 - 2026-05-22 | GitHub Pages workflow deployment | Added Actions-based Vite build/deploy flow for GitHub Pages, PR build validation, and CI token passthrough for build-time GitHub stats.
