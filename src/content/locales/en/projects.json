@@ -33,72 +33,72 @@
   "items": {
     "npu-computing-forecast": {
       "title": "Compute Forecasting for Hybrid Training and Inference Deployment",
-      "summary": "A collaboration project with Huawei. It predicts hardware resource usage for recommendation-model and large-model training/inference workloads running on Ascend NPUs, supporting workload co-location and higher resource utilization.",
+      "summary": "A Huawei collaboration project that predicts Ascend NPU resource usage for recommendation-model and large-model training/inference, supporting co-location and higher utilization.",
       "images": {
-        "cpuMetricsComparison": "CPU metrics comparison chart for the NPU compute forecasting project",
-        "predictorInterface": "NPU compute predictor interface screenshot",
+        "cpuMetricsComparison": "CPU metrics comparison chart",
+        "predictorInterface": "Predictor interface",
         "qwenInferenceResourceUsage": "Qwen inference resource usage chart"
       },
       "points": [
-        "Uses XGBoost to build prediction models that estimate NPU AI Core, Vector Core, HBM, and other resource usage from recommendation-model training/inference task configurations and features.",
+        "Uses XGBoost to estimate NPU AI Core, Vector Core, HBM, and other resource usage from recommendation-model workload features.",
         "Uses LightGBM to predict large-model inference performance, including TTFT, TPOT, KV Cache, and the hardware resource usage above.",
-        "Explores using GNNs to analyze recommendation-model structures represented by ONNX or PyTorch, aiming for generalization to unseen recommendation models.",
-        "Led the implementation of a recommendation-model data collection framework, adapting training/inference workloads across TorchRec, DeepCTR, Torch-RecHub, RecSDK, and other recommendation stacks.",
-        "Implemented configuration parsing, validation, and version management so large-scale experiments can be driven safely and efficiently through configuration.",
+        "Explores GNNs for ONNX/PyTorch recommendation-model structures, aiming to generalize to unseen models.",
+        "Led a data collection framework covering TorchRec, DeepCTR, Torch-RecHub, RecSDK, and other recommendation stacks.",
+        "Implemented configuration parsing, validation, and version management for safe large-scale experiments.",
         "Implemented multiple NPU-side monitoring tools based on npu-smi, npu-exporter, DCMI programming interfaces, and related components.",
-        "Implemented multiple CPU-side resource monitoring tools based on vmstat, sar, cgroup, and lxcfs, with cross-validation to ensure accurate data collection inside containers.",
-        "Built an understanding of Ascend NPU architecture and how it differs from NVIDIA GPUs, developed intuition about NPU performance across workloads, and accumulated hands-on Ascend hardware debugging experience.",
+        "Implemented CPU-side monitoring with vmstat, sar, cgroup, and lxcfs, using cross-validation for accurate container data.",
+        "Built hands-on understanding of Ascend NPU architecture, workload behavior, and hardware debugging.",
         "Continuing to push forward work related to large models..."
       ]
     },
     "crater": {
       "title": "Crater Cloud-Native AI Platform",
-      "summary": "RAIDS Lab's Kubernetes AI training and inference platform for labs and teams that share GPU clusters. It integrates compute resource requests, development environments, training jobs, inference services, monitoring, and documentation delivery into one platform experience. Multiple domestic and international companies have shown strong interest in the project.",
+      "summary": "RAIDS Lab's Kubernetes AI training and inference platform for teams sharing GPU clusters. It integrates resource requests, dev environments, training jobs, inference services, monitoring, and related workflows.",
       "images": {
-        "acceleratorManagement": "Crater accelerator management interface screenshot",
-        "architectureDiagram": "Crater system architecture diagram",
-        "dataManagement": "Crater data management interface screenshot",
-        "firstStableRelease": "Crater first stable release interface screenshot",
-        "imageList": "Crater image list interface screenshot",
-        "jobManagement": "Crater job management interface screenshot",
-        "nodeManagement": "Crater node management interface screenshot"
+        "acceleratorManagement": "Accelerator management interface",
+        "architectureDiagram": "System architecture diagram",
+        "dataManagement": "Data management interface",
+        "firstStableRelease": "First stable release interface",
+        "imageList": "Image list interface",
+        "jobManagement": "Job management interface",
+        "nodeManagement": "Node management interface"
       },
       "points": [
-        "Replaces the Slurm tooling previously used in the lab with a convenient and polished GUI for teachers and students, supporting the lab's research and engineering work.",
-        "Our deployed Crater manages 280+ accelerators from multiple vendors and 5,600+ CPU cores, with 200+ jobs created per day. It has become the primary, and sometimes only, compute platform for 600+ students and teachers.",
-        "The platform itself has also become a research platform for systems work, supporting the development, optimization, and experimentation of scheduling algorithms, distributed storage systems, and more.",
+        "Replaces the lab's previous Slurm tooling with a polished GUI for teachers and students.",
+        "Our deployment manages 280+ accelerators and 5,600+ CPU cores, with 200+ jobs created per day for 600+ users.",
+        "Also serves as a systems research platform for scheduling algorithms, distributed storage, and related experiments.",
         "Implemented Crater's own admission controller, working with Kubernetes, the Volcano scheduler, and self-developed algorithms to schedule user workloads fairly and efficiently.",
-        "Supports snapshot saving, and uses Buildx, Envd, and related tools to provide multiple image-building workflows so users can quickly create the task images they need directly on the platform.",
-        "Supports storage systems such as NFS and Ceph, managing and preserving large amounts of user or shared data so users can quickly reuse data across different images.",
-        "Provides model and dataset download and management features, enabling different users to share the same models and data, reducing waiting time while easing storage pressure.",
-        "Has largely completed the embedded Q&A agent, helping users quickly query and locate problems while reducing the learning cost of using the platform.",
-        "As a **core project maintainer**, participated in project decisions and discussions, actively contributed opinions, and reviewed code before merge.",
-        "Faced real **user needs** directly, building experience in solving practical engineering problems."
+        "Supports snapshots and multiple image-building workflows with Buildx, Envd, and related tools.",
+        "Supports NFS, Ceph, and large user/shared datasets for reuse across images.",
+        "Provides model and dataset download/management to reduce waiting time and storage pressure.",
+        "Mostly completed an embedded Q&A agent to help users query and locate problems faster.",
+        "As a **core project maintainer**, joined project decisions, contributed opinions, and reviewed code.",
+        "Faced real **user needs** directly and built practical engineering problem-solving experience."
       ]
     },
     "crater-cli": {
       "title": "Crater CLI",
-      "summary": "A Go CLI subproject in the Crater repository that enables users to operate the Crater platform through AI agents, scripts, and related workflows.",
+      "summary": "A Go CLI subproject for operating Crater through AI agents, scripts, and related workflows.",
       "images": {
-        "arrangeSkill": "Crater CLI arrange Skill screenshot",
-        "cliArchitecture": "Crater CLI architecture diagram",
-        "helpMessage": "Crater CLI help message screenshot",
-        "jsonErrorOutput": "Crater CLI JSON-formatted error output screenshot",
-        "prCommentReviewSnapshot": "Crater CLI review snapshot"
+        "arrangeSkill": "Arrange Skill",
+        "cliArchitecture": "Architecture diagram",
+        "helpMessage": "Help message",
+        "jsonErrorOutput": "JSON-formatted error output",
+        "prCommentReviewSnapshot": "Review snapshot"
       },
       "points": [
-        "Provides detailed architecture, specification, command, and review documentation, using documentation-driven development to adapt to new AI-era coding patterns.",
-        "Provides multilingual Tab completion across different shells, plus survey-based interactive selection, making the CLI easier for real users to use.",
-        "Distributes Skills, provides non-interactive and formatted-output options, and defines error codes so AI agents can use the CLI and troubleshoot problems more easily.",
-        "Implements a sandbox mechanism that isolates CLI access to network and storage, preventing tests from affecting users' real environments or real cluster data.",
-        "Improves AI-generated code reliability through unit tests. Uses sandbox-dependent snapshot/golden-file mechanisms to leave examples for future AI coding and let reviewers directly see real command output.",
+        "Provides architecture, spec, command, and review docs, using documentation-driven development for AI-era coding.",
+        "Provides multilingual Tab completion and survey-style interactive selection across shells.",
+        "Distributes Skills, supports non-interactive/formatted output, and defines error codes for agent use and troubleshooting.",
+        "Implements sandboxed network and storage access so tests do not affect real environments or cluster data.",
+        "Improves AI-generated code reliability with unit tests and sandbox-based snapshot/golden-file outputs.",
         "Gradually connecting the APIs of Crater modules...",
-        "Designed from scratch, accumulating substantial architecture design experience and reflections on many real engineering problems."
+        "Designed from scratch, accumulating architecture design experience and real engineering reflections."
       ]
     },
     "model-requirements-evaluator": {
       "title": "Equivalent Modeling and Evaluation of Model Compute Requirements",
-      "summary": "Uses mathematical methods to model the inference-time resource requirements of different large language models on hardware from different vendors. By analyzing the user's selected model and GPU, along with business requirements such as concurrency and latency constraints, it produces deployment plans that satisfy the requirements.",
+      "summary": "Models inference-time resource requirements for LLMs across vendors' hardware. Given a model, GPU, concurrency, and latency needs, it produces deployment plans that satisfy the constraints.",
       "images": {
         "decisionSupportCharts": "Decision support charts",
         "modelArchitecture": "Model architecture",
@@ -113,25 +113,25 @@
         "Won third prize in the 2nd 'China Data Valley Huawei Cup' China Graduate Operating System Open Source Innovation Competition.",
         "Decomposes large language model structure and uses mathematical methods to model the storage and compute requirements of each part of the model.",
         "Built a modern frontend with Vue 3, TypeScript, Vite, and Element Plus, packaging backend capabilities into an interactive product.",
-        "Integrated ECharts and ECharts-GL to visualize metrics such as latency, throughput, memory, and phase progress, helping users break down the resource requirements of large-model structures and inference stages and understand how business requirement changes affect deployment cost."
+        "Integrated ECharts and ECharts-GL to visualize latency, throughput, memory, and phase progress, showing how requirement changes affect deployment cost."
       ]
     },
     "tododag": {
       "title": "ToDoDAG",
-      "summary": "A DAG-based task management app for individuals weighed down by complex dependencies and long-running tasks. By making task dependencies explicit, it helps users identify what is truly actionable right now. Its primary goal is to satisfy my own needs.",
+      "summary": "A DAG-based task app for complex dependencies and long-running tasks. By making dependencies explicit, it shows what is truly actionable now. It mainly serves my own needs.",
       "points": [
-        "My to-do tasks often have complex dependencies: sometimes one task must be completed before several others can begin, or several tasks must be completed before one task can begin, forming a DAG.",
+        "My tasks often form a DAG: one task may unlock many others, or several tasks may block one task.",
         "Some tasks come from sudden ideas I decide to pursue, while others are suddenly assigned to me. I need to write them down so I do not forget.",
-        "I have accumulated nearly a hundred to-do items in a linear ToDoList, but because of dependencies, only a few can be started immediately. Every time I look for something actionable, I have to scan the list, which is inefficient and unintuitive.",
-        "I do not have much execution discipline and do not want to stare at an unfocused linear list, so I want a graph-structured app to guide my work.",
+        "A linear to-do list hides dependencies, forcing me to scan nearly a hundred items for what can start now.",
+        "I want a graph-structured app to guide work instead of staring at an unfocused linear list.",
         "Starts on macOS, with planned expansion to iOS, iPadOS, and watchOS using local-first storage and private iCloud sync.",
-        "Currently in an early planning and prototype stage, with functional boundaries, interaction principles, and Apple-native experience constraints already clarified. I will let Codex start development as soon as I have time.",
+        "Currently in early planning/prototype stage, with functional boundaries, interaction principles, and Apple-native constraints clarified.",
         "Researching communication and collaboration mechanisms, with plans to connect ToDoDAG to AI systems so AI can help complete my tasks."
       ]
     },
     "personal-homepage": {
       "title": "Personal Homepage and Content System",
-      "summary": "This site itself is also a long-running frontend project. It targets HR, interviewers, open-source peers, and students, organizing job-search presentation, open-source activity, and related content into a static website that can be continuously maintained and iterated.",
+      "summary": "This site is also a long-running frontend project for HR, interviewers, open-source peers, and students. It organizes job-search presentation, open-source activity, and related content into a maintainable static site.",
       "points": [
         "Lets HR and interviewers understand my projects, direction, toolchain, and working style without searching across scattered repositories.",
         "Lets visitors from different language backgrounds browse in a language familiar to them.",

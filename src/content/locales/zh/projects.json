@@ -35,8 +35,8 @@
       "title": "训推混合部署场景下的算力预测",
       "summary": "与华为的合作项目。面向在昇腾 NPU 上运行的推荐模型和大模型的训练和推理任务，预测其硬件资源占用情况，为任务共置、提高资源利用率提供支持。",
       "images": {
-        "cpuMetricsComparison": "NPU 算力预测项目 CPU 指标对比图",
-        "predictorInterface": "NPU 算力预测器界面截图",
+        "cpuMetricsComparison": "CPU 指标对比图",
+        "predictorInterface": "预测器界面截图",
         "qwenInferenceResourceUsage": "Qwen 推理资源占用图"
       },
       "points": [
@@ -53,15 +53,15 @@
     },
     "crater": {
       "title": "Crater 云原生 AI 平台",
-      "summary": "RAIDS Lab 的 Kubernetes AI 训练与推理平台，服务需要共享 GPU 集群的实验室与团队，把算力申请、开发环境、训练任务、推理服务、监控和文档交付整合到统一平台体验中。多家国内外企业对本项目表现出浓厚的兴趣。",
+      "summary": "RAIDS Lab 的 Kubernetes AI 训练与推理平台，服务需要共享 GPU 集群的实验室与团队，把算力申请、开发环境、训练任务、推理服务和监控等整合到统一平台体验中。",
       "images": {
-        "acceleratorManagement": "Crater 加速卡管理界面截图",
-        "architectureDiagram": "Crater 系统架构图",
-        "dataManagement": "Crater 数据管理界面截图",
-        "firstStableRelease": "Crater 第一个正式版界面截图",
-        "imageList": "Crater 镜像列表界面截图",
-        "jobManagement": "Crater 作业管理界面截图",
-        "nodeManagement": "Crater 节点管理界面截图"
+        "acceleratorManagement": "加速卡管理界面截图",
+        "architectureDiagram": "系统架构图",
+        "dataManagement": "数据管理界面截图",
+        "firstStableRelease": "第一个正式版界面截图",
+        "imageList": "镜像列表界面截图",
+        "jobManagement": "作业管理界面截图",
+        "nodeManagement": "节点管理界面截图"
       },
       "points": [
         "替代之前在实验室中使用的 Slurm 工具，为老师同学提供便捷美观的 GUI，助力实验室的科研和工程工作。",
@@ -80,11 +80,11 @@
       "title": "Crater CLI",
       "summary": "Crater 仓库中的 Go CLI 子项目，赋予用户通过 AI Agent、脚本等方式使用 Crater 平台的能力。",
       "images": {
-        "arrangeSkill": "Crater CLI 编排 Skill 截图",
-        "cliArchitecture": "Crater CLI 架构图",
-        "helpMessage": "Crater CLI 帮助信息截图",
-        "jsonErrorOutput": "Crater CLI JSON 格式输出的错误信息截图",
-        "prCommentReviewSnapshot": "Crater CLI review 快照"
+        "arrangeSkill": "编排 Skill 截图",
+        "cliArchitecture": "架构图",
+        "helpMessage": "帮助信息截图",
+        "jsonErrorOutput": "JSON 格式输出的错误信息截图",
+        "prCommentReviewSnapshot": "review 快照"
       },
       "points": [
         "提供详尽的架构、规约、命令、审查等文档，由文档驱动开发，适应 AI 时代下新的编码模式",

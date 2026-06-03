@@ -1,4 +1,4 @@
-import { ArrowUpRight } from "lucide-react"
+import { ArrowUpRight, Ellipsis } from "lucide-react"
 import { useTranslation } from "react-i18next"
 
 import { FeaturePointList } from "@/components/FeaturePointList"
@@ -12,6 +12,7 @@ import { cn } from "@/lib/utils"
 type SmallToolCardProps = {
   tool: SmallTool
   className?: string
+  variant?: "compact" | "full"
 }
 
 const roleClassName = {
@@ -21,16 +22,22 @@ const roleClassName = {
     "border-sky-300/60 bg-sky-100/70 text-sky-800 dark:border-sky-300/30 dark:bg-sky-300/15 dark:text-sky-200",
 } satisfies Record<SmallTool["role"], string>
 
-export function SmallToolCard({ tool, className }: SmallToolCardProps) {
+export function SmallToolCard({
+  tool,
+  className,
+  variant = "full",
+}: SmallToolCardProps) {
   const { t } = useTranslation(["tools", "common"])
   const points = t(`items.${tool.id}.points`, { returnObjects: true }) as string[]
+  const visiblePoints = variant === "compact" ? points.slice(0, 3) : points
+  const hiddenPointCount = points.length - visiblePoints.length
   const hasImages = Boolean(tool.screenshots?.length || tool.screenshot)
 
   return (
     <GlassPanel
       className={cn(
         "flex h-full flex-col overflow-hidden transition-colors hover:bg-white/55 dark:hover:bg-white/10",
-        hasImages ? "max-h-[44rem]" : "max-h-[32rem]",
+        variant === "full" && (hasImages ? "max-h-[44rem]" : "max-h-[32rem]"),
         className,
       )}
     >
@@ -81,15 +88,32 @@ export function SmallToolCard({ tool, className }: SmallToolCardProps) {
           )}
         </div>
 
-        <div className="flex min-h-0 flex-1 flex-col gap-2.5 overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <div
+          className={cn(
+            "flex min-h-0 flex-1 flex-col gap-2.5",
+            variant === "full" &&
+              "overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
+          )}
+        >
           <p className="text-sm leading-relaxed text-foreground/80 dark:text-foreground/90">
             {t(`items.${tool.id}.summary`)}
           </p>
 
           <FeaturePointList
-            points={points}
+            points={visiblePoints}
             highlightedIndexes={tool.highlightPointIndexes}
           />
+
+          {hiddenPointCount > 0 ? (
+            <div className="flex items-center gap-2 text-xs font-semibold text-foreground/55 dark:text-foreground/65">
+              <span className="h-px flex-1 bg-gradient-to-r from-transparent via-foreground/15 to-foreground/10 dark:via-foreground/20 dark:to-foreground/10" />
+              <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-white/45 bg-white/35 px-2.5 py-1 shadow-sm shadow-black/5 dark:border-white/10 dark:bg-white/[0.06]">
+                <Ellipsis className="h-3.5 w-3.5" />
+                {t("morePoints", { count: hiddenPointCount })}
+              </span>
+              <span className="h-px flex-1 bg-gradient-to-l from-transparent via-foreground/15 to-foreground/10 dark:via-foreground/20 dark:to-foreground/10" />
+            </div>
+          ) : null}
         </div>
       </div>
     </GlassPanel>

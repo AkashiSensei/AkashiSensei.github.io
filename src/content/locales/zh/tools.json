@@ -4,6 +4,7 @@
   "viewAll": "查看全部",
   "viewAllTitle": "全部小工具",
   "viewAllDescription": "查看支撑工程、调研与协作的小型仓库。",
+  "morePoints": "还有 {{count}} 条亮点",
   "labels": {
     "author": "Owner",
     "contributor": "Contributor",

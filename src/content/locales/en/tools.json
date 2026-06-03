@@ -1,9 +1,10 @@
 {
   "title": "Small Tools",
-  "subtitle": "Small repositories I authored or contributed to for engineering, research, job-search materials, and agent collaboration. They come from recurring workflow problems: context drift, scattered research, repeated resume maintenance, and the need to bring agents into tasks reliably.",
+  "subtitle": "Small repositories I authored or contributed to for engineering, research, job-search materials, and agent collaboration. They come from recurring workflow problems: context drift, scattered research, resume maintenance, and reliable agent handoff.",
   "viewAll": "View All",
   "viewAllTitle": "Full Tool List",
   "viewAllDescription": "Browse the small tools behind my context management, research, and agent collaboration workflows.",
+  "morePoints": "{{count}} more points",
   "labels": {
     "author": "Owner",
     "contributor": "Contributor",
@@ -14,51 +15,51 @@
   "items": {
     "project-context-meta-skill": {
       "title": "Project Context Meta-Skill",
-      "summary": "A personal meta-skill for building and managing AI-native engineering environments. Through three decoupled subsystems, it provides structured project-level context management and shapes the AI into an engineer that can question, reason, and weigh trade-offs independently.",
+      "summary": "A personal meta-skill for building AI-native engineering environments. Three decoupled subsystems provide structured project context and help the AI question, reason, and weigh trade-offs independently.",
       "points": [
-        "Uses structured project memory to prevent the AI from forgetting information that has already been emphasized or repeating mistakes it has already made in long conversations.",
-        "Preserves raw requirements and specifications so the AI can understand the user's root goals and original intent, anchoring exploration when information is incomplete or the task is open-ended.",
-        "Makes the AI aware that users cannot always express requirements clearly, so it should guide and challenge the user when appropriate, reason from the root goal and code implementation, offer its own trade-offs, and avoid over-engineered complexity.",
+        "Uses structured project memory to keep long conversations from losing key facts or repeating past mistakes.",
+        "Preserves raw requirements and specs so the AI can anchor on the user's root goals and original intent.",
+        "Reminds the AI that requirements may be unclear, so it should guide, challenge, reason from goals and code, offer trade-offs, and avoid over-engineering.",
         "Indirectly preserves task-specific prompts so they can be traced, migrated, and learned from.",
         "Captures the problems and reflections I accumulated while using AI tools."
       ]
     },
     "research-skills": {
       "title": "Engineering Research Skills",
-      "summary": "A research workflow for engineering, product, market, and scientific judgment. It targets situations where the question is broad, the information is noisy, and the final output still needs to support a decision.",
+      "summary": "A research workflow for engineering, product, market, and scientific judgment when questions are broad, information is noisy, and the result must still support a decision.",
       "points": [
         "Turns ad hoc searching into a reusable process across Codex, Cursor, OpenClaw, and similar AI tools.",
-        "Uses AnySearch as the default real-time retrieval entry point for technical selection, product opportunity analysis, competitor research, and paper or open-source evaluation.",
+        "Uses AnySearch as the real-time retrieval entry for technical selection, product analysis, competitor research, papers, and open-source evaluation.",
         "Requires outputs to include not only collected facts, but also evidence, boundaries, risks, and actionable recommendations.",
-        "Compresses uncertain information environments into engineering material that can be discussed, decided on, and carried forward, ultimately giving practical guidance for the user's decisions and implementation."
+        "Turns uncertain information into engineering material that can be discussed, decided on, and carried forward."
       ]
     },
     "latex-resume": {
       "title": "LaTeX Resume Builder",
-      "summary": "A private in-progress resume project exploring how to generate multilingual, role-targeted resumes with LaTeX. It addresses a real maintenance problem: the same experience needs different language variants, role emphasis, and length constraints without drifting out of sync.",
+      "summary": "A private in-progress LaTeX resume project for multilingual, role-targeted resumes. It keeps language variants, role emphasis, and length constraints from drifting out of sync.",
       "points": [
-        "Explores structured content for Chinese, English, and other variants by separating experience content, project descriptions, skill phrasing, and layout control.",
-        "Targets fast adaptation for different roles by changing the emphasis across projects, skills, and experience without manually rebuilding each file.",
-        "Uses LaTeX for stable formatting and version control, making the resume closer to a long-lived content asset than a one-off document.",
+        "Separates experience, project descriptions, skill phrasing, and layout for Chinese, English, and other variants.",
+        "Supports fast role adaptation by changing emphasis without manually rebuilding each file.",
+        "Uses LaTeX for stable formatting and version control, treating the resume as a long-lived content asset.",
         "May eventually become a skill, template system, or another automation tool for a reusable job-search material workflow."
       ]
     },
     "anysearch-skill": {
       "title": "AnySearch Skill",
-      "summary": "A unified real-time search engine skill for AI Agents, supporting general web search, vertical domain search, parallel batch search, and full-page web content extraction.",
+      "summary": "A real-time search engine skill for AI agents, supporting web search, vertical search, batch search, and full-page extraction.",
       "points": [
-        "AnySearch provides foundational search capability to AI Agents through an API, focusing on search quality, speed, and customizability.",
-        "Supports multiple runtimes including Python, Node.js, PowerShell, and Shell to reduce integration friction across systems and agent environments.",
+        "Provides search capability to AI agents through an API, focusing on quality, speed, and customizability.",
+        "Supports Python, Node.js, PowerShell, and Shell to reduce integration friction across agent environments.",
         "Fixed the agent's discovery and invocation of Python scripts; the contribution has been merged upstream."
       ]
     },
     "crater-prompt": {
       "title": "Crater Agent Prompts",
-      "summary": "A set of agent working prompts accumulated for Crater development before the formal Skill mechanism became popular. It came from a concrete need: helping AI quickly understand a complex project's engineering context, collaboration rules, and development constraints instead of relearning the project background from scratch every time.",
+      "summary": "Agent working prompts accumulated for Crater before formal Skills became common. They help AI enter a complex project's context, rules, and constraints without relearning everything each time.",
       "points": [
         "Turns Crater development experience, recurring requirements, and collaboration habits into working instructions that can be given directly to AI.",
-        "Helps agents enter the existing engineering context faster, reducing invalid implementation or repeated communication caused by missing project constraints.",
-        "Although mostly document-oriented, it served as an early tool by externalizing implicit experience into a reusable collaboration entry point."
+        "Helps agents enter the existing engineering context faster, reducing invalid work and repeated communication.",
+        "Externalizes implicit experience into a reusable collaboration entry point."
       ]
     }
   }

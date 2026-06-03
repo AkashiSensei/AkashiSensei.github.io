@@ -4,6 +4,7 @@
   "viewAll": "查看全部",
   "viewAllTitle": "完整工作台",
   "viewAllDescription": "展开我的长期工具链与常用工作流。",
+  "morePoints": "还有 {{count}} 条亮点",
   "items": {
     "ai-assist": {
       "title": "AI 辅助",
@@ -15,8 +16,7 @@
         "Copilot Pro 教育版订阅",
         "Xiaomi MiMo Max 创造者激励计划",
         "积极拥抱 AI 开发时代，每月消耗数亿至数十亿 Token 不等，在编码实践中积累使用 AI 工具的经验，并思考、解决遇到的问题",
-        "主要使用 Cursor 等完成需要人持续跟进并调整的复杂任务或研究性工作",
-        "主要使用 Codex 等完成目标明确，实现路线清晰的编码任务",
+        "主要使用 Cursor 和 Codex 完成各类编码工作",
         "使用 QClaw 和 ChatGPT 在移动端远程控制主机继续完成工作",
         "使用 GitHub Copilot 和 Cursor Bugbot 进行 PR 的审查"
       ]

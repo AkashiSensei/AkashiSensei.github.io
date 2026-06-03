@@ -4,6 +4,7 @@
   "viewAll": "View All",
   "viewAllTitle": "Full Workbench",
   "viewAllDescription": "Browse all software groups, toolchains, and workflow setups.",
+  "morePoints": "{{count}} more points",
   "items": {
     "ai-assist": {
       "title": "AI Assist Tools",
@@ -14,10 +15,9 @@
         "Minimax Plus fast-tier subscription",
         "Copilot Pro Education subscription",
         "Xiaomi MiMo Max creator incentive plan",
-        "Actively embrace the AI development era, spending hundreds of millions to billions of tokens each month while building practical experience with AI tools and solving the problems that appear in real work.",
-        "Mainly use Cursor for complex or research-heavy tasks that need continuous human steering and adjustment.",
-        "Mainly use Codex for coding tasks with clear goals and a well-understood implementation path.",
-        "Use QClaw and ChatGPT to remotely control the host machine from mobile devices and continue work away from the desk.",
+        "Actively embrace AI development, spending hundreds of millions to billions of tokens each month while gaining hands-on experience and solving real workflow problems.",
+        "Mainly use Cursor and Codex for coding work across different tasks.",
+        "Use QClaw and ChatGPT to control the host machine from mobile devices and keep working away from the desk.",
         "Use GitHub Copilot and Cursor Bugbot for PR review."
       ]
     },

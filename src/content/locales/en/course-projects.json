@@ -1,6 +1,6 @@
 {
   "title": "Course Projects",
-  "subtitle": "Course projects, course labs, team assignments, and my undergraduate thesis. They record how I turned coursework requirements at different stages into runnable systems, experiment code, and engineering documents.",
+  "subtitle": "Course projects, labs, team assignments, and my undergraduate thesis, recording how I turned coursework into runnable systems, experiment code, and engineering documents.",
   "viewAll": "View all",
   "viewAllTitle": "All course projects",
   "viewAllDescription": "Browse course projects, lab repositories, and team assignments in reverse chronological order.",
@@ -53,15 +53,15 @@
   "items": {
     "parallel-programming-2026": {
       "title": "Parallel Programming A Assignments",
-      "summary": "A BUAA graduate course repository for Parallel Programming A, organized around experiment problems, code, scripts, and run records.",
+      "summary": "A BUAA graduate Parallel Programming A repository for experiment problems, code, scripts, and run records.",
       "images": {
         "mpiMatrixProcessTimeline": "MPI large-scale matrix multiplication process timeline",
         "mpiMatrixTimeResult": "MPI large-scale matrix multiplication timing result",
         "parallelQuicksortResult": "Parallel quicksort result"
       },
       "points": [
-        "Uses C, Makefile, Shell, and Python to organize experiment code and helper scripts so the experiment flow can be reproduced.",
-        "Records the evolution from serial implementations to parallel implementations for typical problems and classic libraries in the parallel programming course."
+        "Uses C, Makefile, Shell, and Python to organize reproducible experiment code and helper scripts.",
+        "Records the shift from serial to parallel implementations for typical course problems and classic libraries."
       ]
     },
     "vr-experiments-2026": {
@@ -79,7 +79,7 @@
     },
     "os2023": {
       "title": "MOS Operating System Labs",
-      "summary": "BUAA Operating System labs, divided into six major labs. Each lab includes take-home code completion and an in-class code completion or new-feature implementation exam.",
+      "summary": "BUAA Operating System labs, divided into six major labs with take-home code completion and in-class implementation exams.",
       "images": {
         "labGrades": "Lab grades",
         "lab2MainContent": "Lab 2 main content",
@@ -91,16 +91,16 @@
         "refillCode": "Fast refill code excerpt"
       },
       "points": [
-        "Read a large amount of operating system code and developed a deeper understanding of how an operating system works.",
+        "Read a large amount of OS code and developed a deeper understanding of how operating systems work.",
         "Kept asking and answering my own questions, leaving behind a large set of lab notes.",
         "Used GXemul to emulate the MIPS R3000 processor, with implementation in C and MIPS assembly.",
-        "Includes core operating system functions such as paged memory management, process management, inter-process communication, exception handling, a file system, and a Shell.",
-        "As an extra-credit task, I studied the page table structure, operated the $k0 and $k1 registers and the coprocessor, and implemented full page-table fast refill, reducing process context saving on TLB misses and achieving about a 4x speedup in specific cases."
+        "Includes paged memory, processes, IPC, exceptions, file system, and Shell.",
+        "As extra credit, studied page tables, $k0/$k1, and the coprocessor, then implemented full page-table fast refill with about 4x speedup in specific cases."
       ]
     },
     "parallel-architecture-2025": {
       "title": "Parallel Processing and Architecture Assignment",
-      "summary": "Basic assignment code and report for BUAA graduate course Parallel Processing and Architecture, centered on convolution computation and performance optimization.",
+      "summary": "Assignment code and report for BUAA graduate Parallel Processing and Architecture, centered on convolution and performance optimization.",
       "images": {
         "ompDataScalePerformance": "Effect of data scale on OMP program performance",
         "ompThreadCountPerformance": "Effect of thread count on OMP program performance",
@@ -112,14 +112,14 @@
         "luDrcctprofComparison": "DrCCTProf analysis comparison before and after LU optimization"
       },
       "points": [
-        "Designed and implemented OpenMP programs with different kinds of parallel bottlenecks, optimized those bottlenecks, and tested performance before and after optimization under different thread counts and data scales.",
-        "Observed how compiler optimization, OpenMP thread binding, and NUMA binding affect parallel program performance through experiments.",
-        "Used call-path and performance analysis tools such as DrCCTProf and Linux Performance Counters to analyze classic parallel algorithm implementations, identify bottlenecks, optimize them, and verify the results experimentally."
+        "Designed OpenMP programs with different bottlenecks, optimized them, and compared performance across thread counts and data scales.",
+        "Experimented with compiler optimization, OpenMP thread binding, and NUMA binding.",
+        "Used DrCCTProf and Linux Performance Counters to analyze classic parallel algorithms, find bottlenecks, optimize them, and verify results."
       ]
     },
     "road-accident-risk": {
       "title": "Road Accident Risk Prediction",
-      "summary": "A BUAA graduate Machine Learning course experiment assignment. A data analysis and modeling project for road accident risk prediction, including preprocessing, analysis, models, and report materials.",
+      "summary": "A BUAA graduate Machine Learning assignment for road accident risk prediction, including preprocessing, analysis, modeling, and report materials.",
       "images": {
         "gpuTrainingRmse": "GPU training RMSE curve",
         "kaggleRanking": "Kaggle ranking",
@@ -129,7 +129,7 @@
       },
       "points": [
         "Used Python for data preprocessing and analysis to guide feature engineering.",
-        "Based on domain knowledge, combined multiple key risk factors and created cross features and basic risk features.",
+        "Combined key risk factors and created cross features and basic risk features from domain knowledge.",
         "Built a risk prediction model with XGBoost and used Optuna for hyperparameter search."
       ]
     },
@@ -154,9 +154,9 @@
         "yolov8nRuntimeVariance": "YOLOv8n kernel runtime performance variance"
       },
       "points": [
-        "Decomposed deep model computation graphs, mapped their operators to concrete GPU kernels in execution sequences, generated fine-grained operator load graphs, also known as kernel-level computation graphs, and explored the patterns and influencing factors of operator-to-kernel mappings to guide modeling.",
-        "Built multi-dimensional feature prediction models for tasks, capturing compute and memory-access characteristics of intelligent computing tasks at a fine granularity, and verified their effectiveness through experiments to support later interference analysis and task scheduling.",
-        "Developed automated tools to improve the automation level of the performance analysis and modeling workflow as much as possible, improving analysis and modeling efficiency."
+        "Decomposed model computation graphs, mapped operators to GPU kernels, generated kernel-level computation graphs, and studied operator-to-kernel mapping patterns.",
+        "Built feature prediction models for compute and memory-access behavior, verified experimentally for later interference analysis and scheduling.",
+        "Developed automated tools to improve performance analysis and modeling efficiency."
       ]
     },
     "rotating-calipers": {
@@ -171,16 +171,16 @@
     },
     "oop-iteration-2022": {
       "title": "School of Software Cloud Platform (Youth Edition)",
-      "summary": "A BUAA Object-Oriented Programming (Java) iterative assignment project, with requirements released in four rounds. It includes teacher and student clients and implements most functions of the traditional SCS system.",
+      "summary": "A BUAA Object-Oriented Programming (Java) iterative assignment with four requirement rounds, teacher/student clients, and most traditional SCS functions.",
       "points": [
         "Practiced Java object-oriented modeling and code organization through multiple rounds of iterative tasks.",
-        "The teacher client supports creating, deleting, updating, and querying courses and their experiments, and teachers can also add students and teaching assistants to courses.",
-        "Students can view and participate in courses and submit experiment assignments, while teaching assistants can collaborate with teachers on course management."
+        "The teacher client supports course and experiment CRUD, plus adding students and teaching assistants.",
+        "Students can join courses and submit experiments; teaching assistants can help teachers manage courses."
       ]
     },
     "career-yiyan": {
       "title": "Career YIYAN Recruitment Website",
-      "summary": "A BUAA Software Engineering Comprehensive Practice short-term project. It covers the complete workflow of company recruitment and user job seeking, and improves user experience through feeds, private messages, notifications, and large-model-assisted features.",
+      "summary": "A BUAA Software Engineering Comprehensive Practice project covering company recruitment and job seeking, with feeds, private messages, notifications, and LLM-assisted features.",
       "images": {
         "home": "Home page",
         "jobRecommendation": "Job recommendations",
@@ -193,18 +193,18 @@
         "notifications": "Notifications"
       },
       "points": [
-        "Strictly followed the Scrum agile process, used the platform provided by the course team to manage the Scrum board, and completed two requirement iterations in 11 days.",
-        "Deeply participated in the full Scrum process, held daily Scrum standups, continuously tracked user story points, and practiced pair programming, automated code review and checks, and manual code review.",
-        "Companies can manage employees, company information, recruitment positions, and job information; job seekers can upload and manage resumes and apply to target companies.",
-        "Users and companies can publish, like, and comment on posts, making it easier for both sides to understand each other more fully.",
-        "Users can send and manage private messages, making communication between job seekers and HR closer.",
-        "Implemented a notification system so users do not miss private messages, likes, or comments on posts.",
+        "Followed Scrum, managed the Scrum board, and completed two requirement iterations in 11 days.",
+        "Participated across Scrum standups, story-point tracking, pair programming, automated checks, and manual code review.",
+        "Companies can manage employees, profiles, recruitment positions, and jobs; job seekers can manage resumes and apply.",
+        "Users and companies can publish, like, and comment on posts to understand each other better.",
+        "Users can send and manage private messages for closer job seeker-HR communication.",
+        "Implemented notifications for private messages, likes, and comments.",
         "Used a large model to provide suggestions for improving resumes uploaded by users."
       ]
     },
     "cloud-yiyan": {
       "title": "Cloud YIYAN Software Engineering Team Collaboration and Management Platform",
-      "summary": "A BUAA Software Engineering Basic Practice short-term project. A team collaboration Web platform with team project management, collaborative document editing, chat, page prototype design, and message notifications.",
+      "summary": "A BUAA Software Engineering Basic Practice project: a team collaboration Web platform with project management, collaborative docs, chat, prototypes, and notifications.",
       "images": {
         "home": "Home page",
         "projectManagement": "Project management",
@@ -220,18 +220,18 @@
         "userCenter": "User profile center"
       },
       "points": [
-        "Strictly followed an agile development process, held daily standups, completed daily reports, and used Alibaba Cloud DevOps to manage progress, completing two requirement iterations in 10 days.",
-        "Uses projects as the unit for team management, chat, documents, and prototype design, allowing users to create, join, and manage projects.",
-        "Provides project documents that support rich text and multi-user online collaborative editing. Users can also mention other users in documents or share documents with external users using desired permissions.",
-        "Provides chat and communication features, allowing users to send text, images, files, and other messages to other users or groups they create, and to view delivery and read status.",
-        "Provides online prototype design features for creating and editing Web page prototypes as references for later page development.",
-        "Implements a message notification system that notifies users when they are mentioned in documents or receive new chat messages.",
-        "Collected development and technical summaries from every team member, preserving and sharing knowledge to contribute experience for later team development."
+        "Followed agile development with daily standups/reports and Alibaba Cloud DevOps, completing two iterations in 10 days.",
+        "Uses projects as the unit for team management, chat, documents, and prototype design.",
+        "Supports rich-text collaborative documents, mentions, and external sharing with permissions.",
+        "Supports chat with text, images, files, groups, delivery status, and read status.",
+        "Provides online Web prototype creation and editing for later page development.",
+        "Notifies users when mentioned in documents or when new chat messages arrive.",
+        "Collected team members' technical summaries to preserve and share development experience."
       ]
     },
     "yiyan-microservices": {
       "title": "YIYAN Academic Achievement Sharing Platform",
-      "summary": "A BUAA Software System Analysis and Design course assignment. An efficient, high-concurrency, and highly available academic achievement sharing platform based on Vue, Java, Kubernetes, and Elastic Search.",
+      "summary": "A BUAA Software System Analysis and Design assignment: a high-concurrency academic achievement platform based on Vue, Java, Kubernetes, and Elastic Search.",
       "images": {
         "advancedSearchHome": "Advanced search home page",
         "literatureDetail": "Literature details",
@@ -243,17 +243,17 @@
         "k8sDeployment": "K8s deployment"
       },
       "points": [
-        "Went through a complete process from requirement research, requirement modeling, analysis model construction, architecture research and design, data design, coding, and deployment, with documents preserved.",
-        "Split different modules into microservices and scheduled them onto suitable nodes according to their task characteristics.",
+        "Completed the full process from requirements and modeling to architecture, data design, coding, deployment, and documentation.",
+        "Split modules into microservices and scheduled them to suitable nodes by task characteristics.",
         "Supports full-text literature search and advanced search, combining keywords through operators such as AND, OR, and NOT.",
-        "Analyzes and visualizes researchers' research directions, collaboration relationships, and literature citation relationships.",
+        "Analyzes and visualizes research directions, collaborations, and citation relationships.",
         "Provides personalized literature recommendations based on users' historical reading, downloads, and favorites.",
-        "Allows readers to post discussions about literature or cite literature in column articles for analysis and introduction."
+        "Allows readers to discuss literature or cite it in column articles."
       ]
     },
     "compiler": {
       "title": "SysY MIPS Compiler",
-      "summary": "A BUAA Compiler Technology course experiment assignment. A 32-bit MIPS compiler for the SysY language implemented in Java, including lexical analysis, syntax analysis, intermediate code generation, target code generation, and error handling.",
+      "summary": "A BUAA Compiler Technology assignment: a Java 32-bit MIPS compiler for SysY, covering lexing, parsing, IR generation, target code generation, and error handling.",
       "images": {
         "symbolTableDetail2": "Detailed output: real-time symbol table (2)",
         "sysyOverview": "SysY language overview",
@@ -267,12 +267,12 @@
         "SysY is a subset of the C language and does not include pointer variables or floating-point numbers.",
         "Controls compiler behavior through configuration options, including optimization and detailed output for each stage.",
         "Supports detailed output with recursive structures and displays real-time symbol tables to make debugging easier.",
-        "Uses compiler optimization techniques such as constant propagation, strength reduction, and pointer constant optimization to improve target-code performance."
+        "Uses constant propagation, strength reduction, and pointer constant optimization to improve target-code performance."
       ]
     },
     "learning-living-platform": {
       "title": "YIYAN Learning and Living Platform",
-      "summary": "A BUAA Software Engineering Basics course assignment. A frontend-backend separated team project from the School of Software, allowing users to share and download educational resources or join an online learning community to exchange thoughts and experiences.",
+      "summary": "A BUAA Software Engineering Basics team project with separated frontend/backend, supporting educational resource sharing and an online learning community.",
       "images": {
         "home": "Home page",
         "highlights": "Highlights",
@@ -286,16 +286,16 @@
         "analytics": "Data statistics and analysis"
       },
       "points": [
-        "Used the waterfall model for project management and produced a full set of process documents from requirements analysis and system design to final deployment and maintenance.",
-        "Designed a frontend that fits the task style, provides detailed prompts, and embeds usage guidance to deliver a better user experience.",
+        "Used waterfall project management and produced documents from requirements and design to deployment and maintenance.",
+        "Designed a task-fitting frontend with detailed prompts and embedded guidance.",
         "Used JWT Token for authentication and a heartbeat mechanism to detect whether users are online.",
-        "Developed an in-house resource deletion queue algorithm to ensure unreferenced dead resources do not accumulate in platform storage.",
-        "Deployed the frontend, backend, and database in the cloud, used nginx for load balancing, and implemented CI/CD through GitHub Actions."
+        "Developed a resource deletion queue so unreferenced dead resources do not accumulate.",
+        "Deployed frontend, backend, and database in the cloud with nginx load balancing and GitHub Actions CI/CD."
       ]
     },
     "archive-system": {
       "title": "Java Archive Management System",
-      "summary": "A BUAA Object-Oriented Programming (Java) assignment project. A frontend-backend separated archive management system for libraries or archives.",
+      "summary": "A BUAA Object-Oriented Programming (Java) assignment: a separated frontend/backend archive management system for libraries or archives.",
       "images": {
         "searchResults": "Search results screen",
         "searchResultsExpanded": "Expanded search result screen",
