@@ -3,13 +3,14 @@
 
 ## 1. Project Overview
 
-Personal homepage for job-seeking and peer sharing, **public by design**—no private documents (e.g. resume files) on the site; use safe contact channels only. Secondary goals: community connection and open-source visibility. Primary audience: interviewers; secondary: open-source peers and students. Pure static frontend deployed to **GitHub Pages user site** (not a project site) via GitHub Actions.
+Personal public site with two distinct presentation surfaces: the root homepage (`/`) is a clean, lightweight page for friends, peers, and casual visitors; the resume route (`/resume`) is the interviewer-oriented electronic resume / career showcase. The site is **public by design**—no private documents (e.g. downloadable resume files) on the site; use safe contact channels only. Goals: community connection, open-source visibility, and job-seeking support through the dedicated resume surface. Pure static frontend deployed to **GitHub Pages user site** (not a project site) via GitHub Actions.
 
 ## 2. Core Technical Stack
 
 - UI: React
 - Language: TypeScript (preferred for application code)
 - Build: Vite
+- Routing: React Router for route declarations, route matching, navigation, fallback/404 handling, and future nested/detail routes
 - Deployment: GitHub Actions → GitHub Pages (user site; see §2.1)
 - Content: Structured data files (JSON or equivalent); views must not hardcode individual entries
 
@@ -68,12 +69,14 @@ Each module may have a listing page with **list** or **gallery** view modes.
 | 信条 | Principles and trade-offs |
 | 学术成果 | Placeholder until papers/patents/soft copyrights exist |
 
-**Homepage**:
+**Root homepage and resume route**:
 
-- Intro, **public** contact (no resume or other privacy-heavy attachments on the public site); link out to GitHub Profile for more activity
-- **Per-module Highlights**: For each active content module (§5 table), show a curated subset of entries on the homepage—entries marked in data (e.g. `highlight: true` or `featured` ordering). Typical cap: 1–3 items per module; module title + “view all” link to the module listing page
-- **学术成果** / **方向**（无条目时）: Omit homepage Highlight block until at least one entry exists
-- Highlights are editorial curation, not automatic “latest N”; empty modules may show only the section header + link or hide the block
+- Root homepage (`/`): simple, clean, friend-facing entry point. It should include a concise personal intro, a clear online-resume CTA, public contact entry, and GitHub/profile link, but should not include the full project/course/workbench/tool showcase by default.
+- Resume route (`/resume`): interviewer-facing electronic resume / career showcase. It may reuse the existing homepage highlight sections and richer self-presentation flow: directions, projects, course projects, workbench, small tools, and other content modules as they mature.
+- Existing module routes stay stable unless explicitly redesigned: `/projects`, `/course-projects`, `/workbench`, `/tools`.
+- **Per-module Highlights on `/resume`**: For each active content module (§5 table), show a curated subset of entries—entries marked in data (e.g. `highlight: true` or `featured` ordering). Typical cap: 1–3 items per module; module title + “view all” link to the module listing page.
+- **学术成果** / **方向**（无条目时）: Omit resume Highlight block until at least one entry exists.
+- Highlights are editorial curation, not automatic “latest N”; empty modules may show only the section header + link or hide the block.
 
 ### 工作台 grouping
 

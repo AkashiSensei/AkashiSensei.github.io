@@ -13,6 +13,7 @@
 
 ## History
 
+- 2026-06-03 | [Archived: Route homepage/resume React Router](archive/20260603_Route-homepage-resume-react-router.md) | Split friend-facing `/` from interviewer-facing `/resume`, migrated routing to React Router, added history-aware module back buttons, and polished homepage/resume copy.
 - 2026-06-02 | Browser language default selection | Updated i18n startup to show Chinese for `zh*` browser/system languages and English for all other languages, while keeping manual language switching and syncing the document `lang` attribute.
 - 2026-06-02 | [Archived: Course projects module](archive/20260602_Course-projects-module.md) | Added a first-class Course Projects module with curated homepage cards, `/course-projects`, media galleries, semester tags, stats handling, and bilingual copy.
 - 2026-05-23 | Nightly GitHub repo stats refresh | Scheduled the GitHub Pages deployment workflow to rebuild daily at 03:00 Asia/Shanghai so commit and star counts refresh in the deployed static site without creating automated commits.
@@ -34,6 +35,7 @@
 - D1: Use `.context/` as the project-level persistent context and governance layer.
 - D2: React + Vite + TypeScript + shadcn/ui (Tailwind, Radix); static GitHub Pages deploy.
 - D3: **GitHub Pages user site only** (`AkashiSensei.github.io` → `https://akashisensei.github.io/`, not project site); Vite `base: '/'`.
-- D4: Homepage shows per-module Highlight strips for each content module (curated via data).
+- D4: Resume page (`/resume`) shows per-module Highlight strips for each content module (curated via data); root homepage (`/`) stays lightweight and friend-facing.
 - D5: UI scope is presentation/navigation only in v1—no complex forms or heavy interaction.
 - D6: i18n: Chinese source of truth; EN / IT / JA via AI draft + human review before publish.
+- D7: Use React Router for client-side route declarations, navigation, fallback handling, and future nested/detail routes.

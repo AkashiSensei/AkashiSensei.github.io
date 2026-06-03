@@ -14,6 +14,11 @@
     "langSwitchToZh": "中"
   },
   "imageLoading": "图片加载中",
+  "notFound": {
+    "title": "这个页面不存在",
+    "description": "可能是链接写错了，或者这个页面还没有公开。",
+    "homeCta": "返回主页"
+  },
   "githubRepoStats": {
     "defaultBranch": "默认分支",
     "tooltip": "GitHub 数据获取于 {{time}}\nStar 数：{{stars}}\n{{branch}} 分支提交数：{{commits}}",
