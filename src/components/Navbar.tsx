@@ -38,6 +38,7 @@ export function Navbar() {
   };
 
   const navLinks = [
+    { href: "/resume", label: t("nav:resume") },
     { href: "/projects", label: t("nav:projects") },
     { href: "/course-projects", label: t("nav:coursework") },
     { href: "/workbench", label: t("nav:workspace") },

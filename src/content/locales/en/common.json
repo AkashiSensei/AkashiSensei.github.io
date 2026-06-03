@@ -14,6 +14,11 @@
     "langSwitchToZh": "中"
   },
   "imageLoading": "Loading image",
+  "notFound": {
+    "title": "This page does not exist",
+    "description": "The link may be incorrect, or this page may not be public yet.",
+    "homeCta": "Back to Home"
+  },
   "githubRepoStats": {
     "defaultBranch": "default branch",
     "tooltip": "GitHub data fetched at {{time}}\nStars: {{stars}}\n{{branch}} branch commits: {{commits}}",
