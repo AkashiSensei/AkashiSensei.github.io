@@ -9,10 +9,11 @@
 - [x] Requirements analysis — RAW ↔ SPEC aligned, ready for implementation
 - [x] React project scaffold (Vite, TypeScript, shadcn/ui, Tailwind)
 - [ ] Personal homepage MVP (homepage Highlights, first content modules, GitHub Pages deploy)
-  - [ ] Add per-image titles and descriptions for project galleries, and show them in the large image preview.
+  - [x] Add per-image titles and descriptions for project galleries, and show them in the large image preview.
 
 ## History
 
+- 2026-06-03 | [Archived: Image preview thumbnail sync](archive/20260603_Image-preview-thumbnail-sync.md) | Added synchronized large-image thumbnail previews for projects, course projects, and tools; tuned preview/card layout, compact homepage cards, image assets, bilingual copy, and responsive breakpoint guidance.
 - 2026-06-03 | [Archived: Route homepage/resume React Router](archive/20260603_Route-homepage-resume-react-router.md) | Split friend-facing `/` from interviewer-facing `/resume`, migrated routing to React Router, added history-aware module back buttons, and polished homepage/resume copy.
 - 2026-06-02 | Browser language default selection | Updated i18n startup to show Chinese for `zh*` browser/system languages and English for all other languages, while keeping manual language switching and syncing the document `lang` attribute.
 - 2026-06-02 | [Archived: Course projects module](archive/20260602_Course-projects-module.md) | Added a first-class Course Projects module with curated homepage cards, `/course-projects`, media galleries, semester tags, stats handling, and bilingual copy.

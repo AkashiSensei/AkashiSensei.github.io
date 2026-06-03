@@ -33,6 +33,7 @@ export function WorkbenchHighlights() {
           <SoftwareGroupCard
             key={group.id}
             group={group}
+            variant="compact"
             className="w-[calc(100vw-3rem)] shrink-0 snap-start sm:w-[min(calc((100vw-3rem-0.75rem)/2),calc((64rem-2rem-0.75rem)/2))]"
           />
         ))}

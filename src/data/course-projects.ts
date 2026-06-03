@@ -92,7 +92,7 @@ const courseProjectEntries: Project[] = [
       {
         src: "/assets/course-projects/os2023/lab-grades.webp",
         altKey: "items.os2023.images.labGrades",
-        width: 444,
+        width: 624,
         height: 525,
       },
       {
@@ -266,7 +266,7 @@ const courseProjectEntries: Project[] = [
         src: "/assets/course-projects/kernel-analysis-thesis/architecture-workflow.webp",
         altKey: "items.kernel-analysis-thesis.images.architectureWorkflow",
         width: 1320,
-        height: 460,
+        height: 540,
       },
       {
         src: "/assets/course-projects/kernel-analysis-thesis/background-significance.webp",
