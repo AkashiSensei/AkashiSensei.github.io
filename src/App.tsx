@@ -7,10 +7,15 @@ import { Layout } from "@/components/Layout"
 import { Button } from "@/components/ui/button"
 import { HomePage } from "@/pages/HomePage"
 import { CourseProjectsPage } from "@/pages/CourseProjectsPage"
+import { ProjectDetailPage } from "@/pages/ProjectDetailPage"
 import { ProjectsPage } from "@/pages/ProjectsPage"
 import { ResumePage } from "@/pages/ResumePage"
+import { SmallToolDetailPage } from "@/pages/SmallToolDetailPage"
 import { ToolsPage } from "@/pages/ToolsPage"
 import { WorkbenchPage } from "@/pages/WorkbenchPage"
+import { courseProjects } from "@/data/course-projects"
+import { projects } from "@/data/projects"
+import { smallTools } from "@/data/tools"
 
 const pageTitles: Record<string, string> = {
   "/": "Akashi - Homepage",
@@ -29,6 +34,21 @@ function RouteEffects() {
   }, [pathname])
 
   useEffect(() => {
+    if (pathname.startsWith("/projects/")) {
+      document.title = "Akashi - Project Detail"
+      return
+    }
+
+    if (pathname.startsWith("/course-projects/")) {
+      document.title = "Akashi - Course Project Detail"
+      return
+    }
+
+    if (pathname.startsWith("/tools/")) {
+      document.title = "Akashi - Tool Detail"
+      return
+    }
+
     document.title = pageTitles[pathname] ?? "Akashi - Not Found"
   }, [pathname])
 
@@ -72,9 +92,27 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/resume" element={<ResumePage />} />
         <Route path="/projects" element={<ProjectsPage />} />
+        <Route
+          path="/projects/:projectId"
+          element={<ProjectDetailPage projects={projects} />}
+        />
         <Route path="/course-projects" element={<CourseProjectsPage />} />
+        <Route
+          path="/course-projects/:projectId"
+          element={
+            <ProjectDetailPage
+              projects={courseProjects}
+              translationNamespace="courseProjects"
+              fallbackPath="/course-projects"
+            />
+          }
+        />
         <Route path="/workbench" element={<WorkbenchPage />} />
         <Route path="/tools" element={<ToolsPage />} />
+        <Route
+          path="/tools/:toolId"
+          element={<SmallToolDetailPage tools={smallTools} />}
+        />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </>
