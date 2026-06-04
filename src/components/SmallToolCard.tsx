@@ -1,7 +1,7 @@
-import { ArrowUpRight, Ellipsis } from "lucide-react"
+import { ArrowRight, ArrowUpRight } from "lucide-react"
 import { useTranslation } from "react-i18next"
 
-import { FeaturePointList } from "@/components/FeaturePointList"
+import { AppLink } from "@/components/AppLink"
 import { GitHubRepoStats } from "@/components/GitHubRepoStats"
 import { GlassPanel } from "@/components/GlassPanel"
 import { LazyImage } from "@/components/LazyImage"
@@ -28,10 +28,8 @@ export function SmallToolCard({
   variant = "full",
 }: SmallToolCardProps) {
   const { t } = useTranslation(["tools", "common"])
-  const points = t(`items.${tool.id}.points`, { returnObjects: true }) as string[]
-  const visiblePoints = variant === "compact" ? points.slice(0, 3) : points
-  const hiddenPointCount = points.length - visiblePoints.length
   const hasImages = Boolean(tool.screenshots?.length || tool.screenshot)
+  const detailPath = `/tools/${tool.id}`
 
   return (
     <GlassPanel
@@ -57,9 +55,12 @@ export function SmallToolCard({
       <div className="flex min-h-0 flex-1 flex-col gap-3 p-4">
         <div className="flex shrink-0 flex-col gap-3">
           <div className="flex items-center gap-2">
-            <h3 className="min-w-0 text-xl font-bold leading-tight text-foreground/90">
+            <AppLink
+              to={detailPath}
+              className="min-w-0 text-xl font-bold leading-tight text-foreground/90 transition-colors hover:text-foreground"
+            >
               {t(`items.${tool.id}.title`)}
-            </h3>
+            </AppLink>
             <span
               className={cn(
                 "shrink-0 rounded-full border px-2.5 py-1 text-xs font-semibold leading-none",
@@ -99,21 +100,13 @@ export function SmallToolCard({
             {t(`items.${tool.id}.summary`)}
           </p>
 
-          <FeaturePointList
-            points={visiblePoints}
-            highlightedIndexes={tool.highlightPointIndexes}
-          />
-
-          {hiddenPointCount > 0 ? (
-            <div className="flex items-center gap-2 text-xs font-semibold text-foreground/55 dark:text-foreground/65">
-              <span className="h-px flex-1 bg-gradient-to-r from-transparent via-foreground/15 to-foreground/10 dark:via-foreground/20 dark:to-foreground/10" />
-              <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-white/45 bg-white/35 px-2.5 py-1 shadow-sm shadow-black/5 dark:border-white/10 dark:bg-white/[0.06]">
-                <Ellipsis className="h-3.5 w-3.5" />
-                {t("morePoints", { count: hiddenPointCount })}
-              </span>
-              <span className="h-px flex-1 bg-gradient-to-l from-transparent via-foreground/15 to-foreground/10 dark:via-foreground/20 dark:to-foreground/10" />
-            </div>
-          ) : null}
+          <AppLink
+            to={detailPath}
+            className="group/detail inline-flex w-fit items-center gap-1.5 text-sm font-semibold text-foreground/65 transition-colors hover:text-foreground dark:text-foreground/75 dark:hover:text-foreground"
+          >
+            {t("common:details.viewDetails")}
+            <ArrowRight className="h-4 w-4 transition-transform group-hover/detail:translate-x-0.5" />
+          </AppLink>
         </div>
       </div>
     </GlassPanel>

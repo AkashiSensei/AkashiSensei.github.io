@@ -44,13 +44,6 @@ export function ProjectGrid({
       const summary = t(`items.${project.id}.summary`) as string
       estimatedHeight += Math.ceil((summary?.length || 0) / 24) * 24
 
-      const points = t(`items.${project.id}.points`, { returnObjects: true }) as string[]
-      if (Array.isArray(points)) {
-        points.forEach((point) => {
-          estimatedHeight += Math.ceil((point?.length || 0) / 22) * 24 + 8
-        })
-      }
-
       estimatedHeight += (project.links?.length ?? 1) * 28
       estimatedHeight += Math.ceil(project.tags.length / 3) * 32
       estimatedHeight += 80

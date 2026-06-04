@@ -14,6 +14,13 @@
     "langSwitchToZh": "中"
   },
   "imageLoading": "Loading image",
+  "details": {
+    "gallery": "Images",
+    "highlights": "Details",
+    "links": "Links",
+    "tags": "Tags",
+    "viewDetails": "View details"
+  },
   "notFound": {
     "title": "This page does not exist",
     "description": "The link may be incorrect, or this page may not be public yet.",

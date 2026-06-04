@@ -37,13 +37,6 @@ export function SmallToolGrid({ tools }: SmallToolGridProps) {
       const summary = t(`items.${tool.id}.summary`) as string
       estimatedHeight += Math.ceil((summary?.length || 0) / 22) * 24
 
-      const points = t(`items.${tool.id}.points`, { returnObjects: true }) as string[]
-      if (Array.isArray(points)) {
-        points.forEach((point) => {
-          estimatedHeight += Math.ceil((point?.length || 0) / 20) * 24 + 8
-        })
-      }
-
       let minColIdx = 0
       let minHeight = colHeights[0]
       for (let i = 1; i < columns; i++) {
