@@ -7,6 +7,8 @@ import { Layout } from "@/components/Layout"
 import { Button } from "@/components/ui/button"
 import { HomePage } from "@/pages/HomePage"
 import { CourseProjectsPage } from "@/pages/CourseProjectsPage"
+import { KnowledgeDetailPage } from "@/pages/KnowledgeDetailPage"
+import { KnowledgePage } from "@/pages/KnowledgePage"
 import { ProjectDetailPage } from "@/pages/ProjectDetailPage"
 import { ProjectsPage } from "@/pages/ProjectsPage"
 import { ResumePage } from "@/pages/ResumePage"
@@ -14,6 +16,7 @@ import { SmallToolDetailPage } from "@/pages/SmallToolDetailPage"
 import { ToolsPage } from "@/pages/ToolsPage"
 import { WorkbenchPage } from "@/pages/WorkbenchPage"
 import { courseProjects } from "@/data/course-projects"
+import { knowledgeEntries } from "@/data/knowledge"
 import { projects } from "@/data/projects"
 import { smallTools } from "@/data/tools"
 
@@ -24,6 +27,7 @@ const pageTitles: Record<string, string> = {
   "/course-projects": "Akashi - Course Projects",
   "/workbench": "Akashi - Workspace",
   "/tools": "Akashi - Tools",
+  "/knowledge": "Akashi - Knowledge",
 }
 
 function RouteEffects() {
@@ -46,6 +50,11 @@ function RouteEffects() {
 
     if (pathname.startsWith("/tools/")) {
       document.title = "Akashi - Tool Detail"
+      return
+    }
+
+    if (pathname.startsWith("/knowledge/")) {
+      document.title = "Akashi - Knowledge Detail"
       return
     }
 
@@ -109,6 +118,11 @@ function App() {
         />
         <Route path="/workbench" element={<WorkbenchPage />} />
         <Route path="/tools" element={<ToolsPage />} />
+        <Route path="/knowledge" element={<KnowledgePage />} />
+        <Route
+          path="/knowledge/:entryId"
+          element={<KnowledgeDetailPage entries={knowledgeEntries} />}
+        />
         <Route
           path="/tools/:toolId"
           element={<SmallToolDetailPage tools={smallTools} />}

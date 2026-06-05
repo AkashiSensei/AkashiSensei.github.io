@@ -1,28 +1,13 @@
 import { GitCommitHorizontal, Star } from "lucide-react"
 import { useTranslation } from "react-i18next"
 
-import githubRepoStats from "@/data/generated/github-repo-stats.json"
+import { getGitHubRepoStats } from "@/lib/github-repo-stats"
 import { cn } from "@/lib/utils"
 
 type GitHubRepoStatsProps = {
   repo?: string
   className?: string
 }
-
-type GitHubRepoStatsSnapshot = {
-  repos: Record<
-    string,
-    {
-      commits?: number
-      defaultBranch?: string
-      fetchedAt: string
-      isPrivate?: boolean
-      stars?: number
-    }
-  >
-}
-
-const repoStatsSnapshot = githubRepoStats as GitHubRepoStatsSnapshot
 
 export function GitHubRepoStats({ repo, className }: GitHubRepoStatsProps) {
   const { i18n, t } = useTranslation("common")
@@ -31,7 +16,7 @@ export function GitHubRepoStats({ repo, className }: GitHubRepoStatsProps) {
     return null
   }
 
-  const snapshot = repoStatsSnapshot.repos[repo]
+  const snapshot = getGitHubRepoStats(repo)
 
   if (!snapshot) {
     return null

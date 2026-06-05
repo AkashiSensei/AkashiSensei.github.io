@@ -2,6 +2,7 @@ import { ContactDialog } from "@/components/ContactDialog"
 import { CourseProjectHighlights } from "@/components/CourseProjectHighlights"
 import { DirectionsSection } from "@/components/DirectionsSection"
 import { GitHubMark } from "@/components/GitHubMark"
+import { KnowledgeHighlights } from "@/components/KnowledgeHighlights"
 import { Layout } from "@/components/Layout"
 import { ProjectHighlights } from "@/components/ProjectHighlights"
 import { SmallToolHighlights } from "@/components/SmallToolHighlights"
@@ -59,6 +60,7 @@ export function ResumePage() {
         <CourseProjectHighlights />
         <WorkbenchHighlights />
         <SmallToolHighlights />
+        <KnowledgeHighlights />
       </div>
     </Layout>
   )

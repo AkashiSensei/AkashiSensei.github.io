@@ -14,7 +14,7 @@ import { cn } from "@/lib/utils"
 type ProjectImageGalleryProps = {
   images: ProjectImage[]
   className?: string
-  translationNamespace?: "projects" | "courseProjects"
+  translationNamespace?: "projects" | "courseProjects" | "knowledge"
 }
 
 function scrollGalleryToIndex(

@@ -5,6 +5,7 @@ import enCommon from "./content/locales/en/common.json"
 import enCourseProjects from "./content/locales/en/course-projects.json"
 import enDirections from "./content/locales/en/directions.json"
 import enHome from "./content/locales/en/home.json"
+import enKnowledge from "./content/locales/en/knowledge.json"
 import enNav from "./content/locales/en/nav.json"
 import enProjects from "./content/locales/en/projects.json"
 import enTools from "./content/locales/en/tools.json"
@@ -13,6 +14,7 @@ import zhCommon from "./content/locales/zh/common.json"
 import zhCourseProjects from "./content/locales/zh/course-projects.json"
 import zhDirections from "./content/locales/zh/directions.json"
 import zhHome from "./content/locales/zh/home.json"
+import zhKnowledge from "./content/locales/zh/knowledge.json"
 import zhNav from "./content/locales/zh/nav.json"
 import zhProjects from "./content/locales/zh/projects.json"
 import zhTools from "./content/locales/zh/tools.json"
@@ -23,6 +25,7 @@ const resources = {
     common: zhCommon,
     nav: zhNav,
     home: zhHome,
+    knowledge: zhKnowledge,
     directions: zhDirections,
     projects: zhProjects,
     courseProjects: zhCourseProjects,
@@ -33,6 +36,7 @@ const resources = {
     common: enCommon,
     nav: enNav,
     home: enHome,
+    knowledge: enKnowledge,
     directions: enDirections,
     projects: enProjects,
     courseProjects: enCourseProjects,
@@ -76,7 +80,7 @@ void i18n.init({
   fallbackLng: "en",
   defaultNS: "common",
   fallbackNS: "common",
-  ns: ["common", "nav", "home", "directions", "projects", "courseProjects", "workbench", "tools"],
+  ns: ["common", "nav", "home", "knowledge", "directions", "projects", "courseProjects", "workbench", "tools"],
   interpolation: {
     escapeValue: false,
   },

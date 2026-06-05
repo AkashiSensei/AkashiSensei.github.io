@@ -7,6 +7,7 @@ const sourceFiles = [
   "src/data/projects.ts",
   "src/data/course-projects.ts",
   "src/data/tools.ts",
+  "src/data/knowledge.ts",
 ]
 const outputPath = path.join(root, "src/data/generated/github-repo-stats.json")
 const legacyOutputPath = path.join(root, "src/data/generated/github-stars.json")
@@ -147,6 +148,40 @@ const fallbackCourseProjectRepoStats = {
     defaultBranch: "main",
     isPrivate: false,
     stars: 0,
+  },
+}
+const fallbackKnowledgeRepoStats = {
+  "AkashiSensei/ai-builders-digest": {
+    commits: 60,
+    defaultBranch: "main",
+    isPrivate: false,
+    pushedAt: "2026-06-03T23:06:43Z",
+    stars: 3,
+    updatedAt: "2026-06-03T23:06:47Z",
+  },
+  "AkashiSensei/blob-article": {
+    commits: 9,
+    defaultBranch: "main",
+    isPrivate: false,
+    pushedAt: "2026-06-02T11:38:33Z",
+    stars: 0,
+    updatedAt: "2026-06-02T11:38:38Z",
+  },
+  "AkashiSensei/crater-insights": {
+    commits: 27,
+    defaultBranch: "main",
+    isPrivate: false,
+    pushedAt: "2026-06-04T08:48:39Z",
+    stars: 1,
+    updatedAt: "2026-06-04T08:48:39Z",
+  },
+  "AkashiSensei/paper-vault": {
+    commits: 3,
+    defaultBranch: "main",
+    isPrivate: false,
+    pushedAt: "2026-06-02T13:21:24Z",
+    stars: 0,
+    updatedAt: "2026-06-02T13:22:00Z",
   },
 }
 
@@ -291,7 +326,9 @@ async function fetchRepoStats(repo) {
     defaultBranch: statsBranch,
     fetchedAt: new Date().toISOString(),
     isPrivate: Boolean(data.private),
+    pushedAt: data.pushed_at,
     stars: data.stargazers_count,
+    updatedAt: data.updated_at,
   }
 }
 
@@ -300,6 +337,7 @@ await loadLocalEnv()
 const previous = await readPreviousSnapshot()
 const repos = await collectRepos()
 const courseProjectRepos = await collectReposFromFile("src/data/course-projects.ts")
+const knowledgeRepos = await collectReposFromFile("src/data/knowledge.ts")
 const generatedAt = new Date().toISOString()
 const snapshot = {
   generatedAt,
@@ -308,9 +346,12 @@ const snapshot = {
 
 for (const repo of repos) {
   const isCourseProjectRepo = courseProjectRepos.has(repo)
+  const isKnowledgeRepo = knowledgeRepos.has(repo)
   const hardcoded = isCourseProjectRepo ? hardcodedRepoStats[repo] : undefined
   const fallback = isCourseProjectRepo
     ? fallbackCourseProjectRepoStats[repo]
+    : isKnowledgeRepo
+      ? fallbackKnowledgeRepoStats[repo]
     : undefined
 
   try {
@@ -328,7 +369,7 @@ for (const repo of repos) {
         ...fallback,
         fetchedAt: generatedAt,
       }
-      console.warn(`Used fallback course project GitHub repo stats for ${repo}: ${error.message}`)
+      console.warn(`Used fallback GitHub repo stats for ${repo}: ${error.message}`)
     } else if (previous.repos?.[repo]) {
       snapshot.repos[repo] = previous.repos[repo]
       console.warn(`Kept previous GitHub repo stats for ${repo}: ${error.message}`)
