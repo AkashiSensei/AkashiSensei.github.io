@@ -35,8 +35,8 @@ const lifecycleStatusClassName = {
     "border-zinc-300/70 bg-zinc-100/80 text-zinc-700 dark:border-zinc-300/25 dark:bg-zinc-300/10 dark:text-zinc-200",
 } satisfies Record<Project["lifecycleStatus"], string>
 
-const defaultTagClassName =
-  "border-white/45 bg-white/25 text-foreground/60 dark:border-white/10 dark:bg-white/[0.04] dark:text-foreground/70"
+const detailTagClassName =
+  "border-white/55 bg-white/55 text-foreground/75 shadow-sm shadow-black/5 backdrop-blur-md dark:border-white/20 dark:bg-white/12 dark:text-foreground/85 dark:shadow-black/20"
 
 const detailSectionClassName = "px-2 sm:px-4"
 
@@ -279,29 +279,27 @@ export function ProjectDetailPage({
               </GlassPanel>
             ) : null}
 
-            <GlassPanel className="flex flex-col p-4">
-              <div className="flex flex-wrap gap-1.5">
-                {project.tags.map((tag, tagIndex) => {
-                  const isCourseProjectTimeTag =
-                    translationNamespace === "courseProjects" && tagIndex < 2
-                  const tagLabel = isCourseProjectTimeTag
-                    ? t(`semesterTags.${tag}`, { defaultValue: tag })
-                    : tag
+            <div className="flex flex-wrap gap-1.5 px-1 py-1">
+              {project.tags.map((tag, tagIndex) => {
+                const isCourseProjectTimeTag =
+                  translationNamespace === "courseProjects" && tagIndex < 2
+                const tagLabel = isCourseProjectTimeTag
+                  ? t(`semesterTags.${tag}`, { defaultValue: tag })
+                  : tag
 
-                  return (
-                    <span
-                      key={tag}
-                      className={cn(
-                        "rounded-full border px-2.5 py-1 text-xs font-semibold",
-                        defaultTagClassName,
-                      )}
-                    >
-                      {tagLabel}
-                    </span>
-                  )
-                })}
-              </div>
-            </GlassPanel>
+                return (
+                  <span
+                    key={tag}
+                    className={cn(
+                      "rounded-full border px-2.5 py-1 text-xs font-semibold",
+                      detailTagClassName,
+                    )}
+                  >
+                    {tagLabel}
+                  </span>
+                )
+              })}
+            </div>
           </aside>
         </div>
       </article>

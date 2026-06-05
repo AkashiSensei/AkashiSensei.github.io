@@ -13,6 +13,7 @@
 
 ## History
 
+- 2026-06-05 | [Archived: Knowledge module](archive/20260605_Knowledge-module.md) | Added the Knowledge module with curated repo-backed entries, listing/detail routes, WebP galleries, resume highlights, build-time GitHub stats, dynamic update months, and unified detail tag styling.
 - 2026-06-04 | [Archived: Entry detail pages and card density](archive/20260604_Entry-detail-pages-and-card-density.md) | Added project/course/tool detail routes, moved non-workbench bullets into detail pages, and polished responsive detail layouts with desktop image walls and large-image previews.
 - 2026-06-03 | [Archived: Image preview thumbnail sync](archive/20260603_Image-preview-thumbnail-sync.md) | Added synchronized large-image thumbnail previews for projects, course projects, and tools; tuned preview/card layout, compact homepage cards, image assets, bilingual copy, and responsive breakpoint guidance.
 - 2026-06-03 | [Archived: Route homepage/resume React Router](archive/20260603_Route-homepage-resume-react-router.md) | Split friend-facing `/` from interviewer-facing `/resume`, migrated routing to React Router, added history-aware module back buttons, and polished homepage/resume copy.

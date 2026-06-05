@@ -1,0 +1,79 @@
+{
+  "title": "知识沉淀",
+  "subtitle": "我把博客文章、工程洞见、论文阅读和 AI 行业观察沉淀成可回看、可链接、可继续生长的公开材料。",
+  "viewAll": "查看全部",
+  "viewAllTitle": "全部知识沉淀",
+  "viewAllDescription": "浏览博客、论文笔记、工程洞见与 AI 行业摘要。",
+  "repoLabel": "仓库",
+  "updatedLabel": "更新",
+  "openRepository": "打开仓库",
+  "details": {
+    "viewDetails": "查看详情"
+  },
+  "imagePreview": {
+    "open": "打开大图预览：{{image}}",
+    "title": "知识沉淀图片预览"
+  },
+  "kinds": {
+    "blog": "博客文稿",
+    "paperVault": "论文库",
+    "digest": "行业摘要",
+    "insights": "工程洞见"
+  },
+  "items": {
+    "blob-article": {
+      "title": "个人博客文稿存档",
+      "summary": "面向 AI 生产力、云原生与 AI 基础设施、工程实践等主题的博客文稿仓库。它更像是长期公开写作的底稿库：文章有中英文版本、配套图片和按主题组织的目录，方便把零散经验整理成可分享的材料。",
+      "points": [
+        "按主题组织文章目录，把 AI 生产力、工程实践、云原生与 AI Infra 等方向分成可持续扩展的内容域。",
+        "为文章保留中英文版本和配图素材，方便从个人草稿演进到博客、知乎或其它公开发布渠道。",
+        "把工具使用、工程判断和踩坑经验写成可引用材料，而不是只停留在一次性的聊天或项目评论里。"
+      ],
+      "images": {
+        "aiReview": "AI Review 文章归档截图",
+        "cliThinking": "CLI 问题与思考文章归档截图",
+        "zhihuPublish": "知乎发布页截图"
+      }
+    },
+    "paper-vault": {
+      "title": "Paper Vault",
+      "summary": "一个 Obsidian 风格的论文阅读知识库，用于保存论文笔记、文献索引和 AI 辅助科研工作流。它把论文、主题、方法、场景、数据集和会议分开索引，适合持续积累系统、LLM、长上下文与 GPU 内存优化等方向的研究线索。",
+      "points": [
+        "用论文、主题、方法、场景、数据集、会议等多维索引组织阅读材料，让新论文能挂到已有知识网络里。",
+        "沉淀 AI 辅助论文导读和 ingest skill，把论文阅读从临时总结变成可重复的工作流。",
+        "重点积累系统、LLM、长上下文、Token Sparsity、GPU 内存优化等方向的研究线索。"
+      ],
+      "images": {
+        "paperGuide": "论文导读笔记截图",
+        "paperSkill": "创建论文导读 Skill 截图",
+        "indexes": "多维度论文索引截图"
+      }
+    },
+    "ai-builders-digest": {
+      "title": "AI Builders Digest",
+      "summary": "持续整理 AI builders 的想法、产品动作和行业信号，输出 daily / weekly digest，并维护中文、英文和双语版本。它不是新闻堆叠，而是把高频信息流压缩成可回顾的观察材料。",
+      "points": [
+        "持续跟踪 AI builders 在社交媒体、播客和产品发布中的信号，整理成 daily / weekly digest。",
+        "维护中文、英文和双语版本，让同一份观察材料既能快速阅读，也能服务跨语言分享。",
+        "关注想法、产品动作和趋势变化，而不是只记录单条新闻。"
+      ],
+      "images": {
+        "index": "AI Builders Digest 摘要索引截图",
+        "daily": "AI Builders Digest 日报截图"
+      }
+    },
+    "crater-insights": {
+      "title": "Crater 工程洞见",
+      "summary": "围绕 RAIDS Lab Crater 项目的个人理解、架构判断和工程洞见。内容覆盖可访问性、AI 集成、CLI 设计、基础设施、作业管理、资源监控等专题，是把真实平台开发中的隐性理解写出来的笔记库。",
+      "points": [
+        "把 Crater 平台开发中的架构判断、交互问题和工程权衡写成专题笔记，降低复杂项目的隐性知识成本。",
+        "覆盖可访问性、AI 集成、CLI 设计、基础设施、作业管理、资源监控等多个平台工程主题。",
+        "用流程图和结构化文档解释真实系统中的认证、组件嵌套、资源监控等具体问题。"
+      ],
+      "images": {
+        "frontendNesting": "Crater 前端组件嵌套笔记截图",
+        "authFlow": "Crater 认证流程图截图"
+      }
+    }
+  }
+}

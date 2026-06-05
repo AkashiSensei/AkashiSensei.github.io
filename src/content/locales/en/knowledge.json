@@ -1,0 +1,79 @@
+{
+  "title": "Knowledge",
+  "subtitle": "Public writing, engineering notes, paper-reading records, and AI industry observations that I can revisit, link to, and keep growing.",
+  "viewAll": "View All",
+  "viewAllTitle": "All Knowledge Notes",
+  "viewAllDescription": "Browse blogs, paper notes, engineering insights, and AI industry digests.",
+  "repoLabel": "Repository",
+  "updatedLabel": "Updated",
+  "openRepository": "Open Repository",
+  "details": {
+    "viewDetails": "View Details"
+  },
+  "imagePreview": {
+    "open": "Open large image preview: {{image}}",
+    "title": "Knowledge image preview"
+  },
+  "kinds": {
+    "blog": "Blog Drafts",
+    "paperVault": "Paper Vault",
+    "digest": "Industry Digest",
+    "insights": "Engineering Insights"
+  },
+  "items": {
+    "blob-article": {
+      "title": "Personal Blog Archive",
+      "summary": "A blog draft archive for AI productivity, cloud-native AI infrastructure, and engineering practice. It works as a long-running public writing base, with bilingual drafts, images, and topic-based organization that turn scattered experience into shareable material.",
+      "points": [
+        "Organizes writing by topic, including AI productivity, engineering practice, and cloud-native AI infrastructure.",
+        "Keeps bilingual drafts and image assets so personal notes can grow into blog posts, Zhihu articles, or other public writing.",
+        "Turns tool usage, engineering judgment, and debugging experience into reusable references instead of one-off conversations."
+      ],
+      "images": {
+        "aiReview": "AI review article archive screenshot",
+        "cliThinking": "CLI thinking article archive screenshot",
+        "zhihuPublish": "Zhihu publishing page screenshot"
+      }
+    },
+    "paper-vault": {
+      "title": "Paper Vault",
+      "summary": "An Obsidian-style paper-reading knowledge base for paper notes, literature indexes, and AI-assisted research workflows. It separates papers, topics, methods, scenarios, datasets, and venues, making it easier to keep accumulating research threads around systems, LLMs, long context, and GPU memory optimization.",
+      "points": [
+        "Indexes papers by topics, methods, scenarios, datasets, and venues so each new note can connect to the existing knowledge graph.",
+        "Captures AI-assisted paper-reading and ingest skills, turning paper reading into a repeatable workflow.",
+        "Focuses on systems, LLMs, long context, token sparsity, and GPU memory optimization."
+      ],
+      "images": {
+        "paperGuide": "Paper guide note screenshot",
+        "paperSkill": "Paper ingest skill screenshot",
+        "indexes": "Multidimensional paper indexes screenshot"
+      }
+    },
+    "ai-builders-digest": {
+      "title": "AI Builders Digest",
+      "summary": "A daily and weekly digest of ideas, product moves, and signals from AI builders, maintained in Chinese, English, and bilingual versions. Rather than stacking news items, it compresses a high-frequency information stream into material that can be reviewed later.",
+      "points": [
+        "Tracks signals from AI builders across social media, podcasts, and product releases, then packages them into daily and weekly digests.",
+        "Maintains Chinese, English, and bilingual versions for both quick reading and cross-language sharing.",
+        "Focuses on ideas, product moves, and trend shifts rather than isolated news items."
+      ],
+      "images": {
+        "index": "AI Builders Digest index screenshot",
+        "daily": "AI Builders Digest daily screenshot"
+      }
+    },
+    "crater-insights": {
+      "title": "Crater Engineering Insights",
+      "summary": "A note base for my personal understanding, architectural judgment, and engineering insights around the RAIDS Lab Crater project. It covers accessibility, AI integration, CLI design, infrastructure, job management, and resource monitoring.",
+      "points": [
+        "Externalizes architecture judgment, interaction issues, and engineering trade-offs from Crater platform development.",
+        "Covers accessibility, AI integration, CLI design, infrastructure, job management, and resource monitoring.",
+        "Uses diagrams and structured notes to explain concrete system issues such as authentication flow, component nesting, and monitoring."
+      ],
+      "images": {
+        "frontendNesting": "Crater frontend component nesting note screenshot",
+        "authFlow": "Crater authentication flow diagram screenshot"
+      }
+    }
+  }
+}
