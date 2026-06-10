@@ -2,66 +2,124 @@ import { ArrowRight } from "lucide-react"
 import { useTranslation } from "react-i18next"
 
 import { AppLink } from "@/components/AppLink"
-import { GlassPanel } from "@/components/GlassPanel"
-import { SmallToolCard } from "@/components/SmallToolCard"
-import { featuredSmallTools } from "@/data/tools"
+import { featuredSmallTools, type SmallTool } from "@/data/tools"
 import { cn } from "@/lib/utils"
+
+const roleToneClassName = {
+  author: "text-emerald-700 dark:text-emerald-200",
+  contributor: "text-sky-700 dark:text-sky-200",
+} satisfies Record<SmallTool["role"], string>
 
 export function SmallToolHighlights() {
   const { t } = useTranslation("tools")
+  const tags = t("tags", { returnObjects: true }) as string[]
+  const desktopToolColumns = [
+    featuredSmallTools.filter((_, index) => index % 2 === 0),
+    featuredSmallTools.filter((_, index) => index % 2 === 1),
+  ]
 
   if (featuredSmallTools.length === 0) {
     return null
   }
 
   return (
-    <section id="tools" className="flex w-full max-w-5xl flex-col gap-3 pt-2 sm:pt-4">
-      <div className="flex flex-col gap-1.5 px-2 sm:px-4">
-        <AppLink to="/tools" className="group flex w-fit items-center gap-2">
-          <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
+    <section
+      id="tools"
+      className="grid min-h-[calc(100svh-8rem)] w-full items-center gap-8 py-10 sm:py-12 lg:grid-cols-[minmax(14rem,0.72fr)_minmax(0,1.28fr)] lg:gap-12 xl:gap-16"
+    >
+      <div className="flex max-w-xl flex-col gap-4 px-2 sm:px-3 md:px-4 lg:self-start lg:pt-[22svh] xl:pt-[21svh]">
+        <div className="flex flex-col gap-2">
+          <p className="text-[0.6875rem] font-normal uppercase tracking-[0.22em] text-tone-5">
+            Utility
+          </p>
+          <h2 className="text-3xl font-normal leading-none tracking-tight text-tone-1 md:text-4xl">
             {t("title")}
           </h2>
-          <ArrowRight className="h-8 w-8 text-foreground/40 transition-all duration-300 group-hover:translate-x-1 group-hover:text-foreground/80 md:h-10 md:w-10" />
+          <p className="max-w-md text-sm leading-relaxed text-tone-3 sm:text-base">
+            {t("subtitle")}
+          </p>
+          <p className="max-w-md text-sm leading-relaxed text-tone-4 sm:text-base">
+            {t("description")}
+          </p>
+          <div className="flex max-w-md flex-wrap gap-2 pt-1">
+            {tags.map((tag) => (
+              <span
+                key={tag}
+                className="rounded-full border border-tone-4/35 bg-surface/35 px-2.5 py-1 text-[0.75rem] font-normal leading-none text-tone-3 backdrop-blur-sm dark:bg-surface/20"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        <AppLink
+          to="/tools"
+          className="group inline-flex w-fit items-center gap-1.5 text-[0.9375rem] font-normal leading-none text-tone-2 transition-colors hover:text-tone-1 sm:text-[1.0625rem]"
+        >
+          <span>{t("viewAll")}</span>
+          <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 sm:h-[1.125rem] sm:w-[1.125rem]" />
         </AppLink>
-        <p className="text-sm leading-relaxed text-foreground/80 dark:text-foreground/90 sm:text-base">
-          {t("subtitle")}
-        </p>
       </div>
 
-      <div className="relative left-1/2 flex w-screen -translate-x-1/2 snap-x snap-mandatory gap-3 overflow-x-auto px-6 pb-2 scroll-px-6 sm:px-[max(1.5rem,calc((100vw-64rem)/2+1rem))] sm:scroll-px-[max(1.5rem,calc((100vw-64rem)/2+1rem))]">
+      <div className="grid items-start gap-y-7 md:hidden">
         {featuredSmallTools.map((tool) => (
-          <SmallToolCard
-            key={tool.id}
-            tool={tool}
-            variant="compact"
-            className="w-[calc(100vw-3rem)] shrink-0 snap-start sm:w-[min(calc((100vw-3rem-0.75rem)/2),calc((64rem-2rem-0.75rem)/2))]"
-          />
+          <SmallToolLineItem key={tool.id} tool={tool} />
         ))}
-        <ViewAllCard className="w-44 shrink-0 snap-start" />
+      </div>
+
+      <div className="hidden items-start gap-x-8 md:grid md:grid-cols-2 xl:gap-x-12">
+        {desktopToolColumns.map((column, columnIndex) => (
+          <div key={columnIndex} className="flex flex-col gap-10">
+            {column.map((tool) => (
+              <SmallToolLineItem key={tool.id} tool={tool} />
+            ))}
+          </div>
+        ))}
       </div>
     </section>
   )
 }
 
-function ViewAllCard({ className }: { className?: string }) {
-  const { t } = useTranslation("tools")
+function SmallToolLineItem({ tool }: { tool: SmallTool }) {
+  const { t } = useTranslation(["tools", "common"])
+  const detailPath = `/tools/${tool.id}`
+  const statusLabel = tool.status ? t(`labels.${tool.status}`) : null
 
   return (
-    <AppLink to="/tools" className={cn("block h-full group", className)} aria-label={t("viewAllTitle")}>
-      <GlassPanel className="flex h-full max-h-[32rem] flex-col items-start gap-4 p-4 transition-colors hover:bg-white/55 dark:hover:bg-white/10">
-        <div className="flex flex-col gap-3">
-          <span className="text-sm font-semibold text-foreground/60 dark:text-foreground/70">
-            {t("viewAll")}
-          </span>
-          <h3 className="text-xl font-bold leading-snug text-foreground/90">
-            {t("viewAllTitle")}
+    <article className="grid grid-cols-[3px_minmax(0,1fr)] gap-4">
+      <div className="h-full bg-tone-4 dark:bg-tone-3" aria-hidden="true" />
+      <div className="flex min-w-0 flex-col gap-3">
+        <div className="flex min-w-0 flex-col gap-1.5">
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[0.75rem] leading-none">
+            <span className={cn("font-normal", roleToneClassName[tool.role])}>
+              {t(`labels.${tool.role}`)}
+            </span>
+            {statusLabel ? <span className="text-tone-5">{statusLabel}</span> : null}
+            {tool.archived ? (
+              <span className="text-tone-5">{t("labels.archived")}</span>
+            ) : null}
+          </div>
+
+          <h3 className="text-lg font-normal leading-tight tracking-tight text-tone-1 sm:text-xl">
+            <AppLink to={detailPath} className="transition-colors hover:text-tone-1">
+              {t(`items.${tool.id}.title`)}
+            </AppLink>
           </h3>
-          <p className="text-sm leading-relaxed text-foreground/75 dark:text-foreground/85">
-            {t("viewAllDescription")}
-          </p>
         </div>
-        <ArrowRight className="h-7 w-7 text-foreground/40 group-hover:text-foreground/80 group-hover:translate-x-1 transition-all duration-300" />
-      </GlassPanel>
-    </AppLink>
+
+        <p className="text-[0.8125rem] font-normal leading-relaxed text-tone-4 sm:text-[0.875rem]">
+          {t(`items.${tool.id}.summary`)}
+        </p>
+
+        <AppLink
+          to={detailPath}
+          className="group/detail inline-flex w-fit items-center gap-1.5 text-sm font-normal text-tone-2 transition-colors hover:text-tone-1"
+        >
+          {t("common:details.viewDetails")}
+          <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover/detail:translate-x-0.5" />
+        </AppLink>
+      </div>
+    </article>
   )
 }

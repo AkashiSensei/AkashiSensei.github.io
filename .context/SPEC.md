@@ -37,16 +37,73 @@ Personal public site with two distinct presentation surfaces: the root homepage 
   - **UI chrome** (nav, buttons, generic labels): as copy volume grows, split i18n into **multiple namespaces or files by concern** (e.g. `common`, `nav`, `home`) instead of one monolithic file per language—reduces merge conflicts and clarifies ownership.
   - **Per-entity copy** (titles, summaries, captions, multi-line descriptions): keep it addressable by stable entity `id`. Prefer id-derived translation keys or parallel locale records keyed by the same `id` instead of hand-maintaining per-entry key strings in structured data; **pick one pattern per module** and keep it consistent.
 
-## 3. Design & UI
+## 3. Page Design Requirements
 
-- Visual: Minimal, content-first; light/dark themes; subtle multi-color gradients; frosted-glass surfaces (glassmorphism)—Liquid Glass–inspired tone only, no literal liquid-glass effects
-- Styling: Tailwind CSS
-- Component approach: **shadcn/ui**—copy-in components the project owns, built on Radix UI primitives; customize tokens and classes for the glass look. Not a from-scratch design system in v1
-- Avoid building complex widgets by hand; use shadcn/Radix for accessibility on used primitives only
-- **Scope**: Presentation and navigation only—cards, tags, buttons, links, layout shell, theme toggle, locale switcher, list/gallery containers. **No** complex forms or heavy interactive flows in v1
-- Mobile-first: mobile experience **prioritizes** over desktop. **CRITICAL**: Developers must test and verify all layouts on narrow screens (down to 320px) before considering desktop complete. No horizontal overflow or cut-off interactive elements are allowed.
-- **Responsive breakpoint semantics for card layouts**: For current content-card pages, treat a viewport as "narrow/mobile" when the card grid can only fit one card per row. The canonical narrow-to-wide breakpoint is **768px (`md`)**: below 768px use one-card/mobile behavior; at 768px and above, the card grid can fit two cards per row and interaction sizing / preview affordances should treat the viewport as "wide". Do not use `sm` (640px) as the wide-card threshold. Do not reserve larger preview surfaces only for traditional desktop breakpoints; image previews should generally use the available viewport width with modest margins and a large max width only to protect ultra-wide displays.
+This section is the standing brief for future page design work. When modifying or adding pages, apply these requirements without asking the user to restate them.
+
+### 3.1 Design intent & quality bar
+
+- The site must stay content-first, readable, public-safe, and visually designed rather than template-like. It should feel suitable for friends, open-source peers, and interviewers.
+- Mobile quality is not secondary. All page designs must work down to 320px before desktop polish is considered complete.
+- The interface should provide strong design character across common screens: phones, ordinary landscape desktops/laptops, and portrait / high-narrow desktop workspaces. Unusual very-wide screens must remain coherent and attractive.
+- Avoid generic AI-design fingerprints: purple/blue glow defaults, decorative gradient blobs, excessive glass cards, symmetrical three-card rows, indistinct pill-heavy UI, and visuals that only look good on one desktop viewport.
+- Prefer deliberate typography, controlled reading widths, coherent spacing, one consistent accent system, clear hierarchy, and layout decisions that reflect the page's content rather than generic decoration.
+- Typography should be restrained by default. Unless the user explicitly asks for emphasis, avoid bold / heavy font weights for ordinary section titles, card titles, descriptions, and metadata. Prefer normal or medium weights with spacing, position, color, and scale providing hierarchy.
+- Font sizes should generally be conservative and slightly smaller rather than oversized. Large display type is reserved for true hero moments; section titles, cards, descriptions, tags, metadata, and overlays should use compact, readable sizes that do not dominate the page.
+- Border radius should also be conservative. Avoid large, soft, app-store-like rounded cards unless explicitly requested; ordinary cards, image frames, panels, and overlays should prefer modest radii that feel precise and editorial.
+
+### 3.2 Technical UI foundation
+
+- Styling: Tailwind CSS.
+- Component approach: **shadcn/ui** copy-in components owned by the project, built on Radix UI primitives. Avoid building complex accessible widgets by hand when shadcn/Radix primitives fit.
+- UI scope: presentation and navigation only--cards, tags, buttons, links, layout shell, theme toggle, locale switcher, list/gallery containers. No complex forms or heavy interactive flows in v1.
+- Light/dark theme and locale support remain first-class. Visual changes must not break theme, locale, content data, route contracts, or i18n key ownership.
 - Image assets used by site UI/content cards should be converted to **WebP** before being referenced from data or components. Keep source screenshots/photos out of runtime paths unless there is a specific reason WebP is unsuitable.
+- When adding or replacing image assets, review whether the image is overly white or overly bright, especially screenshots with large white backgrounds. Mark such image metadata with `brightness: "high"` so dark mode applies the standard maximum-brightness overlay. Do not rely on dark mode alone to make bright screenshots comfortable.
+
+### 3.3 Current design evolution
+
+- The current frosted-glass visual system is the only active site style for now. Improve it in place rather than introducing a new style family.
+- Do not add user-facing style switching, design-style persistence, or a design-variant registry in the current phase.
+- Future design variants may be reconsidered later, but they are explicitly out of scope until the current design is cleaner, more stable, and better adapted to common screen shapes.
+- Design work should focus on the existing layout system: typography, spacing, card/list composition, navigation ergonomics, image treatment, section rhythm, and responsive behavior.
+- Special visual effects, including `metal-fx`, are not part of the current design direction unless a future task explicitly reintroduces them.
+
+### 3.4 Viewport profiles & responsive composition
+
+- Manage viewport behavior through centralized named profiles that consider both width and orientation / aspect ratio:
+  - **Mobile**: 320px-767px. Touch-first, single-column reading, stable bottom-safe controls, generous tap targets, no horizontal overflow.
+  - **Standard portrait / tall workspace**: 768px-1599px with portrait or high-narrow proportions. Prioritize readable line lengths, stacked or restrained two-column layouts, and avoid forcing landscape-first compositions into a tall viewport.
+  - **Standard landscape**: 768px-1599px with landscape proportions. This is the primary ordinary desktop/laptop/tablet-landscape profile; support richer composition while keeping text widths controlled.
+  - **Wide desktop**: 1600px and above, especially large landscape browser windows and high-resolution external displays, including 2400px+ widths. Use additional horizontal space for richer composition, side metadata, image walls, asymmetric grids, and stronger editorial rhythm without stretching text lines.
+- Current design revisions must define how each viewport profile changes shell spacing, navigation placement, section rhythm, card/list density, image/gallery treatment, maximum reading width, and full-screen section behavior.
+- Full-screen or page-snapping composition is allowed only when width, height, and aspect ratio support it. In portrait / tall workspaces, prefer natural multi-section scrolling over forcing one landscape-composed section to occupy the entire screen.
+- Responsive breakpoint semantics for current content-card pages: treat a viewport as "narrow/mobile" when the card grid can only fit one card per row. The canonical narrow-to-wide breakpoint is **768px (`md`)**: below 768px use one-card/mobile behavior; at 768px and above, card grids may fit two cards per row. Do not use `sm` (640px) as the wide-card threshold.
+- A page is not visually complete until mobile, standard landscape, and standard portrait / tall workspace profiles feel excellent, and less common large-width / unusual-ratio profiles still remain readable, coherent, and visually intentional.
+
+### 3.5 Content, copy & layout rhythm
+
+- Keep structured data separate from UI presentation. Layout changes should reuse the same content entities and i18n structures rather than duplicating page-specific content.
+- When a redesigned layout needs additional text to make hierarchy, rhythm, or composition work, draft realistic placeholder copy rather than using lorem ipsum or empty boxes. Such copy should live in the existing i18n/content structure and be suitable for the user to hand-edit or keep after review.
+- Summary cards should stay scannable. Richer narrative, long bullet lists, galleries, metadata, and relations belong on detail pages unless the module explicitly calls for overview bullets, such as 工作台.
+- Detail pages should use page-level composition rather than wrapping the entire entry in one oversized card. Prefer an unframed hero/header, constrained narrative sections, metadata/link clusters, and image/gallery bands.
+
+### 3.6 Text contrast scale
+
+Use a centralized five-level text contrast scale for ordinary page typography instead of choosing independent `foreground` opacity values in each component. The user may refer to these levels directly as “一级 / 二级 / 三级 / 四级 / 五级文字对比度”.
+
+| Level | Intended use |
+|-------|--------------|
+| 1 | Highest contrast. Primary hero text, page titles, key active states, and the most important readable text. |
+| 2 | Strong regular text. Section titles, important body copy, prominent links, and card titles. |
+| 3 | Secondary text. Supporting descriptions, subtitles, and readable explanatory copy. |
+| 4 | Low-emphasis text. Metadata, captions, secondary descriptions, helper text, and de-emphasized labels. |
+| 5 | Lowest contrast. Decorative labels, tiny eyebrow text, inactive hints, and ambient metadata only. Do not use for essential body copy. |
+
+- Implementation tokens/classes should be named `text-tone-1` through `text-tone-5`, ordered from highest to lowest contrast. New or edited components should use these classes for normal foreground text instead of ad hoc values such as `text-foreground/70`.
+- The scale must be theme-aware. Light and dark modes may use different underlying opacity/lightness values, but level meaning and relative order must stay stable.
+- Levels 4 and 5 are not safe defaults for important content, small text on busy images, or text inside low-contrast glass surfaces. Use level 1-3, or a local overlay-specific text system, whenever readability is at risk.
+- Image overlays may use local white/black text treatment when needed, but their hierarchy should still map conceptually to the same five levels.
 
 ## 4. Internationalization
 
@@ -109,4 +166,5 @@ Each module may have a listing page with **list** or **gallery** view modes.
 ## 7. Legal & Compliance
 
 - Privacy: No unnecessary tracking; minimize personal data collection
+- Persistent project docs and UI copy must not record machine-specific local paths to AI skills, tools, or private workstation resources. Refer to process tools by generic names only when relevant.
 - Accessibility: Readable, navigable layouts across common viewport sizes

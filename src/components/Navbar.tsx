@@ -63,8 +63,8 @@ export function Navbar() {
   };
 
   return (
-    <div ref={navRef} className="fixed bottom-5 sm:bottom-6 md:bottom-auto md:top-4 inset-x-5 sm:inset-x-6 md:inset-x-4 max-w-5xl mx-auto z-50">
-      <nav className="relative flex items-center justify-between px-5 py-3.5 md:px-6 md:py-3 rounded-full bg-white/40 dark:bg-white/10 backdrop-blur-md border border-white/40 dark:border-white/10 shadow-sm transition-all duration-300 z-50">
+    <div ref={navRef} className="fixed bottom-5 inset-x-5 z-50 mx-auto max-w-5xl sm:bottom-6 sm:inset-x-6 md:bottom-auto md:top-4 md:inset-x-56 md:mx-0 md:max-w-none">
+      <nav className="lit-glass-card relative z-50 flex items-center justify-between rounded-full border border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.42)] px-5 py-3.5 shadow-sm backdrop-blur-md transition-all duration-300 dark:border-white/10 dark:bg-white/10 md:px-6 md:py-3">
         <div className="flex items-center gap-2 sm:gap-4">
           <AppLink
             to="/"
@@ -72,7 +72,7 @@ export function Navbar() {
           >
             {t("site.displayName")}
           </AppLink>
-          <div className="hidden md:flex items-center gap-6 ml-6 text-sm font-medium text-foreground/80">
+          <div className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-6 text-sm font-medium text-foreground/80 md:flex">
             {navLinks.map((link, idx) => (
               <span key={idx}>
                 {renderNavLink(link.href, link.label, "hover:text-foreground transition-colors")}
@@ -120,7 +120,7 @@ export function Navbar() {
 
       {/* 移动端下拉菜单 */}
       {mobileMenuOpen && (
-        <div className="md:hidden absolute bottom-full left-0 right-0 mb-2 p-3 rounded-3xl bg-white/40 dark:bg-white/10 backdrop-blur-md border border-white/40 dark:border-white/10 shadow-sm transition-all duration-300 origin-bottom">
+        <div className="lit-glass-card absolute bottom-full left-0 right-0 mb-2 origin-bottom rounded-3xl border border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.42)] p-3 shadow-sm backdrop-blur-md transition-all duration-300 dark:border-white/10 dark:bg-white/10 md:hidden">
           <div className="flex flex-col gap-1 text-sm font-medium">
             {navLinks.map((link, idx) => (
               <span key={idx} className="block">

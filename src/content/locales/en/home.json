@@ -2,17 +2,5 @@
   "title": "Hi, I'm $t(common:site.displayName)",
   "subtitleTranslation": "It's Akashi's turn now.",
   "description": "Thank you for visiting.\nI hope you may become my teacher or friend.\n\nFor projects, experience, and how I work, please see my online resume.\n\nThis site is still under construction. Some content may be incomplete or incorrect. Thank you for understanding.",
-  "resumeCta": "View Online Resume",
-  "contact": "Contact Me",
-  "github": "Profile",
-  "resume": {
-    "title": "Hi, I'm $t(common:site.displayName)",
-    "description": "I'm a software engineering master's student who loves open source and sharing what I build.\nI'm growing into an engineer who ships products with better user experiences.\nI'm especially interested in AI infrastructure and agent-based systems, and actively exploring both."
-  },
-  "contactDialog": {
-    "title": "Contact Details",
-    "description": "You can reach me through the following public channels:",
-    "privacyNote": "To reduce spam, I don't list my primary day-to-day contacts here. The public channels shown above can still reach me—thanks for your understanding.",
-    "email": "Email"
-  }
+  "resumeCta": "View Online Resume"
 }

@@ -1,9 +1,10 @@
 {
   "title": "课设",
-  "subtitle": "课程设计、课程实验、团队大作业与本科毕设项目。它们记录了我在不同阶段把课程要求转化为可运行系统、实验代码和工程文档的过程。",
-  "viewAll": "查看全部",
+  "subtitle": "课程设计、实验与大作业。",
+  "reflection": "虽然这些课设现在看起来可能有些基础和幼稚，但也见证了我的认真和付出。\n我通过它们学到了很多基础知识，也从中打下了扎实的基础，这是我继续在复杂领域深耕的底气和信心。",
+  "viewAll": "查看全部课程设计",
   "viewAllTitle": "所有课设",
-  "viewAllDescription": "按时间倒序浏览课程项目、实验仓库与团队作业。",
+  "viewAllDescription": "按时间浏览课程项目。",
   "repoLabel": "仓库",
   "morePoints": "还有 {{count}} 条亮点",
   "status": {
@@ -134,8 +135,8 @@
       ]
     },
     "kernel-analysis-thesis": {
-      "title": "面向智能计算任务的细粒度性能分析技术研究与实现",
-      "summary": "北航软件工程本科毕业设计项目。",
+      "title": "本科毕业设计",
+      "summary": "《面向智能计算任务的细粒度性能分析技术研究与实现》，北航软件工程本科毕业设计项目。",
       "images": {
         "architectureWorkflow": "系统架构与流程图",
         "backgroundSignificance": "课题背景与意义",

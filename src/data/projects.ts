@@ -1,3 +1,5 @@
+import { type ImageBrightness } from "@/lib/image-brightness"
+
 export type ProjectStatus = "active" | "early" | "private" | "public"
 export type ProjectLifecycleStatus = "starting" | "ongoing" | "completed"
 export type ProjectRepoTag =
@@ -21,6 +23,7 @@ export type ProjectImage = {
   altKey: string
   width: number
   height: number
+  brightness?: ImageBrightness
 }
 
 export type Project = {
@@ -40,6 +43,7 @@ export type Project = {
   screenshot?: {
     src: string
     altKey: string
+    brightness?: ImageBrightness
   }
 }
 
@@ -146,18 +150,21 @@ export const projects: Project[] = [
         altKey: "items.npu-computing-forecast.images.predictorInterface",
         width: 1280,
         height: 780,
+        brightness: "high",
       },
       {
         src: "/assets/projects/npu-computing-forecast/cpu-metrics-comparison.webp",
         altKey: "items.npu-computing-forecast.images.cpuMetricsComparison",
         width: 1280,
         height: 942,
+        brightness: "high",
       },
       {
         src: "/assets/projects/npu-computing-forecast/qwen-inference-resource-usage.webp",
         altKey: "items.npu-computing-forecast.images.qwenInferenceResourceUsage",
         width: 1280,
         height: 1064,
+        brightness: "high",
       },
     ],
   },
@@ -178,6 +185,7 @@ export const projects: Project[] = [
         altKey: "items.crater-cli.images.cliArchitecture",
         width: 1672,
         height: 941,
+        brightness: "high",
       },
       {
         src: "/assets/projects/crater-cli/arrange-skill.webp",
@@ -229,48 +237,56 @@ export const projects: Project[] = [
         altKey: "items.model-requirements-evaluator.images.decisionSupportCharts",
         width: 720,
         height: 443,
+        brightness: "high",
       },
       {
         src: "/assets/projects/model-requirements-evaluator/gpu-management.webp",
         altKey: "items.model-requirements-evaluator.images.gpuManagement",
         width: 720,
         height: 443,
+        brightness: "high",
       },
       {
         src: "/assets/projects/model-requirements-evaluator/model-management.webp",
         altKey: "items.model-requirements-evaluator.images.modelManagement",
         width: 720,
         height: 443,
+        brightness: "high",
       },
       {
         src: "/assets/projects/model-requirements-evaluator/multidimensional-user-input.webp",
         altKey: "items.model-requirements-evaluator.images.multidimensionalUserInput",
         width: 720,
         height: 443,
+        brightness: "high",
       },
       {
         src: "/assets/projects/model-requirements-evaluator/result-tabs-memory-breakdown.webp",
         altKey: "items.model-requirements-evaluator.images.resultTabsMemoryBreakdown",
         width: 720,
         height: 443,
+        brightness: "high",
       },
       {
         src: "/assets/projects/model-requirements-evaluator/latency-breakdown.webp",
         altKey: "items.model-requirements-evaluator.images.latencyBreakdown",
         width: 720,
         height: 443,
+        brightness: "high",
       },
       {
         src: "/assets/projects/model-requirements-evaluator/model-architecture.webp",
         altKey: "items.model-requirements-evaluator.images.modelArchitecture",
         width: 5028,
         height: 2134,
+        brightness: "high",
       },
       {
         src: "/assets/projects/model-requirements-evaluator/partial-data.webp",
         altKey: "items.model-requirements-evaluator.images.partialData",
         width: 5104,
         height: 1958,
+        brightness: "high",
       },
     ],
   },

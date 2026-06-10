@@ -30,8 +30,83 @@ const pageTitles: Record<string, string> = {
   "/knowledge": "Akashi - Knowledge",
 }
 
+const backgroundImageAspectRatio = 1672 / 941
+const backgroundScrollScale = 1.14
+
 function RouteEffects() {
   const { pathname } = useLocation()
+
+  useEffect(() => {
+    const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)")
+    let frameId: number | undefined
+
+    const updateBackgroundOffset = () => {
+      const maxScrollY = Math.max(
+        0,
+        document.documentElement.scrollHeight - window.innerHeight,
+      )
+      const scrollProgress = maxScrollY > 0
+        ? Math.max(0, Math.min(1, window.scrollY / maxScrollY))
+        : 0
+      const viewportAspectRatio = window.innerWidth / window.innerHeight
+      const baseBackgroundWidth = viewportAspectRatio > backgroundImageAspectRatio
+        ? window.innerWidth
+        : window.innerHeight * backgroundImageAspectRatio
+      const baseBackgroundHeight = viewportAspectRatio > backgroundImageAspectRatio
+        ? window.innerWidth / backgroundImageAspectRatio
+        : window.innerHeight
+      const renderedBackgroundWidth = baseBackgroundWidth * backgroundScrollScale
+      const renderedBackgroundHeight = baseBackgroundHeight * backgroundScrollScale
+      const maxBackgroundOffset = Math.max(
+        0,
+        (renderedBackgroundHeight - window.innerHeight) / 2,
+      )
+      const offset = reducedMotionQuery.matches
+        ? 0
+        : maxBackgroundOffset - maxBackgroundOffset * 2 * scrollProgress
+
+      document.documentElement.style.setProperty(
+        "--site-background-y",
+        `${offset.toFixed(2)}px`,
+      )
+      document.documentElement.style.setProperty(
+        "--site-background-size",
+        `${renderedBackgroundWidth.toFixed(2)}px ${renderedBackgroundHeight.toFixed(2)}px`,
+      )
+      frameId = undefined
+    }
+
+    const scheduleBackgroundOffsetUpdate = () => {
+      if (frameId !== undefined) {
+        return
+      }
+
+      frameId = window.requestAnimationFrame(updateBackgroundOffset)
+    }
+
+    updateBackgroundOffset()
+    window.addEventListener("scroll", scheduleBackgroundOffsetUpdate, {
+      passive: true,
+    })
+    window.addEventListener("resize", scheduleBackgroundOffsetUpdate)
+    window.addEventListener("load", scheduleBackgroundOffsetUpdate)
+    reducedMotionQuery.addEventListener("change", scheduleBackgroundOffsetUpdate)
+
+    return () => {
+      if (frameId !== undefined) {
+        window.cancelAnimationFrame(frameId)
+      }
+      window.removeEventListener("scroll", scheduleBackgroundOffsetUpdate)
+      window.removeEventListener("resize", scheduleBackgroundOffsetUpdate)
+      window.removeEventListener("load", scheduleBackgroundOffsetUpdate)
+      reducedMotionQuery.removeEventListener(
+        "change",
+        scheduleBackgroundOffsetUpdate,
+      )
+      document.documentElement.style.removeProperty("--site-background-y")
+      document.documentElement.style.removeProperty("--site-background-size")
+    }
+  }, [])
 
   useEffect(() => {
     window.scrollTo(0, 0)

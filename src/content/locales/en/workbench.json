@@ -1,9 +1,9 @@
 {
   "title": "Workbench",
-  "subtitle": "Third-party software and workflow platforms I rely on for learning, development, creative work, and knowledge capture.",
+  "subtitle": "Software and workflows I use every day.",
   "viewAll": "View All",
   "viewAllTitle": "Full Workbench",
-  "viewAllDescription": "Browse all software groups, toolchains, and workflow setups.",
+  "viewAllDescription": "Browse software groups and workflows.",
   "morePoints": "{{count}} more points",
   "items": {
     "ai-assist": {

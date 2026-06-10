@@ -26,6 +26,12 @@
     "description": "可能是链接写错了，或者这个页面还没有公开。",
     "homeCta": "返回主页"
   },
+  "contactDialog": {
+    "title": "联系方式",
+    "description": "你可以通过以下公开渠道找到我：",
+    "privacyNote": "虽然这不是我最常用的联系方式，但上面列出的公开渠道同样可以联系到我，感谢理解。",
+    "email": "邮箱"
+  },
   "githubRepoStats": {
     "defaultBranch": "默认分支",
     "tooltip": "GitHub 数据获取于 {{time}}\nStar 数：{{stars}}\n{{branch}} 分支提交数：{{commits}}",

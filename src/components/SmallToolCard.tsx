@@ -34,7 +34,7 @@ export function SmallToolCard({
   return (
     <GlassPanel
       className={cn(
-        "flex h-full flex-col overflow-hidden transition-colors hover:bg-white/55 dark:hover:bg-white/10",
+        "flex h-full flex-col overflow-hidden transition-colors hover:bg-[rgb(var(--site-surface-rgb)_/_0.58)] dark:hover:bg-white/10",
         variant === "full" && (hasImages ? "max-h-[44rem]" : "max-h-[32rem]"),
         className,
       )}
@@ -47,6 +47,7 @@ export function SmallToolCard({
           alt={tool.screenshot.alt}
           placeholderTitle={tool.screenshot.alt}
           loadingLabel={t("common:imageLoading")}
+          brightness={tool.screenshot.brightness}
           containerClassName="aspect-[16/9] w-full"
           imageClassName="h-full w-full object-cover"
         />

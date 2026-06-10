@@ -1,9 +1,9 @@
 {
   "title": "工作台",
-  "subtitle": "我日常学习、开发、创作与整理信息时长期使用的第三方软件与工作流平台。",
+  "subtitle": "我日常使用的软件与工作流。",
   "viewAll": "查看全部",
   "viewAllTitle": "完整工作台",
-  "viewAllDescription": "展开我的长期工具链与常用工作流。",
+  "viewAllDescription": "查看工具链与常用工作流。",
   "morePoints": "还有 {{count}} 条亮点",
   "items": {
     "ai-assist": {

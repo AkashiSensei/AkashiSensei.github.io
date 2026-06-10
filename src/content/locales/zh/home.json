@@ -2,17 +2,5 @@
   "title": "您好，我是 $t(common:site.displayName)",
   "subtitleTranslation": "轮到明石出场了呢。",
   "description": "感谢您的访问。\n希望您能够成为我的老师或朋友。\n\n这里先保持简单。\n如果您想了解我的项目、经历和工作方式，可以去看看在线简历。\n\n本站仍在建设中，内容可能还不完善或者有错误，感谢理解。",
-  "resumeCta": "查看在线简历",
-  "contact": "联系我",
-  "github": "动态",
-  "resume": {
-    "title": "您好，我是 $t(common:site.displayName)",
-    "description": "我是一名软件工程在读硕士，热爱开源与技术分享。\n我希望成长为能交付优秀体验的工程师，并在这条路上持续精进。\n我对 AI Infra 技术栈各层以及 Agent 等方向有浓厚兴趣，目前正在主动学习与探索。"
-  },
-  "contactDialog": {
-    "title": "联系方式",
-    "description": "你可以通过以下公开渠道找到我：",
-    "privacyNote": "为避免骚扰，此处不列出我最常用的联系方式；上面列出的公开渠道同样可以联系到我，感谢理解。",
-    "email": "邮箱"
-  }
+  "resumeCta": "查看在线简历"
 }
