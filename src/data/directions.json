@@ -5,6 +5,11 @@
     "summaryKey": "directions.items.full-stack.summary"
   },
   {
+    "id": "fde",
+    "titleKey": "directions.items.fde.title",
+    "summaryKey": "directions.items.fde.summary"
+  },
+  {
     "id": "cloud-computing",
     "titleKey": "directions.items.cloud-computing.title",
     "summaryKey": "directions.items.cloud-computing.summary"
@@ -18,12 +23,6 @@
     "id": "creative-design",
     "titleKey": "directions.items.creative-design.title",
     "summaryKey": "directions.items.creative-design.summary"
-  },
-  {
-    "id": "agent",
-    "titleKey": "directions.items.agent.title",
-    "summaryKey": "directions.items.agent.summary",
-    "planned": true
   },
   {
     "id": "startup",

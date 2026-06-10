@@ -1,3 +1,5 @@
+import { type ImageBrightness } from "@/lib/image-brightness"
+
 export type SmallTool = {
   id: string
   repoName?: string
@@ -12,12 +14,14 @@ export type SmallTool = {
   screenshot?: {
     src: string
     alt: string
+    brightness?: ImageBrightness
   }
   screenshots?: {
     src: string
     alt: string
     width: number
     height: number
+    brightness?: ImageBrightness
   }[]
 }
 
@@ -64,7 +68,7 @@ export const smallTools: SmallTool[] = [
     githubRepo: "AkashiSensei/research-skills",
     role: "author",
     featured: true,
-    featuredOrder: 2,
+    featuredOrder: 3,
     screenshots: [
       {
         src: "/assets/tools/research-skills/codex-result.webp",
@@ -103,7 +107,7 @@ export const smallTools: SmallTool[] = [
     role: "author",
     status: "doing",
     featured: true,
-    featuredOrder: 3,
+    featuredOrder: 4,
   },
   {
     id: "anysearch-skill",
@@ -112,7 +116,7 @@ export const smallTools: SmallTool[] = [
     githubRepo: "anysearch-ai/anysearch-skill",
     role: "contributor",
     featured: true,
-    featuredOrder: 4,
+    featuredOrder: 2,
   },
   {
     id: "crater-prompt",
@@ -127,4 +131,4 @@ export const smallTools: SmallTool[] = [
 export const featuredSmallTools = [...smallTools]
   .filter((tool) => tool.featured)
   .sort((left, right) => (left.featuredOrder ?? 0) - (right.featuredOrder ?? 0))
-  .slice(0, 3)
+  .slice(0, 4)

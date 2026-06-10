@@ -7,6 +7,7 @@ import { BackButton } from "@/components/BackButton"
 import { FeaturePointList } from "@/components/FeaturePointList"
 import { GitHubRepoStats } from "@/components/GitHubRepoStats"
 import { GlassPanel } from "@/components/GlassPanel"
+import { ImageBrightnessOverlay } from "@/components/ImageBrightnessOverlay"
 import { Layout } from "@/components/Layout"
 import { LazyImage } from "@/components/LazyImage"
 import { ProjectImageGallery } from "@/components/ProjectImageGallery"
@@ -18,6 +19,7 @@ import {
 } from "@/components/ui/dialog"
 import { type KnowledgeEntry } from "@/data/knowledge"
 import { getGitHubRepoUpdatedDate } from "@/lib/github-repo-stats"
+import { getSemanticTagClassName } from "@/lib/tag-styles"
 import { cn } from "@/lib/utils"
 
 type KnowledgeDetailPageProps = {
@@ -38,7 +40,7 @@ const kindClassName: Record<KnowledgeEntry["kind"], string> = {
 }
 
 const defaultTagClassName =
-  "border-white/55 bg-white/55 text-foreground/75 shadow-sm shadow-black/5 backdrop-blur-md dark:border-white/20 dark:bg-white/12 dark:text-foreground/85 dark:shadow-black/20"
+  "border-[rgb(var(--site-surface-rgb)_/_0.56)] bg-[rgb(var(--site-surface-rgb)_/_0.56)] text-foreground/75 shadow-sm shadow-black/5 backdrop-blur-md dark:border-white/20 dark:bg-white/12 dark:text-foreground/85 dark:shadow-black/20"
 
 function getPoints(value: unknown) {
   return Array.isArray(value) ? value.filter((point): point is string => typeof point === "string") : []
@@ -65,7 +67,7 @@ function KnowledgeImageWall({
               <button
                 key={image.src}
                 type="button"
-                className="group/wall-image mb-3 block w-full break-inside-avoid overflow-hidden rounded-2xl border border-white/40 bg-white/30 p-0 text-left shadow-sm backdrop-blur-md transition-colors hover:bg-white/45 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/45 dark:border-white/10 dark:bg-white/[0.04] dark:hover:bg-white/[0.08]"
+                className="group/wall-image mb-3 block w-full break-inside-avoid overflow-hidden rounded-2xl border border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.32)] p-0 text-left shadow-sm backdrop-blur-md transition-colors hover:bg-[rgb(var(--site-surface-rgb)_/_0.48)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/45 dark:border-white/10 dark:bg-white/[0.04] dark:hover:bg-white/[0.08]"
                 onClick={() => setPreviewImage(image)}
                 aria-label={t("imagePreview.open", { image: imageAlt })}
               >
@@ -76,6 +78,7 @@ function KnowledgeImageWall({
                   height={image.height}
                   placeholderTitle={imageAlt}
                   loadingLabel={t("common:imageLoading")}
+                  brightness={image.brightness}
                   containerClassName="w-full"
                   imageClassName="h-auto w-full object-contain transition-transform duration-300 group-hover/wall-image:scale-[1.015]"
                   style={{ aspectRatio: `${image.width} / ${image.height}` }}
@@ -94,7 +97,7 @@ function KnowledgeImageWall({
           }
         }}
       >
-        <DialogContent className="flex h-[calc(100dvh-8rem)] max-h-[calc(100dvh-8rem)] w-[calc(100vw-1rem)] max-w-[120rem] items-center justify-center overflow-hidden border-white/40 bg-white/60 p-2 shadow-lg backdrop-blur-xl sm:max-w-[120rem] dark:border-white/10 dark:bg-black/45 md:h-[calc(100dvh-12rem)] md:max-h-[calc(100dvh-12rem)] md:w-[calc(100vw-4rem)] md:p-4 [&_[data-slot=dialog-close]]:right-3 [&_[data-slot=dialog-close]]:top-3 md:[&_[data-slot=dialog-close]]:right-4 md:[&_[data-slot=dialog-close]]:top-4">
+        <DialogContent className="flex h-[calc(100dvh-8rem)] max-h-[calc(100dvh-8rem)] w-[calc(100vw-1rem)] max-w-[120rem] items-center justify-center overflow-hidden border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.66)] p-2 shadow-lg backdrop-blur-xl sm:max-w-[120rem] dark:border-white/10 dark:bg-black/45 md:h-[calc(100dvh-12rem)] md:max-h-[calc(100dvh-12rem)] md:w-[calc(100vw-4rem)] md:p-4 [&_[data-slot=dialog-close]]:right-3 [&_[data-slot=dialog-close]]:top-3 md:[&_[data-slot=dialog-close]]:right-4 md:[&_[data-slot=dialog-close]]:top-4">
           <DialogTitle className="sr-only">
             {previewImage ? t(previewImage.altKey) : t("imagePreview.title")}
           </DialogTitle>
@@ -102,11 +105,14 @@ function KnowledgeImageWall({
             {previewImage ? t(previewImage.altKey) : t("imagePreview.title")}
           </DialogDescription>
           {previewImage ? (
-            <img
-              src={previewImage.src}
-              alt={t(previewImage.altKey)}
-              className="max-h-full max-w-full object-contain"
-            />
+            <div className="relative flex max-h-full max-w-full overflow-hidden">
+              <img
+                src={previewImage.src}
+                alt={t(previewImage.altKey)}
+                className="max-h-full max-w-full object-contain"
+              />
+              <ImageBrightnessOverlay brightness={previewImage.brightness} />
+            </div>
           ) : null}
         </DialogContent>
       </Dialog>
@@ -185,7 +191,7 @@ export function KnowledgeDetailPage({ entries }: KnowledgeDetailPageProps) {
 
         {entry.images?.length ? (
           <section className={detailSectionClassName}>
-            <div className="overflow-hidden rounded-2xl border border-white/40 bg-white/30 shadow-sm backdrop-blur-md dark:border-white/10 dark:bg-white/[0.04] md:hidden">
+            <div className="overflow-hidden rounded-2xl border border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.32)] shadow-sm backdrop-blur-md dark:border-white/10 dark:bg-white/[0.04] md:hidden">
               <ProjectImageGallery
                 images={entry.images}
                 translationNamespace="knowledge"
@@ -201,17 +207,54 @@ export function KnowledgeDetailPage({ entries }: KnowledgeDetailPageProps) {
           </section>
 
           <aside className="order-1 flex min-w-0 flex-col gap-3 lg:order-2">
-            <GlassPanel className="flex flex-col p-4">
+            <GlassPanel className="flex flex-col gap-2.5 p-4">
               <a
                 href={entry.url}
                 target="_blank"
                 rel="noreferrer"
-                className="group/repo flex min-w-0 items-center gap-1.5 text-sm font-semibold text-foreground/70 transition-colors hover:text-foreground dark:text-foreground/80"
+                className="group/repo flex min-w-0 flex-wrap items-center gap-1.5 text-sm font-semibold text-foreground/70 transition-colors hover:text-foreground dark:text-foreground/80"
               >
+                {entry.repoTags?.map((repoTag) => (
+                  <span
+                    key={repoTag}
+                    className={cn(
+                      "rounded-full border px-2 py-0.5 text-[0.6875rem] font-semibold leading-none",
+                      getSemanticTagClassName(repoTag),
+                      "whitespace-nowrap",
+                    )}
+                  >
+                    {t(`repoTags.${repoTag}`)}
+                  </span>
+                ))}
                 <span className="min-w-0 truncate">{entry.repoName}</span>
                 <ArrowUpRight className="h-4 w-4 shrink-0 transition-transform group-hover/repo:-translate-y-0.5 group-hover/repo:translate-x-0.5" />
                 <GitHubRepoStats repo={entry.githubRepo} />
               </a>
+              {entry.externalLinks?.map((link) => (
+                <a
+                  key={link.url}
+                  href={link.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="group/external flex min-w-0 flex-wrap items-center gap-x-1.5 gap-y-1 text-sm font-normal text-foreground/62 transition-colors hover:text-foreground/90 dark:text-foreground/72 dark:hover:text-foreground"
+                >
+                  {link.badgeKeys?.map((badgeKey) => (
+                    <span
+                      key={badgeKey}
+                      className={cn(
+                        "rounded-full border px-2 py-0.5 text-[0.6875rem] font-semibold leading-none whitespace-nowrap",
+                        badgeKey.endsWith(".loginRequired")
+                          ? "border-rose-400/25 bg-rose-400/10 text-rose-700 dark:border-rose-300/20 dark:bg-rose-300/10 dark:text-rose-200"
+                          : "border-amber-400/30 bg-amber-400/12 text-amber-800 dark:border-amber-300/20 dark:bg-amber-300/10 dark:text-amber-200",
+                      )}
+                    >
+                      {t(badgeKey)}
+                    </span>
+                  ))}
+                  <span>{t(link.labelKey)}</span>
+                  <ArrowUpRight className="h-4 w-4 shrink-0 transition-transform group-hover/external:-translate-y-0.5 group-hover/external:translate-x-0.5" />
+                </a>
+              ))}
             </GlassPanel>
 
             <div className="flex flex-wrap gap-1.5 px-1 py-1">

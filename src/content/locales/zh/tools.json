@@ -1,9 +1,11 @@
 {
   "title": "小工具",
-  "subtitle": "我为工程、调研、求职材料和智能体协作写下或参与过的小型工具。它们不一定是完整产品，但都来自真实流程里的反复问题：上下文会丢、调研会散、材料会重复维护、智能体需要被更稳定地带入任务。",
+  "subtitle": "面向工程、调研、求职材料与智能体协作的小工具。",
+  "description": "在 AI 深度参与日常的时代，顺手的 Skill 和小工具成本很低，却能沉淀习惯、流程与判断，减少重复沟通和返工。",
+  "tags": ["Skills", "Prompts", "Templates"],
   "viewAll": "查看全部",
   "viewAllTitle": "全部小工具",
-  "viewAllDescription": "查看支撑工程、调研与协作的小型仓库。",
+  "viewAllDescription": "查看支撑工程与协作的小仓库。",
   "morePoints": "还有 {{count}} 条亮点",
   "labels": {
     "author": "Owner",

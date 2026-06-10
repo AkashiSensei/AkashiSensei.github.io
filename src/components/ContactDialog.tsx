@@ -12,12 +12,12 @@ import {
 } from "@/components/ui/dialog"
 
 export function ContactDialog({ children }: { children: ReactNode }) {
-  const { t } = useTranslation("home")
+  const { t } = useTranslation("common")
 
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="sm:max-w-md bg-white/60 dark:bg-white/10 backdrop-blur-xl border-white/40 dark:border-white/10 shadow-lg rounded-3xl">
+      <DialogContent className="lit-glass-card rounded-3xl border-[rgb(var(--site-surface-rgb)_/_0.62)] bg-[rgb(var(--site-surface-rgb)_/_0.66)] shadow-lg backdrop-blur-xl dark:border-white/10 dark:bg-white/10 sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="text-xl">{t("contactDialog.title")}</DialogTitle>
           <DialogDescription className="text-foreground/70">
@@ -27,7 +27,7 @@ export function ContactDialog({ children }: { children: ReactNode }) {
         <div className="flex flex-col gap-3 py-2 mt-2">
           <a
             href="mailto:fengzhiyuyi2013@gmail.com"
-            className="flex items-center gap-4 p-4 rounded-2xl bg-white/40 dark:bg-white/5 hover:bg-white/60 dark:hover:bg-white/10 transition-colors border border-white/40 dark:border-white/10 group"
+            className="lit-glass-card group flex items-center gap-4 rounded-2xl border border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.42)] p-4 transition-colors hover:bg-[rgb(var(--site-surface-rgb)_/_0.62)] dark:border-white/10 dark:bg-white/5 dark:hover:bg-white/10"
           >
             <div className="flex items-center justify-center w-10 h-10 rounded-full bg-foreground/5 group-hover:bg-foreground/10 transition-colors">
               <Mail className="w-5 h-5" />

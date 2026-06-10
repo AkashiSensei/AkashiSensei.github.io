@@ -1,0 +1,27 @@
+{
+  "title": "Hi, I'm $t(common:site.displayName)",
+  "kickerTags": ["Developer", "Engineer", "Product Manager", "Explorer"],
+  "titleLead": "$t(common:site.displayName)",
+  "titleAccent": "明石の出番ですね。",
+  "description": [
+    "Software engineering master's student, passionate about open source and technical sharing.",
+    "Aiming to become an engineer who solves real problems and delivers excellent experiences.",
+    "Not satisfied with merely finishing tasks, but turning experience into understanding through inquiry."
+  ],
+  "values": [
+    {
+      "title": "Value follows need",
+      "description": "I believe creation should answer real problems. Technology and expression should serve actual needs, not showmanship or self-indulgence."
+    },
+    {
+      "title": "Refine relentlessly",
+      "description": "I try to think through problems broadly, so function, edge cases, and details add up to a more reliable and comfortable experience."
+    },
+    {
+      "title": "Keep asking",
+      "description": "Questions never end, but we can always ask one more and answer one more. Can a warp scheduler issue multiple warps in one cycle? Is spatial multiplexing in DeepSeek AI Core closer to static multi-issue or dynamic scheduling? Why did NUMA binding make my CPU-parallel program slower?"
+    }
+  ],
+  "contact": "Contact Me",
+  "github": "Profile"
+}

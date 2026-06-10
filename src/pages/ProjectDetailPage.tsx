@@ -7,6 +7,7 @@ import { BackButton } from "@/components/BackButton"
 import { FeaturePointList } from "@/components/FeaturePointList"
 import { GitHubRepoStats } from "@/components/GitHubRepoStats"
 import { GlassPanel } from "@/components/GlassPanel"
+import { ImageBrightnessOverlay } from "@/components/ImageBrightnessOverlay"
 import { Layout } from "@/components/Layout"
 import { LazyImage } from "@/components/LazyImage"
 import { ProjectImageGallery } from "@/components/ProjectImageGallery"
@@ -36,7 +37,7 @@ const lifecycleStatusClassName = {
 } satisfies Record<Project["lifecycleStatus"], string>
 
 const detailTagClassName =
-  "border-white/55 bg-white/55 text-foreground/75 shadow-sm shadow-black/5 backdrop-blur-md dark:border-white/20 dark:bg-white/12 dark:text-foreground/85 dark:shadow-black/20"
+  "border-[rgb(var(--site-surface-rgb)_/_0.56)] bg-[rgb(var(--site-surface-rgb)_/_0.56)] text-foreground/75 shadow-sm shadow-black/5 backdrop-blur-md dark:border-white/20 dark:bg-white/12 dark:text-foreground/85 dark:shadow-black/20"
 
 const detailSectionClassName = "px-2 sm:px-4"
 
@@ -71,7 +72,7 @@ function ProjectImageWall({
               <button
                 key={image.src}
                 type="button"
-                className="group/wall-image mb-3 block w-full break-inside-avoid overflow-hidden rounded-2xl border border-white/40 bg-white/30 p-0 text-left shadow-sm backdrop-blur-md transition-colors hover:bg-white/45 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/45 dark:border-white/10 dark:bg-white/[0.04] dark:hover:bg-white/[0.08]"
+                className="group/wall-image mb-3 block w-full break-inside-avoid overflow-hidden rounded-2xl border border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.32)] p-0 text-left shadow-sm backdrop-blur-md transition-colors hover:bg-[rgb(var(--site-surface-rgb)_/_0.48)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/45 dark:border-white/10 dark:bg-white/[0.04] dark:hover:bg-white/[0.08]"
                 onClick={() => setPreviewImage(image)}
                 aria-label={t("imagePreview.open", { image: imageAlt })}
               >
@@ -82,6 +83,7 @@ function ProjectImageWall({
                   height={image.height}
                   placeholderTitle={imageAlt}
                   loadingLabel={t("common:imageLoading")}
+                  brightness={image.brightness}
                   containerClassName="w-full"
                   imageClassName="h-auto w-full object-contain transition-transform duration-300 group-hover/wall-image:scale-[1.015]"
                   style={{ aspectRatio: `${image.width} / ${image.height}` }}
@@ -100,7 +102,7 @@ function ProjectImageWall({
           }
         }}
       >
-        <DialogContent className="flex h-[calc(100dvh-8rem)] max-h-[calc(100dvh-8rem)] w-[calc(100vw-1rem)] max-w-[120rem] items-center justify-center overflow-hidden border-white/40 bg-white/60 p-2 shadow-lg backdrop-blur-xl sm:max-w-[120rem] dark:border-white/10 dark:bg-black/45 md:h-[calc(100dvh-12rem)] md:max-h-[calc(100dvh-12rem)] md:w-[calc(100vw-4rem)] md:p-4 [&_[data-slot=dialog-close]]:right-3 [&_[data-slot=dialog-close]]:top-3 md:[&_[data-slot=dialog-close]]:right-4 md:[&_[data-slot=dialog-close]]:top-4">
+        <DialogContent className="flex h-[calc(100dvh-8rem)] max-h-[calc(100dvh-8rem)] w-[calc(100vw-1rem)] max-w-[120rem] items-center justify-center overflow-hidden border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.66)] p-2 shadow-lg backdrop-blur-xl sm:max-w-[120rem] dark:border-white/10 dark:bg-black/45 md:h-[calc(100dvh-12rem)] md:max-h-[calc(100dvh-12rem)] md:w-[calc(100vw-4rem)] md:p-4 [&_[data-slot=dialog-close]]:right-3 [&_[data-slot=dialog-close]]:top-3 md:[&_[data-slot=dialog-close]]:right-4 md:[&_[data-slot=dialog-close]]:top-4">
           <DialogTitle className="sr-only">
             {previewImage ? t(previewImage.altKey) : t("imagePreview.title")}
           </DialogTitle>
@@ -108,11 +110,14 @@ function ProjectImageWall({
             {previewImage ? t(previewImage.altKey) : t("imagePreview.title")}
           </DialogDescription>
           {previewImage ? (
-            <img
-              src={previewImage.src}
-              alt={t(previewImage.altKey)}
-              className="max-h-full max-w-full object-contain"
-            />
+            <div className="relative flex max-h-full max-w-full overflow-hidden">
+              <img
+                src={previewImage.src}
+                alt={t(previewImage.altKey)}
+                className="max-h-full max-w-full object-contain"
+              />
+              <ImageBrightnessOverlay brightness={previewImage.brightness} />
+            </div>
           ) : null}
         </DialogContent>
       </Dialog>
@@ -195,7 +200,7 @@ export function ProjectDetailPage({
               {project.status?.map((status) => (
                 <span
                   key={status}
-                  className="rounded-full border border-white/45 bg-white/25 px-2.5 py-1 text-xs font-semibold text-foreground/60 dark:border-white/10 dark:bg-white/[0.04] dark:text-foreground/70"
+                  className="rounded-full border border-[rgb(var(--site-surface-rgb)_/_0.45)] bg-[rgb(var(--site-surface-rgb)_/_0.28)] px-2.5 py-1 text-xs font-semibold text-foreground/60 dark:border-white/10 dark:bg-white/[0.04] dark:text-foreground/70"
                 >
                   {t(`status.${status}`)}
                 </span>
@@ -206,7 +211,7 @@ export function ProjectDetailPage({
 
         {project.images?.length ? (
           <section className={detailSectionClassName}>
-            <div className="overflow-hidden rounded-2xl border border-white/40 bg-white/30 shadow-sm backdrop-blur-md dark:border-white/10 dark:bg-white/[0.04] md:hidden">
+            <div className="overflow-hidden rounded-2xl border border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.32)] shadow-sm backdrop-blur-md dark:border-white/10 dark:bg-white/[0.04] md:hidden">
               <ProjectImageGallery
                 images={project.images}
                 translationNamespace={translationNamespace}
@@ -219,12 +224,13 @@ export function ProjectDetailPage({
           </section>
         ) : project.screenshot ? (
           <section className={detailSectionClassName}>
-            <div className="overflow-hidden rounded-2xl border border-white/40 bg-white/30 shadow-sm backdrop-blur-md dark:border-white/10 dark:bg-white/[0.04]">
+            <div className="overflow-hidden rounded-2xl border border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.32)] shadow-sm backdrop-blur-md dark:border-white/10 dark:bg-white/[0.04]">
               <LazyImage
                 src={project.screenshot.src}
                 alt={t(project.screenshot.altKey)}
                 placeholderTitle={t(project.screenshot.altKey)}
                 loadingLabel={t("common:imageLoading")}
+                brightness={project.screenshot.brightness}
                 containerClassName="aspect-[16/9] w-full"
                 imageClassName="h-full w-full object-contain"
               />

@@ -27,7 +27,7 @@ const lifecycleStatusClassName = {
 } satisfies Record<Project["lifecycleStatus"], string>
 
 const defaultTagClassName =
-  "border-white/45 bg-white/25 text-foreground/60 dark:border-white/10 dark:bg-white/[0.04] dark:text-foreground/70"
+  "border-[rgb(var(--site-surface-rgb)_/_0.45)] bg-[rgb(var(--site-surface-rgb)_/_0.28)] text-foreground/60 dark:border-white/10 dark:bg-white/[0.04] dark:text-foreground/70"
 
 const courseProjectSemesterTagClassName: Record<string, string> = {
   "2026春":
@@ -77,7 +77,7 @@ export function ProjectCard({
   return (
     <GlassPanel
       className={cn(
-        "group flex h-full min-h-0 flex-col overflow-hidden transition-colors hover:bg-white/55 dark:hover:bg-white/10",
+        "group flex h-full min-h-0 flex-col overflow-hidden transition-colors hover:bg-[rgb(var(--site-surface-rgb)_/_0.58)] dark:hover:bg-white/10",
         className,
       )}
     >
@@ -92,6 +92,7 @@ export function ProjectCard({
           alt={t(project.screenshot.altKey)}
           placeholderTitle={t(project.screenshot.altKey)}
           loadingLabel={t("common:imageLoading")}
+          brightness={project.screenshot.brightness}
           containerClassName="aspect-[16/9] w-full"
           imageClassName="h-full w-full object-cover"
         />
@@ -121,7 +122,7 @@ export function ProjectCard({
           </div>
 
           {repoLinks ? (
-            <div className="flex flex-wrap gap-x-3 gap-y-1">
+            <div className="flex flex-col items-start gap-1.5">
               {repoLinks.map((link) => {
                 const repoContent = (
                   <>

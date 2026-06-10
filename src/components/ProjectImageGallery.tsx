@@ -7,15 +7,24 @@ import {
   DialogDescription,
   DialogTitle,
 } from "@/components/ui/dialog"
+import { ImageBrightnessOverlay } from "@/components/ImageBrightnessOverlay"
 import { LazyImage } from "@/components/LazyImage"
 import { type ProjectImage } from "@/data/projects"
 import { cn } from "@/lib/utils"
 
 type ProjectImageGalleryProps = {
+  cardAspectRatio?: string
+  cardAutoCycle?: boolean
+  cardAutoCycleStaggerIndex?: number
   images: ProjectImage[]
+  cardScrollable?: boolean
+  cardImageFit?: "contain" | "cover"
   className?: string
   translationNamespace?: "projects" | "courseProjects" | "knowledge"
 }
+
+const CARD_AUTO_CYCLE_INTERVAL_MS = 6800
+const CARD_AUTO_CYCLE_STAGGER_MS = 1300
 
 function scrollGalleryToIndex(
   gallery: HTMLDivElement | null,
@@ -58,6 +67,11 @@ function positionThumbnailIndicator(
 }
 
 export function ProjectImageGallery({
+  cardAspectRatio,
+  cardAutoCycle = false,
+  cardAutoCycleStaggerIndex = 0,
+  cardImageFit = "contain",
+  cardScrollable = true,
   images,
   className,
   translationNamespace = "projects",
@@ -236,6 +250,47 @@ export function ProjectImageGallery({
   }, [images.length, previewOpen])
 
   useEffect(() => {
+    if (!cardAutoCycle || previewOpen || images.length <= 1) {
+      return undefined
+    }
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      return undefined
+    }
+
+    const showNextImage = () => {
+      setSelectedIndex((currentIndex) => {
+        const nextIndex = (currentIndex + 1) % images.length
+
+        setCaptionImageIndex(nextIndex)
+        scrollGalleryToIndex(galleryRef.current, nextIndex)
+
+        return nextIndex
+      })
+    }
+
+    let intervalId: ReturnType<typeof window.setInterval> | undefined
+    const timeoutId = window.setTimeout(
+      () => {
+        showNextImage()
+        intervalId = window.setInterval(
+          showNextImage,
+          CARD_AUTO_CYCLE_INTERVAL_MS,
+        )
+      },
+      CARD_AUTO_CYCLE_INTERVAL_MS +
+        cardAutoCycleStaggerIndex * CARD_AUTO_CYCLE_STAGGER_MS,
+    )
+
+    return () => {
+      window.clearTimeout(timeoutId)
+      if (intervalId) {
+        window.clearInterval(intervalId)
+      }
+    }
+  }, [cardAutoCycle, cardAutoCycleStaggerIndex, images.length, previewOpen])
+
+  useEffect(() => {
     if (!previewOpen) {
       return
     }
@@ -348,22 +403,26 @@ export function ProjectImageGallery({
       <div
         ref={galleryRef}
         className={cn(
-          "flex w-full shrink-0 snap-x snap-mandatory overflow-x-auto overscroll-y-none [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
+          "flex w-full shrink-0 overscroll-y-none [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
+          cardScrollable
+            ? "snap-x snap-mandatory overflow-x-auto"
+            : "overflow-hidden",
           className,
         )}
         style={{
-          aspectRatio: `${firstImage.width} / ${firstImage.height}`,
-          touchAction: "pan-x",
+          aspectRatio: cardAspectRatio ?? `${firstImage.width} / ${firstImage.height}`,
+          touchAction: cardScrollable ? "pan-x" : undefined,
         }}
-        onScroll={handleCardGalleryScroll}
+        onScroll={cardScrollable ? handleCardGalleryScroll : undefined}
       >
         {images.map((image, imageIndex) => (
           <div
             key={image.src}
             role="button"
-            tabIndex={0}
+            tabIndex={cardScrollable || imageIndex === selectedImageIndex ? 0 : -1}
+            aria-hidden={!cardScrollable && imageIndex !== selectedImageIndex}
             className="flex h-full basis-full shrink-0 snap-start items-center justify-center overflow-hidden p-0"
-            style={{ touchAction: "pan-x" }}
+            style={cardScrollable ? { touchAction: "pan-x" } : undefined}
             onClick={() => openPreview(imageIndex)}
             onKeyDown={(event) => {
               if (event.key !== "Enter" && event.key !== " ") {
@@ -380,8 +439,12 @@ export function ProjectImageGallery({
               alt={t(image.altKey)}
               placeholderTitle={t(image.altKey)}
               loadingLabel={t("common:imageLoading")}
+              brightness={image.brightness}
               containerClassName="h-full w-full"
-              imageClassName="block h-full w-full object-contain"
+              imageClassName={cn(
+                "block h-full w-full",
+                cardImageFit === "cover" ? "object-cover" : "object-contain",
+              )}
               draggable={false}
               style={{ touchAction: "pan-x" }}
             />
@@ -400,7 +463,7 @@ export function ProjectImageGallery({
         }}
       >
         <DialogContent
-          className="flex h-[calc(100dvh-8rem)] max-h-[calc(100dvh-8rem)] w-[calc(100vw-1rem)] max-w-[120rem] flex-col gap-2 overflow-hidden border-white/40 bg-white/60 p-2 shadow-lg backdrop-blur-xl sm:max-w-[120rem] dark:border-white/10 dark:bg-black/45 md:h-[calc(100dvh-12rem)] md:max-h-[calc(100dvh-12rem)] md:w-[calc(100vw-4rem)] md:p-3 [&_[data-slot=dialog-close]]:right-3 [&_[data-slot=dialog-close]]:top-3 md:[&_[data-slot=dialog-close]]:right-4 md:[&_[data-slot=dialog-close]]:top-4"
+          className="flex h-[calc(100dvh-8rem)] max-h-[calc(100dvh-8rem)] w-[calc(100vw-1rem)] max-w-[120rem] flex-col gap-2 overflow-hidden border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.66)] p-2 shadow-lg backdrop-blur-xl sm:max-w-[120rem] dark:border-white/10 dark:bg-black/45 md:h-[calc(100dvh-12rem)] md:max-h-[calc(100dvh-12rem)] md:w-[calc(100vw-4rem)] md:p-3 [&_[data-slot=dialog-close]]:right-3 [&_[data-slot=dialog-close]]:top-3 md:[&_[data-slot=dialog-close]]:right-4 md:[&_[data-slot=dialog-close]]:top-4"
         >
           <DialogTitle className="sr-only">
             {selectedImage ? t(selectedImage.altKey) : t("imagePreview.title")}
@@ -418,11 +481,14 @@ export function ProjectImageGallery({
                 key={image.src}
                 className="flex h-full basis-full shrink-0 snap-start items-center justify-center px-2 pb-1 pt-10 md:px-4 md:pt-12"
               >
-                <img
-                  src={image.src}
-                  alt={t(image.altKey)}
-                  className="max-h-full max-w-full object-contain"
-                />
+                <div className="relative flex max-h-full max-w-full overflow-hidden">
+                  <img
+                    src={image.src}
+                    alt={t(image.altKey)}
+                    className="max-h-full max-w-full object-contain"
+                  />
+                  <ImageBrightnessOverlay brightness={image.brightness} />
+                </div>
               </div>
             ))}
           </div>
@@ -442,7 +508,7 @@ export function ProjectImageGallery({
           {hasMultipleImages ? (
             <div
               ref={thumbnailRailRef}
-              className="relative flex w-full max-w-full gap-1.5 overflow-x-auto rounded-lg border border-foreground/10 bg-white/35 p-1.5 [scrollbar-width:none] dark:border-white/10 dark:bg-black/25 md:gap-2 md:p-2 [&::-webkit-scrollbar]:hidden"
+              className="relative flex w-full max-w-full gap-1.5 overflow-x-auto rounded-lg border border-foreground/10 bg-[rgb(var(--site-surface-rgb)_/_0.38)] p-1.5 [scrollbar-width:none] dark:border-white/10 dark:bg-black/25 md:gap-2 md:p-2 [&::-webkit-scrollbar]:hidden"
             >
               <div
                 ref={thumbnailIndicatorRef}
@@ -470,12 +536,15 @@ export function ProjectImageGallery({
                     aria-label={t("imagePreview.open", { image: imageAlt })}
                     aria-pressed={isSelected}
                   >
-                    <img
-                      src={image.src}
-                      alt={imageAlt}
-                      loading="lazy"
-                      className="h-full w-full rounded-[0.2rem] object-contain"
-                    />
+                    <span className="relative block h-full w-full overflow-hidden rounded-[0.2rem]">
+                      <img
+                        src={image.src}
+                        alt={imageAlt}
+                        loading="lazy"
+                        className="h-full w-full object-contain"
+                      />
+                      <ImageBrightnessOverlay brightness={image.brightness} />
+                    </span>
                   </button>
                 )
               })}

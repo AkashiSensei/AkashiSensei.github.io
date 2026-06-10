@@ -7,6 +7,7 @@ import {
   DialogDescription,
   DialogTitle,
 } from "@/components/ui/dialog"
+import { ImageBrightnessOverlay } from "@/components/ImageBrightnessOverlay"
 import { LazyImage } from "@/components/LazyImage"
 import { type SmallTool } from "@/data/tools"
 import { cn } from "@/lib/utils"
@@ -380,6 +381,7 @@ export function SmallToolImageGallery({
               alt={image.alt}
               placeholderTitle={image.alt}
               loadingLabel={t("imageLoading")}
+              brightness={image.brightness}
               containerClassName="h-full w-full"
               imageClassName="block h-full w-full object-contain"
               draggable={false}
@@ -400,7 +402,7 @@ export function SmallToolImageGallery({
         }}
       >
         <DialogContent
-          className="flex h-[calc(100dvh-8rem)] max-h-[calc(100dvh-8rem)] w-[calc(100vw-1rem)] max-w-[120rem] flex-col gap-2 overflow-hidden border-white/40 bg-white/60 p-2 shadow-lg backdrop-blur-xl sm:max-w-[120rem] dark:border-white/10 dark:bg-black/45 md:h-[calc(100dvh-12rem)] md:max-h-[calc(100dvh-12rem)] md:w-[calc(100vw-4rem)] md:p-3 [&_[data-slot=dialog-close]]:right-3 [&_[data-slot=dialog-close]]:top-3 md:[&_[data-slot=dialog-close]]:right-4 md:[&_[data-slot=dialog-close]]:top-4"
+          className="flex h-[calc(100dvh-8rem)] max-h-[calc(100dvh-8rem)] w-[calc(100vw-1rem)] max-w-[120rem] flex-col gap-2 overflow-hidden border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.66)] p-2 shadow-lg backdrop-blur-xl sm:max-w-[120rem] dark:border-white/10 dark:bg-black/45 md:h-[calc(100dvh-12rem)] md:max-h-[calc(100dvh-12rem)] md:w-[calc(100vw-4rem)] md:p-3 [&_[data-slot=dialog-close]]:right-3 [&_[data-slot=dialog-close]]:top-3 md:[&_[data-slot=dialog-close]]:right-4 md:[&_[data-slot=dialog-close]]:top-4"
         >
           <DialogTitle className="sr-only">
             {selectedImage.alt}
@@ -418,11 +420,14 @@ export function SmallToolImageGallery({
                 key={image.src}
                 className="flex h-full basis-full shrink-0 snap-start items-center justify-center px-2 pb-1 pt-10 md:px-4 md:pt-12"
               >
-                <img
-                  src={image.src}
-                  alt={image.alt}
-                  className="max-h-full max-w-full object-contain"
-                />
+                <div className="relative flex max-h-full max-w-full overflow-hidden">
+                  <img
+                    src={image.src}
+                    alt={image.alt}
+                    className="max-h-full max-w-full object-contain"
+                  />
+                  <ImageBrightnessOverlay brightness={image.brightness} />
+                </div>
               </div>
             ))}
           </div>
@@ -442,7 +447,7 @@ export function SmallToolImageGallery({
           {hasMultipleImages ? (
             <div
               ref={thumbnailRailRef}
-              className="relative flex w-full max-w-full gap-1.5 overflow-x-auto rounded-lg border border-foreground/10 bg-white/35 p-1.5 [scrollbar-width:none] dark:border-white/10 dark:bg-black/25 md:gap-2 md:p-2 [&::-webkit-scrollbar]:hidden"
+              className="relative flex w-full max-w-full gap-1.5 overflow-x-auto rounded-lg border border-foreground/10 bg-[rgb(var(--site-surface-rgb)_/_0.38)] p-1.5 [scrollbar-width:none] dark:border-white/10 dark:bg-black/25 md:gap-2 md:p-2 [&::-webkit-scrollbar]:hidden"
             >
               <div
                 ref={thumbnailIndicatorRef}
@@ -469,12 +474,15 @@ export function SmallToolImageGallery({
                     aria-label={image.alt}
                     aria-pressed={isSelected}
                   >
-                    <img
-                      src={image.src}
-                      alt={image.alt}
-                      loading="lazy"
-                      className="h-full w-full rounded-[0.2rem] object-contain"
-                    />
+                    <span className="relative block h-full w-full overflow-hidden rounded-[0.2rem]">
+                      <img
+                        src={image.src}
+                        alt={image.alt}
+                        loading="lazy"
+                        className="h-full w-full object-contain"
+                      />
+                      <ImageBrightnessOverlay brightness={image.brightness} />
+                    </span>
                   </button>
                 )
               })}

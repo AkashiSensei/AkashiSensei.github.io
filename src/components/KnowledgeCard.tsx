@@ -14,12 +14,14 @@ import { GlassPanel } from "@/components/GlassPanel"
 import { AppLink } from "@/components/AppLink"
 import { type KnowledgeEntry } from "@/data/knowledge"
 import { getGitHubRepoUpdatedDate } from "@/lib/github-repo-stats"
+import { getSemanticTagClassName } from "@/lib/tag-styles"
 import { ProjectImageGallery } from "@/components/ProjectImageGallery"
 import { cn } from "@/lib/utils"
 
 type KnowledgeCardProps = {
   entry: KnowledgeEntry
   className?: string
+  imageAutoCycleStaggerIndex?: number
   variant?: "compact" | "full"
 }
 
@@ -42,11 +44,12 @@ const kindClassName: Record<KnowledgeEntry["kind"], string> = {
 }
 
 const defaultTagClassName =
-  "border-white/45 bg-white/25 text-foreground/60 dark:border-white/10 dark:bg-white/[0.04] dark:text-foreground/70"
+  "border-[rgb(var(--site-surface-rgb)_/_0.45)] bg-[rgb(var(--site-surface-rgb)_/_0.28)] text-foreground/60 dark:border-white/10 dark:bg-white/[0.04] dark:text-foreground/70"
 
 export function KnowledgeCard({
   entry,
   className,
+  imageAutoCycleStaggerIndex,
   variant = "full",
 }: KnowledgeCardProps) {
   const { i18n, t } = useTranslation(["knowledge", "common"])
@@ -63,13 +66,18 @@ export function KnowledgeCard({
   return (
     <GlassPanel
       className={cn(
-        "flex h-full min-h-0 flex-col overflow-hidden transition-colors hover:bg-white/55 dark:hover:bg-white/10",
+        "flex h-full min-h-0 flex-col overflow-hidden transition-colors hover:bg-[rgb(var(--site-surface-rgb)_/_0.58)] dark:hover:bg-white/10",
         variant === "full" && "h-auto",
         className,
       )}
     >
       {entry.images?.length ? (
         <ProjectImageGallery
+          cardAspectRatio={variant === "compact" ? "16 / 12.5" : undefined}
+          cardAutoCycle={imageAutoCycleStaggerIndex !== undefined}
+          cardAutoCycleStaggerIndex={imageAutoCycleStaggerIndex}
+          cardImageFit={variant === "compact" ? "cover" : "contain"}
+          cardScrollable={variant === "full"}
           images={entry.images}
           translationNamespace="knowledge"
         />
@@ -105,10 +113,47 @@ export function KnowledgeCard({
             aria-label={`${t("repoLabel")}: ${entry.repoName}`}
             className="group/repo inline-flex min-w-0 w-fit max-w-full items-center gap-1.5 text-sm font-semibold text-foreground/60 transition-colors hover:text-foreground/90 dark:text-foreground/75 dark:hover:text-foreground"
           >
+            {entry.repoTags?.map((repoTag) => (
+              <span
+                key={repoTag}
+                className={cn(
+                  "rounded-full border px-2 py-0.5 text-[0.6875rem] font-semibold leading-none",
+                  getSemanticTagClassName(repoTag),
+                  "whitespace-nowrap",
+                )}
+              >
+                {t(`repoTags.${repoTag}`)}
+              </span>
+            ))}
             <span className="min-w-0 truncate">{entry.repoName}</span>
             <ArrowUpRight className="h-4 w-4 shrink-0 transition-transform group-hover/repo:-translate-y-0.5 group-hover/repo:translate-x-0.5" />
             <GitHubRepoStats repo={entry.githubRepo} />
           </a>
+          {entry.externalLinks?.map((link) => (
+            <a
+              key={link.url}
+              href={link.url}
+              target="_blank"
+              rel="noreferrer"
+              className="group/external inline-flex w-fit max-w-full flex-wrap items-center gap-x-1.5 gap-y-1 text-sm font-normal text-foreground/62 transition-colors hover:text-foreground/90 dark:text-foreground/72 dark:hover:text-foreground"
+            >
+              {link.badgeKeys?.map((badgeKey) => (
+                <span
+                  key={badgeKey}
+                  className={cn(
+                    "rounded-full border px-2 py-0.5 text-[0.6875rem] font-semibold leading-none whitespace-nowrap",
+                    badgeKey.endsWith(".loginRequired")
+                      ? "border-rose-400/25 bg-rose-400/10 text-rose-700 dark:border-rose-300/20 dark:bg-rose-300/10 dark:text-rose-200"
+                      : "border-amber-400/30 bg-amber-400/12 text-amber-800 dark:border-amber-300/20 dark:bg-amber-300/10 dark:text-amber-200",
+                  )}
+                >
+                  {t(badgeKey)}
+                </span>
+              ))}
+              <span>{t(link.labelKey)}</span>
+              <ArrowUpRight className="h-4 w-4 shrink-0 transition-transform group-hover/external:-translate-y-0.5 group-hover/external:translate-x-0.5" />
+            </a>
+          ))}
         </div>
 
         <div className="flex flex-wrap gap-1.5">
@@ -132,7 +177,7 @@ export function KnowledgeCard({
 
           <AppLink
             to={detailPath}
-            className="group/detail inline-flex w-fit items-center gap-1.5 text-sm font-semibold text-foreground/65 transition-colors hover:text-foreground dark:text-foreground/75 dark:hover:text-foreground"
+            className="group/detail mt-auto inline-flex w-fit items-center gap-1.5 text-sm font-semibold text-foreground/65 transition-colors hover:text-foreground dark:text-foreground/75 dark:hover:text-foreground"
           >
             {t("details.viewDetails")}
             <ArrowRight className="h-4 w-4 transition-transform group-hover/detail:translate-x-0.5" />

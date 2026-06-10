@@ -1,9 +1,9 @@
 {
   "title": "Projects",
-  "subtitle": "Code projects where I turn research, platform engineering, tooling, and product thinking into usable systems.",
-  "viewAll": "View All",
+  "subtitle": "Research, platform, tooling, and product-facing code.",
+  "viewAll": "View all projects",
   "viewAllTitle": "All Projects",
-  "viewAllDescription": "Browse the full project list, related repositories, and current status.",
+  "viewAllDescription": "Browse projects, repositories, and status.",
   "repoLabel": "Repository",
   "morePoints": "{{count}} more points",
   "status": {
@@ -64,8 +64,8 @@
         "nodeManagement": "Node management interface"
       },
       "points": [
-        "Replaces the lab's previous Slurm tooling with a polished GUI for teachers and students.",
         "Our deployment manages 280+ accelerators and 5,600+ CPU cores, with 200+ jobs created per day for 600+ users.",
+        "Replaces the lab's previous Slurm tooling with a polished GUI for teachers and students.",
         "Also serves as a systems research platform for scheduling algorithms, distributed storage, and related experiments.",
         "Implemented Crater's own admission controller, working with Kubernetes, the Volcano scheduler, and self-developed algorithms to schedule user workloads fairly and efficiently.",
         "Supports snapshots and multiple image-building workflows with Buildx, Envd, and related tools.",
@@ -134,10 +134,7 @@
       "summary": "This site is also a long-running frontend project for HR, interviewers, open-source peers, and students. It organizes job-search presentation, open-source activity, and related content into a maintainable static site.",
       "points": [
         "Lets HR and interviewers understand my projects, direction, toolchain, and working style without searching across scattered repositories.",
-        "Lets visitors from different language backgrounds browse in a language familiar to them.",
-        "Turns personal presentation from a one-off page into a long-term maintainable content system.",
-        "Built with React, TypeScript, Vite, Tailwind, and shadcn-style components, deployed to a GitHub Pages user site.",
-        "Supports light/dark themes, multilingual content, and mobile-first layout."
+        "Supports multilingual content, responsive layout, and light/dark modes, while controlling maximum image brightness in dark mode to avoid glare."
       ]
     }
   }

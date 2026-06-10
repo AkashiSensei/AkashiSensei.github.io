@@ -1,8 +1,11 @@
 import { type ImgHTMLAttributes, useState } from "react"
 
+import { ImageBrightnessOverlay } from "@/components/ImageBrightnessOverlay"
+import { type ImageBrightness } from "@/lib/image-brightness"
 import { cn } from "@/lib/utils"
 
 type LazyImageProps = Omit<ImgHTMLAttributes<HTMLImageElement>, "className" | "title"> & {
+  brightness?: ImageBrightness
   containerClassName?: string
   imageClassName?: string
   loadingLabel: string
@@ -11,6 +14,7 @@ type LazyImageProps = Omit<ImgHTMLAttributes<HTMLImageElement>, "className" | "t
 
 export function LazyImage({
   alt,
+  brightness,
   containerClassName,
   imageClassName,
   loadingLabel,
@@ -50,6 +54,7 @@ export function LazyImage({
           imageClassName,
         )}
       />
+      <ImageBrightnessOverlay brightness={brightness} />
     </div>
   )
 }

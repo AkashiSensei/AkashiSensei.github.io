@@ -1,9 +1,10 @@
 {
   "title": "Course Projects",
-  "subtitle": "Course projects, labs, team assignments, and my undergraduate thesis, recording how I turned coursework into runnable systems, experiment code, and engineering documents.",
-  "viewAll": "View all",
+  "subtitle": "Course projects, labs, and assignments.",
+  "reflection": "Although these course projects may look basic and immature today, they still show the care and effort I put into them.\nI learned a lot of foundational knowledge through them, and the solid base I built there gives me the confidence to keep working in more complex domains.",
+  "viewAll": "View all course projects",
   "viewAllTitle": "All course projects",
-  "viewAllDescription": "Browse course projects, lab repositories, and team assignments in reverse chronological order.",
+  "viewAllDescription": "Browse coursework projects by time.",
   "repoLabel": "Repository",
   "morePoints": "{{count}} more highlights",
   "status": {
@@ -134,8 +135,8 @@
       ]
     },
     "kernel-analysis-thesis": {
-      "title": "Research and Implementation of Fine-Grained Performance Analysis Techniques for Intelligent Computing Tasks",
-      "summary": "My BUAA Software Engineering undergraduate thesis project.",
+      "title": "Undergraduate thesis",
+      "summary": "Research and Implementation of Fine-Grained Performance Analysis Techniques for Intelligent Computing Tasks, my BUAA Software Engineering undergraduate thesis project.",
       "images": {
         "architectureWorkflow": "System architecture and workflow",
         "backgroundSignificance": "Research background and significance",

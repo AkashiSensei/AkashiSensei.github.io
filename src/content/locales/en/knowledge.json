@@ -1,12 +1,23 @@
 {
   "title": "Knowledge",
-  "subtitle": "Public writing, engineering notes, paper-reading records, and AI industry observations that I can revisit, link to, and keep growing.",
+  "subtitle": "Writing, notes, papers, and AI industry observations.",
   "viewAll": "View All",
   "viewAllTitle": "All Knowledge Notes",
-  "viewAllDescription": "Browse blogs, paper notes, engineering insights, and AI industry digests.",
+  "viewAllDescription": "Browse writing, notes, and digests.",
   "repoLabel": "Repository",
   "updatedLabel": "Updated",
   "openRepository": "Open Repository",
+  "repoTags": {
+    "private": "Private",
+    "public": "Public"
+  },
+  "externalLinks": {
+    "blogPublishedPage": "Published Blog",
+    "badges": {
+      "chinese": "Chinese Only",
+      "loginRequired": "Login Needed"
+    }
+  },
   "details": {
     "viewDetails": "View Details"
   },

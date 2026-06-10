@@ -26,6 +26,12 @@
     "description": "The link may be incorrect, or this page may not be public yet.",
     "homeCta": "Back to Home"
   },
+  "contactDialog": {
+    "title": "Contact Details",
+    "description": "You can reach me through the following public channels:",
+    "privacyNote": "To reduce spam, I don't list my primary day-to-day contacts here. The public channels shown above can still reach me—thanks for your understanding.",
+    "email": "Email"
+  },
   "githubRepoStats": {
     "defaultBranch": "default branch",
     "tooltip": "GitHub data fetched at {{time}}\nStars: {{stars}}\n{{branch}} branch commits: {{commits}}",

@@ -1,0 +1,27 @@
+{
+  "title": "您好，我是 $t(common:site.displayName)",
+  "kickerTags": ["Developer", "Engineer", "Product Manager", "Explorer"],
+  "titleLead": "$t(common:site.displayName)",
+  "titleAccent": "明石の出番ですね。",
+  "description": [
+    "软件工程在读硕士，热爱开源与技术分享",
+    "希望成为一名能够解决实际问题、交付优秀体验的工程师",
+    "不满足于完成任务，而是通过追问把经历沉淀为经验与理解"
+  ],
+  "values": [
+    {
+      "title": "以需求定义价值",
+      "description": "我相信创造应当回应真实问题。技术尝试和试错同样有价值，但我们需要清楚自己想解决什么，而不是为了炫技或自娱自乐。"
+    },
+    {
+      "title": "精益求精",
+      "description": "我希望尽量把问题想得更全面，让功能、边界和细节共同构成更可靠、更舒服的使用体验。"
+    },
+    {
+      "title": "追问",
+      "description": "问题永无止境，但我们总能再多问一个。Warp Scheduler 是否可以单周期内多发射 Warp？DeepSeek V4 中 AI Core 的空分复用更类似静态多发射还是动态调度？启用 NUMA 绑定为什么会让我的 CPU 并行程序变得更慢？"
+    }
+  ],
+  "contact": "联系我",
+  "github": "动态"
+}
