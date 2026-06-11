@@ -25,6 +25,21 @@ type ProjectImageGalleryProps = {
 
 const CARD_AUTO_CYCLE_INTERVAL_MS = 6800
 const CARD_AUTO_CYCLE_STAGGER_MS = 1300
+const MIN_CARD_IMAGE_ASPECT_RATIO = 4 / 5
+const MAX_CARD_IMAGE_ASPECT_RATIO = 16 / 9
+const CARD_IMAGE_GALLERY_MAX_HEIGHT = "min(72vh, 32rem)"
+
+function getBoundedImageAspectRatio(image: ProjectImage) {
+  const rawRatio = image.width / image.height
+  const boundedRatio = Number.isFinite(rawRatio) && rawRatio > 0
+    ? Math.min(
+        Math.max(rawRatio, MIN_CARD_IMAGE_ASPECT_RATIO),
+        MAX_CARD_IMAGE_ASPECT_RATIO,
+      )
+    : 16 / 10
+
+  return `${boundedRatio.toFixed(4)} / 1`
+}
 
 function scrollGalleryToIndex(
   gallery: HTMLDivElement | null,
@@ -321,6 +336,7 @@ export function ProjectImageGallery({
   const captionImage = images[Math.min(captionImageIndex, images.length - 1)]
     ?? selectedImage
   const hasMultipleImages = images.length > 1
+  const cardImages = cardScrollable ? images : [selectedImage]
 
   const openPreview = (imageIndex: number) => {
     initialPreviewImageIndexRef.current = imageIndex
@@ -403,53 +419,60 @@ export function ProjectImageGallery({
       <div
         ref={galleryRef}
         className={cn(
-          "flex w-full shrink-0 overscroll-y-none [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
+          "flex w-full min-w-0 max-w-full shrink-0 overscroll-y-none [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
           cardScrollable
-            ? "snap-x snap-mandatory overflow-x-auto"
-            : "overflow-hidden",
+            ? "max-h-[72svh] snap-x snap-mandatory overflow-x-auto md:max-h-none"
+            : "max-h-full overflow-hidden",
           className,
         )}
         style={{
-          aspectRatio: cardAspectRatio ?? `${firstImage.width} / ${firstImage.height}`,
+          aspectRatio: cardAspectRatio ?? getBoundedImageAspectRatio(firstImage),
+          maxHeight: cardAspectRatio ? undefined : CARD_IMAGE_GALLERY_MAX_HEIGHT,
           touchAction: cardScrollable ? "pan-x" : undefined,
         }}
         onScroll={cardScrollable ? handleCardGalleryScroll : undefined}
       >
-        {images.map((image, imageIndex) => (
-          <div
-            key={image.src}
-            role="button"
-            tabIndex={cardScrollable || imageIndex === selectedImageIndex ? 0 : -1}
-            aria-hidden={!cardScrollable && imageIndex !== selectedImageIndex}
-            className="flex h-full basis-full shrink-0 snap-start items-center justify-center overflow-hidden p-0"
-            style={cardScrollable ? { touchAction: "pan-x" } : undefined}
-            onClick={() => openPreview(imageIndex)}
-            onKeyDown={(event) => {
-              if (event.key !== "Enter" && event.key !== " ") {
-                return
-              }
+        {cardImages.map((image, renderedImageIndex) => {
+          const imageIndex = cardScrollable
+            ? renderedImageIndex
+            : selectedImageIndex
 
-              event.preventDefault()
-              openPreview(imageIndex)
-            }}
-            aria-label={t("imagePreview.open", { image: t(image.altKey) })}
-          >
-            <LazyImage
-              src={image.src}
-              alt={t(image.altKey)}
-              placeholderTitle={t(image.altKey)}
-              loadingLabel={t("common:imageLoading")}
-              brightness={image.brightness}
-              containerClassName="h-full w-full"
-              imageClassName={cn(
-                "block h-full w-full",
-                cardImageFit === "cover" ? "object-cover" : "object-contain",
-              )}
-              draggable={false}
-              style={{ touchAction: "pan-x" }}
-            />
-          </div>
-        ))}
+          return (
+            <div
+              key={image.src}
+              role="button"
+              tabIndex={cardScrollable || imageIndex === selectedImageIndex ? 0 : -1}
+              aria-hidden={!cardScrollable && imageIndex !== selectedImageIndex}
+              className="flex h-full min-w-0 basis-full shrink-0 snap-start items-center justify-center overflow-hidden p-0"
+              style={cardScrollable ? { touchAction: "pan-x" } : undefined}
+              onClick={() => openPreview(imageIndex)}
+              onKeyDown={(event) => {
+                if (event.key !== "Enter" && event.key !== " ") {
+                  return
+                }
+
+                event.preventDefault()
+                openPreview(imageIndex)
+              }}
+              aria-label={t("imagePreview.open", { image: t(image.altKey) })}
+            >
+              <LazyImage
+                src={image.src}
+                alt={t(image.altKey)}
+                placeholderTitle={t(image.altKey)}
+                loadingLabel={t("common:imageLoading")}
+                brightness={image.brightness}
+                containerClassName="h-full w-full min-w-0 max-w-full"
+                imageClassName={cn(
+                  "block h-full w-full max-w-full",
+                  cardImageFit === "cover" ? "object-cover" : "object-contain",
+                )}
+                draggable={false}
+                style={{ touchAction: "pan-x" }}
+              />
+            </div>
+          )
+        })}
       </div>
 
       <Dialog
@@ -479,13 +502,13 @@ export function ProjectImageGallery({
             {images.map((image) => (
               <div
                 key={image.src}
-                className="flex h-full basis-full shrink-0 snap-start items-center justify-center px-2 pb-1 pt-10 md:px-4 md:pt-12"
+                className="flex h-full min-w-0 basis-full shrink-0 snap-start items-center justify-center px-2 pb-1 pt-10 md:px-4 md:pt-12"
               >
-                <div className="relative flex max-h-full max-w-full overflow-hidden">
+                <div className="relative flex min-h-0 min-w-0 max-h-full max-w-full items-center justify-center overflow-hidden">
                   <img
                     src={image.src}
                     alt={t(image.altKey)}
-                    className="max-h-full max-w-full object-contain"
+                    className="h-auto w-auto max-h-full max-w-full object-contain"
                   />
                   <ImageBrightnessOverlay brightness={image.brightness} />
                 </div>

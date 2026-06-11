@@ -34,7 +34,7 @@ export function SmallToolCard({
   return (
     <GlassPanel
       className={cn(
-        "flex h-full flex-col overflow-hidden transition-colors hover:bg-[rgb(var(--site-surface-rgb)_/_0.58)] dark:hover:bg-white/10",
+        "detail-link-pair flex h-full flex-col overflow-hidden transition-colors hover:bg-[rgb(var(--site-surface-rgb)_/_0.70)] dark:hover:bg-white/10",
         variant === "full" && (hasImages ? "max-h-[44rem]" : "max-h-[32rem]"),
         className,
       )}
@@ -58,7 +58,7 @@ export function SmallToolCard({
           <div className="flex items-center gap-2">
             <AppLink
               to={detailPath}
-              className="min-w-0 text-xl font-bold leading-tight text-foreground/90 transition-colors hover:text-foreground"
+              className="detail-link-trigger detail-link-emphasis min-w-0 text-xl font-bold leading-tight text-foreground/90 transition-colors hover:text-foreground"
             >
               {t(`items.${tool.id}.title`)}
             </AppLink>
@@ -103,10 +103,10 @@ export function SmallToolCard({
 
           <AppLink
             to={detailPath}
-            className="group/detail inline-flex w-fit items-center gap-1.5 text-sm font-semibold text-foreground/65 transition-colors hover:text-foreground dark:text-foreground/75 dark:hover:text-foreground"
+            className="detail-link-trigger detail-link-emphasis group/detail inline-flex w-fit items-center gap-1.5 text-sm font-semibold text-foreground/65 transition-colors hover:text-foreground dark:text-foreground/75 dark:hover:text-foreground"
           >
             {t("common:details.viewDetails")}
-            <ArrowRight className="h-4 w-4 transition-transform group-hover/detail:translate-x-0.5" />
+            <ArrowRight className="detail-link-arrow h-4 w-4 transition-transform group-hover/detail:translate-x-0.5" />
           </AppLink>
         </div>
       </div>

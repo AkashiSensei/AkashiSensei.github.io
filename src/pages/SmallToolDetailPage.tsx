@@ -50,7 +50,7 @@ function SmallToolImageWall({
   return (
     <>
       <div className="hidden md:block">
-        <div className="columns-2 gap-3 xl:columns-3">
+        <div className="columns-2 gap-4 min-[1800px]:columns-3">
           {images.map((image) => (
             <button
               key={image.src}
@@ -137,11 +137,11 @@ export function SmallToolDetailPage({ tools }: SmallToolDetailPageProps) {
 
   return (
     <Layout>
-      <article className="mt-4 flex w-full max-w-5xl flex-col gap-10 sm:mt-8 sm:gap-14">
+      <article className="mx-auto mt-4 flex w-full max-w-7xl flex-col gap-10 sm:mt-8 sm:gap-14">
         <div className={cn("flex flex-col pb-1 pt-1 sm:pb-2 sm:pt-2", detailSectionClassName)}>
           <BackButton fallback="/tools" />
 
-          <header className="flex max-w-4xl flex-col gap-5">
+          <header className="flex max-w-5xl flex-col gap-5">
             <p className="text-sm font-semibold text-foreground/55 dark:text-foreground/65">
               {t("title")}
             </p>
@@ -199,8 +199,8 @@ export function SmallToolDetailPage({ tools }: SmallToolDetailPageProps) {
           </section>
         ) : null}
 
-        <div className={cn("grid gap-7 sm:gap-6 lg:grid-cols-[minmax(0,1fr)_18rem]", detailSectionClassName)}>
-          <section className="order-2 flex min-w-0 flex-col lg:order-1 lg:pt-3">
+        <div className={cn("grid gap-7 sm:gap-6 lg:grid-cols-[minmax(0,1fr)_30rem] xl:grid-cols-[minmax(0,1fr)_34rem]", detailSectionClassName)}>
+          <section className="order-2 flex min-w-0 flex-col lg:order-1 lg:-mt-1">
             <FeaturePointList
               points={points}
               highlightedIndexes={tool.highlightPointIndexes}

@@ -66,7 +66,7 @@ export function KnowledgeCard({
   return (
     <GlassPanel
       className={cn(
-        "flex h-full min-h-0 flex-col overflow-hidden transition-colors hover:bg-[rgb(var(--site-surface-rgb)_/_0.58)] dark:hover:bg-white/10",
+        "detail-link-pair flex h-full min-h-0 flex-col overflow-hidden transition-colors hover:bg-[rgb(var(--site-surface-rgb)_/_0.70)] dark:hover:bg-white/10",
         variant === "full" && "h-auto",
         className,
       )}
@@ -102,7 +102,7 @@ export function KnowledgeCard({
         <div className="flex flex-col gap-2">
           <AppLink
             to={detailPath}
-            className="group/title inline-flex w-fit max-w-full items-center gap-1.5 text-xl font-bold leading-tight text-foreground/90 transition-colors hover:text-foreground"
+            className="detail-link-trigger detail-link-emphasis group/title inline-flex w-fit max-w-full items-center gap-1.5 text-xl font-bold leading-tight text-foreground/90 transition-colors hover:text-foreground"
           >
             <span className="min-w-0">{t(`items.${entry.id}.title`)}</span>
           </AppLink>
@@ -117,15 +117,16 @@ export function KnowledgeCard({
               <span
                 key={repoTag}
                 className={cn(
-                  "rounded-full border px-2 py-0.5 text-[0.6875rem] font-semibold leading-none",
+                  "shrink-0 whitespace-nowrap rounded-full border px-2 py-0.5 text-[0.6875rem] font-semibold leading-none",
                   getSemanticTagClassName(repoTag),
-                  "whitespace-nowrap",
                 )}
               >
                 {t(`repoTags.${repoTag}`)}
               </span>
             ))}
-            <span className="min-w-0 truncate">{entry.repoName}</span>
+            <span className="min-w-0 max-w-[8rem] truncate sm:max-w-[10rem] md:max-w-[14rem] xl:max-w-[18rem]">
+              {entry.repoName}
+            </span>
             <ArrowUpRight className="h-4 w-4 shrink-0 transition-transform group-hover/repo:-translate-y-0.5 group-hover/repo:translate-x-0.5" />
             <GitHubRepoStats repo={entry.githubRepo} />
           </a>
@@ -177,10 +178,10 @@ export function KnowledgeCard({
 
           <AppLink
             to={detailPath}
-            className="group/detail mt-auto inline-flex w-fit items-center gap-1.5 text-sm font-semibold text-foreground/65 transition-colors hover:text-foreground dark:text-foreground/75 dark:hover:text-foreground"
+            className="detail-link-trigger detail-link-emphasis group/detail mt-auto inline-flex w-fit items-center gap-1.5 text-sm font-semibold text-foreground/65 transition-colors hover:text-foreground dark:text-foreground/75 dark:hover:text-foreground"
           >
             {t("details.viewDetails")}
-            <ArrowRight className="h-4 w-4 transition-transform group-hover/detail:translate-x-0.5" />
+            <ArrowRight className="detail-link-arrow h-4 w-4 transition-transform group-hover/detail:translate-x-0.5" />
           </AppLink>
         </div>
       </div>

@@ -45,8 +45,8 @@ export function ResumePage() {
 
   return (
     <Layout>
-      <div className="mt-8 flex flex-col gap-[4svh] pb-[8svh] sm:mt-16 sm:gap-[5svh] sm:pb-[9svh] md:gap-[6svh] md:pb-[10svh] lg:gap-[7svh] lg:pb-[11svh] xl:gap-[8svh] xl:pb-[12svh]">
-        <section className="grid min-h-[calc(84svh-10rem)] w-full items-center gap-10 pb-5 pt-2 sm:pb-6 sm:pt-4 md:min-h-[calc(86svh-10rem)] md:pb-8 md:pt-0 lg:grid-cols-[minmax(0,1fr)_25rem] lg:gap-14 lg:pb-10 xl:grid-cols-[minmax(0,1fr)_31rem] xl:gap-20">
+      <div className="resume-section-stack mt-8 flex flex-col sm:mt-16">
+        <section className="resume-hero-section grid w-full items-center gap-9 pb-5 pt-2 sm:gap-10 sm:pb-6 sm:pt-4 md:pb-8 md:pt-0 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,24rem)] lg:gap-8 xl:grid-cols-[minmax(0,1fr)_minmax(20rem,31rem)] xl:gap-14 xl:pb-10 min-[1800px]:!grid-cols-[minmax(0,1fr)_31rem] min-[1800px]:!gap-20">
           <div className="flex flex-col gap-5 sm:gap-6">
             <div className="flex flex-wrap gap-2">
               {kickerTags.map((tag) => (
@@ -59,16 +59,16 @@ export function ResumePage() {
               ))}
             </div>
             <div className="flex flex-col gap-1 sm:gap-1.5">
-              <h1 className="text-[clamp(2.75rem,7vw,5.15rem)] font-black leading-[0.92] tracking-[-0.035em] text-tone-1 text-pretty sm:text-[clamp(3.65rem,5.8vw,5.65rem)]">
+              <h1 className="text-[clamp(3.45rem,15vw,4.25rem)] font-black leading-[0.92] tracking-[-0.035em] text-tone-1 text-pretty sm:text-[clamp(3.65rem,5.8vw,5.65rem)]">
                 {t("titleLead")}
               </h1>
-              <p className="max-w-full whitespace-nowrap text-[clamp(1.05rem,2.8vw,1.85rem)] font-medium italic leading-none text-tone-4 sm:text-[clamp(1.25rem,2.2vw,2rem)]">
+              <p className="max-w-full text-[clamp(1.35rem,5.6vw,1.8rem)] font-medium italic leading-tight text-tone-4 text-pretty sm:text-[clamp(1.25rem,2.2vw,2rem)] sm:leading-none xl:whitespace-nowrap">
                 {t("titleAccent")}
               </p>
             </div>
-            <div className={`flex max-w-2xl flex-col gap-0.5 text-base font-medium leading-[1.28] text-tone-2 sm:leading-[1.3] lg:max-w-4xl xl:max-w-6xl ${isEnglish ? "sm:text-base" : "sm:text-lg"}`}>
+            <div className={`flex max-w-3xl flex-col gap-1 text-base font-medium leading-[1.34] text-tone-2 sm:leading-[1.32] lg:max-w-4xl xl:max-w-6xl ${isEnglish ? "sm:text-base" : "sm:text-lg"}`}>
               {descriptionParagraphs.map((paragraph) => (
-                <p key={paragraph} className="whitespace-pre-line xl:whitespace-nowrap">
+                <p key={paragraph} className="whitespace-pre-line min-[1800px]:whitespace-nowrap">
                   {paragraph}
                 </p>
               ))}
@@ -99,7 +99,7 @@ export function ResumePage() {
               </Button>
             </div>
           </div>
-          <div className="flex w-full max-w-xl flex-col gap-5 justify-self-start lg:max-w-none lg:gap-6 lg:pt-12 xl:pt-16">
+          <div className="grid w-full max-w-5xl gap-5 justify-self-start sm:grid-cols-2 lg:max-w-none lg:grid-cols-1 lg:gap-5 lg:pt-8 xl:gap-6 xl:pt-12 min-[1800px]:!pt-16">
             {valueCards.map((card) => (
               <div
                 key={card.title}

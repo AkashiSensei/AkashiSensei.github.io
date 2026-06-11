@@ -25,9 +25,9 @@ export function SmallToolHighlights() {
   return (
     <section
       id="tools"
-      className="grid min-h-[calc(100svh-8rem)] w-full items-center gap-8 py-10 sm:py-12 lg:grid-cols-[minmax(14rem,0.72fr)_minmax(0,1.28fr)] lg:gap-12 xl:gap-16"
+      className="resume-rhythm-section grid w-full content-start items-start gap-5 sm:gap-6 xl:grid-cols-[minmax(14rem,0.72fr)_minmax(0,1.28fr)] xl:gap-12"
     >
-      <div className="flex max-w-xl flex-col gap-4 px-2 sm:px-3 md:px-4 lg:self-start lg:pt-[22svh] xl:pt-[21svh]">
+      <div className="resume-feature-offset flex max-w-xl flex-col gap-4 px-2 sm:px-3 md:px-4 xl:self-start">
         <div className="flex flex-col gap-2">
           <p className="text-[0.6875rem] font-normal uppercase tracking-[0.22em] text-tone-5">
             Utility
@@ -62,15 +62,15 @@ export function SmallToolHighlights() {
         </AppLink>
       </div>
 
-      <div className="grid items-start gap-y-7 md:hidden">
+      <div className="grid items-start gap-y-7 px-2 sm:px-3 md:hidden">
         {featuredSmallTools.map((tool) => (
           <SmallToolLineItem key={tool.id} tool={tool} />
         ))}
       </div>
 
-      <div className="hidden items-start gap-x-8 md:grid md:grid-cols-2 xl:gap-x-12">
+      <div className="small-tool-list-offset hidden items-start gap-x-8 px-4 md:grid md:grid-cols-2 xl:gap-x-10 xl:px-0">
         {desktopToolColumns.map((column, columnIndex) => (
-          <div key={columnIndex} className="flex flex-col gap-10">
+          <div key={columnIndex} className="flex flex-col gap-7 xl:gap-8">
             {column.map((tool) => (
               <SmallToolLineItem key={tool.id} tool={tool} />
             ))}
@@ -87,7 +87,7 @@ function SmallToolLineItem({ tool }: { tool: SmallTool }) {
   const statusLabel = tool.status ? t(`labels.${tool.status}`) : null
 
   return (
-    <article className="grid grid-cols-[3px_minmax(0,1fr)] gap-4">
+    <article className="detail-link-pair grid grid-cols-[3px_minmax(0,1fr)] gap-4 [--detail-link-active-color:var(--text-tone-1)]">
       <div className="h-full bg-tone-4 dark:bg-tone-3" aria-hidden="true" />
       <div className="flex min-w-0 flex-col gap-3">
         <div className="flex min-w-0 flex-col gap-1.5">
@@ -102,7 +102,10 @@ function SmallToolLineItem({ tool }: { tool: SmallTool }) {
           </div>
 
           <h3 className="text-lg font-normal leading-tight tracking-tight text-tone-1 sm:text-xl">
-            <AppLink to={detailPath} className="transition-colors hover:text-tone-1">
+            <AppLink
+              to={detailPath}
+              className="detail-link-trigger detail-link-emphasis transition-colors hover:text-tone-1"
+            >
               {t(`items.${tool.id}.title`)}
             </AppLink>
           </h3>
@@ -114,10 +117,10 @@ function SmallToolLineItem({ tool }: { tool: SmallTool }) {
 
         <AppLink
           to={detailPath}
-          className="group/detail inline-flex w-fit items-center gap-1.5 text-sm font-normal text-tone-2 transition-colors hover:text-tone-1"
+          className="detail-link-trigger detail-link-emphasis group/detail inline-flex w-fit items-center gap-1.5 text-sm font-normal text-tone-2 transition-colors hover:text-tone-1"
         >
           {t("common:details.viewDetails")}
-          <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover/detail:translate-x-0.5" />
+          <ArrowRight className="detail-link-arrow h-4 w-4 transition-transform duration-300 group-hover/detail:translate-x-0.5" />
         </AppLink>
       </div>
     </article>

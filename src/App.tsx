@@ -41,25 +41,27 @@ function RouteEffects() {
     let frameId: number | undefined
 
     const updateBackgroundOffset = () => {
+      const viewportWidth = window.visualViewport?.width ?? window.innerWidth
+      const viewportHeight = window.visualViewport?.height ?? window.innerHeight
       const maxScrollY = Math.max(
         0,
-        document.documentElement.scrollHeight - window.innerHeight,
+        document.documentElement.scrollHeight - viewportHeight,
       )
       const scrollProgress = maxScrollY > 0
         ? Math.max(0, Math.min(1, window.scrollY / maxScrollY))
         : 0
-      const viewportAspectRatio = window.innerWidth / window.innerHeight
+      const viewportAspectRatio = viewportWidth / viewportHeight
       const baseBackgroundWidth = viewportAspectRatio > backgroundImageAspectRatio
-        ? window.innerWidth
-        : window.innerHeight * backgroundImageAspectRatio
+        ? viewportWidth
+        : viewportHeight * backgroundImageAspectRatio
       const baseBackgroundHeight = viewportAspectRatio > backgroundImageAspectRatio
-        ? window.innerWidth / backgroundImageAspectRatio
-        : window.innerHeight
+        ? viewportWidth / backgroundImageAspectRatio
+        : viewportHeight
       const renderedBackgroundWidth = baseBackgroundWidth * backgroundScrollScale
       const renderedBackgroundHeight = baseBackgroundHeight * backgroundScrollScale
       const maxBackgroundOffset = Math.max(
         0,
-        (renderedBackgroundHeight - window.innerHeight) / 2,
+        (renderedBackgroundHeight - viewportHeight) / 2,
       )
       const offset = reducedMotionQuery.matches
         ? 0
@@ -90,6 +92,10 @@ function RouteEffects() {
     })
     window.addEventListener("resize", scheduleBackgroundOffsetUpdate)
     window.addEventListener("load", scheduleBackgroundOffsetUpdate)
+    window.visualViewport?.addEventListener(
+      "resize",
+      scheduleBackgroundOffsetUpdate,
+    )
     reducedMotionQuery.addEventListener("change", scheduleBackgroundOffsetUpdate)
 
     return () => {
@@ -99,6 +105,10 @@ function RouteEffects() {
       window.removeEventListener("scroll", scheduleBackgroundOffsetUpdate)
       window.removeEventListener("resize", scheduleBackgroundOffsetUpdate)
       window.removeEventListener("load", scheduleBackgroundOffsetUpdate)
+      window.visualViewport?.removeEventListener(
+        "resize",
+        scheduleBackgroundOffsetUpdate,
+      )
       reducedMotionQuery.removeEventListener(
         "change",
         scheduleBackgroundOffsetUpdate,
@@ -172,38 +182,41 @@ function App() {
   return (
     <>
       <RouteEffects />
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/resume" element={<ResumePage />} />
-        <Route path="/projects" element={<ProjectsPage />} />
-        <Route
-          path="/projects/:projectId"
-          element={<ProjectDetailPage projects={projects} />}
-        />
-        <Route path="/course-projects" element={<CourseProjectsPage />} />
-        <Route
-          path="/course-projects/:projectId"
-          element={
-            <ProjectDetailPage
-              projects={courseProjects}
-              translationNamespace="courseProjects"
-              fallbackPath="/course-projects"
-            />
-          }
-        />
-        <Route path="/workbench" element={<WorkbenchPage />} />
-        <Route path="/tools" element={<ToolsPage />} />
-        <Route path="/knowledge" element={<KnowledgePage />} />
-        <Route
-          path="/knowledge/:entryId"
-          element={<KnowledgeDetailPage entries={knowledgeEntries} />}
-        />
-        <Route
-          path="/tools/:toolId"
-          element={<SmallToolDetailPage tools={smallTools} />}
-        />
-        <Route path="*" element={<NotFoundPage />} />
-      </Routes>
+      <div className="site-background" aria-hidden="true" />
+      <div className="site-content">
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/resume" element={<ResumePage />} />
+          <Route path="/projects" element={<ProjectsPage />} />
+          <Route
+            path="/projects/:projectId"
+            element={<ProjectDetailPage projects={projects} />}
+          />
+          <Route path="/course-projects" element={<CourseProjectsPage />} />
+          <Route
+            path="/course-projects/:projectId"
+            element={
+              <ProjectDetailPage
+                projects={courseProjects}
+                translationNamespace="courseProjects"
+                fallbackPath="/course-projects"
+              />
+            }
+          />
+          <Route path="/workbench" element={<WorkbenchPage />} />
+          <Route path="/tools" element={<ToolsPage />} />
+          <Route path="/knowledge" element={<KnowledgePage />} />
+          <Route
+            path="/knowledge/:entryId"
+            element={<KnowledgeDetailPage entries={knowledgeEntries} />}
+          />
+          <Route
+            path="/tools/:toolId"
+            element={<SmallToolDetailPage tools={smallTools} />}
+          />
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </div>
     </>
   )
 }

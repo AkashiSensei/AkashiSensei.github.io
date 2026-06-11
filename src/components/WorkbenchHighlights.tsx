@@ -267,6 +267,7 @@ export function WorkbenchHighlights() {
     useState<PreviewCandidate | null>(null)
   const [activePreview, setActivePreview] = useState<PreviewCandidate | null>(null)
   const [lockedPreview, setLockedPreview] = useState<LockedPreview | null>(null)
+  const [hasCoarsePointer, setHasCoarsePointer] = useState(false)
   const [retiringPreview, setRetiringPreview] =
     useState<PreviewCandidate | null>(null)
 
@@ -298,6 +299,10 @@ export function WorkbenchHighlights() {
       return
     }
 
+    if (hasCoarsePointer) {
+      return
+    }
+
     const timeoutId = window.setTimeout(() => {
       setRetiringPreview(lockedPreview.preview)
       setLockedPreview(null)
@@ -309,7 +314,21 @@ export function WorkbenchHighlights() {
     return () => {
       window.clearTimeout(timeoutId)
     }
-  }, [lockedPreview])
+  }, [hasCoarsePointer, lockedPreview])
+
+  useEffect(() => {
+    const coarsePointerQuery = window.matchMedia("(pointer: coarse)")
+    const updatePointerMode = () => {
+      setHasCoarsePointer(coarsePointerQuery.matches)
+    }
+
+    updatePointerMode()
+    coarsePointerQuery.addEventListener("change", updatePointerMode)
+
+    return () => {
+      coarsePointerQuery.removeEventListener("change", updatePointerMode)
+    }
+  }, [])
 
   useEffect(() => {
     if (retiringPreview === null) {
@@ -416,7 +435,7 @@ export function WorkbenchHighlights() {
     lockedPreview === null && activePreview === null && retiringPreview !== null
 
   return (
-    <section id="workbench" className="flex min-h-[calc(100svh-8rem)] w-full flex-col justify-center gap-1 py-10 sm:gap-2 sm:py-12">
+    <section id="workbench" className="resume-rhythm-section workbench-rhythm-section flex w-full flex-col justify-center gap-1 sm:gap-2">
       <div className="flex flex-col gap-4 px-2 sm:px-3 md:flex-row md:items-end md:justify-between md:gap-8 md:px-4">
         <div className="flex max-w-3xl flex-col gap-2">
           <h2 className="text-3xl font-normal leading-none tracking-tight text-tone-1 md:text-4xl">
@@ -438,7 +457,7 @@ export function WorkbenchHighlights() {
 
       <div
         ref={wallRef}
-        className="relative mx-auto w-[calc(100vw-3rem)] overflow-x-clip overflow-y-visible pb-7 pt-0 sm:w-[calc(100vw-4rem)] sm:pb-8 md:w-[calc(100vw-8rem)] lg:w-[calc(100vw-32rem)] lg:pb-10"
+        className="relative mx-auto w-full overflow-x-clip overflow-y-visible pb-0 pt-0 md:pb-4 lg:pb-5 min-[1800px]:!w-[calc(100vw-32rem)]"
         onMouseLeave={() => {
           setPreviewCandidate(null)
 
@@ -453,7 +472,7 @@ export function WorkbenchHighlights() {
         }}
       >
         <div
-          className="flex max-h-[25rem] flex-col gap-0 overflow-visible pb-8 pt-3 sm:max-h-[28rem] sm:pb-9 sm:pt-3 lg:max-h-[33rem] lg:pb-10 lg:pt-4"
+          className="flex max-h-[25rem] flex-col gap-0 overflow-visible pb-3 pt-3 sm:max-h-[28rem] sm:pt-3 md:pb-5 lg:max-h-[33rem] lg:pb-6 lg:pt-4"
           style={{
             maskImage:
               "linear-gradient(to right, transparent 0, black 2rem, black calc(100% - 2rem), transparent 100%)",
@@ -516,7 +535,7 @@ export function WorkbenchHighlights() {
                         src={software.icon}
                         alt={software.name}
                         className={cn(
-                          "h-9 w-9 origin-center object-contain opacity-72 drop-shadow-sm transition-[opacity,filter,transform] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform motion-reduce:transition-none sm:h-11 sm:w-11 lg:h-12 lg:w-12",
+                          "h-9 w-9 origin-center object-contain opacity-86 drop-shadow-sm transition-[opacity,filter,transform] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform motion-reduce:transition-none sm:h-11 sm:w-11 lg:h-12 lg:w-12",
                           isHovered ? "opacity-100 drop-shadow-lg" : "hover:opacity-100",
                         )}
                         style={{
@@ -534,7 +553,7 @@ export function WorkbenchHighlights() {
 
         {visiblePreview ? (
           <div
-            key={`${visiblePreview.key}-${isPreviewRetiring ? "exit" : "active"}`}
+            key={visiblePreview.key}
             className={cn(
               "absolute z-30 hidden md:block",
               isPreviewRetiring && "pointer-events-none",
@@ -555,6 +574,16 @@ export function WorkbenchHighlights() {
                   ? "workbench-preview-glass-exit"
                   : "workbench-preview-glass-enter",
               )}
+            />
+          </div>
+        ) : null}
+
+        {lockedPreview ? (
+          <div className="px-2 sm:px-3 md:hidden">
+            <SoftwareGroupCard
+              group={lockedPreview.preview.group}
+              variant="compact"
+              className="h-auto max-h-none min-h-0 w-full overflow-hidden"
             />
           </div>
         ) : null}
