@@ -59,7 +59,7 @@ function KnowledgeImageWall({
   return (
     <>
       <div className="hidden md:block">
-        <div className="columns-2 gap-3 xl:columns-3">
+        <div className="columns-2 gap-4 min-[1800px]:columns-3">
           {images.map((image) => {
             const imageAlt = t(image.altKey)
 
@@ -157,11 +157,11 @@ export function KnowledgeDetailPage({ entries }: KnowledgeDetailPageProps) {
 
   return (
     <Layout>
-      <article className="mt-4 flex w-full max-w-5xl flex-col gap-10 sm:mt-8 sm:gap-14">
+      <article className="mx-auto mt-4 flex w-full max-w-7xl flex-col gap-10 sm:mt-8 sm:gap-14">
         <div className={cn("flex flex-col pb-1 pt-1 sm:pb-2 sm:pt-2", detailSectionClassName)}>
           <BackButton fallback="/knowledge" />
 
-          <header className="flex max-w-4xl flex-col gap-5">
+          <header className="flex w-full flex-col gap-5">
             <p className="text-sm font-semibold text-foreground/55 dark:text-foreground/65">
               {t("title")}
             </p>
@@ -169,20 +169,20 @@ export function KnowledgeDetailPage({ entries }: KnowledgeDetailPageProps) {
               <h1 className="text-3xl font-bold tracking-tight md:text-5xl">
                 {t(`items.${entry.id}.title`)}
               </h1>
-              <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 pt-1 sm:pt-2">
+              <div className="flex w-full flex-wrap items-center gap-x-4 gap-y-2 pt-1 sm:pt-2">
                 <span
                   className={cn(
-                    "rounded-full border px-3 py-1.5 text-sm font-semibold leading-none",
+                    "rounded-full border px-3 py-1.5 text-base font-semibold leading-none",
                     kindClassName[entry.kind],
                   )}
                 >
                   {t(`kinds.${entry.kind}`)}
                 </span>
-                <span className="text-sm font-semibold text-foreground/45 dark:text-foreground/55">
+                <span className="ml-auto text-right text-base font-semibold text-foreground/45 dark:text-foreground/55">
                   {t("updatedLabel")} {updatedLabel}
                 </span>
               </div>
-              <p className="text-base leading-relaxed text-foreground/80 dark:text-foreground/90 sm:text-lg">
+              <p className="text-lg leading-relaxed text-foreground/80 dark:text-foreground/90 lg:text-xl">
                 {t(`items.${entry.id}.summary`)}
               </p>
             </div>
@@ -201,8 +201,8 @@ export function KnowledgeDetailPage({ entries }: KnowledgeDetailPageProps) {
           </section>
         ) : null}
 
-        <div className={cn("grid gap-7 sm:gap-6 lg:grid-cols-[minmax(0,1fr)_18rem]", detailSectionClassName)}>
-          <section className="order-2 flex min-w-0 flex-col lg:order-1 lg:pt-3">
+        <div className={cn("grid gap-7 sm:gap-6 lg:grid-cols-[minmax(0,1fr)_30rem] xl:grid-cols-[minmax(0,1fr)_34rem]", detailSectionClassName)}>
+          <section className="order-2 flex min-w-0 flex-col lg:order-1 lg:-mt-1">
             <FeaturePointList points={points} className="gap-3 text-base" />
           </section>
 
@@ -212,21 +212,22 @@ export function KnowledgeDetailPage({ entries }: KnowledgeDetailPageProps) {
                 href={entry.url}
                 target="_blank"
                 rel="noreferrer"
-                className="group/repo flex min-w-0 flex-wrap items-center gap-1.5 text-sm font-semibold text-foreground/70 transition-colors hover:text-foreground dark:text-foreground/80"
+                className="group/repo flex min-w-0 flex-nowrap items-center gap-1.5 text-sm font-semibold text-foreground/70 transition-colors hover:text-foreground dark:text-foreground/80"
               >
                 {entry.repoTags?.map((repoTag) => (
                   <span
                     key={repoTag}
                     className={cn(
-                      "rounded-full border px-2 py-0.5 text-[0.6875rem] font-semibold leading-none",
+                      "shrink-0 whitespace-nowrap rounded-full border px-2 py-0.5 text-[0.6875rem] font-semibold leading-none",
                       getSemanticTagClassName(repoTag),
-                      "whitespace-nowrap",
                     )}
                   >
                     {t(`repoTags.${repoTag}`)}
                   </span>
                 ))}
-                <span className="min-w-0 truncate">{entry.repoName}</span>
+                <span className="min-w-0 max-w-[8rem] truncate sm:max-w-[10rem] md:max-w-[14rem] lg:max-w-[20rem] xl:max-w-[24rem]">
+                  {entry.repoName}
+                </span>
                 <ArrowUpRight className="h-4 w-4 shrink-0 transition-transform group-hover/repo:-translate-y-0.5 group-hover/repo:translate-x-0.5" />
                 <GitHubRepoStats repo={entry.githubRepo} />
               </a>

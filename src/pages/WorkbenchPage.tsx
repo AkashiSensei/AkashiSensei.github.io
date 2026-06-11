@@ -10,7 +10,7 @@ export function WorkbenchPage() {
 
   return (
     <Layout>
-      <div className="mt-2 flex w-full max-w-5xl flex-col gap-8 sm:mt-4 sm:gap-12">
+      <div className="mx-auto mt-2 flex w-full max-w-7xl flex-col gap-8 sm:mt-4 sm:gap-12">
         <div className="flex flex-col px-2 sm:px-4">
           <BackButton />
 

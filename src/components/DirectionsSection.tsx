@@ -192,7 +192,7 @@ function DirectionOrbitItem({
   return (
     <li
       ref={itemRef}
-      className="relative z-10 grid grid-cols-[2.5rem_minmax(0,1fr)] items-start gap-3 lg:absolute lg:left-[var(--orbit-x)] lg:top-[var(--orbit-y)] lg:min-h-[5.25rem] lg:w-[calc(100%-4.5rem)] lg:-translate-x-3.5 lg:-translate-y-3.5 lg:gap-4 lg:transition-[left,top] lg:duration-700 lg:ease-[cubic-bezier(0.22,1,0.36,1)]"
+      className="relative z-10 grid grid-cols-[2.5rem_minmax(0,1fr)] items-start gap-3 min-[1200px]:absolute min-[1200px]:left-[var(--orbit-x)] min-[1200px]:top-[var(--orbit-y)] min-[1200px]:min-h-[5.25rem] min-[1200px]:w-[calc(100%-4.5rem)] min-[1200px]:-translate-x-3.5 min-[1200px]:-translate-y-3.5 min-[1200px]:gap-4 min-[1200px]:transition-[left,top] min-[1200px]:duration-700 min-[1200px]:ease-[cubic-bezier(0.22,1,0.36,1)]"
       onMouseEnter={onHoverStart}
       onMouseLeave={onHoverEnd}
       style={
@@ -322,7 +322,7 @@ function DirectionOrbitColumn({
 
   return (
     <ol
-      className="relative z-10 flex min-h-0 flex-col gap-7 py-2 lg:block lg:h-[var(--orbit-height)] lg:py-0 lg:transition-[height] lg:duration-700 lg:ease-[cubic-bezier(0.22,1,0.36,1)]"
+      className="relative z-10 flex min-h-0 flex-col gap-7 py-2 min-[1200px]:block min-[1200px]:h-[var(--orbit-height)] min-[1200px]:py-0 min-[1200px]:transition-[height] min-[1200px]:duration-700 min-[1200px]:ease-[cubic-bezier(0.22,1,0.36,1)]"
       style={
         {
           "--orbit-height": `${layout.height}px`,
@@ -331,7 +331,7 @@ function DirectionOrbitColumn({
     >
       <svg
         ref={svgRef}
-        className="pointer-events-none absolute inset-y-0 left-0 z-0 hidden h-full w-24 text-foreground/18 dark:text-white/18 lg:block"
+        className="pointer-events-none absolute inset-y-0 left-0 z-0 hidden h-full w-24 text-foreground/18 dark:text-white/18 min-[1200px]:block"
         viewBox="0 0 96 560"
         preserveAspectRatio="none"
         aria-hidden="true"
@@ -378,7 +378,7 @@ function StarMotif({ isActive }: { isActive: boolean }) {
   return (
     <div
       className={cn(
-        "interest-star-motif relative mt-3 h-44 w-44 sm:h-52 sm:w-52 lg:mt-10",
+        "interest-star-motif relative mt-5 hidden h-44 w-44 min-[1200px]:block min-[1800px]:mt-10 min-[1800px]:h-52 min-[1800px]:w-52",
         isActive && "is-active",
       )}
       aria-hidden="true"
@@ -409,9 +409,9 @@ export function DirectionsSection() {
   const rightDirections = directions.slice(4)
 
   return (
-    <section className="grid min-h-[calc(100svh-8rem)] w-full items-center py-10 sm:py-12">
-      <div className="relative grid gap-10 lg:grid-cols-[minmax(15rem,0.82fr)_minmax(0,1fr)_minmax(0,1fr)] lg:items-center lg:gap-8 xl:gap-12">
-        <div className="relative z-10 flex max-w-xl flex-col lg:-translate-y-12 xl:-translate-y-14">
+    <section className="resume-rhythm-section grid w-full items-center">
+      <div className="relative grid gap-10 min-[1200px]:grid-cols-[minmax(15rem,0.82fr)_minmax(0,1fr)_minmax(0,1fr)] min-[1200px]:items-center min-[1200px]:gap-12">
+        <div className="relative z-10 flex max-w-xl flex-col min-[1200px]:-translate-y-14">
           <p className="text-[0.6875rem] font-normal uppercase tracking-[0.22em] text-tone-5">
             Field
           </p>
@@ -432,7 +432,7 @@ export function DirectionsSection() {
           range={MIDDLE_ORBIT_RANGE}
         />
 
-        <div className="relative z-10 lg:pt-14">
+        <div className="relative z-10 min-[1200px]:pt-14">
           <DirectionOrbitColumn
             activeItemId={activeDirectionId}
             items={rightDirections}

@@ -88,7 +88,7 @@ export function ProjectHighlights() {
   )
 
   return (
-    <section id="projects" className="flex min-h-[calc(84svh-8rem)] w-full flex-col justify-center gap-5 py-8 sm:py-10">
+    <section id="projects" className="resume-rhythm-section project-highlights-section flex w-full min-w-0 flex-col justify-center gap-5 overflow-x-clip">
       <ArchiveSectionHeader
         detailPath="/projects"
         title={t("title")}
@@ -222,7 +222,7 @@ function ProjectRepoLinks({
               <span
                 key={repoTag}
                 className={cn(
-                  "rounded-full border px-2 py-0.5 text-[0.6875rem] leading-none shadow-sm backdrop-blur-sm",
+                  "shrink-0 whitespace-nowrap rounded-full border px-2 py-0.5 text-[0.6875rem] leading-none shadow-sm backdrop-blur-sm",
                   getSemanticTagClassName(repoTag),
                   "bg-[rgb(var(--site-surface-rgb)_/_0.86)] dark:bg-white/12",
                 )}
@@ -230,7 +230,9 @@ function ProjectRepoLinks({
                 {t(`repoTags.${repoTag}`)}
               </span>
             ))}
-            <span className="min-w-0 truncate">{link.label}</span>
+            <span className="min-w-0 max-w-[8rem] truncate sm:max-w-[10rem] md:max-w-[14rem] xl:max-w-[18rem]">
+              {link.label}
+            </span>
             {link.url ? (
               <ArrowUpRight className="h-3.5 w-3.5 shrink-0" />
             ) : null}
@@ -304,10 +306,34 @@ function ProjectFeatureRow({
 }) {
   const { i18n, t } = useTranslation(["projects", "common"])
   const projectGalleryRef = useRef<HTMLDivElement>(null)
+  const getProjectViewportMode = () => {
+    if (typeof window === "undefined") {
+      return {
+        isMobile: false,
+        isStackedDesktop: false,
+        isNarrowSplitDesktop: false,
+      }
+    }
+
+    const viewportWidth = window.visualViewport?.width ?? window.innerWidth
+
+    return {
+      isMobile: viewportWidth < 768,
+      isStackedDesktop: viewportWidth >= 768 && viewportWidth < 1200,
+      isNarrowSplitDesktop: viewportWidth >= 1200 && viewportWidth < 1500,
+    }
+  }
+  const [projectViewportMode, setProjectViewportMode] = useState(
+    getProjectViewportMode,
+  )
   const project = projects[activeProjectIndex] ?? projects[0]
   const points = getPoints(t(`items.${project.id}.points`, { returnObjects: true }))
   const isEnglish = (i18n.resolvedLanguage ?? i18n.language).startsWith("en")
-  const visiblePointCount = isEnglish ? 1 : 3
+  const visiblePointCount = projectViewportMode.isMobile || projectViewportMode.isStackedDesktop
+    ? 3
+    : isEnglish || projectViewportMode.isNarrowSplitDesktop
+      ? 1
+      : 3
   const visiblePoints = points.slice(0, visiblePointCount)
   const title = t(`items.${project.id}.title`)
   const detailPath = getProjectDetailPath(project, "projects")
@@ -365,6 +391,29 @@ function ProjectFeatureRow({
   }
 
   useEffect(() => {
+    const updateProjectViewportMode = () => {
+      const nextMode = getProjectViewportMode()
+
+      setProjectViewportMode((currentMode) =>
+        currentMode.isMobile === nextMode.isMobile &&
+        currentMode.isStackedDesktop === nextMode.isStackedDesktop &&
+        currentMode.isNarrowSplitDesktop === nextMode.isNarrowSplitDesktop
+          ? currentMode
+          : nextMode,
+      )
+    }
+
+    updateProjectViewportMode()
+    window.addEventListener("resize", updateProjectViewportMode)
+    window.visualViewport?.addEventListener("resize", updateProjectViewportMode)
+
+    return () => {
+      window.removeEventListener("resize", updateProjectViewportMode)
+      window.visualViewport?.removeEventListener("resize", updateProjectViewportMode)
+    }
+  }, [])
+
+  useEffect(() => {
     if (projects.length < 2) {
       return undefined
     }
@@ -381,25 +430,26 @@ function ProjectFeatureRow({
   return (
     <article
       aria-label={title}
-      className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(20rem,1fr)] lg:items-start lg:gap-9 xl:gap-12"
+      className="grid w-full min-w-0 max-w-full gap-5 min-[1200px]:grid-cols-[minmax(0,1fr)_minmax(20rem,1fr)] min-[1200px]:items-start min-[1200px]:gap-10 xl:gap-12"
     >
-      <div className="relative">
+      <div className="relative min-w-0 max-w-full overflow-hidden">
         <div
           ref={projectGalleryRef}
-          className="project-card-rail-mask flex w-full snap-x snap-mandatory gap-2.5 overflow-x-auto overscroll-y-none px-2.5 scroll-px-2.5 [scrollbar-width:none] sm:px-3 sm:scroll-px-3 [&::-webkit-scrollbar]:hidden"
+          className="project-card-rail-mask flex w-full min-w-0 max-w-full snap-x snap-mandatory gap-2.5 overflow-x-auto overscroll-y-none px-2.5 scroll-px-2.5 [scrollbar-width:none] sm:px-3 sm:scroll-px-3 [&::-webkit-scrollbar]:hidden"
           onScroll={handleProjectGalleryScroll}
           style={{ touchAction: "pan-x" }}
         >
           {projects.map((galleryProject) => (
             <div
               key={galleryProject.id}
-              className="basis-[calc(100%-0.75rem)] shrink-0 snap-center first:ml-1.5 last:mr-1.5 sm:basis-[calc(100%-1rem)] sm:first:ml-2 sm:last:mr-2"
+              className="min-w-0 basis-[calc(100%-0.75rem)] max-w-[calc(100%-0.75rem)] shrink-0 snap-center first:ml-1.5 last:mr-1.5 sm:basis-[calc(100%-1rem)] sm:max-w-[calc(100%-1rem)] sm:first:ml-2 sm:last:mr-2"
             >
-              <div className="relative aspect-[16/9.5] overflow-hidden rounded-2xl border border-[rgb(var(--site-surface-rgb)_/_0.28)] bg-foreground/8 shadow-sm shadow-black/10 ring-foreground/0 transition-[border-color,box-shadow] duration-300 group-focus-visible:ring-2 group-focus-visible:ring-foreground/35 dark:border-white/10 dark:bg-white/[0.04]">
+              <div className="relative aspect-[16/9.5] w-full min-w-0 max-w-full overflow-hidden rounded-2xl border border-[rgb(var(--site-surface-rgb)_/_0.28)] bg-foreground/8 shadow-sm shadow-black/10 ring-foreground/0 transition-[border-color,box-shadow] duration-300 group-focus-visible:ring-2 group-focus-visible:ring-foreground/35 dark:border-white/10 dark:bg-white/[0.04]">
                 {galleryProject.images?.length ? (
                   <ProjectImageGallery
                     key={galleryProject.id}
-                    cardImageFit="cover"
+                    cardAspectRatio="16 / 9.5"
+                    cardImageFit="contain"
                     cardScrollable={false}
                     images={galleryProject.images}
                     className="h-full"
@@ -410,7 +460,7 @@ function ProjectFeatureRow({
                     <img
                       src={galleryProject.screenshot.src}
                       alt={t(galleryProject.screenshot.altKey)}
-                      className="h-full w-full object-cover"
+                      className="h-full w-full object-contain"
                       draggable={false}
                     />
                     <ImageBrightnessOverlay
@@ -453,14 +503,14 @@ function ProjectFeatureRow({
 
       <div
         key={project.id}
-        className="project-feature-copy-swap flex min-w-0 flex-col gap-4 lg:pr-3"
+        className="project-feature-copy-swap detail-link-pair flex h-[31rem] min-w-0 flex-col gap-4 overflow-hidden [--detail-link-active-color:var(--text-tone-1)] sm:h-[28rem] md:h-[25rem] min-[1200px]:h-[24.5rem] min-[1200px]:pr-3 min-[1440px]:h-[26rem] min-[1800px]:h-[28rem]"
       >
         <div className="flex flex-col gap-2.5">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
             <h3 className="min-w-0 text-2xl font-normal leading-tight tracking-tight text-tone-1 md:text-3xl">
               <AppLink
                 to={detailPath}
-                className="transition-colors hover:text-tone-1"
+                className="detail-link-trigger detail-link-emphasis transition-colors hover:text-tone-1"
               >
                 {title}
               </AppLink>
@@ -492,10 +542,13 @@ function ProjectFeatureRow({
 
         <AppLink
           to={detailPath}
-          className="group/detail inline-flex w-fit items-center gap-1.5 text-sm font-normal text-tone-2 transition-colors hover:text-tone-1"
+          className={cn(
+            "detail-link-trigger detail-link-emphasis group/detail inline-flex w-fit items-center gap-1.5 text-sm font-normal text-tone-2 transition-colors hover:text-tone-1",
+            visiblePoints.length && "-mt-2",
+          )}
         >
           {t("common:details.viewDetails")}
-          <ArrowRight className="h-4 w-4 transition-transform group-hover/detail:translate-x-0.5" />
+          <ArrowRight className="detail-link-arrow h-4 w-4 transition-transform group-hover/detail:translate-x-0.5" />
         </AppLink>
       </div>
     </article>
@@ -663,7 +716,7 @@ export function ProjectArchiveCard({
                         <span
                           key={repoTag}
                           className={cn(
-                            "rounded-full border px-2 py-0.5 text-[0.6875rem] leading-none shadow-sm backdrop-blur-sm",
+                            "shrink-0 whitespace-nowrap rounded-full border px-2 py-0.5 text-[0.6875rem] leading-none shadow-sm backdrop-blur-sm",
                             getSemanticTagClassName(repoTag),
                             "bg-[rgb(var(--site-surface-rgb)_/_0.86)] dark:bg-white/12",
                           )}
@@ -671,7 +724,9 @@ export function ProjectArchiveCard({
                           {t(`repoTags.${repoTag}`)}
                         </span>
                       ))}
-                      <span className="min-w-0 truncate">{link.label}</span>
+                      <span className="min-w-0 max-w-[8rem] truncate sm:max-w-[10rem] md:max-w-[14rem] xl:max-w-[18rem]">
+                        {link.label}
+                      </span>
                       {link.url ? (
                         <ArrowUpRight className="h-3.5 w-3.5 shrink-0" />
                       ) : null}
@@ -720,6 +775,7 @@ export function ProjectArchiveCard({
                     key={tag}
                     className={cn(
                       "rounded-full border px-2.5 py-1 text-[0.6875rem] font-medium leading-none backdrop-blur-sm",
+                      tagIndex >= 4 && "hidden min-[1800px]:inline-flex",
                       isCourseProject
                         ? "border-foreground/12 bg-[rgb(var(--site-surface-rgb)_/_0.44)] text-tone-3 dark:border-white/18 dark:bg-black/22 dark:text-white/78"
                         : "border-white/18 bg-black/18 text-white/78",
@@ -751,8 +807,14 @@ export function ProjectArchiveCard({
                     : "text-[0.8125rem] text-white/76",
                 )}
               >
-                {visiblePoints.map((point) => (
-                  <li key={point} className="flex gap-2">
+                {visiblePoints.map((point, pointIndex) => (
+                  <li
+                    key={point}
+                    className={cn(
+                      "flex gap-2",
+                      pointIndex >= 2 && "hidden min-[1800px]:flex",
+                    )}
+                  >
                     <span
                       className={cn(
                         "mt-[0.55em] h-1 w-1 shrink-0 rounded-full",

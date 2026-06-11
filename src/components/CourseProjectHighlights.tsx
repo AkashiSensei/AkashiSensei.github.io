@@ -14,7 +14,7 @@ export function CourseProjectHighlights() {
   }
 
   return (
-    <section id="course-projects" className="flex min-h-[calc(100svh-8rem)] w-full flex-col justify-center gap-5 py-10 sm:py-12">
+    <section id="course-projects" className="resume-rhythm-section flex w-full flex-col justify-center gap-5">
       <ArchiveSectionHeader
         detailPath="/course-projects"
         title={t("title")}
@@ -22,7 +22,7 @@ export function CourseProjectHighlights() {
         viewAllLabel={t("viewAll")}
       />
 
-      <div className="flex flex-col gap-5 md:h-[30rem] md:flex-row md:gap-6 xl:h-[34rem] xl:gap-7">
+      <div className="grid gap-5 md:grid-cols-2 md:gap-6 min-[1440px]:flex min-[1440px]:h-[30rem] min-[1440px]:flex-row min-[1440px]:gap-7 min-[1800px]:!h-[34rem]">
         {featuredCourseProjects.map((project, index) => {
           const staggerOrder = index === 1 ? 0 : index === 0 ? 1 : 2
 
@@ -32,7 +32,7 @@ export function CourseProjectHighlights() {
               project={project}
               staggerIndex={staggerOrder}
               translationNamespace="courseProjects"
-              className="min-h-[18rem] md:min-h-0 md:flex-1 md:transition-[flex-grow] md:duration-500 md:ease-out md:hover:flex-[1.35]"
+              className={`min-h-[18rem] sm:min-h-[20rem] md:min-h-[22rem] min-[1440px]:min-h-0 min-[1440px]:flex-1 min-[1440px]:transition-[flex-grow] min-[1440px]:duration-500 min-[1440px]:ease-out min-[1440px]:hover:flex-[1.35] ${index === 2 ? "md:col-span-2 min-[1440px]:col-span-1" : ""}`}
             />
           )
         })}

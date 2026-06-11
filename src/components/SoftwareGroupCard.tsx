@@ -27,7 +27,7 @@ export function SoftwareGroupCard({
   return (
     <GlassPanel
       className={cn(
-        "flex h-full max-h-[28rem] flex-col gap-4 p-4 transition-colors hover:bg-[rgb(var(--site-surface-rgb)_/_0.58)] dark:hover:bg-white/10",
+        "flex h-full max-h-[28rem] flex-col gap-4 p-4 transition-colors hover:bg-[rgb(var(--site-surface-rgb)_/_0.70)] dark:hover:bg-white/10",
         className,
       )}
     >
