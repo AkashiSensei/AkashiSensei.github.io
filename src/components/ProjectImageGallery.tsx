@@ -284,7 +284,7 @@ export function ProjectImageGallery({
       })
     }
 
-    let intervalId: ReturnType<typeof window.setInterval> | undefined
+    let intervalId: number | undefined
     const timeoutId = window.setTimeout(
       () => {
         showNextImage()

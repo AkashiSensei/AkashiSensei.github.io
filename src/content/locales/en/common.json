@@ -7,7 +7,8 @@
     "toggleTheme": "Switch between dark and light mode",
     "toggleMenu": "Open or close the navigation menu",
     "toggleThemeSr": "Toggle theme",
-    "viewContact": "View contact details"
+    "viewContact": "View contact details",
+    "viewOnPhone": "View current page on phone"
   },
   "ui": {
     "langSwitchToEn": "EN",
@@ -30,7 +31,17 @@
     "title": "Contact Details",
     "description": "You can reach me through the following public channels:",
     "privacyNote": "To reduce spam, I don't list my primary day-to-day contacts here. The public channels shown above can still reach me—thanks for your understanding.",
-    "email": "Email"
+    "email": "Email",
+    "copyEmail": "Copy email address",
+    "copy": "Copy",
+    "copied": "Copied",
+    "copyFailed": "Copy failed"
+  },
+  "viewOnPhone": {
+    "title": "View on phone",
+    "qrAlt": "QR code for the current page URL",
+    "loading": "Generating",
+    "error": "Unable to generate"
   },
   "githubRepoStats": {
     "defaultBranch": "default branch",
