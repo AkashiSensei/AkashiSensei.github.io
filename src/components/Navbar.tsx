@@ -1,19 +1,41 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
+import { toString as qrToString } from "qrcode";
 import { useTheme } from "@/components/theme-provider";
 import { AppLink } from "@/components/AppLink";
 import { ContactDialog } from "@/components/ContactDialog";
-import { Sun, Moon, Menu, X, Mail } from "lucide-react";
+import { Sun, Moon, Menu, X, Mail, QrCode } from "lucide-react";
 import { cn } from "@/lib/utils";
+
+function getPhoneQrPanelPosition(button: HTMLButtonElement) {
+  const rect = button.getBoundingClientRect();
+  const panelWidth = 224;
+  const viewportPadding = 16;
+  const maxLeft = window.innerWidth - panelWidth - viewportPadding;
+
+  return {
+    left: Math.max(viewportPadding, Math.min(rect.right - panelWidth, maxLeft)),
+    top: rect.bottom + 12,
+  };
+}
 
 export function Navbar() {
   const { t, i18n } = useTranslation(["common", "nav"]);
   const { theme, setTheme } = useTheme();
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [phoneQrOpen, setPhoneQrOpen] = useState(false);
+  const [phoneQrPanelPosition, setPhoneQrPanelPosition] = useState<{
+    left: number;
+    top: number;
+  } | null>(null);
+  const [phoneQrSvgUrl, setPhoneQrSvgUrl] = useState("");
+  const [phoneQrError, setPhoneQrError] = useState(false);
   const [scrollDisplacement, setScrollDisplacement] = useState(0);
   const navRef = useRef<HTMLDivElement>(null);
+  const phoneQrPanelRef = useRef<HTMLDivElement>(null);
+  const phoneQrButtonRef = useRef<HTMLButtonElement | null>(null);
   const lastScrollYRef = useRef(0);
   const lastScrollTimeRef = useRef(0);
   const observedScrollYRef = useRef(0);
@@ -24,8 +46,17 @@ export function Navbar() {
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent | TouchEvent) => {
-      if (mobileMenuOpen && navRef.current && !navRef.current.contains(event.target as Node)) {
+      const target = event.target as Node;
+      const isInsideNavbar = navRef.current?.contains(target);
+      const isInsidePhoneQrPanel = phoneQrPanelRef.current?.contains(target);
+
+      if (
+        (mobileMenuOpen || phoneQrOpen) &&
+        !isInsideNavbar &&
+        !isInsidePhoneQrPanel
+      ) {
         setMobileMenuOpen(false);
+        setPhoneQrOpen(false);
       }
     };
 
@@ -36,7 +67,79 @@ export function Navbar() {
       document.removeEventListener("mousedown", handleClickOutside);
       document.removeEventListener("touchstart", handleClickOutside);
     };
-  }, [mobileMenuOpen]);
+  }, [mobileMenuOpen, phoneQrOpen]);
+
+  const currentPageUrl = useMemo(
+    () => `${window.location.origin}${location.pathname}${location.search}${location.hash}`,
+    [location.hash, location.pathname, location.search],
+  );
+
+  useEffect(() => {
+    if (!currentPageUrl) {
+      return;
+    }
+
+    let isCurrent = true;
+
+    qrToString(currentPageUrl, {
+      type: "svg",
+      margin: 1,
+      width: 176,
+      errorCorrectionLevel: "M",
+      color: {
+        dark: "#111827ff",
+        light: "#ffffffff",
+      },
+    })
+      .then((svg) => {
+        if (!isCurrent) {
+          return;
+        }
+
+        setPhoneQrSvgUrl(`data:image/svg+xml;utf8,${encodeURIComponent(svg)}`);
+        setPhoneQrError(false);
+      })
+      .catch(() => {
+        if (!isCurrent) {
+          return;
+        }
+
+        setPhoneQrSvgUrl("");
+        setPhoneQrError(true);
+      });
+
+    return () => {
+      isCurrent = false;
+    };
+  }, [currentPageUrl]);
+
+  useEffect(() => {
+    if (!phoneQrOpen) {
+      return;
+    }
+
+    const updatePanelPosition = () => {
+      if (phoneQrButtonRef.current) {
+        setPhoneQrPanelPosition(getPhoneQrPanelPosition(phoneQrButtonRef.current));
+      }
+    };
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setPhoneQrOpen(false);
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("resize", updatePanelPosition);
+    window.addEventListener("scroll", updatePanelPosition, { passive: true });
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("resize", updatePanelPosition);
+      window.removeEventListener("scroll", updatePanelPosition);
+    };
+  }, [phoneQrOpen]);
 
   useEffect(() => {
     const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -193,6 +296,18 @@ export function Navbar() {
   const isNavLinkActive = (href: string) =>
     currentPathname === href || currentPathname.startsWith(`${href}/`);
 
+  const togglePhoneQr = (button: HTMLButtonElement) => {
+    setMobileMenuOpen(false);
+    phoneQrButtonRef.current = button;
+    setPhoneQrPanelPosition(getPhoneQrPanelPosition(button));
+    setPhoneQrOpen((isOpen) => !isOpen);
+  };
+
+  const toggleDesktopMenu = () => {
+    setPhoneQrOpen(false);
+    setMobileMenuOpen((isOpen) => !isOpen);
+  };
+
   const renderNavLink = (
     href: string,
     label: string,
@@ -222,6 +337,70 @@ export function Navbar() {
       >
         {label}
       </a>
+    );
+  };
+
+  const renderPhoneQrButton = () => (
+    <div className="desktop-menu-item relative flex h-8 w-8 items-center justify-center">
+      <button
+        type="button"
+        onPointerDown={(event) => {
+          event.preventDefault();
+          event.stopPropagation();
+          togglePhoneQr(event.currentTarget);
+        }}
+        onClick={(event) => {
+          if (event.detail === 0) {
+            togglePhoneQr(event.currentTarget);
+          }
+        }}
+        className={cn(
+          "flex h-8 w-8 items-center justify-center rounded-full hover:bg-muted/50",
+          phoneQrOpen && "bg-muted/50 text-tone-1",
+        )}
+        title={t("a11y.viewOnPhone")}
+        aria-expanded={phoneQrOpen}
+        aria-controls="navbar-phone-qr-panel"
+      >
+        <QrCode className="h-4 w-4" />
+        <span className="sr-only">{t("a11y.viewOnPhone")}</span>
+      </button>
+    </div>
+  );
+
+  const renderPhoneQrPanel = () => {
+    if (!phoneQrOpen || !phoneQrPanelPosition) {
+      return null;
+    }
+
+    return (
+      <div
+        ref={phoneQrPanelRef}
+        id="navbar-phone-qr-panel"
+        className="lit-glass-card fixed z-[70] w-56 rounded-2xl border border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.72)] p-3 text-left shadow-sm backdrop-blur-md dark:border-white/10 dark:bg-neutral-950/78"
+        style={{
+          left: `${phoneQrPanelPosition.left}px`,
+          top: `${phoneQrPanelPosition.top}px`,
+        }}
+      >
+        <p className="text-xs font-medium text-tone-2">{t("viewOnPhone.title")}</p>
+        <div className="mt-3 rounded-xl border border-black/10 bg-white p-2 shadow-sm dark:border-white/10">
+          {phoneQrSvgUrl ? (
+            <img
+              src={phoneQrSvgUrl}
+              alt={t("viewOnPhone.qrAlt")}
+              className="aspect-square w-full rounded-lg"
+            />
+          ) : (
+            <div className="flex aspect-square w-full items-center justify-center rounded-lg bg-white text-xs text-zinc-500">
+              {phoneQrError ? t("viewOnPhone.error") : t("viewOnPhone.loading")}
+            </div>
+          )}
+        </div>
+        <p className="mt-3 truncate text-[0.68rem] leading-4 text-tone-4" title={currentPageUrl}>
+          {currentPageUrl}
+        </p>
+      </div>
     );
   };
 
@@ -268,7 +447,7 @@ export function Navbar() {
           </ContactDialog>
 
           <button 
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            onClick={toggleDesktopMenu}
             className="ml-0.5 flex h-9 w-9 items-center justify-center rounded-full hover:bg-muted/50 transition-colors"
             title={t("a11y.toggleMenu")}
           >
@@ -319,8 +498,9 @@ export function Navbar() {
             <Moon className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
             <span className="sr-only">{t("a11y.toggleThemeSr")}</span>
           </button>
+          {renderPhoneQrButton()}
           <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            onClick={toggleDesktopMenu}
             className="desktop-menu-item flex h-8 w-8 items-center justify-center rounded-full hover:bg-muted/50"
             title={t("a11y.toggleMenu")}
           >
@@ -392,8 +572,11 @@ export function Navbar() {
             <Moon className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
             <span className="sr-only">{t("a11y.toggleThemeSr")}</span>
           </button>
+          {renderPhoneQrButton()}
         </div>
       </div>
+
+      {renderPhoneQrPanel()}
 
       {mobileMenuOpen && (
         <div className="navbar-dropdown-panel lit-glass-card absolute bottom-full left-0 right-0 mb-2 origin-bottom rounded-3xl border border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.42)] p-3 shadow-sm backdrop-blur-md transition-all duration-300 dark:border-white/10 dark:bg-white/10 md:bottom-auto md:left-auto md:right-0 md:top-full md:mt-2 md:w-[22rem] md:origin-top">

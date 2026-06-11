@@ -13,6 +13,7 @@
 
 ## History
 
+- 2026-06-11 | [Archived: View on phone QR and contact copy](archive/20260611_View-on-phone-QR-and-contact-copy.md) | Added a desktop current-page QR panel for phone handoff, dynamic production/local URL encoding, and copy-to-clipboard email contact behavior.
 - 2026-06-11 | [Archived: Existing design responsive polish](archive/20260611_Existing-design-responsive-polish.md) | Systematically polished the existing frosted-glass resume experience across mobile, narrow/tall desktop, wide desktop, detail pages, navigation, project media, workbench previews, and section rhythm.
 - 2026-06-05 | [Archived: Knowledge module](archive/20260605_Knowledge-module.md) | Added the Knowledge module with curated repo-backed entries, listing/detail routes, WebP galleries, resume highlights, build-time GitHub stats, dynamic update months, and unified detail tag styling.
 - 2026-06-04 | [Archived: Entry detail pages and card density](archive/20260604_Entry-detail-pages-and-card-density.md) | Added project/course/tool detail routes, moved non-workbench bullets into detail pages, and polished responsive detail layouts with desktop image walls and large-image previews.

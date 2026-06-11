@@ -129,11 +129,11 @@ function ProjectCoverCarousel({
       return
     }
 
-    let intervalId: ReturnType<typeof setInterval> | undefined
-    const timeoutId = setTimeout(
+    let intervalId: number | undefined
+    const timeoutId = window.setTimeout(
       () => {
         setActiveIndex((current) => (current + 1) % images.length)
-        intervalId = setInterval(() => {
+        intervalId = window.setInterval(() => {
           setActiveIndex((current) => (current + 1) % images.length)
         }, COVER_CAROUSEL_INTERVAL_MS)
       },
@@ -141,9 +141,9 @@ function ProjectCoverCarousel({
     )
 
     return () => {
-      clearTimeout(timeoutId)
+      window.clearTimeout(timeoutId)
       if (intervalId) {
-        clearInterval(intervalId)
+        window.clearInterval(intervalId)
       }
     }
   }, [images.length, staggerIndex])
