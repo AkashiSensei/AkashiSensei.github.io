@@ -23,5 +23,27 @@
     }
   ],
   "contact": "联系我",
-  "github": "动态"
+  "github": "动态",
+  "githubActivity": {
+    "title": "活跃度",
+    "subtitle": "GitHub 过去一年的贡献概览，包含提交、评审、PR 和 Issue 等活动。",
+    "eyebrow": "过去一年",
+    "totalLabel": "总贡献",
+    "distributionLabel": "GitHub 贡献类型占比分布",
+    "fetchedAt": "数据获取于 {{time}}",
+    "description": [
+      "这里仅展示 GitHub 过去一年的贡献数据。我的主要学习与工作痕迹大多保存在 GitHub，包括项目、课设与知识沉淀等。",
+      "但也有一些工作没有公开到互联网，或分散在其他代码托管站点与组织仓库中，这些不纳入统计。"
+    ],
+    "publicScope": "统计基于 GitHub API 在构建期可获取的数据；私有贡献是否计入取决于构建 token 权限。",
+    "unavailable": "N/A",
+    "stats": {
+      "commits": "Commit",
+      "reviews": "Review",
+      "pullRequests": "Pull Request",
+      "issues": "Issue",
+      "repositories": "仓库创建",
+      "restricted": "私有 / 受限"
+    }
+  }
 }

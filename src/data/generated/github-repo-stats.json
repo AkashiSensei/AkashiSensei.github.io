@@ -1,274 +1,327 @@
 {
-  "generatedAt": "2026-06-04T14:24:45.932Z",
+  "generatedAt": "2026-06-12T06:06:11.842Z",
   "repos": {
     "AkashiSensei/AkashiSensei.github.io": {
-      "commits": 10,
+      "commits": 24,
       "defaultBranch": "main",
-      "fetchedAt": "2026-05-21T07:29:03.130Z",
+      "fetchedAt": "2026-06-12T06:06:14.197Z",
       "isPrivate": false,
-      "stars": 0
+      "pushedAt": "2026-06-11T15:04:31Z",
+      "stars": 0,
+      "updatedAt": "2026-06-11T15:07:34Z"
     },
     "AkashiSensei/BUAA-Parallel-2025-basic": {
       "commits": 13,
       "defaultBranch": "main",
       "isPrivate": true,
-      "fetchedAt": "2026-06-04T14:24:45.932Z"
+      "fetchedAt": "2026-06-12T06:06:11.842Z"
     },
     "AkashiSensei/BUAA-Parallel-Programming-2026-hw": {
-      "commits": 4,
+      "commits": 6,
       "defaultBranch": "main",
+      "fetchedAt": "2026-06-12T06:06:15.695Z",
       "isPrivate": false,
+      "pushedAt": "2026-05-28T15:02:12Z",
       "stars": 0,
-      "fetchedAt": "2026-06-04T14:24:45.932Z"
+      "updatedAt": "2026-05-28T15:03:14Z"
     },
     "AkashiSensei/BUAA-VR-Experiments-2026-hw": {
       "commits": 2,
       "defaultBranch": "main",
+      "fetchedAt": "2026-06-12T06:06:18.141Z",
       "isPrivate": false,
+      "pushedAt": "2026-05-11T08:53:43Z",
       "stars": 1,
-      "fetchedAt": "2026-06-04T14:24:45.932Z"
+      "updatedAt": "2026-05-26T06:07:44Z"
     },
     "AkashiSensei/Learning_and_Living_Platform_Submit": {
       "commits": 7,
       "defaultBranch": "main",
+      "fetchedAt": "2026-06-12T06:06:20.733Z",
       "isPrivate": false,
+      "pushedAt": "2023-06-07T12:44:32Z",
       "stars": 3,
-      "fetchedAt": "2026-06-04T14:24:45.932Z"
+      "updatedAt": "2024-02-29T02:25:24Z"
     },
     "AkashiSensei/Learning_and_Living_Platform_Support": {
       "commits": 287,
       "defaultBranch": "main",
+      "fetchedAt": "2026-06-12T06:06:22.232Z",
       "isPrivate": false,
+      "pushedAt": "2023-06-07T15:04:17Z",
       "stars": 6,
-      "fetchedAt": "2026-06-04T14:24:45.932Z"
+      "updatedAt": "2024-08-17T02:10:32Z"
     },
     "AkashiSensei/OOP_2022_Iteration": {
       "commits": 5,
       "defaultBranch": "main",
+      "fetchedAt": "2026-06-12T06:06:24.144Z",
       "isPrivate": false,
+      "pushedAt": "2024-08-18T02:49:52Z",
       "stars": 0,
-      "fetchedAt": "2026-06-04T14:24:45.932Z"
+      "updatedAt": "2024-08-18T02:49:55Z"
     },
     "AkashiSensei/Rotating_Calipers_Visualization": {
       "commits": 3,
       "defaultBranch": "main",
+      "fetchedAt": "2026-06-12T06:06:25.983Z",
       "isPrivate": false,
+      "pushedAt": "2024-08-18T03:36:58Z",
       "stars": 0,
-      "fetchedAt": "2026-06-04T14:24:45.932Z"
+      "updatedAt": "2024-08-18T03:37:01Z"
     },
     "AkashiSensei/ToDoDAG": {
       "commits": 2,
       "defaultBranch": "main",
-      "fetchedAt": "2026-05-21T07:29:04.823Z",
+      "fetchedAt": "2026-06-12T06:06:28.033Z",
       "isPrivate": true,
-      "stars": 0
+      "pushedAt": "2026-04-09T09:20:25Z",
+      "stars": 0,
+      "updatedAt": "2026-04-09T09:20:29Z"
     },
     "AkashiSensei/ai-builders-digest": {
-      "commits": 60,
+      "commits": 69,
       "defaultBranch": "main",
+      "fetchedAt": "2026-06-12T06:06:29.685Z",
       "isPrivate": false,
-      "pushedAt": "2026-06-03T23:06:43Z",
+      "pushedAt": "2026-06-11T23:03:47Z",
       "stars": 3,
-      "updatedAt": "2026-06-03T23:06:47Z",
-      "fetchedAt": "2026-06-04T14:24:45.932Z"
+      "updatedAt": "2026-06-11T23:03:50Z"
     },
     "AkashiSensei/blob-article": {
       "commits": 9,
       "defaultBranch": "main",
+      "fetchedAt": "2026-06-12T06:06:31.553Z",
       "isPrivate": false,
       "pushedAt": "2026-06-02T11:38:33Z",
       "stars": 0,
-      "updatedAt": "2026-06-02T11:38:38Z",
-      "fetchedAt": "2026-06-04T14:24:45.932Z"
+      "updatedAt": "2026-06-02T11:38:38Z"
     },
     "AkashiSensei/crater": {
       "commits": 2557,
       "defaultBranch": "main",
-      "fetchedAt": "2026-05-21T07:29:06.781Z",
+      "fetchedAt": "2026-06-12T06:06:33.303Z",
       "isPrivate": false,
-      "stars": 2
+      "pushedAt": "2026-06-11T08:11:18Z",
+      "stars": 2,
+      "updatedAt": "2026-04-21T14:51:18Z"
     },
     "AkashiSensei/crater-insights": {
       "commits": 27,
       "defaultBranch": "main",
+      "fetchedAt": "2026-06-12T06:06:34.812Z",
       "isPrivate": false,
-      "pushedAt": "2026-06-04T08:48:39Z",
+      "pushedAt": "2026-06-04T08:48:47Z",
       "stars": 1,
-      "updatedAt": "2026-06-04T08:48:39Z",
-      "fetchedAt": "2026-06-04T14:24:45.932Z"
+      "updatedAt": "2026-06-04T08:48:51Z"
     },
     "AkashiSensei/crater-prompt": {
       "commits": 24,
       "defaultBranch": "main",
-      "fetchedAt": "2026-05-21T07:29:08.252Z",
+      "fetchedAt": "2026-06-12T06:06:36.289Z",
       "isPrivate": false,
-      "stars": 2
+      "pushedAt": "2026-02-08T10:39:18Z",
+      "stars": 2,
+      "updatedAt": "2026-04-13T14:57:50Z"
     },
     "AkashiSensei/kernel_analyzer": {
       "commits": 34,
       "defaultBranch": "main",
+      "fetchedAt": "2026-06-12T06:06:38.622Z",
       "isPrivate": false,
+      "pushedAt": "2025-06-06T12:34:06Z",
       "stars": 0,
-      "fetchedAt": "2026-06-04T14:24:45.932Z"
+      "updatedAt": "2025-06-06T12:34:08Z"
     },
     "AkashiSensei/kernel_data_plotter": {
       "commits": 2,
       "defaultBranch": "main",
+      "fetchedAt": "2026-06-12T06:06:40.991Z",
       "isPrivate": false,
+      "pushedAt": "2025-03-31T13:45:48Z",
       "stars": 0,
-      "fetchedAt": "2026-06-04T14:24:45.932Z"
+      "updatedAt": "2025-03-31T13:45:52Z"
     },
     "AkashiSensei/model-requirements-evaluator-frontend": {
       "commits": 24,
       "defaultBranch": "main",
-      "fetchedAt": "2026-05-21T07:29:14.161Z",
+      "fetchedAt": "2026-06-12T06:06:42.571Z",
       "isPrivate": true,
-      "stars": 0
+      "pushedAt": "2025-09-25T11:10:46Z",
+      "stars": 0,
+      "updatedAt": "2025-09-25T11:10:50Z"
     },
     "AkashiSensei/npu_computing_forecast": {
       "commits": 102,
       "defaultBranch": "main",
-      "fetchedAt": "2026-05-21T07:29:16.120Z",
+      "fetchedAt": "2026-06-12T06:06:44.567Z",
       "isPrivate": true,
-      "stars": 0
+      "pushedAt": "2026-06-11T16:39:38Z",
+      "stars": 0,
+      "updatedAt": "2026-05-20T02:51:31Z"
     },
     "AkashiSensei/os2023": {
       "commits": 29,
       "defaultBranch": "lab6",
+      "fetchedAt": "2026-06-12T06:06:46.069Z",
       "isPrivate": false,
+      "pushedAt": "2026-02-14T13:01:52Z",
       "stars": 15,
-      "fetchedAt": "2026-06-04T14:24:45.932Z"
+      "updatedAt": "2026-05-12T07:31:42Z"
     },
     "AkashiSensei/paper-vault": {
       "commits": 3,
       "defaultBranch": "main",
+      "fetchedAt": "2026-06-12T06:06:47.595Z",
       "isPrivate": false,
       "pushedAt": "2026-06-02T13:21:24Z",
       "stars": 0,
-      "updatedAt": "2026-06-02T13:22:00Z",
-      "fetchedAt": "2026-06-04T14:24:45.932Z"
+      "updatedAt": "2026-06-02T13:22:00Z"
     },
     "AkashiSensei/predicting-road-accident-risk-buaa": {
       "commits": 14,
       "defaultBranch": "main",
       "isPrivate": true,
-      "fetchedAt": "2026-06-04T14:24:45.932Z"
+      "fetchedAt": "2026-06-12T06:06:11.842Z"
     },
     "AkashiSensei/project-context-meta-skill": {
-      "commits": 14,
+      "commits": 15,
       "defaultBranch": "main",
-      "fetchedAt": "2026-05-21T07:29:17.566Z",
+      "fetchedAt": "2026-06-12T06:06:49.074Z",
       "isPrivate": false,
-      "stars": 0
+      "pushedAt": "2026-05-22T10:11:29Z",
+      "stars": 0,
+      "updatedAt": "2026-05-22T10:11:33Z"
     },
     "AkashiSensei/research-skills": {
       "commits": 3,
       "defaultBranch": "main",
-      "fetchedAt": "2026-05-21T07:29:19.821Z",
+      "fetchedAt": "2026-06-12T06:06:51.210Z",
       "isPrivate": false,
-      "stars": 0
+      "pushedAt": "2026-05-18T11:21:13Z",
+      "stars": 0,
+      "updatedAt": "2026-05-18T11:21:18Z"
     },
     "AkashiSensei/zhejianglab-crater": {
       "commits": 2631,
       "defaultBranch": "main",
-      "fetchedAt": "2026-05-21T07:29:21.293Z",
+      "fetchedAt": "2026-06-12T06:06:53.210Z",
       "isPrivate": false,
-      "stars": 0
+      "pushedAt": "2026-04-16T15:55:00Z",
+      "stars": 0,
+      "updatedAt": "2026-04-16T15:55:04Z"
     },
     "BUAA-OOP-JAVA-TermAssignment/Archive_System": {
       "commits": 179,
       "defaultBranch": "main",
       "isPrivate": false,
       "stars": 1,
-      "fetchedAt": "2026-06-04T14:24:45.932Z"
+      "fetchedAt": "2026-06-12T06:06:11.842Z"
     },
     "BUAA-OOP-JAVA-TermAssignment/Archive_System_Server": {
       "commits": 70,
       "defaultBranch": "main",
       "isPrivate": false,
       "stars": 1,
-      "fetchedAt": "2026-06-04T14:24:45.932Z"
+      "fetchedAt": "2026-06-12T06:06:11.842Z"
     },
     "BUAA-SEF-Team15/Learning_and_Living_Platform_BackEnd": {
       "commits": 360,
       "defaultBranch": "main",
       "isPrivate": true,
-      "fetchedAt": "2026-06-04T14:24:45.932Z"
+      "fetchedAt": "2026-06-12T06:06:11.842Z"
     },
     "BUAA-SEF-Team15/Learning_and_Living_Platform_FrontEnd": {
       "commits": 281,
       "defaultBranch": "main",
       "isPrivate": true,
-      "fetchedAt": "2026-06-04T14:24:45.932Z"
+      "fetchedAt": "2026-06-12T06:06:11.842Z"
     },
     "Yiyan2023/CareerYiyan-backend": {
       "commits": 3,
       "defaultBranch": "main",
       "isPrivate": false,
       "stars": 0,
-      "fetchedAt": "2026-06-04T14:24:45.932Z"
+      "fetchedAt": "2026-06-12T06:06:11.842Z"
     },
     "Yiyan2023/CareerYiyan-frontend": {
       "commits": 6,
       "defaultBranch": "main",
       "isPrivate": true,
-      "fetchedAt": "2026-06-04T14:24:45.932Z"
+      "fetchedAt": "2026-06-12T06:06:11.842Z"
     },
     "Yiyan2023/Yiyan-frontend": {
       "commits": 32,
       "defaultBranch": "main",
       "isPrivate": true,
-      "fetchedAt": "2026-06-04T14:24:45.932Z"
+      "fetchedAt": "2026-06-12T06:06:11.842Z"
     },
     "Yiyan2023/administration": {
       "commits": 3,
       "defaultBranch": "main",
       "isPrivate": true,
-      "fetchedAt": "2026-06-04T14:24:45.932Z"
+      "fetchedAt": "2026-06-12T06:06:11.842Z"
     },
     "Yiyan2023/backend-literatureDetails": {
       "commits": 3,
       "defaultBranch": "main",
       "isPrivate": true,
-      "fetchedAt": "2026-06-04T14:24:45.932Z"
+      "fetchedAt": "2026-06-12T06:06:11.842Z"
     },
     "Yiyan2023/backend-research": {
       "commits": 96,
       "defaultBranch": "main",
       "isPrivate": true,
-      "fetchedAt": "2026-06-04T14:24:45.932Z"
+      "fetchedAt": "2026-06-12T06:06:11.842Z"
     },
     "Yiyan2023/backend-researcherPortal": {
       "commits": 6,
       "defaultBranch": "main",
       "isPrivate": true,
-      "fetchedAt": "2026-06-04T14:24:45.932Z"
+      "fetchedAt": "2026-06-12T06:06:11.842Z"
     },
     "Yiyan2023/backend-search": {
       "commits": 7,
       "defaultBranch": "main",
       "isPrivate": true,
-      "fetchedAt": "2026-06-04T14:24:45.932Z"
+      "fetchedAt": "2026-06-12T06:06:11.842Z"
     },
     "Yiyan2023/backend-userManagement": {
       "commits": 15,
       "defaultBranch": "main",
       "isPrivate": true,
-      "fetchedAt": "2026-06-04T14:24:45.932Z"
+      "fetchedAt": "2026-06-12T06:06:11.842Z"
     },
     "anysearch-ai/anysearch-skill": {
-      "commits": 17,
+      "commits": 28,
       "defaultBranch": "main",
-      "fetchedAt": "2026-05-21T07:29:22.784Z",
+      "fetchedAt": "2026-06-12T06:06:57.537Z",
       "isPrivate": false,
-      "stars": 675
+      "pushedAt": "2026-06-03T04:16:40Z",
+      "stars": 3028,
+      "updatedAt": "2026-06-12T05:00:17Z"
     },
     "raids-lab/crater": {
-      "commits": 2695,
+      "commits": 2698,
       "defaultBranch": "main",
-      "fetchedAt": "2026-05-21T07:29:24.255Z",
+      "fetchedAt": "2026-06-12T06:06:59.563Z",
       "isPrivate": false,
-      "stars": 516
+      "pushedAt": "2026-06-11T11:43:15Z",
+      "stars": 534,
+      "updatedAt": "2026-06-11T16:00:30Z"
     }
+  },
+  "userActivity": {
+    "commits": 361,
+    "fetchedAt": "2026-06-12T06:06:11.842Z",
+    "from": "2025-06-12T06:06:11.842Z",
+    "issues": 66,
+    "login": "AkashiSensei",
+    "pullRequestReviews": 8,
+    "pullRequests": 53,
+    "repositories": 18,
+    "restrictedContributions": 196,
+    "to": "2026-06-12T06:06:11.842Z",
+    "totalContributions": 702
   }
 }

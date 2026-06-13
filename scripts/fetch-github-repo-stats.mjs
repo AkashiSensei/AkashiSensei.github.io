@@ -11,6 +11,7 @@ const sourceFiles = [
 ]
 const outputPath = path.join(root, "src/data/generated/github-repo-stats.json")
 const legacyOutputPath = path.join(root, "src/data/generated/github-stars.json")
+const githubActivityLogin = "AkashiSensei"
 const repoBranchOverrides = {
   "AkashiSensei/os2023": "lab6",
 }
@@ -259,13 +260,18 @@ function createGitHubHeaders() {
     "X-GitHub-Api-Version": "2022-11-28",
   }
 
-  const token = process.env.GH_REPO_STATS_TOKEN ?? process.env.GITHUB_TOKEN
+  const token =
+    process.env.GH_REPO_STATS_TOKEN ?? process.env.GITHUB_TOKEN ?? process.env.GH_TOKEN
 
   if (token) {
     headers.Authorization = `Bearer ${token}`
   }
 
   return headers
+}
+
+function getGitHubToken() {
+  return process.env.GH_REPO_STATS_TOKEN ?? process.env.GITHUB_TOKEN ?? process.env.GH_TOKEN
 }
 
 async function fetchJson(url) {
@@ -332,6 +338,82 @@ async function fetchRepoStats(repo) {
   }
 }
 
+async function fetchGitHubUserActivity(login, generatedAt) {
+  const token = getGitHubToken()
+
+  if (!token) {
+    throw new Error("GitHub token is required for the contributions GraphQL API")
+  }
+
+  const to = new Date(generatedAt)
+  const from = new Date(to)
+  from.setUTCFullYear(from.getUTCFullYear() - 1)
+
+  const query = `
+    query GitHubUserActivity($login: String!, $from: DateTime!, $to: DateTime!) {
+      user(login: $login) {
+        contributionsCollection(from: $from, to: $to) {
+          contributionCalendar {
+            totalContributions
+          }
+          restrictedContributionsCount
+          totalCommitContributions
+          totalIssueContributions
+          totalPullRequestContributions
+          totalPullRequestReviewContributions
+          totalRepositoryContributions
+        }
+      }
+    }
+  `
+
+  const response = await fetch("https://api.github.com/graphql", {
+    method: "POST",
+    headers: {
+      ...createGitHubHeaders(),
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      query,
+      variables: {
+        from: from.toISOString(),
+        login,
+        to: to.toISOString(),
+      },
+    }),
+  })
+
+  if (!response.ok) {
+    throw new Error(`${response.status} ${response.statusText}`)
+  }
+
+  const payload = await response.json()
+
+  if (payload.errors?.length) {
+    throw new Error(payload.errors.map((error) => error.message).join("; "))
+  }
+
+  const collection = payload.data?.user?.contributionsCollection
+
+  if (!collection) {
+    throw new Error(`No GitHub activity returned for ${login}`)
+  }
+
+  return {
+    commits: collection.totalCommitContributions,
+    fetchedAt: generatedAt,
+    from: from.toISOString(),
+    issues: collection.totalIssueContributions,
+    login,
+    pullRequestReviews: collection.totalPullRequestReviewContributions,
+    pullRequests: collection.totalPullRequestContributions,
+    repositories: collection.totalRepositoryContributions,
+    restrictedContributions: collection.restrictedContributionsCount,
+    to: to.toISOString(),
+    totalContributions: collection.contributionCalendar?.totalContributions,
+  }
+}
+
 await loadLocalEnv()
 
 const previous = await readPreviousSnapshot()
@@ -376,6 +458,20 @@ for (const repo of repos) {
     } else {
       console.warn(`Skipped GitHub repo stats for ${repo}: ${error.message}`)
     }
+  }
+}
+
+try {
+  snapshot.userActivity = await fetchGitHubUserActivity(
+    githubActivityLogin,
+    generatedAt,
+  )
+} catch (error) {
+  if (previous.userActivity) {
+    snapshot.userActivity = previous.userActivity
+    console.warn(`Kept previous GitHub user activity: ${error.message}`)
+  } else {
+    console.warn(`Skipped GitHub user activity: ${error.message}`)
   }
 }
 

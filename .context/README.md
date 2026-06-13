@@ -31,3 +31,4 @@ This directory serves as the persistent memory and governance layer for AI-nativ
    - Never modify `ROADMAP.md` until a task is fully complete.
    - Maintain high information density; zero fluff.
 4. **Consistency**: Ensure any new tasks or requirements are reflected in `SPEC.md` or `RAW_REQUIREMENTS.md` before execution begins.
+5. **Local Preview Boundary**: Unless the user explicitly asks, do not start a local development server and do not open, automate, screenshot, or otherwise inspect the site in a browser. Prefer build/type/lint checks and leave visual review to the user.
