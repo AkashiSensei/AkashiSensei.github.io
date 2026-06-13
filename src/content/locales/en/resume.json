@@ -23,5 +23,27 @@
     }
   ],
   "contact": "Contact Me",
-  "github": "Profile"
+  "github": "Profile",
+  "githubActivity": {
+    "title": "Activity",
+    "subtitle": "A past-year overview of GitHub contributions, including commits, reviews, pull requests, and issues.",
+    "eyebrow": "Past year",
+    "totalLabel": "Total contributions",
+    "distributionLabel": "GitHub contribution type distribution",
+    "fetchedAt": "Data fetched at {{time}}",
+    "description": [
+      "This section only shows GitHub contribution data from the past year. Most of my learning and work traces live on GitHub, including projects, course work, and knowledge notes.",
+      "Some work is not published online, or lives in other code hosting sites and organization repositories; those are not included in this statistic."
+    ],
+    "publicScope": "Counts come from GitHub API data available at build time; private contributions depend on the build token's permissions.",
+    "unavailable": "N/A",
+    "stats": {
+      "commits": "Commits",
+      "reviews": "Reviews",
+      "pullRequests": "Pull requests",
+      "issues": "Issues",
+      "repositories": "Repositories",
+      "restricted": "Private / restricted"
+    }
+  }
 }

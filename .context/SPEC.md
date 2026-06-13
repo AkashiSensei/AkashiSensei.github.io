@@ -163,8 +163,21 @@ Each module may have a listing page with **list** or **gallery** view modes.
 - For GitHub projects: show star count when available
 - **Build-time** fetch in CI into static data; no API tokens in client bundles; degrade gracefully if fetch fails
 
+### GitHub activity
+
+- The resume route (`/resume`) should include a GitHub activity summary so interviewers can see recent open-source activity without leaving the site for the GitHub profile page.
+- Activity data should cover the past year and include total contributions plus category counts for commits, pull request reviews, pull requests, and issues when available from GitHub.
+- Fetch activity at build time / scheduled CI into static generated data, reusing the existing GitHub stats approach. Do not call GitHub APIs from the client bundle and do not expose tokens.
+- Show the data retrieval time in the UI. If the fetch fails, keep the previous generated snapshot or degrade gracefully rather than breaking the site build.
+- Treat private contribution visibility as token-dependent; public-safe defaults should not imply unavailable private contributions are counted.
+
 ## 7. Legal & Compliance
 
 - Privacy: No unnecessary tracking; minimize personal data collection
 - Persistent project docs and UI copy must not record machine-specific local paths to AI skills, tools, or private workstation resources. Refer to process tools by generic names only when relevant.
 - Accessibility: Readable, navigable layouts across common viewport sizes
+
+## 8. Agent Workflow Constraints
+
+- Unless the user explicitly asks for local preview or browser verification, agents must not start a development server and must not open, automate, screenshot, or otherwise inspect the site in a browser.
+- Default verification should use non-interactive checks such as build, typecheck, lint, and targeted script execution. Visual and responsive review is user-owned unless explicitly delegated.

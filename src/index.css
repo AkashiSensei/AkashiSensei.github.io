@@ -258,15 +258,15 @@
   }
 
   .resume-section-stack {
-    --resume-stack-gap-by-width: clamp(4.75rem, 5.65vw, 7.5rem);
-    --resume-stack-gap-by-height: clamp(4.5rem, 6.25svh, 7.25rem);
-    --resume-stack-gap-boost: 1rem;
+    --resume-stack-gap-by-width: clamp(5.25rem, 6.2vw, 8.5rem);
+    --resume-stack-gap-by-height: clamp(5rem, 6.85svh, 8.25rem);
+    --resume-stack-gap-boost: 1.25rem;
     gap: calc(min(var(--resume-stack-gap-by-width), var(--resume-stack-gap-by-height)) + var(--resume-stack-gap-boost));
     padding-bottom: clamp(5.5rem, min(9.5svh, 8.5vw), 9.5rem);
   }
 
   .resume-rhythm-section {
-    --resume-section-py: clamp(2.25rem, 4svh, 3.75rem);
+    --resume-section-py: clamp(2.75rem, 4.6svh, 4.5rem);
     --resume-feature-offset: 0rem;
     padding-block: var(--resume-section-py);
     min-height: auto;
@@ -297,14 +297,14 @@
 
   @media (min-width: 768px) {
     .resume-section-stack {
-      --resume-stack-gap-by-width: clamp(5rem, 5.85vw, 7.75rem);
-      --resume-stack-gap-by-height: clamp(5rem, 6.45svh, 7.5rem);
-      --resume-stack-gap-boost: 1.25rem;
+      --resume-stack-gap-by-width: clamp(5.6rem, 6.4vw, 8.75rem);
+      --resume-stack-gap-by-height: clamp(5.6rem, 7.1svh, 8.5rem);
+      --resume-stack-gap-boost: 1.5rem;
       padding-bottom: clamp(6rem, min(9.5svh, 8.5vw), 10rem);
     }
 
     .resume-rhythm-section {
-      --resume-section-py: clamp(2.5rem, min(4.25svh, 4.25vw), 4rem);
+      --resume-section-py: clamp(3rem, min(4.8svh, 4.8vw), 4.75rem);
     }
 
     .resume-hero-section {
@@ -314,9 +314,9 @@
 
   @media (min-width: 1024px) {
     .resume-section-stack {
-      --resume-stack-gap-by-width: clamp(5.25rem, 5.55vw, 7.5rem);
-      --resume-stack-gap-by-height: clamp(5rem, 6.1svh, 7.5rem);
-      --resume-stack-gap-boost: 1.5rem;
+      --resume-stack-gap-by-width: clamp(5.9rem, 6.05vw, 8.75rem);
+      --resume-stack-gap-by-height: clamp(5.6rem, 6.75svh, 8.5rem);
+      --resume-stack-gap-boost: 1.8rem;
     }
 
     .resume-rhythm-section {
@@ -330,13 +330,13 @@
 
   @media (min-width: 1200px) {
     .resume-section-stack {
-      --resume-stack-gap-by-width: clamp(5.25rem, 5.25vw, 7.5rem);
-      --resume-stack-gap-by-height: clamp(5rem, 5.75svh, 7.25rem);
-      --resume-stack-gap-boost: 1.75rem;
+      --resume-stack-gap-by-width: clamp(5.9rem, 5.8vw, 8.75rem);
+      --resume-stack-gap-by-height: clamp(5.6rem, 6.35svh, 8.25rem);
+      --resume-stack-gap-boost: 2.05rem;
     }
 
     .resume-rhythm-section {
-      --resume-feature-offset: clamp(2.75rem, min(8svh, 5vw), 5.25rem);
+      --resume-feature-offset: clamp(3.1rem, min(8.8svh, 5.6vw), 5.85rem);
       min-height: clamp(34rem, min(calc(66svh - 7rem), 54vw), 45rem);
     }
 
@@ -357,13 +357,13 @@
 
   @media (min-width: 1800px) {
     .resume-section-stack {
-      --resume-stack-gap-by-width: clamp(5.75rem, 4.8vw, 8.25rem);
-      --resume-stack-gap-by-height: clamp(5.5rem, 6.15svh, 8.25rem);
-      --resume-stack-gap-boost: 2rem;
+      --resume-stack-gap-by-width: clamp(6.4rem, 5.25vw, 9.25rem);
+      --resume-stack-gap-by-height: clamp(6.1rem, 6.8svh, 9.25rem);
+      --resume-stack-gap-boost: 2.35rem;
     }
 
     .resume-rhythm-section {
-      --resume-feature-offset: clamp(3.25rem, min(7svh, 4.5vw), 6rem);
+      --resume-feature-offset: clamp(3.75rem, min(7.8svh, 5vw), 6.75rem);
       min-height: clamp(38rem, min(calc(72svh - 8rem), 50vw), 52rem);
     }
 
