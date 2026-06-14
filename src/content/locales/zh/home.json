@@ -2,5 +2,7 @@
   "title": "您好，我是 $t(common:site.displayName)",
   "subtitleTranslation": "轮到明石出场了呢。",
   "description": "感谢您的访问。\n希望您能够成为我的老师或朋友。\n\n这里先保持简单。\n如果您想了解我的项目、经历和工作方式，可以去看看在线简历。\n\n本站仍在建设中，内容可能还不完善或者有错误，感谢理解。",
-  "resumeCta": "查看在线简历"
+  "resumeCta": "查看在线简历",
+  "contact": "联系我",
+  "github": "GitHub"
 }

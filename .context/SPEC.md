@@ -68,6 +68,7 @@ This section is the standing brief for future page design work. When modifying o
 - Future design variants may be reconsidered later, but they are explicitly out of scope until the current design is cleaner, more stable, and better adapted to common screen shapes.
 - Design work should focus on the existing layout system: typography, spacing, card/list composition, navigation ergonomics, image treatment, section rhythm, and responsive behavior.
 - Special visual effects, including `metal-fx`, are not part of the current design direction unless a future task explicitly reintroduces them.
+- Recent button-effect trial: `metal-fx` was tested for the homepage/resume primary CTAs and then removed. The WebGL metal ring was visible, but its native motion read as too subtle for this site; making movement obvious required an additional sweeping highlight layer, which felt too visually heavy against the current restrained design. If revisiting this direction later, start from a lighter, opt-in CTA-only treatment and verify motion, reduced-motion behavior, Firefox/WebGL behavior, and theme contrast before keeping the effect.
 
 ### 3.4 Viewport profiles & responsive composition
 
