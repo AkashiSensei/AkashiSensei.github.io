@@ -336,7 +336,8 @@ export function ProjectImageGallery({
   const captionImage = images[Math.min(captionImageIndex, images.length - 1)]
     ?? selectedImage
   const hasMultipleImages = images.length > 1
-  const cardImages = cardScrollable ? images : [selectedImage]
+  const shouldRenderCardRail = cardScrollable || (cardAutoCycle && hasMultipleImages)
+  const cardImages = shouldRenderCardRail ? images : [selectedImage]
 
   const openPreview = (imageIndex: number) => {
     initialPreviewImageIndexRef.current = imageIndex
@@ -422,18 +423,20 @@ export function ProjectImageGallery({
           "flex w-full min-w-0 max-w-full shrink-0 overscroll-y-none [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
           cardScrollable
             ? "max-h-[72svh] snap-x snap-mandatory overflow-x-auto md:max-h-none"
-            : "max-h-full overflow-hidden",
+            : shouldRenderCardRail
+              ? "max-h-full snap-x snap-mandatory overflow-hidden"
+              : "max-h-full overflow-hidden",
           className,
         )}
         style={{
           aspectRatio: cardAspectRatio ?? getBoundedImageAspectRatio(firstImage),
           maxHeight: cardAspectRatio ? undefined : CARD_IMAGE_GALLERY_MAX_HEIGHT,
-          touchAction: cardScrollable ? "pan-x" : undefined,
+          touchAction: cardScrollable ? "pan-x" : "pan-y",
         }}
         onScroll={cardScrollable ? handleCardGalleryScroll : undefined}
       >
         {cardImages.map((image, renderedImageIndex) => {
-          const imageIndex = cardScrollable
+          const imageIndex = shouldRenderCardRail
             ? renderedImageIndex
             : selectedImageIndex
 
@@ -443,8 +446,8 @@ export function ProjectImageGallery({
               role="button"
               tabIndex={cardScrollable || imageIndex === selectedImageIndex ? 0 : -1}
               aria-hidden={!cardScrollable && imageIndex !== selectedImageIndex}
-              className="flex h-full min-w-0 basis-full shrink-0 snap-start items-center justify-center overflow-hidden p-0"
-              style={cardScrollable ? { touchAction: "pan-x" } : undefined}
+              className="relative flex h-full min-w-0 basis-full shrink-0 snap-start items-center justify-center overflow-hidden p-0"
+              style={{ touchAction: cardScrollable ? "pan-x" : "pan-y" }}
               onClick={() => openPreview(imageIndex)}
               onKeyDown={(event) => {
                 if (event.key !== "Enter" && event.key !== " ") {
@@ -462,13 +465,13 @@ export function ProjectImageGallery({
                 placeholderTitle={t(image.altKey)}
                 loadingLabel={t("common:imageLoading")}
                 brightness={image.brightness}
-                containerClassName="h-full w-full min-w-0 max-w-full"
+                containerClassName="relative z-10 h-full w-full min-w-0 max-w-full"
                 imageClassName={cn(
                   "block h-full w-full max-w-full",
                   cardImageFit === "cover" ? "object-cover" : "object-contain",
                 )}
                 draggable={false}
-                style={{ touchAction: "pan-x" }}
+                style={{ touchAction: cardScrollable ? "pan-x" : "pan-y" }}
               />
             </div>
           )

@@ -1,0 +1,29 @@
+.card-swap-container {
+  position: absolute;
+  perspective: 900px;
+  overflow: visible;
+}
+
+.card-swap-card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  will-change: transform;
+}
+
+.project-card-swap-card-shell {
+  background-color: rgb(var(--site-surface-rgb) / 0.001);
+  -webkit-backdrop-filter: blur(6px) saturate(1.04);
+  backdrop-filter: blur(6px) saturate(1.04);
+  clip-path: inset(0 round calc(var(--radius) * 1.8));
+  contain: paint;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card-swap-card {
+    will-change: auto;
+  }
+}
