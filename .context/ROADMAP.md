@@ -13,6 +13,7 @@
 
 ## History
 
+- 2026-06-14 | [Archived: Light visual polish](archive/20260614_Light-visual-polish.md) | Removed the noisy fixed background direction, retained frosted glass with lightweight Spotlight hover, polished homepage CTAs/contact copy, and fixed desktop QR panel alignment, spacing, and Spotlight positioning.
 - 2026-06-13 | [Archived: GitHub activity summary](archive/20260613_GitHub-activity-summary.md) | Added a build-time GitHub yearly contribution snapshot and resume activity section with categorized totals, private/restricted and repository counts, proportional distribution, bilingual copy, and no-browser agent workflow guidance.
 - 2026-06-11 | [Archived: View on phone QR and contact copy](archive/20260611_View-on-phone-QR-and-contact-copy.md) | Added a desktop current-page QR panel for phone handoff, dynamic production/local URL encoding, and copy-to-clipboard email contact behavior.
 - 2026-06-11 | [Archived: Existing design responsive polish](archive/20260611_Existing-design-responsive-polish.md) | Systematically polished the existing frosted-glass resume experience across mobile, narrow/tall desktop, wide desktop, detail pages, navigation, project media, workbench previews, and section rhythm.

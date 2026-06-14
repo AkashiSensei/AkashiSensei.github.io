@@ -2,5 +2,7 @@
   "title": "Hi, I'm $t(common:site.displayName)",
   "subtitleTranslation": "It's Akashi's turn now.",
   "description": "Thank you for visiting.\nI hope you may become my teacher or friend.\n\nFor projects, experience, and how I work, please see my online resume.\n\nThis site is still under construction. Some content may be incomplete or incorrect. Thank you for understanding.",
-  "resumeCta": "View Online Resume"
+  "resumeCta": "View Online Resume",
+  "contact": "Contact Me",
+  "github": "GitHub"
 }

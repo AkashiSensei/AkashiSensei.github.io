@@ -1,22 +1,42 @@
-import { useState, useEffect, useMemo, useRef } from "react";
+import { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
 import { toString as qrToString } from "qrcode";
 import { useTheme } from "@/components/theme-provider";
 import { AppLink } from "@/components/AppLink";
 import { ContactDialog } from "@/components/ContactDialog";
+import { SpotlightCard } from "@/components/SpotlightCard";
 import { Sun, Moon, Menu, X, Mail, QrCode } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-function getPhoneQrPanelPosition(button: HTMLButtonElement) {
-  const rect = button.getBoundingClientRect();
-  const panelWidth = 224;
+const phoneQrPanelWidth = 224;
+const phoneQrPanelGap = 8;
+
+function isVisibleElement(element: HTMLElement) {
+  const rect = element.getBoundingClientRect();
+
+  return rect.width > 0 && rect.height > 0;
+}
+
+function getPhoneQrPanelPosition(
+  button: HTMLButtonElement,
+  container: HTMLDivElement,
+) {
+  const buttonRect = button.getBoundingClientRect();
+  const menuAnchor =
+    (button.closest(".desktop-menu-cluster") as HTMLElement | null) ?? button;
+  const anchorRect = menuAnchor.getBoundingClientRect();
+  const containerRect = container.getBoundingClientRect();
+  const viewportWidth = window.visualViewport?.width ?? window.innerWidth;
   const viewportPadding = 16;
-  const maxLeft = window.innerWidth - panelWidth - viewportPadding;
+  const minLeft = viewportPadding - containerRect.left;
+  const maxLeft =
+    viewportWidth - phoneQrPanelWidth - viewportPadding - containerRect.left;
+  const preferredLeft = anchorRect.right - phoneQrPanelWidth - containerRect.left;
 
   return {
-    left: Math.max(viewportPadding, Math.min(rect.right - panelWidth, maxLeft)),
-    top: rect.bottom + 12,
+    left: Math.max(minLeft, Math.min(preferredLeft, maxLeft)),
+    top: Math.max(buttonRect.bottom, anchorRect.bottom) - containerRect.top + phoneQrPanelGap,
   };
 }
 
@@ -35,7 +55,9 @@ export function Navbar() {
   const [scrollDisplacement, setScrollDisplacement] = useState(0);
   const navRef = useRef<HTMLDivElement>(null);
   const phoneQrPanelRef = useRef<HTMLDivElement>(null);
-  const phoneQrButtonRef = useRef<HTMLButtonElement | null>(null);
+  const compactPhoneQrButtonRef = useRef<HTMLButtonElement | null>(null);
+  const fullPhoneQrButtonRef = useRef<HTMLButtonElement | null>(null);
+  const activePhoneQrButtonRef = useRef<HTMLButtonElement | null>(null);
   const lastScrollYRef = useRef(0);
   const lastScrollTimeRef = useRef(0);
   const observedScrollYRef = useRef(0);
@@ -43,6 +65,16 @@ export function Navbar() {
   const scrollFrameRef = useRef<number | null>(null);
   const scrollSettleFrameRef = useRef<number | null>(null);
   const scrollSettledSinceRef = useRef<number | null>(null);
+
+  const getActivePhoneQrButton = useCallback(() => {
+    const candidates = [
+      activePhoneQrButtonRef.current,
+      fullPhoneQrButtonRef.current,
+      compactPhoneQrButtonRef.current,
+    ];
+
+    return candidates.find((button) => button && isVisibleElement(button)) ?? null;
+  }, []);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent | TouchEvent) => {
@@ -119,8 +151,14 @@ export function Navbar() {
     }
 
     const updatePanelPosition = () => {
-      if (phoneQrButtonRef.current) {
-        setPhoneQrPanelPosition(getPhoneQrPanelPosition(phoneQrButtonRef.current));
+      const activeButton = getActivePhoneQrButton();
+      const navContainer = navRef.current;
+
+      if (activeButton && navContainer) {
+        activePhoneQrButtonRef.current = activeButton;
+        setPhoneQrPanelPosition(
+          getPhoneQrPanelPosition(activeButton, navContainer),
+        );
       }
     };
 
@@ -132,14 +170,31 @@ export function Navbar() {
 
     document.addEventListener("keydown", handleKeyDown);
     window.addEventListener("resize", updatePanelPosition);
-    window.addEventListener("scroll", updatePanelPosition, { passive: true });
+    window.visualViewport?.addEventListener("resize", updatePanelPosition);
+
+    const resizeObserver = new ResizeObserver(updatePanelPosition);
+
+    if (navRef.current) {
+      resizeObserver.observe(navRef.current);
+    }
+
+    if (compactPhoneQrButtonRef.current) {
+      resizeObserver.observe(compactPhoneQrButtonRef.current);
+    }
+
+    if (fullPhoneQrButtonRef.current) {
+      resizeObserver.observe(fullPhoneQrButtonRef.current);
+    }
+
+    updatePanelPosition();
 
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("resize", updatePanelPosition);
-      window.removeEventListener("scroll", updatePanelPosition);
+      window.visualViewport?.removeEventListener("resize", updatePanelPosition);
+      resizeObserver.disconnect();
     };
-  }, [phoneQrOpen]);
+  }, [getActivePhoneQrButton, phoneQrOpen]);
 
   useEffect(() => {
     const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -297,9 +352,15 @@ export function Navbar() {
     currentPathname === href || currentPathname.startsWith(`${href}/`);
 
   const togglePhoneQr = (button: HTMLButtonElement) => {
+    const navContainer = navRef.current;
+
+    if (!navContainer) {
+      return;
+    }
+
     setMobileMenuOpen(false);
-    phoneQrButtonRef.current = button;
-    setPhoneQrPanelPosition(getPhoneQrPanelPosition(button));
+    activePhoneQrButtonRef.current = button;
+    setPhoneQrPanelPosition(getPhoneQrPanelPosition(button, navContainer));
     setPhoneQrOpen((isOpen) => !isOpen);
   };
 
@@ -340,9 +401,17 @@ export function Navbar() {
     );
   };
 
-  const renderPhoneQrButton = () => (
+  const renderPhoneQrButton = (variant: "compact" | "full") => (
     <div className="desktop-menu-item relative flex h-8 w-8 items-center justify-center">
       <button
+        ref={(button) => {
+          if (variant === "compact") {
+            compactPhoneQrButtonRef.current = button;
+            return;
+          }
+
+          fullPhoneQrButtonRef.current = button;
+        }}
         type="button"
         onPointerDown={(event) => {
           event.preventDefault();
@@ -374,10 +443,10 @@ export function Navbar() {
     }
 
     return (
-      <div
+      <SpotlightCard
         ref={phoneQrPanelRef}
         id="navbar-phone-qr-panel"
-        className="lit-glass-card fixed z-[70] w-56 rounded-2xl border border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.72)] p-3 text-left shadow-sm backdrop-blur-md dark:border-white/10 dark:bg-neutral-950/78"
+        className="lit-glass-card absolute z-[70] w-56 rounded-2xl border border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.42)] p-3 text-left shadow-sm backdrop-blur-md transition-all duration-300 dark:border-white/10 dark:bg-white/10"
         style={{
           left: `${phoneQrPanelPosition.left}px`,
           top: `${phoneQrPanelPosition.top}px`,
@@ -400,7 +469,7 @@ export function Navbar() {
         <p className="mt-3 truncate text-[0.68rem] leading-4 text-tone-4" title={currentPageUrl}>
           {currentPageUrl}
         </p>
-      </div>
+      </SpotlightCard>
     );
   };
 
@@ -410,54 +479,56 @@ export function Navbar() {
       className="site-navbar-shell fixed bottom-7 inset-x-6 z-50 mx-auto max-w-5xl transition-transform duration-[460ms] ease-out will-change-transform sm:bottom-8 sm:inset-x-8 md:bottom-auto md:top-4 md:inset-x-16 md:mx-0 md:max-w-none min-[900px]:inset-x-20 min-[1000px]:w-auto min-[1000px]:px-0 xl:inset-x-44 2xl:inset-x-56"
       style={{ transform: `translate3d(0, ${scrollDisplacement.toFixed(2)}px, 0)` }}
     >
-      <nav className="lit-glass-card relative z-50 flex items-center justify-between rounded-full border border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.42)] px-3.5 py-2.5 shadow-sm backdrop-blur-md transition-all duration-300 dark:border-white/10 dark:bg-white/10 sm:px-4 md:hidden">
-        <div className="flex items-center gap-2 sm:gap-4">
-          <AppLink
-            to="/"
-            className="font-semibold text-lg md:text-lg tracking-tight hover:opacity-80 transition-opacity"
-          >
-            {t("site.displayName")}
-          </AppLink>
-        </div>
-        <div className="flex items-center gap-1.5 sm:gap-2 text-sm font-medium text-foreground/80">
-          <button 
-            onClick={toggleLanguage}
-            className="flex h-9 w-9 items-center justify-center rounded-full text-sm font-medium hover:bg-muted/50 transition-colors md:h-8 md:w-8 md:text-sm"
-            title={t("a11y.toggleLanguage")}
-          >
-            {(i18n.resolvedLanguage ?? i18n.language).startsWith("zh") ? t("ui.langSwitchToEn") : t("ui.langSwitchToZh")}
-          </button>
-          <button 
-            onClick={toggleTheme}
-            className="flex h-9 w-9 items-center justify-center rounded-full hover:bg-muted/50 transition-colors md:h-8 md:w-8"
-            title={t("a11y.toggleTheme")}
-          >
-            <Sun className="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-            <Moon className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-            <span className="sr-only">{t("a11y.toggleThemeSr")}</span>
-          </button>
-          <ContactDialog>
-            <button
-              className="flex h-9 w-9 items-center justify-center rounded-full hover:bg-muted/50 transition-colors md:h-8 md:w-8"
-              title={t("a11y.viewContact")}
+      <SpotlightCard asChild className="lit-glass-card relative z-50 flex items-center justify-between rounded-full border border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.42)] px-3.5 py-2.5 shadow-sm backdrop-blur-md transition-all duration-300 dark:border-white/10 dark:bg-white/10 sm:px-4 md:hidden">
+        <nav>
+          <div className="flex items-center gap-2 sm:gap-4">
+            <AppLink
+              to="/"
+              className="font-semibold text-lg md:text-lg tracking-tight hover:opacity-80 transition-opacity"
             >
-              <Mail className="h-4 w-4" />
-              <span className="sr-only">{t("a11y.viewContact")}</span>
+              {t("site.displayName")}
+            </AppLink>
+          </div>
+          <div className="flex items-center gap-1.5 sm:gap-2 text-sm font-medium text-foreground/80">
+            <button 
+              onClick={toggleLanguage}
+              className="flex h-9 w-9 items-center justify-center rounded-full text-sm font-medium hover:bg-muted/50 transition-colors md:h-8 md:w-8 md:text-sm"
+              title={t("a11y.toggleLanguage")}
+            >
+              {(i18n.resolvedLanguage ?? i18n.language).startsWith("zh") ? t("ui.langSwitchToEn") : t("ui.langSwitchToZh")}
             </button>
-          </ContactDialog>
+            <button 
+              onClick={toggleTheme}
+              className="flex h-9 w-9 items-center justify-center rounded-full hover:bg-muted/50 transition-colors md:h-8 md:w-8"
+              title={t("a11y.toggleTheme")}
+            >
+              <Sun className="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+              <Moon className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+              <span className="sr-only">{t("a11y.toggleThemeSr")}</span>
+            </button>
+            <ContactDialog>
+              <button
+                className="flex h-9 w-9 items-center justify-center rounded-full hover:bg-muted/50 transition-colors md:h-8 md:w-8"
+                title={t("a11y.viewContact")}
+              >
+                <Mail className="h-4 w-4" />
+                <span className="sr-only">{t("a11y.viewContact")}</span>
+              </button>
+            </ContactDialog>
 
-          <button 
-            onClick={toggleDesktopMenu}
-            className="ml-0.5 flex h-9 w-9 items-center justify-center rounded-full hover:bg-muted/50 transition-colors"
-            title={t("a11y.toggleMenu")}
-          >
-            {mobileMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
-          </button>
-        </div>
-      </nav>
+            <button 
+              onClick={toggleDesktopMenu}
+              className="ml-0.5 flex h-9 w-9 items-center justify-center rounded-full hover:bg-muted/50 transition-colors"
+              title={t("a11y.toggleMenu")}
+            >
+              {mobileMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+            </button>
+          </div>
+        </nav>
+      </SpotlightCard>
 
       <div className="navbar-compact-row items-center justify-between gap-3">
-        <div className="lit-glass-card flex h-12 shrink-0 items-center gap-2.5 rounded-full border border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.42)] px-5 shadow-sm backdrop-blur-md transition-all duration-300 dark:border-white/10 dark:bg-white/10">
+        <SpotlightCard className="lit-glass-card flex h-12 shrink-0 items-center gap-2.5 rounded-full border border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.42)] px-5 shadow-sm backdrop-blur-md transition-all duration-300 dark:border-white/10 dark:bg-white/10">
           <img
             src="/favicon.png"
             alt=""
@@ -470,9 +541,9 @@ export function Navbar() {
           >
             {t("site.displayName")}
           </AppLink>
-        </div>
+        </SpotlightCard>
 
-        <div className="desktop-menu-cluster lit-glass-card flex h-12 shrink-0 items-center gap-1.5 rounded-full border border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.42)] px-3.5 text-sm font-medium text-foreground/80 shadow-sm backdrop-blur-md transition-all duration-300 dark:border-white/10 dark:bg-white/10">
+        <SpotlightCard className="desktop-menu-cluster lit-glass-card flex h-12 shrink-0 items-center gap-1.5 rounded-full border border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.42)] px-3.5 text-sm font-medium text-foreground/80 shadow-sm backdrop-blur-md transition-all duration-300 dark:border-white/10 dark:bg-white/10">
           <ContactDialog>
             <button
               className="desktop-menu-item flex h-8 w-8 items-center justify-center rounded-full hover:bg-muted/50"
@@ -498,7 +569,7 @@ export function Navbar() {
             <Moon className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
             <span className="sr-only">{t("a11y.toggleThemeSr")}</span>
           </button>
-          {renderPhoneQrButton()}
+          {renderPhoneQrButton("compact")}
           <button
             onClick={toggleDesktopMenu}
             className="desktop-menu-item flex h-8 w-8 items-center justify-center rounded-full hover:bg-muted/50"
@@ -506,11 +577,11 @@ export function Navbar() {
           >
             {mobileMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
           </button>
-        </div>
+        </SpotlightCard>
       </div>
 
       <div className="navbar-desktop-row mx-auto w-full max-w-[72rem] items-center justify-between gap-3">
-        <div className="lit-glass-card flex h-12 shrink-0 items-center gap-2.5 rounded-full border border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.42)] px-5 shadow-sm backdrop-blur-md transition-all duration-300 dark:border-white/10 dark:bg-white/10">
+        <SpotlightCard className="lit-glass-card flex h-12 shrink-0 items-center gap-2.5 rounded-full border border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.42)] px-5 shadow-sm backdrop-blur-md transition-all duration-300 dark:border-white/10 dark:bg-white/10">
           <img
             src="/favicon.png"
             alt=""
@@ -523,30 +594,32 @@ export function Navbar() {
           >
             {t("site.displayName")}
           </AppLink>
-        </div>
+        </SpotlightCard>
 
-        <nav className="desktop-menu-cluster lit-glass-card flex h-12 min-w-0 items-center justify-center gap-5 rounded-full border border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.42)] px-7 text-sm font-medium text-foreground/80 shadow-sm backdrop-blur-md transition-all duration-300 dark:border-white/10 dark:bg-white/10 xl:gap-6">
-          {navLinks.map((link) => {
-            const isActive = isNavLinkActive(link.href);
+        <SpotlightCard asChild className="desktop-menu-cluster lit-glass-card flex h-12 min-w-0 items-center justify-center gap-5 rounded-full border border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.42)] px-7 text-sm font-medium text-foreground/80 shadow-sm backdrop-blur-md transition-all duration-300 dark:border-white/10 dark:bg-white/10 xl:gap-6">
+          <nav>
+            {navLinks.map((link) => {
+              const isActive = isNavLinkActive(link.href);
 
-            return (
-              <span key={link.href} className="desktop-menu-item shrink-0">
-                {renderNavLink(
-                  link.href,
-                  link.label,
-                  cn(
-                    "relative inline-flex items-center rounded-full px-1.5 py-1 transition-colors after:absolute after:inset-x-1.5 after:-bottom-0.5 after:h-px after:origin-center after:scale-x-0 after:bg-current after:opacity-0 after:transition-all after:duration-300 hover:text-foreground",
-                    isActive && "text-tone-1 after:scale-x-100 after:opacity-70",
-                  ),
-                  undefined,
-                  isActive,
-                )}
-              </span>
-            );
-          })}
-        </nav>
+              return (
+                <span key={link.href} className="desktop-menu-item shrink-0">
+                  {renderNavLink(
+                    link.href,
+                    link.label,
+                    cn(
+                      "relative inline-flex items-center rounded-full px-1.5 py-1 transition-colors after:absolute after:inset-x-1.5 after:-bottom-0.5 after:h-px after:origin-center after:scale-x-0 after:bg-current after:opacity-0 after:transition-all after:duration-300 hover:text-foreground",
+                      isActive && "text-tone-1 after:scale-x-100 after:opacity-70",
+                    ),
+                    undefined,
+                    isActive,
+                  )}
+                </span>
+              );
+            })}
+          </nav>
+        </SpotlightCard>
 
-        <div className="desktop-menu-cluster lit-glass-card flex h-12 shrink-0 items-center gap-1.5 rounded-full border border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.42)] px-3.5 text-sm font-medium text-foreground/80 shadow-sm backdrop-blur-md transition-all duration-300 dark:border-white/10 dark:bg-white/10">
+        <SpotlightCard className="desktop-menu-cluster lit-glass-card flex h-12 shrink-0 items-center gap-1.5 rounded-full border border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.42)] px-3.5 text-sm font-medium text-foreground/80 shadow-sm backdrop-blur-md transition-all duration-300 dark:border-white/10 dark:bg-white/10">
           <ContactDialog>
             <button
               className="desktop-menu-item flex h-8 w-8 items-center justify-center rounded-full hover:bg-muted/50"
@@ -572,14 +645,14 @@ export function Navbar() {
             <Moon className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
             <span className="sr-only">{t("a11y.toggleThemeSr")}</span>
           </button>
-          {renderPhoneQrButton()}
-        </div>
+          {renderPhoneQrButton("full")}
+        </SpotlightCard>
       </div>
 
       {renderPhoneQrPanel()}
 
       {mobileMenuOpen && (
-        <div className="navbar-dropdown-panel lit-glass-card absolute bottom-full left-0 right-0 mb-2 origin-bottom rounded-3xl border border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.42)] p-3 shadow-sm backdrop-blur-md transition-all duration-300 dark:border-white/10 dark:bg-white/10 md:bottom-auto md:left-auto md:right-0 md:top-full md:mt-2 md:w-[22rem] md:origin-top">
+        <SpotlightCard className="navbar-dropdown-panel lit-glass-card absolute bottom-full left-0 right-0 mb-2 origin-bottom rounded-3xl border border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.42)] p-3 shadow-sm backdrop-blur-md transition-all duration-300 dark:border-white/10 dark:bg-white/10 md:bottom-auto md:left-auto md:right-0 md:top-full md:mt-2 md:w-[22rem] md:origin-top">
           <div className="flex flex-col gap-1 text-sm font-medium">
             {navLinks.map((link, idx) => (
               <span key={idx} className="block">
@@ -602,7 +675,7 @@ export function Navbar() {
               </span>
             ))}
           </div>
-        </div>
+        </SpotlightCard>
       )}
     </div>
   );

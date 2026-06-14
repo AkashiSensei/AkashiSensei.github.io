@@ -39,7 +39,7 @@ export function HomePage() {
           <Button
             variant="outline"
             asChild
-            className="h-10 w-fit rounded-full border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.42)] px-5 text-sm shadow-sm backdrop-blur-md transition-colors hover:bg-[rgb(var(--site-surface-rgb)_/_0.62)] dark:border-white/10 dark:bg-white/10 dark:hover:bg-white/20"
+            className="h-12 w-fit rounded-full border-[rgb(var(--site-surface-rgb)_/_0.68)] bg-[rgb(var(--site-surface-rgb))] px-7 text-sm font-bold text-black shadow-sm backdrop-blur-md transition-colors hover:bg-[rgb(255_255_252)] active:not-aria-[haspopup]:!translate-y-0 dark:border-[rgb(var(--site-surface-rgb)_/_0.18)] dark:bg-[rgb(var(--site-surface-rgb))] dark:text-black dark:hover:bg-[rgb(255_255_252)]"
           >
             <AppLink to="/resume" className="inline-flex items-center gap-2">
               {t("resumeCta")}
@@ -49,7 +49,7 @@ export function HomePage() {
           <ContactDialog>
             <Button
               variant="outline"
-              className="h-10 rounded-full border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.42)] px-5 text-sm shadow-sm backdrop-blur-md transition-colors hover:bg-[rgb(var(--site-surface-rgb)_/_0.62)] dark:border-white/10 dark:bg-white/10 dark:hover:bg-white/20"
+              className="h-12 rounded-full border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.42)] px-5 text-sm font-bold shadow-sm backdrop-blur-md transition-colors hover:bg-[rgb(var(--site-surface-rgb)_/_0.62)] dark:border-white/10 dark:bg-white/10 dark:hover:bg-white/20"
             >
               {t("contact")}
             </Button>
@@ -57,7 +57,7 @@ export function HomePage() {
           <Button
             variant="outline"
             asChild
-            className="h-10 rounded-full border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.42)] px-4 text-sm shadow-sm backdrop-blur-md transition-colors hover:bg-[rgb(var(--site-surface-rgb)_/_0.62)] dark:border-white/10 dark:bg-white/10 dark:hover:bg-white/20"
+            className="h-12 rounded-full border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.42)] px-4 text-sm font-bold shadow-sm backdrop-blur-md transition-colors hover:bg-[rgb(var(--site-surface-rgb)_/_0.62)] dark:border-white/10 dark:bg-white/10 dark:hover:bg-white/20"
           >
             <a
               href="https://github.com/AkashiSensei"
