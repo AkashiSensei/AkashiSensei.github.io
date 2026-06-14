@@ -561,8 +561,8 @@
   .workbench-preview-glass {
     --workbench-preview-glass-bg: rgb(var(--site-surface-rgb) / 0.24);
     --workbench-preview-glass-start-bg: rgb(var(--site-surface-rgb) / 0.06);
-    --workbench-preview-glass-blur: 30px;
-    --workbench-preview-glass-start-blur: 14px;
+    --workbench-preview-glass-blur: 6px;
+    --workbench-preview-glass-start-blur: 6px;
     --workbench-preview-glass-saturate: 1.45;
     --workbench-preview-glass-start-saturate: 1.10;
     --workbench-preview-glass-contrast: 1.04;
@@ -589,8 +589,8 @@
   .dark .workbench-preview-glass {
     --workbench-preview-glass-bg: rgb(255 255 255 / 0.055);
     --workbench-preview-glass-start-bg: rgb(255 255 255 / 0.018);
-    --workbench-preview-glass-blur: 34px;
-    --workbench-preview-glass-start-blur: 16px;
+    --workbench-preview-glass-blur: 6px;
+    --workbench-preview-glass-start-blur: 6px;
     --workbench-preview-glass-saturate: 1.35;
     --workbench-preview-glass-start-saturate: 1.08;
     --workbench-preview-glass-contrast: 1;

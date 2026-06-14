@@ -3,7 +3,6 @@ import {
   type CSSProperties,
   type KeyboardEvent,
   type MouseEvent,
-  useCallback,
   useEffect,
   useLayoutEffect,
   useRef,
@@ -13,6 +12,7 @@ import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
 
 import { AppLink } from "@/components/AppLink"
+import CardSwap, { Card } from "@/components/CardSwap"
 import { GitHubRepoStats } from "@/components/GitHubRepoStats"
 import { ImageBrightnessOverlay } from "@/components/ImageBrightnessOverlay"
 import { ProjectImageGallery } from "@/components/ProjectImageGallery"
@@ -31,6 +31,7 @@ type ProjectTranslationNamespace = "projects" | "courseProjects"
 
 const COVER_CAROUSEL_INTERVAL_MS = 6800
 const COVER_CAROUSEL_STAGGER_MS = 1300
+const PROJECT_CARD_IMAGE_ASPECT_RATIO = "1280 / 780"
 const PROJECT_HIGHLIGHT_ROTATION_INTERVAL_MS = 6000
 const PROJECT_HIGHLIGHT_IDS = [
   "crater",
@@ -305,22 +306,26 @@ function ProjectFeatureRow({
   projects: Project[]
 }) {
   const { i18n, t } = useTranslation(["projects", "common"])
-  const projectGalleryRef = useRef<HTMLDivElement>(null)
   const getProjectViewportMode = () => {
     if (typeof window === "undefined") {
       return {
         isMobile: false,
         isStackedDesktop: false,
         isNarrowSplitDesktop: false,
+        width: 1440,
       }
     }
 
-    const viewportWidth = window.visualViewport?.width ?? window.innerWidth
+    const measuredViewportWidth = window.visualViewport?.width ?? window.innerWidth
+    const viewportWidth = Number.isFinite(measuredViewportWidth) && measuredViewportWidth > 0
+      ? measuredViewportWidth
+      : 1440
 
     return {
       isMobile: viewportWidth < 768,
       isStackedDesktop: viewportWidth >= 768 && viewportWidth < 1200,
       isNarrowSplitDesktop: viewportWidth >= 1200 && viewportWidth < 1500,
+      width: viewportWidth,
     }
   }
   const [projectViewportMode, setProjectViewportMode] = useState(
@@ -337,58 +342,24 @@ function ProjectFeatureRow({
   const visiblePoints = points.slice(0, visiblePointCount)
   const title = t(`items.${project.id}.title`)
   const detailPath = getProjectDetailPath(project, "projects")
-
-  const scrollProjectGalleryToIndex = useCallback((projectIndex: number) => {
-    const gallery = projectGalleryRef.current
-    const cardElement = gallery?.children.item(projectIndex)
-
-    if (!(gallery && cardElement instanceof HTMLElement)) {
-      return
-    }
-
-    const targetLeft =
-      cardElement.offsetLeft - (gallery.clientWidth - cardElement.offsetWidth) / 2
-
-    gallery.scrollTo({
-      left: targetLeft,
-      behavior: "smooth",
-    })
-    onActiveProjectIndexChange(projectIndex)
-  }, [onActiveProjectIndexChange])
-
-  const handleProjectGalleryScroll = () => {
-    const gallery = projectGalleryRef.current
-
-    if (!gallery || gallery.clientWidth === 0) {
-      return
-    }
-
-    const cardElements = Array.from(gallery.children).filter(
-      (child): child is HTMLElement => child instanceof HTMLElement,
-    )
-    const viewportCenter = gallery.scrollLeft + gallery.clientWidth / 2
-    const nextIndex = cardElements.reduce((closestIndex, cardElement, index) => {
-      const closestElement = cardElements[closestIndex]
-      const cardCenter = cardElement.offsetLeft + cardElement.offsetWidth / 2
-      const closestCardCenter =
-        closestElement.offsetLeft + closestElement.offsetWidth / 2
-
-      return Math.abs(cardCenter - viewportCenter) <
-        Math.abs(closestCardCenter - viewportCenter)
-        ? index
-        : closestIndex
-    }, 0)
-
-    if (
-      nextIndex < 0 ||
-      nextIndex >= projects.length ||
-      nextIndex === activeProjectIndex
-    ) {
-      return
-    }
-
-    onActiveProjectIndexChange(nextIndex)
-  }
+  const estimatedCardWidth = projectViewportMode.isMobile
+    ? Math.max(260, projectViewportMode.width - 40)
+    : projectViewportMode.isStackedDesktop
+      ? Math.min(704, Math.max(360, projectViewportMode.width - 112))
+      : 704
+  const cardSwapDistance = Math.round(
+    Math.min(22, Math.max(4, estimatedCardWidth * 0.03)),
+  )
+  const cardSwapVerticalDistance = Math.round(
+    Math.min(24, Math.max(6, estimatedCardWidth * 0.033)),
+  )
+  const projectCardStackStyle = {
+    "--project-card-stack-bottom": `${Math.max(14, cardSwapVerticalDistance + 4)}px`,
+    "--project-card-stack-top": `${cardSwapVerticalDistance * (projects.length - 1) + 10}px`,
+  } as CSSProperties & Record<
+    "--project-card-stack-bottom" | "--project-card-stack-top",
+    string
+  >
 
   useEffect(() => {
     const updateProjectViewportMode = () => {
@@ -397,7 +368,8 @@ function ProjectFeatureRow({
       setProjectViewportMode((currentMode) =>
         currentMode.isMobile === nextMode.isMobile &&
         currentMode.isStackedDesktop === nextMode.isStackedDesktop &&
-        currentMode.isNarrowSplitDesktop === nextMode.isNarrowSplitDesktop
+        currentMode.isNarrowSplitDesktop === nextMode.isNarrowSplitDesktop &&
+        Math.abs(currentMode.width - nextMode.width) < 1
           ? currentMode
           : nextMode,
       )
@@ -413,97 +385,75 @@ function ProjectFeatureRow({
     }
   }, [])
 
-  useEffect(() => {
-    if (projects.length < 2) {
-      return undefined
-    }
-
-    const intervalId = window.setInterval(() => {
-      const nextIndex = (activeProjectIndex + 1) % projects.length
-
-      scrollProjectGalleryToIndex(nextIndex)
-    }, PROJECT_HIGHLIGHT_ROTATION_INTERVAL_MS)
-
-    return () => window.clearInterval(intervalId)
-  }, [activeProjectIndex, projects.length, scrollProjectGalleryToIndex])
-
   return (
     <article
       aria-label={title}
-      className="grid w-full min-w-0 max-w-full gap-5 min-[1200px]:grid-cols-[minmax(0,1fr)_minmax(20rem,1fr)] min-[1200px]:items-start min-[1200px]:gap-10 xl:gap-12"
+      className="grid w-full min-w-0 max-w-full gap-5 min-[1200px]:grid-cols-[minmax(0,38rem)_minmax(20rem,1fr)] min-[1200px]:items-start min-[1200px]:gap-0 xl:gap-0"
     >
-      <div className="relative min-w-0 max-w-full overflow-hidden">
+      <div className="relative min-w-0 max-w-full overflow-visible">
         <div
-          ref={projectGalleryRef}
-          className="project-card-rail-mask flex w-full min-w-0 max-w-full snap-x snap-mandatory gap-2.5 overflow-x-auto overscroll-y-none px-2.5 scroll-px-2.5 [scrollbar-width:none] sm:px-3 sm:scroll-px-3 [&::-webkit-scrollbar]:hidden"
-          onScroll={handleProjectGalleryScroll}
-          style={{ touchAction: "pan-x" }}
+          className="relative mx-auto overflow-visible px-1 pb-[var(--project-card-stack-bottom)] pr-6 pt-[var(--project-card-stack-top)] sm:pr-8 md:w-[min(100%,50rem)] md:pr-16 min-[1200px]:mx-0 min-[1200px]:-translate-y-[1.125rem] min-[1200px]:min-h-[26rem] min-[1200px]:w-auto min-[1200px]:pr-0 min-[1200px]:pt-12 min-[1440px]:min-h-[29rem]"
+          style={projectCardStackStyle}
         >
-          {projects.map((galleryProject) => (
-            <div
-              key={galleryProject.id}
-              className="min-w-0 basis-[calc(100%-0.75rem)] max-w-[calc(100%-0.75rem)] shrink-0 snap-center first:ml-1.5 last:mr-1.5 sm:basis-[calc(100%-1rem)] sm:max-w-[calc(100%-1rem)] sm:first:ml-2 sm:last:mr-2"
+          <div className="relative aspect-[1280/780] w-[calc(100%-1.5rem)] max-w-[44rem] sm:w-[calc(100%-2rem)] md:w-[calc(100%-4rem)] min-[1200px]:max-w-[38rem] min-[1200px]:w-full">
+            <CardSwap
+              activeIndex={activeProjectIndex}
+              cardDistance={cardSwapDistance}
+              className="bottom-0 left-0"
+              delay={PROJECT_HIGHLIGHT_ROTATION_INTERVAL_MS}
+              height="100%"
+              onActiveIndexChange={onActiveProjectIndexChange}
+              onCardClick={onActiveProjectIndexChange}
+              pauseOnHover
+              skewAmount={0}
+              verticalDistance={cardSwapVerticalDistance}
+              width="100%"
             >
-              <div className="relative aspect-[16/9.5] w-full min-w-0 max-w-full overflow-hidden rounded-2xl border border-[rgb(var(--site-surface-rgb)_/_0.28)] bg-foreground/8 shadow-sm shadow-black/10 ring-foreground/0 transition-[border-color,box-shadow] duration-300 group-focus-visible:ring-2 group-focus-visible:ring-foreground/35 dark:border-white/10 dark:bg-white/[0.04]">
-                {galleryProject.images?.length ? (
-                  <ProjectImageGallery
-                    key={galleryProject.id}
-                    cardAspectRatio="16 / 9.5"
-                    cardImageFit="contain"
-                    cardScrollable={false}
-                    images={galleryProject.images}
-                    className="h-full"
-                    translationNamespace="projects"
-                  />
-                ) : galleryProject.screenshot ? (
-                  <div className="relative h-full w-full overflow-hidden">
-                    <img
-                      src={galleryProject.screenshot.src}
-                      alt={t(galleryProject.screenshot.altKey)}
-                      className="h-full w-full object-contain"
-                      draggable={false}
-                    />
-                    <ImageBrightnessOverlay
-                      brightness={galleryProject.screenshot.brightness}
-                    />
+              {projects.map((galleryProject, projectIndex) => (
+                <Card
+                  key={galleryProject.id}
+                  className="project-card-swap-card-shell group/project-card relative isolate overflow-hidden rounded-2xl border border-[rgb(var(--site-surface-rgb)_/_0.28)] shadow-sm shadow-black/12 ring-foreground/0 transition-[border-color,box-shadow] duration-300 focus-within:ring-2 focus-within:ring-foreground/35 dark:border-white/10"
+                  aria-label={t(`items.${galleryProject.id}.title`)}
+                >
+                  <div className="absolute inset-0 z-10 overflow-hidden rounded-[inherit]">
+                    {galleryProject.images?.length ? (
+                      <ProjectImageGallery
+                        key={galleryProject.id}
+                        cardAspectRatio={PROJECT_CARD_IMAGE_ASPECT_RATIO}
+                        cardAutoCycle
+                        cardAutoCycleStaggerIndex={projectIndex}
+                        cardImageFit="contain"
+                        cardScrollable={false}
+                        images={galleryProject.images}
+                        className="h-full"
+                        translationNamespace="projects"
+                      />
+                    ) : galleryProject.screenshot ? (
+                      <div className="relative h-full w-full overflow-hidden">
+                        <img
+                          src={galleryProject.screenshot.src}
+                          alt={t(galleryProject.screenshot.altKey)}
+                          className="h-full w-full object-contain"
+                          draggable={false}
+                        />
+                        <ImageBrightnessOverlay
+                          brightness={galleryProject.screenshot.brightness}
+                        />
+                      </div>
+                    ) : (
+                      <div className="absolute inset-0 bg-foreground/8 dark:bg-white/[0.05]" />
+                    )}
                   </div>
-                ) : (
-                  <div className="absolute inset-0 bg-foreground/8 dark:bg-white/[0.05]" />
-                )}
-                <div className="pointer-events-none absolute inset-0 bg-gradient-to-tr from-black/20 via-transparent to-white/10 opacity-80 dark:from-black/35 dark:to-white/5" />
-              </div>
-            </div>
-          ))}
-        </div>
-        <div
-          className="mt-4 flex items-center justify-center gap-2"
-          aria-label={t("title")}
-        >
-          {projects.map((galleryProject, projectIndex) => {
-            const isActive = projectIndex === activeProjectIndex
-
-            return (
-              <button
-                key={galleryProject.id}
-                type="button"
-                className={cn(
-                  "h-[0.1875rem] rounded-full transition-[width,background-color,opacity] duration-300",
-                  isActive
-                    ? "w-12 bg-tone-2 opacity-100 dark:bg-white/78"
-                    : "w-7 bg-tone-5 opacity-60 hover:bg-tone-3 hover:opacity-100 dark:bg-white/24 dark:hover:bg-white/52",
-                )}
-                onClick={() => scrollProjectGalleryToIndex(projectIndex)}
-                aria-label={t(`items.${galleryProject.id}.title`)}
-                aria-current={isActive ? "true" : undefined}
-              />
-            )
-          })}
+                </Card>
+              ))}
+            </CardSwap>
+          </div>
         </div>
       </div>
 
       <div
         key={project.id}
-        className="project-feature-copy-swap detail-link-pair flex h-[31rem] min-w-0 flex-col gap-4 overflow-hidden [--detail-link-active-color:var(--text-tone-1)] sm:h-[28rem] md:h-[25rem] min-[1200px]:h-[24.5rem] min-[1200px]:pr-3 min-[1440px]:h-[26rem] min-[1800px]:h-[28rem]"
+        className="project-feature-copy-swap detail-link-pair flex h-[31rem] min-w-0 flex-col gap-4 overflow-hidden [--detail-link-active-color:var(--text-tone-1)] sm:h-[28rem] md:h-[25rem] min-[1200px]:-ml-10 min-[1200px]:h-[24.5rem] min-[1200px]:pr-3 min-[1440px]:-ml-14 min-[1440px]:h-[26rem] min-[1800px]:h-[28rem]"
       >
         <div className="flex flex-col gap-2.5">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
