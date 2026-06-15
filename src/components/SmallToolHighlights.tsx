@@ -2,7 +2,7 @@ import { ArrowRight } from "lucide-react"
 import { useTranslation } from "react-i18next"
 
 import { AppLink } from "@/components/AppLink"
-import { featuredSmallTools, type SmallTool } from "@/data/tools"
+import { featuredSmallTools, smallTools, type SmallTool } from "@/data/tools"
 import { cn } from "@/lib/utils"
 
 const roleToneClassName = {
@@ -25,7 +25,7 @@ export function SmallToolHighlights() {
   return (
     <section
       id="tools"
-      className="resume-rhythm-section grid w-full content-start items-start gap-5 sm:gap-6 xl:grid-cols-[minmax(14rem,0.72fr)_minmax(0,1.28fr)] xl:gap-12"
+      className="resume-rhythm-section small-tools-rhythm-section grid w-full content-start items-start gap-5 sm:gap-6 xl:grid-cols-[minmax(14rem,0.72fr)_minmax(0,1.28fr)] xl:gap-12"
     >
       <div className="resume-feature-offset flex max-w-xl flex-col gap-4 px-2 sm:px-3 md:px-4 xl:self-start">
         <div className="flex flex-col gap-2">
@@ -57,7 +57,7 @@ export function SmallToolHighlights() {
           to="/tools"
           className="group inline-flex w-fit items-center gap-1.5 text-[0.9375rem] font-normal leading-none text-tone-2 transition-colors hover:text-tone-1 sm:text-[1.0625rem]"
         >
-          <span>{t("viewAll")}</span>
+          <span>{t("viewAllWithCount", { count: smallTools.length })}</span>
           <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 sm:h-[1.125rem] sm:w-[1.125rem]" />
         </AppLink>
       </div>

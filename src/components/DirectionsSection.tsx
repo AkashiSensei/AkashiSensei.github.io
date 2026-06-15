@@ -30,9 +30,9 @@ type OrbitLayout = {
 
 const ORBIT_VIEWBOX_WIDTH = 96
 const ORBIT_VIEWBOX_HEIGHT = 560
-const DEFAULT_ORBIT_HEIGHT = 544
-const DEFAULT_ITEM_HEIGHT = 96
-const MIN_ITEM_GAP = 48
+const DEFAULT_ORBIT_HEIGHT = 468
+const DEFAULT_ITEM_HEIGHT = 88
+const MIN_ITEM_GAP = 32
 const ORBIT_INDICATOR_RADIUS = 14
 const ORBIT_REPEL_DISTANCE = 18
 const ORBIT_REPEL_FALLOFF = 0.58
@@ -192,7 +192,7 @@ function DirectionOrbitItem({
   return (
     <li
       ref={itemRef}
-      className="relative z-10 grid grid-cols-[2.5rem_minmax(0,1fr)] items-start gap-3 min-[1200px]:absolute min-[1200px]:left-[var(--orbit-x)] min-[1200px]:top-[var(--orbit-y)] min-[1200px]:min-h-[5.25rem] min-[1200px]:w-[calc(100%-4.5rem)] min-[1200px]:-translate-x-3.5 min-[1200px]:-translate-y-3.5 min-[1200px]:gap-4 min-[1200px]:transition-[left,top] min-[1200px]:duration-700 min-[1200px]:ease-[cubic-bezier(0.22,1,0.36,1)]"
+      className="relative z-10 grid grid-cols-[2.5rem_minmax(0,1fr)] items-start gap-3 md:grid-cols-[2.25rem_minmax(0,1fr)] md:gap-2.5 lg:absolute lg:left-[var(--orbit-x)] lg:top-[var(--orbit-y)] lg:min-h-[4.75rem] lg:w-[calc(100%-3.5rem)] lg:-translate-x-3 lg:-translate-y-3 lg:grid-cols-[2.5rem_minmax(0,1fr)] lg:gap-3 lg:transition-[left,top] lg:duration-700 lg:ease-[cubic-bezier(0.22,1,0.36,1)] xl:w-[calc(100%-4rem)] xl:gap-4"
       onMouseEnter={onHoverStart}
       onMouseLeave={onHoverEnd}
       style={
@@ -207,7 +207,7 @@ function DirectionOrbitItem({
       <div className="relative h-full pt-1">
         <span
           className={cn(
-            "relative z-10 flex h-7 w-7 items-center justify-center rounded-full border border-white/70 bg-white/70 text-[0.6875rem] font-normal leading-none text-black/70 shadow-sm shadow-black/10 backdrop-blur-md transition-[background-color,border-color,box-shadow,color,filter] duration-500 dark:border-white/30 dark:bg-white/14 dark:text-white/78",
+            "relative z-10 flex h-7 w-7 items-center justify-center rounded-full border border-white/70 bg-white/70 text-[0.6875rem] font-normal leading-none text-black/70 shadow-sm shadow-black/10 backdrop-blur-md transition-[background-color,border-color,box-shadow,color,filter] duration-500 dark:border-white/30 dark:bg-white/14 dark:text-white/78 md:h-[1.625rem] md:w-[1.625rem] lg:h-7 lg:w-7",
             isActive &&
               "border-cyan-100/90 bg-white/92 text-black/82 shadow-[0_0_18px_rgb(125_211_252_/_0.38),0_0_42px_rgb(216_180_254_/_0.18)] dark:border-cyan-100/58 dark:bg-white/22 dark:text-white dark:shadow-[0_0_18px_rgb(125_211_252_/_0.28),0_0_42px_rgb(216_180_254_/_0.16)]",
           )}
@@ -217,10 +217,10 @@ function DirectionOrbitItem({
       </div>
 
       <div className="pt-1">
-        <h3 className="text-base font-normal leading-tight tracking-tight text-tone-1 sm:text-[1.0625rem]">
+        <h3 className="text-base font-normal leading-tight tracking-tight text-tone-1 md:text-[0.9375rem] lg:text-[0.9375rem] xl:text-[1.0625rem]">
           {t(`items.${item.id}.title`)}
         </h3>
-        <p className="mt-1.5 text-[0.8125rem] font-normal leading-snug text-tone-2 sm:text-[0.875rem]">
+        <p className="mt-1.5 text-[0.8125rem] font-normal leading-snug text-tone-2 md:mt-1 md:text-[0.75rem] lg:mt-1.5 lg:text-[0.8125rem] xl:text-[0.875rem]">
           {t(`items.${item.id}.summary`)}
         </p>
       </div>
@@ -322,7 +322,7 @@ function DirectionOrbitColumn({
 
   return (
     <ol
-      className="relative z-10 flex min-h-0 flex-col gap-7 py-2 min-[1200px]:block min-[1200px]:h-[var(--orbit-height)] min-[1200px]:py-0 min-[1200px]:transition-[height] min-[1200px]:duration-700 min-[1200px]:ease-[cubic-bezier(0.22,1,0.36,1)]"
+      className="relative z-10 flex min-h-0 flex-col gap-5 py-2 md:gap-4 md:py-0 lg:block lg:h-[var(--orbit-height)] lg:py-0 lg:transition-[height] lg:duration-700 lg:ease-[cubic-bezier(0.22,1,0.36,1)] xl:gap-7"
       style={
         {
           "--orbit-height": `${layout.height}px`,
@@ -331,7 +331,7 @@ function DirectionOrbitColumn({
     >
       <svg
         ref={svgRef}
-        className="pointer-events-none absolute inset-y-0 left-0 z-0 hidden h-full w-24 text-foreground/18 dark:text-white/18 min-[1200px]:block"
+        className="pointer-events-none absolute inset-y-0 left-0 z-0 hidden h-full w-20 text-foreground/18 dark:text-white/18 lg:block xl:w-24"
         viewBox="0 0 96 560"
         preserveAspectRatio="none"
         aria-hidden="true"
@@ -378,7 +378,7 @@ function StarMotif({ isActive }: { isActive: boolean }) {
   return (
     <div
       className={cn(
-        "interest-star-motif relative mt-5 hidden h-44 w-44 min-[1200px]:block min-[1800px]:mt-10 min-[1800px]:h-52 min-[1800px]:w-52",
+        "interest-star-motif relative mt-3 hidden h-36 w-36 lg:block xl:mt-5 xl:h-44 xl:w-44 min-[1800px]:mt-8 min-[1800px]:h-48 min-[1800px]:w-48",
         isActive && "is-active",
       )}
       aria-hidden="true"
@@ -410,12 +410,12 @@ export function DirectionsSection() {
 
   return (
     <section className="resume-rhythm-section grid w-full items-center">
-      <div className="relative grid gap-10 min-[1200px]:grid-cols-[minmax(15rem,0.82fr)_minmax(0,1fr)_minmax(0,1fr)] min-[1200px]:items-center min-[1200px]:gap-12">
-        <div className="relative z-10 flex max-w-xl flex-col min-[1200px]:-translate-y-14">
+      <div className="relative grid gap-8 md:grid-cols-2 md:gap-x-8 md:gap-y-7 lg:grid-cols-[minmax(13rem,0.72fr)_minmax(0,1fr)_minmax(0,1fr)] lg:items-center lg:gap-8 xl:grid-cols-[minmax(15rem,0.82fr)_minmax(0,1fr)_minmax(0,1fr)] xl:gap-12">
+        <div className="relative z-10 flex max-w-xl flex-col md:col-span-2 lg:col-span-1 lg:-translate-y-8 xl:-translate-y-12">
           <p className="text-[0.6875rem] font-normal uppercase tracking-[0.22em] text-tone-5">
             Field
           </p>
-          <h2 className="mt-3 text-3xl font-normal tracking-tight text-tone-1 md:text-4xl">
+          <h2 className="mt-3 text-3xl font-normal tracking-tight text-tone-1 md:text-4xl lg:text-[2.15rem] xl:text-4xl">
             {t("title")}
           </h2>
           <p className="mt-3 max-w-sm text-sm font-normal leading-relaxed text-tone-4">
@@ -424,15 +424,27 @@ export function DirectionsSection() {
           <StarMotif isActive={activeDirectionId !== null} />
         </div>
 
-        <DirectionOrbitColumn
-          activeItemId={activeDirectionId}
-          items={middleDirections}
-          guidePath="M8 -10 C94 118 96 392 36 570"
-          onActiveItemChange={setActiveDirectionId}
-          range={MIDDLE_ORBIT_RANGE}
-        />
+        <div className="md:hidden">
+          <DirectionOrbitColumn
+            activeItemId={activeDirectionId}
+            items={directions}
+            guidePath="M8 -10 C94 118 96 392 36 570"
+            onActiveItemChange={setActiveDirectionId}
+            range={MIDDLE_ORBIT_RANGE}
+          />
+        </div>
 
-        <div className="relative z-10 min-[1200px]:pt-14">
+        <div className="hidden min-w-0 md:block">
+          <DirectionOrbitColumn
+            activeItemId={activeDirectionId}
+            items={middleDirections}
+            guidePath="M8 -10 C94 118 96 392 36 570"
+            onActiveItemChange={setActiveDirectionId}
+            range={MIDDLE_ORBIT_RANGE}
+          />
+        </div>
+
+        <div className="relative z-10 hidden min-w-0 md:block lg:pt-10 xl:pt-14">
           <DirectionOrbitColumn
             activeItemId={activeDirectionId}
             items={rightDirections}

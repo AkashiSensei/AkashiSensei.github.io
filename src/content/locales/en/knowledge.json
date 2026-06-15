@@ -2,6 +2,7 @@
   "title": "Knowledge",
   "subtitle": "Writing, notes, papers, and AI industry observations.",
   "viewAll": "View All",
+  "viewAllWithCount": "View all {{count}} knowledge notes",
   "viewAllTitle": "All Knowledge Notes",
   "viewAllDescription": "Browse writing, notes, and digests.",
   "repoLabel": "Repository",

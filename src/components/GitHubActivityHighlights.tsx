@@ -236,7 +236,7 @@ export function GitHubActivityHighlights() {
       </div>
 
       <div
-        className="grid grid-cols-3 gap-x-5 gap-y-5 px-2 sm:px-3 md:grid-cols-[minmax(0,1.28fr)_minmax(0,0.88fr)_minmax(0,0.88fr)] md:gap-x-6 md:px-4 xl:grid-cols-[minmax(0,1.34fr)_minmax(0,0.88fr)_minmax(0,0.88fr)_minmax(0,0.88fr)] xl:gap-x-8"
+        className="grid grid-cols-3 gap-x-5 gap-y-5 px-2 sm:px-3 md:grid-cols-[minmax(0,1.28fr)_minmax(0,0.88fr)_minmax(0,0.88fr)] md:gap-x-6 md:gap-y-3 md:px-4 xl:grid-cols-[minmax(0,1.34fr)_minmax(0,0.88fr)_minmax(0,0.88fr)_minmax(0,0.88fr)] xl:gap-x-8 xl:gap-y-5"
         onPointerLeave={clearHoveredMetricKeyFromPointer}
       >
         <div
@@ -285,7 +285,7 @@ export function GitHubActivityHighlights() {
             <button
               key={metric.valueKey}
               type="button"
-              className="min-h-[6.75rem] touch-manipulation select-none appearance-none border-0 bg-transparent p-0 text-left outline-none ring-foreground/0 [-webkit-tap-highlight-color:transparent] focus-visible:ring-2 focus-visible:ring-foreground/35 sm:min-h-[7.25rem]"
+              className="min-h-[6.75rem] touch-manipulation select-none appearance-none border-0 bg-transparent p-0 text-left outline-none ring-foreground/0 [-webkit-tap-highlight-color:transparent] focus-visible:ring-2 focus-visible:ring-foreground/35 sm:min-h-[7.25rem] md:min-h-[6.25rem] lg:min-h-[6.5rem] xl:min-h-[7.25rem]"
               onPointerEnter={(event) =>
                 hoverMetricKeyFromPointer(event, metric.valueKey)
               }

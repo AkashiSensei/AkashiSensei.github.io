@@ -7,6 +7,7 @@ import {
   Newspaper,
   type LucideIcon,
 } from "lucide-react"
+import { useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
 
 import { GitHubRepoStats } from "@/components/GitHubRepoStats"
@@ -53,6 +54,7 @@ export function KnowledgeCard({
   variant = "full",
 }: KnowledgeCardProps) {
   const { i18n, t } = useTranslation(["knowledge", "common"])
+  const [isCompactDesktop, setIsCompactDesktop] = useState(false)
   const Icon = kindIcon[entry.kind]
   const detailPath = `/knowledge/${entry.id}`
   const updatedDate = getGitHubRepoUpdatedDate(entry.githubRepo, entry.updatedAt)
@@ -62,6 +64,24 @@ export function KnowledgeCard({
         year: "numeric",
       }).format(updatedDate)
     : entry.updatedAt
+
+  useEffect(() => {
+    if (variant !== "compact") {
+      return undefined
+    }
+
+    const mediaQuery = window.matchMedia("(min-width: 768px)")
+    const updateIsCompactDesktop = () => {
+      setIsCompactDesktop(mediaQuery.matches)
+    }
+
+    updateIsCompactDesktop()
+    mediaQuery.addEventListener("change", updateIsCompactDesktop)
+
+    return () => {
+      mediaQuery.removeEventListener("change", updateIsCompactDesktop)
+    }
+  }, [variant])
 
   return (
     <GlassPanel
@@ -73,7 +93,13 @@ export function KnowledgeCard({
     >
       {entry.images?.length ? (
         <ProjectImageGallery
-          cardAspectRatio={variant === "compact" ? "16 / 12.5" : undefined}
+          cardAspectRatio={
+            variant === "compact"
+              ? isCompactDesktop
+                ? "16 / 9.5"
+                : "16 / 12.5"
+              : undefined
+          }
           cardAutoCycle={imageAutoCycleStaggerIndex !== undefined}
           cardAutoCycleStaggerIndex={imageAutoCycleStaggerIndex}
           cardImageFit={variant === "compact" ? "cover" : "contain"}
@@ -83,7 +109,12 @@ export function KnowledgeCard({
         />
       ) : null}
 
-      <div className="flex min-h-0 flex-1 flex-col gap-4 p-4">
+      <div
+        className={cn(
+          "flex min-h-0 flex-1 flex-col p-4",
+          variant === "compact" ? "gap-4 md:gap-3.5" : "gap-4",
+        )}
+      >
         <div className="flex items-start justify-between gap-3">
           <span
             className={cn(
@@ -102,7 +133,12 @@ export function KnowledgeCard({
         <div className="flex flex-col gap-2">
           <AppLink
             to={detailPath}
-            className="detail-link-trigger detail-link-emphasis group/title inline-flex w-fit max-w-full items-center gap-1.5 text-xl font-bold leading-tight text-foreground/90 transition-colors hover:text-foreground"
+            className={cn(
+              "detail-link-trigger detail-link-emphasis group/title inline-flex w-fit max-w-full items-center gap-1.5 leading-tight text-foreground/90 transition-colors hover:text-foreground",
+              variant === "compact"
+                ? "text-xl font-bold md:text-lg md:font-medium xl:text-xl"
+                : "text-xl font-bold",
+            )}
           >
             <span className="min-w-0">{t(`items.${entry.id}.title`)}</span>
           </AppLink>
@@ -136,7 +172,12 @@ export function KnowledgeCard({
               href={link.url}
               target="_blank"
               rel="noreferrer"
-              className="group/external inline-flex w-fit max-w-full flex-wrap items-center gap-x-1.5 gap-y-1 text-sm font-normal text-foreground/62 transition-colors hover:text-foreground/90 dark:text-foreground/72 dark:hover:text-foreground"
+              className={cn(
+                "group/external w-fit max-w-full flex-wrap items-center gap-x-1.5 gap-y-1 text-sm font-normal text-foreground/62 transition-colors hover:text-foreground/90 dark:text-foreground/72 dark:hover:text-foreground",
+                variant === "compact"
+                  ? "hidden xl:inline-flex"
+                  : "inline-flex",
+              )}
             >
               {link.badgeKeys?.map((badgeKey) => (
                 <span
@@ -157,7 +198,12 @@ export function KnowledgeCard({
           ))}
         </div>
 
-        <div className="flex flex-wrap gap-1.5">
+        <div
+          className={cn(
+            "flex-wrap gap-1.5",
+            variant === "compact" ? "hidden xl:flex" : "flex",
+          )}
+        >
           {entry.tags.map((tag) => (
             <span
               key={tag}
@@ -172,7 +218,14 @@ export function KnowledgeCard({
         </div>
 
         <div className="flex min-h-0 flex-1 flex-col gap-3">
-          <p className="text-sm leading-relaxed text-foreground/80 dark:text-foreground/90">
+          <p
+            className={cn(
+              "leading-relaxed text-foreground/80 dark:text-foreground/90",
+              variant === "compact"
+                ? "text-sm md:text-[0.8125rem] xl:text-sm"
+                : "text-sm",
+            )}
+          >
             {t(`items.${entry.id}.summary`)}
           </p>
 

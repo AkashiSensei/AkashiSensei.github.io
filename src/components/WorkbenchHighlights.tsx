@@ -19,7 +19,7 @@ import {
 import { cn } from "@/lib/utils"
 
 const WALL_REPEAT_COUNT = 4
-const WALL_ROW_COUNT = 6
+const WALL_ROW_COUNT = 5
 const WALL_ROW_OFFSET_STEP_REM = 2.15
 const ICON_REPEL_RADIUS = 3.75
 const ICON_REPEL_X_REM = 1.55
@@ -450,7 +450,7 @@ export function WorkbenchHighlights() {
           to="/workbench"
           className="group inline-flex w-fit shrink-0 items-center gap-1.5 text-[0.9375rem] font-normal leading-none text-tone-2 transition-colors hover:text-tone-1 sm:text-[1.0625rem] md:-translate-y-2"
         >
-          <span>{t("viewAll")}</span>
+          <span>{t("viewAllWithCount", { count: workbenchGroups.length })}</span>
           <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 sm:h-[1.125rem] sm:w-[1.125rem]" />
         </AppLink>
       </div>
@@ -537,6 +537,8 @@ export function WorkbenchHighlights() {
                         className={cn(
                           "h-9 w-9 origin-center object-contain opacity-86 drop-shadow-sm transition-[opacity,filter,transform] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform motion-reduce:transition-none sm:h-11 sm:w-11 lg:h-12 lg:w-12",
                           isHovered ? "opacity-100 drop-shadow-lg" : "hover:opacity-100",
+                          software.id === "solidworks" &&
+                            "dark:drop-shadow-[0_0_14px_rgb(255_255_255_/_0.62)]",
                         )}
                         style={{
                           transform: isHovered ? "scale(1.28)" : "scale(1)",

@@ -18,7 +18,10 @@ import { ImageBrightnessOverlay } from "@/components/ImageBrightnessOverlay"
 import { ProjectImageGallery } from "@/components/ProjectImageGallery"
 import { projects, type Project } from "@/data/projects"
 import { type ImageBrightness } from "@/lib/image-brightness"
-import { getSemanticTagClassName } from "@/lib/tag-styles"
+import {
+  getCourseProjectSemesterTagClassName,
+  getSemanticTagClassName,
+} from "@/lib/tag-styles"
 import { cn } from "@/lib/utils"
 
 type ProjectCoverImage = {
@@ -94,7 +97,7 @@ export function ProjectHighlights() {
         detailPath="/projects"
         title={t("title")}
         subtitle={t("subtitle")}
-        viewAllLabel={t("viewAll")}
+        viewAllLabel={t("viewAllWithCount", { count: projects.length })}
       />
 
       <div className="flex flex-col gap-10 lg:gap-12">
@@ -310,7 +313,7 @@ function ProjectFeatureRow({
     if (typeof window === "undefined") {
       return {
         isMobile: false,
-        isStackedDesktop: false,
+        isCompactDesktop: false,
         isNarrowSplitDesktop: false,
         width: 1440,
       }
@@ -323,7 +326,7 @@ function ProjectFeatureRow({
 
     return {
       isMobile: viewportWidth < 768,
-      isStackedDesktop: viewportWidth >= 768 && viewportWidth < 1200,
+      isCompactDesktop: viewportWidth >= 768 && viewportWidth < 1200,
       isNarrowSplitDesktop: viewportWidth >= 1200 && viewportWidth < 1500,
       width: viewportWidth,
     }
@@ -334,18 +337,21 @@ function ProjectFeatureRow({
   const project = projects[activeProjectIndex] ?? projects[0]
   const points = getPoints(t(`items.${project.id}.points`, { returnObjects: true }))
   const isEnglish = (i18n.resolvedLanguage ?? i18n.language).startsWith("en")
-  const visiblePointCount = projectViewportMode.isMobile || projectViewportMode.isStackedDesktop
+  const visiblePointCount = projectViewportMode.isCompactDesktop
+    ? 0
+    : projectViewportMode.isMobile
     ? 3
     : isEnglish || projectViewportMode.isNarrowSplitDesktop
       ? 1
       : 3
   const visiblePoints = points.slice(0, visiblePointCount)
+  const shouldShowProjectTags = !projectViewportMode.isCompactDesktop
   const title = t(`items.${project.id}.title`)
   const detailPath = getProjectDetailPath(project, "projects")
   const estimatedCardWidth = projectViewportMode.isMobile
     ? Math.max(260, projectViewportMode.width - 40)
-    : projectViewportMode.isStackedDesktop
-      ? Math.min(704, Math.max(360, projectViewportMode.width - 112))
+    : projectViewportMode.isCompactDesktop
+      ? Math.min(520, Math.max(320, projectViewportMode.width * 0.44))
       : 704
   const cardSwapDistance = Math.round(
     Math.min(22, Math.max(4, estimatedCardWidth * 0.03)),
@@ -356,8 +362,11 @@ function ProjectFeatureRow({
   const projectCardStackStyle = {
     "--project-card-stack-bottom": `${Math.max(14, cardSwapVerticalDistance + 4)}px`,
     "--project-card-stack-top": `${cardSwapVerticalDistance * (projects.length - 1) + 10}px`,
+    "--project-card-copy-top": `${cardSwapVerticalDistance + 10}px`,
   } as CSSProperties & Record<
-    "--project-card-stack-bottom" | "--project-card-stack-top",
+    | "--project-card-copy-top"
+    | "--project-card-stack-bottom"
+    | "--project-card-stack-top",
     string
   >
 
@@ -367,7 +376,7 @@ function ProjectFeatureRow({
 
       setProjectViewportMode((currentMode) =>
         currentMode.isMobile === nextMode.isMobile &&
-        currentMode.isStackedDesktop === nextMode.isStackedDesktop &&
+        currentMode.isCompactDesktop === nextMode.isCompactDesktop &&
         currentMode.isNarrowSplitDesktop === nextMode.isNarrowSplitDesktop &&
         Math.abs(currentMode.width - nextMode.width) < 1
           ? currentMode
@@ -388,14 +397,14 @@ function ProjectFeatureRow({
   return (
     <article
       aria-label={title}
-      className="grid w-full min-w-0 max-w-full gap-5 min-[1200px]:grid-cols-[minmax(0,38rem)_minmax(20rem,1fr)] min-[1200px]:items-start min-[1200px]:gap-0 xl:gap-0"
+      className="grid w-full min-w-0 max-w-full gap-5 md:grid-cols-[minmax(0,0.94fr)_minmax(19rem,1.06fr)] md:items-start md:gap-5 lg:grid-cols-[minmax(0,0.96fr)_minmax(21rem,1.04fr)] lg:gap-6 xl:grid-cols-[minmax(0,0.98fr)_minmax(24rem,1.02fr)] xl:gap-8 min-[1800px]:!grid-cols-[minmax(0,0.92fr)_minmax(28rem,1.08fr)]"
+      style={projectCardStackStyle}
     >
       <div className="relative min-w-0 max-w-full overflow-visible">
         <div
-          className="relative mx-auto overflow-visible px-1 pb-[var(--project-card-stack-bottom)] pr-6 pt-[var(--project-card-stack-top)] sm:pr-8 md:w-[min(100%,50rem)] md:pr-16 min-[1200px]:mx-0 min-[1200px]:-translate-y-[1.125rem] min-[1200px]:min-h-[26rem] min-[1200px]:w-auto min-[1200px]:pr-0 min-[1200px]:pt-12 min-[1440px]:min-h-[29rem]"
-          style={projectCardStackStyle}
+          className="relative mx-auto overflow-visible px-1 pb-[var(--project-card-stack-bottom)] pr-6 pt-[var(--project-card-stack-top)] sm:pr-8 md:mx-0 md:min-h-[18rem] md:w-auto md:pr-2 lg:min-h-[22rem] xl:min-h-[24rem] min-[1440px]:min-h-[26rem] min-[1800px]:!min-h-[28rem]"
         >
-          <div className="relative aspect-[1280/780] w-[calc(100%-1.5rem)] max-w-[44rem] sm:w-[calc(100%-2rem)] md:w-[calc(100%-4rem)] min-[1200px]:max-w-[38rem] min-[1200px]:w-full">
+          <div className="relative aspect-[1280/780] w-[calc(100%-1.5rem)] max-w-[44rem] sm:w-[calc(100%-2rem)] md:w-[calc(100%-1rem)] md:max-w-none lg:w-full">
             <CardSwap
               activeIndex={activeProjectIndex}
               cardDistance={cardSwapDistance}
@@ -453,11 +462,11 @@ function ProjectFeatureRow({
 
       <div
         key={project.id}
-        className="project-feature-copy-swap detail-link-pair flex h-[31rem] min-w-0 flex-col gap-4 overflow-hidden [--detail-link-active-color:var(--text-tone-1)] sm:h-[28rem] md:h-[25rem] min-[1200px]:-ml-10 min-[1200px]:h-[24.5rem] min-[1200px]:pr-3 min-[1440px]:-ml-14 min-[1440px]:h-[26rem] min-[1800px]:h-[28rem]"
+        className="project-feature-copy-swap detail-link-pair flex min-w-0 flex-col gap-4 overflow-hidden [--detail-link-active-color:var(--text-tone-1)] md:h-[22.5rem] md:self-start md:justify-start md:gap-3.5 md:pr-2 md:pt-[var(--project-card-copy-top)] lg:h-[24rem] xl:h-[25rem] min-[1440px]:h-[26.5rem] min-[1800px]:!h-[29rem]"
       >
         <div className="flex flex-col gap-2.5">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
-            <h3 className="min-w-0 text-2xl font-normal leading-tight tracking-tight text-tone-1 md:text-3xl">
+            <h3 className="min-w-0 text-2xl font-normal leading-tight tracking-tight text-tone-1 md:text-[1.7rem] lg:text-3xl">
               <AppLink
                 to={detailPath}
                 className="detail-link-trigger detail-link-emphasis transition-colors hover:text-tone-1"
@@ -473,14 +482,16 @@ function ProjectFeatureRow({
           />
         </div>
 
-        <ProjectTagList project={project} translationNamespace="projects" />
+        {shouldShowProjectTags ? (
+          <ProjectTagList project={project} translationNamespace="projects" />
+        ) : null}
 
-        <p className="max-w-2xl text-sm leading-relaxed text-tone-2 sm:text-base">
+        <p className="max-w-2xl text-sm leading-relaxed text-tone-2 sm:text-base md:text-[0.9375rem] lg:text-base">
           {t(`items.${project.id}.summary`)}
         </p>
 
         {visiblePoints.length ? (
-          <ul className="grid gap-1.5 text-[0.8125rem] leading-snug text-tone-3 sm:text-[0.875rem]">
+          <ul className="grid gap-1.5 text-[0.8125rem] leading-snug text-tone-3 sm:text-[0.875rem] md:gap-1">
             {visiblePoints.map((point) => (
               <li key={point} className="flex gap-2">
                 <span className="mt-[0.55em] h-1 w-1 shrink-0 rounded-full bg-tone-5" />
@@ -716,6 +727,9 @@ export function ProjectArchiveCard({
               {project.tags.slice(0, 8).map((tag, tagIndex) => {
                 const isCourseProjectTimeTag =
                   translationNamespace === "courseProjects" && tagIndex < 2
+                const semesterTagClassName = getCourseProjectSemesterTagClassName(
+                  project.tags[1],
+                )
                 const tagLabel = isCourseProjectTimeTag
                   ? t(`semesterTags.${tag}`, { defaultValue: tag })
                   : tag
@@ -726,7 +740,9 @@ export function ProjectArchiveCard({
                     className={cn(
                       "rounded-full border px-2.5 py-1 text-[0.6875rem] font-medium leading-none backdrop-blur-sm",
                       tagIndex >= 4 && "hidden min-[1800px]:inline-flex",
-                      isCourseProject
+                      isCourseProjectTimeTag
+                        ? semesterTagClassName
+                        : isCourseProject
                         ? "border-foreground/12 bg-[rgb(var(--site-surface-rgb)_/_0.44)] text-tone-3 dark:border-white/18 dark:bg-black/22 dark:text-white/78"
                         : "border-white/18 bg-black/18 text-white/78",
                     )}

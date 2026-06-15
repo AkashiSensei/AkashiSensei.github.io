@@ -3,6 +3,7 @@
   "subtitle": "课程设计、实验与大作业。",
   "reflection": "虽然这些课设现在看起来可能有些基础和幼稚，但也见证了我的认真和付出。\n我通过它们学到了很多基础知识，也从中打下了扎实的基础，这是我继续在复杂领域深耕的底气和信心。",
   "viewAll": "查看全部课程设计",
+  "viewAllWithCount": "查看全部 {{count}} 个课设",
   "viewAllTitle": "所有课设",
   "viewAllDescription": "按时间浏览课程项目。",
   "repoLabel": "仓库",

@@ -2,6 +2,7 @@
   "title": "项目",
   "subtitle": "研究、平台、工具与产品化表达相关的代码项目。",
   "viewAll": "查看全部项目",
+  "viewAllWithCount": "查看全部 {{count}} 个项目",
   "viewAllTitle": "所有项目",
   "viewAllDescription": "浏览项目、仓库与当前进展。",
   "repoLabel": "仓库",

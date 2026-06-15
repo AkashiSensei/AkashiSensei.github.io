@@ -18,7 +18,10 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { type Project } from "@/data/projects"
-import { getSemanticTagClassName } from "@/lib/tag-styles"
+import {
+  getCourseProjectSemesterTagClassName,
+  getSemanticTagClassName,
+} from "@/lib/tag-styles"
 import { cn } from "@/lib/utils"
 
 type ProjectDetailPageProps = {
@@ -64,7 +67,7 @@ function ProjectImageWall({
   return (
     <>
       <div className="hidden md:block">
-        <div className="columns-2 gap-4 min-[1800px]:columns-3">
+        <div className="columns-2 gap-4 min-[1000px]:columns-3">
           {images.map((image) => {
             const imageAlt = t(image.altKey)
 
@@ -290,6 +293,9 @@ export function ProjectDetailPage({
               {project.tags.map((tag, tagIndex) => {
                 const isCourseProjectTimeTag =
                   translationNamespace === "courseProjects" && tagIndex < 2
+                const semesterTagClassName = getCourseProjectSemesterTagClassName(
+                  project.tags[1],
+                )
                 const tagLabel = isCourseProjectTimeTag
                   ? t(`semesterTags.${tag}`, { defaultValue: tag })
                   : tag
@@ -299,7 +305,9 @@ export function ProjectDetailPage({
                     key={tag}
                     className={cn(
                       "rounded-full border px-2.5 py-1 text-xs font-semibold",
-                      detailTagClassName,
+                      isCourseProjectTimeTag
+                        ? semesterTagClassName
+                        : detailTagClassName,
                     )}
                   >
                     {tagLabel}

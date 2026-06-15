@@ -13,6 +13,7 @@
 
 ## History
 
+- 2026-06-15 | [Archived: Site-wide layout spacing pass](archive/20260615_Site-wide-layout-spacing-pass.md) | Rebalanced the existing frosted-glass site layout across viewport profiles, added desktop-landscape resume pagination, tightened module density, unified view-all count labels, and polished responsive highlight/card behavior.
 - 2026-06-14 | [Archived: Project card swap effect](archive/20260614_Project-card-swap-effect.md) | Replaced the resume project highlight rail with a GSAP CardSwap stack, preserved automatic image cycling without manual horizontal dragging, and tuned responsive/mobile spacing, blur, clipping, and text sync.
 - 2026-06-14 | [Archived: Light visual polish](archive/20260614_Light-visual-polish.md) | Removed the noisy fixed background direction, retained frosted glass with lightweight Spotlight hover, polished homepage CTAs/contact copy, and fixed desktop QR panel alignment, spacing, and Spotlight positioning.
 - 2026-06-13 | [Archived: GitHub activity summary](archive/20260613_GitHub-activity-summary.md) | Added a build-time GitHub yearly contribution snapshot and resume activity section with categorized totals, private/restricted and repository counts, proportional distribution, bilingual copy, and no-browser agent workflow guidance.
