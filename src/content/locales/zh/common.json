@@ -7,7 +7,7 @@
     "toggleTheme": "切换深色或浅色模式",
     "toggleMenu": "展开或收起导航菜单",
     "toggleThemeSr": "切换主题",
-    "viewContact": "查看联系方式",
+    "viewContact": "查看个人信息",
     "viewOnPhone": "在手机上查看当前页面"
   },
   "ui": {
@@ -28,11 +28,42 @@
     "homeCta": "返回主页"
   },
   "contactDialog": {
-    "title": "联系方式",
-    "description": "你可以通过以下公开渠道找到我：",
-    "privacyNote": "虽然这不是我最常用的联系方式，但上面列出的公开渠道同样可以联系到我，感谢理解。",
+    "title": "个人信息",
+    "description": "我是 Akashi，一名软件工程方向的学生与开发者。这里放一些适合公开展示的信息，以及可以联系到我的邮箱。",
+    "profileRole": "软件工程师",
+    "profileStatus": "开放交流",
+    "profileDetails": [
+      {
+        "label": "身份",
+        "value": "软件工程在读硕士，关注工程实践、开源协作与产品体验。"
+      },
+      {
+        "label": "方向",
+        "value": "偏好把真实需求拆成可交付的系统、工具和清晰文档。"
+      },
+      {
+        "label": "位置",
+        "value": "公开站点只保留必要信息；更多求职材料通过私下渠道沟通。"
+      }
+    ],
+    "privacyNote": "这里先只放公开邮箱，可以通过它联系我。",
     "email": "邮箱",
     "copyEmail": "复制邮箱地址",
+    "copyEmailShort": "复制邮箱",
+    "resumeLink": "在线简历",
+    "zhihuLink": "知乎",
+    "casualTitle": "Friend Links Growing",
+    "casualDescription": "如果你也在折腾有趣的东西，或者觉得我们可能聊得来，或者单纯就是想认识新朋友，都欢迎来打个招呼。",
+    "casualTopics": [
+      "AI Infra",
+      "AI 工具",
+      "开源项目",
+      "射箭",
+      "摄影",
+      "游戏",
+      "健身",
+      "创业"
+    ],
     "copy": "复制",
     "copied": "已复制",
     "copyFailed": "复制失败"

@@ -78,7 +78,7 @@ export function ResumePage() {
               <ContactDialog>
                 <Button
                   variant="outline"
-                  className="h-12 rounded-full border-[rgb(var(--site-surface-rgb)_/_0.68)] bg-[rgb(var(--site-surface-rgb))] px-7 text-sm font-bold text-black shadow-sm backdrop-blur-md transition-colors hover:bg-[rgb(255_255_252)] dark:border-[rgb(var(--site-surface-rgb)_/_0.18)] dark:bg-[rgb(var(--site-surface-rgb))] dark:text-black dark:hover:bg-[rgb(255_255_252)]"
+                  className="h-12 rounded-full border-foreground bg-foreground px-7 text-sm font-bold text-background shadow-sm backdrop-blur-md transition-colors hover:bg-foreground/85 dark:border-[rgb(var(--site-surface-rgb)_/_0.18)] dark:bg-[rgb(var(--site-surface-rgb))] dark:text-black dark:hover:bg-[rgb(255_255_252)]"
                 >
                   {t("contact")}
                 </Button>
