@@ -7,7 +7,7 @@
     "toggleTheme": "Switch between dark and light mode",
     "toggleMenu": "Open or close the navigation menu",
     "toggleThemeSr": "Toggle theme",
-    "viewContact": "View contact details",
+    "viewContact": "View personal information",
     "viewOnPhone": "View current page on phone"
   },
   "ui": {
@@ -28,11 +28,42 @@
     "homeCta": "Back to Home"
   },
   "contactDialog": {
-    "title": "Contact Details",
-    "description": "You can reach me through the following public channels:",
-    "privacyNote": "To reduce spam, I don't list my primary day-to-day contacts here. The public channels shown above can still reach me—thanks for your understanding.",
+    "title": "Personal Information",
+    "description": "I'm Akashi, a software engineering student and developer. This card keeps the public-safe details in one place, together with the email address you can use to reach me.",
+    "profileRole": "Software Engineer",
+    "profileStatus": "Open to connect",
+    "profileDetails": [
+      {
+        "label": "Role",
+        "value": "Software engineering master's student focused on engineering practice, open-source collaboration, and product experience."
+      },
+      {
+        "label": "Focus",
+        "value": "I like turning real needs into shippable systems, useful tools, and clear documentation."
+      },
+      {
+        "label": "Public scope",
+        "value": "This public site only keeps necessary details; job materials can be shared privately when needed."
+      }
+    ],
+    "privacyNote": "For now, I only list a public email here. You can reach me through it.",
     "email": "Email",
     "copyEmail": "Copy email address",
+    "copyEmailShort": "Copy email",
+    "resumeLink": "Online resume",
+    "zhihuLink": "Zhihu",
+    "casualTitle": "Friend Links Growing",
+    "casualDescription": "If you are building something fun, think we might get along, or simply want to make a new friend, feel free to say hi.",
+    "casualTopics": [
+      "AI Infra",
+      "AI tools",
+      "Open source",
+      "Archery",
+      "Photography",
+      "Games",
+      "Fitness",
+      "Startup"
+    ],
     "copy": "Copy",
     "copied": "Copied",
     "copyFailed": "Copy failed"
