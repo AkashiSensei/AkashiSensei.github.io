@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next"
 
 import { KnowledgeCard } from "@/components/KnowledgeCard"
 import { ArchiveSectionHeader } from "@/components/ProjectHighlights"
-import { featuredKnowledgeEntries } from "@/data/knowledge"
+import { featuredKnowledgeEntries, knowledgeEntries } from "@/data/knowledge"
 
 export function KnowledgeHighlights() {
   const { t } = useTranslation("knowledge")
@@ -12,7 +12,7 @@ export function KnowledgeHighlights() {
       return 3
     }
 
-    return window.matchMedia("(min-width: 1440px)").matches ? 3 : 2
+    return window.matchMedia("(min-width: 768px)").matches ? 3 : 2
   }
   const [visibleEntryCount, setVisibleEntryCount] = useState(getVisibleEntryCount)
 
@@ -44,10 +44,10 @@ export function KnowledgeHighlights() {
         detailPath="/knowledge"
         title={t("title")}
         subtitle={t("subtitle")}
-        viewAllLabel={t("viewAll")}
+        viewAllLabel={t("viewAllWithCount", { count: knowledgeEntries.length })}
       />
 
-      <div className="grid items-stretch gap-5 md:grid-cols-2 md:gap-6 min-[1440px]:!grid-cols-3 min-[1440px]:!gap-7">
+      <div className="grid items-stretch gap-5 md:grid-cols-3 md:gap-5 min-[1440px]:!gap-6">
         {featuredKnowledgeEntries.slice(0, visibleEntryCount).map((entry, index) => {
           const staggerOrder = index === 1 ? 0 : index === 0 ? 1 : 2
 
@@ -57,7 +57,7 @@ export function KnowledgeHighlights() {
               entry={entry}
               imageAutoCycleStaggerIndex={staggerOrder}
               variant="compact"
-              className="h-full min-h-[24rem] sm:min-h-[25rem] min-[1440px]:!min-h-[27rem]"
+              className="h-full min-h-[24rem] sm:min-h-[25rem] md:min-h-[21rem] lg:min-h-[21.5rem] xl:min-h-[23rem] min-[1440px]:!min-h-[24rem]"
             />
           )
         })}

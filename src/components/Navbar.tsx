@@ -476,7 +476,7 @@ export function Navbar() {
   return (
     <div
       ref={navRef}
-      className="site-navbar-shell fixed bottom-7 inset-x-6 z-50 mx-auto max-w-5xl transition-transform duration-[460ms] ease-out will-change-transform sm:bottom-8 sm:inset-x-8 md:bottom-auto md:top-4 md:inset-x-16 md:mx-0 md:max-w-none min-[900px]:inset-x-20 min-[1000px]:w-auto min-[1000px]:px-0 xl:inset-x-44 2xl:inset-x-56"
+      className="site-navbar-shell fixed bottom-7 inset-x-6 z-50 mx-auto max-w-5xl transition-transform duration-[460ms] ease-out will-change-transform sm:bottom-8 sm:inset-x-8 md:bottom-auto md:top-4 md:inset-x-12 md:mx-0 md:max-w-none min-[900px]:inset-x-14 min-[1000px]:w-auto min-[1000px]:px-0 xl:inset-x-32 2xl:inset-x-44"
       style={{ transform: `translate3d(0, ${scrollDisplacement.toFixed(2)}px, 0)` }}
     >
       <SpotlightCard asChild className="lit-glass-card relative z-50 flex items-center justify-between rounded-full border border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.42)] px-3.5 py-2.5 shadow-sm backdrop-blur-md transition-all duration-300 dark:border-white/10 dark:bg-white/10 sm:px-4 md:hidden">
@@ -580,8 +580,8 @@ export function Navbar() {
         </SpotlightCard>
       </div>
 
-      <div className="navbar-desktop-row mx-auto w-full max-w-[72rem] items-center justify-between gap-3">
-        <SpotlightCard className="lit-glass-card flex h-12 shrink-0 items-center gap-2.5 rounded-full border border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.42)] px-5 shadow-sm backdrop-blur-md transition-all duration-300 dark:border-white/10 dark:bg-white/10">
+      <div className="navbar-desktop-row mx-auto w-full max-w-[64rem] items-center justify-between gap-2.5 xl:max-w-[68rem]">
+        <SpotlightCard className="lit-glass-card flex h-12 shrink-0 items-center gap-2 rounded-full border border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.42)] px-4 shadow-sm backdrop-blur-md transition-all duration-300 dark:border-white/10 dark:bg-white/10 xl:gap-2.5 xl:px-5">
           <img
             src="/favicon.png"
             alt=""
@@ -596,7 +596,7 @@ export function Navbar() {
           </AppLink>
         </SpotlightCard>
 
-        <SpotlightCard asChild className="desktop-menu-cluster lit-glass-card flex h-12 min-w-0 items-center justify-center gap-5 rounded-full border border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.42)] px-7 text-sm font-medium text-foreground/80 shadow-sm backdrop-blur-md transition-all duration-300 dark:border-white/10 dark:bg-white/10 xl:gap-6">
+        <SpotlightCard asChild className="desktop-menu-cluster lit-glass-card flex h-12 min-w-0 items-center justify-center gap-3.5 rounded-full border border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.42)] px-5 text-sm font-medium text-foreground/80 shadow-sm backdrop-blur-md transition-all duration-300 dark:border-white/10 dark:bg-white/10 xl:gap-5 xl:px-6">
           <nav>
             {navLinks.map((link) => {
               const isActive = isNavLinkActive(link.href);
@@ -607,7 +607,7 @@ export function Navbar() {
                     link.href,
                     link.label,
                     cn(
-                      "relative inline-flex items-center rounded-full px-1.5 py-1 transition-colors after:absolute after:inset-x-1.5 after:-bottom-0.5 after:h-px after:origin-center after:scale-x-0 after:bg-current after:opacity-0 after:transition-all after:duration-300 hover:text-foreground",
+                      "relative inline-flex items-center rounded-full px-1 py-1 transition-colors after:absolute after:inset-x-1 after:-bottom-0.5 after:h-px after:origin-center after:scale-x-0 after:bg-current after:opacity-0 after:transition-all after:duration-300 hover:text-foreground xl:px-1.5 xl:after:inset-x-1.5",
                       isActive && "text-tone-1 after:scale-x-100 after:opacity-70",
                     ),
                     undefined,
@@ -619,7 +619,7 @@ export function Navbar() {
           </nav>
         </SpotlightCard>
 
-        <SpotlightCard className="desktop-menu-cluster lit-glass-card flex h-12 shrink-0 items-center gap-1.5 rounded-full border border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.42)] px-3.5 text-sm font-medium text-foreground/80 shadow-sm backdrop-blur-md transition-all duration-300 dark:border-white/10 dark:bg-white/10">
+        <SpotlightCard className="desktop-menu-cluster lit-glass-card flex h-12 shrink-0 items-center gap-1 rounded-full border border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.42)] px-3 text-sm font-medium text-foreground/80 shadow-sm backdrop-blur-md transition-all duration-300 dark:border-white/10 dark:bg-white/10 xl:gap-1.5 xl:px-3.5">
           <ContactDialog>
             <button
               className="desktop-menu-item flex h-8 w-8 items-center justify-center rounded-full hover:bg-muted/50"

@@ -50,7 +50,7 @@ function SmallToolImageWall({
   return (
     <>
       <div className="hidden md:block">
-        <div className="columns-2 gap-4 min-[1800px]:columns-3">
+        <div className="columns-2 gap-4 min-[1000px]:columns-3">
           {images.map((image) => (
             <button
               key={image.src}

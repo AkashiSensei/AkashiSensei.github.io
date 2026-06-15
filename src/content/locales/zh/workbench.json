@@ -2,6 +2,7 @@
   "title": "工作台",
   "subtitle": "我日常使用的软件与工作流。",
   "viewAll": "查看全部",
+  "viewAllWithCount": "查看 {{count}} 个工具组",
   "viewAllTitle": "完整工作台",
   "viewAllDescription": "查看工具链与常用工作流。",
   "morePoints": "还有 {{count}} 条亮点",

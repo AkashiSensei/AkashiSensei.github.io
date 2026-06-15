@@ -45,9 +45,9 @@ export function ResumePage() {
     : [String(resumeKickerTags)]
 
   return (
-    <Layout>
-      <div className="resume-section-stack mt-8 flex flex-col sm:mt-16">
-        <section className="resume-hero-section grid w-full items-center gap-9 pb-5 pt-2 sm:gap-10 sm:pb-6 sm:pt-4 md:pb-8 md:pt-0 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,24rem)] lg:gap-8 xl:grid-cols-[minmax(0,1fr)_minmax(20rem,31rem)] xl:gap-14 xl:pb-10 min-[1800px]:!grid-cols-[minmax(0,1fr)_31rem] min-[1800px]:!gap-20">
+    <Layout mainClassName="resume-page-main">
+      <div className="resume-section-stack mt-8 flex flex-col sm:mt-16 md:mt-2">
+        <section className="resume-hero-section grid w-full items-center gap-9 pb-5 pt-2 sm:gap-10 sm:pb-6 sm:pt-4 md:gap-8 md:pb-6 md:pt-0 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,24rem)] lg:gap-8 xl:grid-cols-[minmax(0,1fr)_minmax(20rem,31rem)] xl:gap-12 xl:pb-8 min-[1800px]:!grid-cols-[minmax(0,1fr)_31rem] min-[1800px]:!gap-18">
           <div className="flex flex-col gap-5 sm:gap-6">
             <div className="flex flex-wrap gap-2">
               {kickerTags.map((tag) => (
@@ -60,7 +60,7 @@ export function ResumePage() {
               ))}
             </div>
             <div className="flex flex-col gap-1 sm:gap-1.5">
-              <h1 className="text-[clamp(3.45rem,15vw,4.25rem)] font-black leading-[0.92] tracking-[-0.035em] text-tone-1 text-pretty sm:text-[clamp(3.65rem,5.8vw,5.65rem)]">
+              <h1 className="text-[clamp(3.45rem,15vw,4.25rem)] font-black leading-[0.92] tracking-[-0.035em] text-tone-1 text-pretty sm:text-[clamp(3.65rem,5.8vw,5.65rem)] md:text-[clamp(3.55rem,5.35vw,5.35rem)]">
                 {t("titleLead")}
               </h1>
               <p className="max-w-full text-[clamp(1.35rem,5.6vw,1.8rem)] font-medium italic leading-tight text-tone-4 text-pretty sm:text-[clamp(1.25rem,2.2vw,2rem)] sm:leading-none xl:whitespace-nowrap">
@@ -100,7 +100,7 @@ export function ResumePage() {
               </Button>
             </div>
           </div>
-          <div className="grid w-full max-w-5xl gap-5 justify-self-start sm:grid-cols-2 lg:max-w-none lg:grid-cols-1 lg:gap-5 lg:pt-8 xl:gap-6 xl:pt-12 min-[1800px]:!pt-16">
+          <div className="grid w-full max-w-5xl gap-5 justify-self-start sm:grid-cols-2 lg:max-w-none lg:grid-cols-1 lg:gap-5 lg:pt-6 xl:gap-6 xl:pt-9 min-[1800px]:!pt-12">
             {valueCards.map((card) => (
               <div
                 key={card.title}

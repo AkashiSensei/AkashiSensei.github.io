@@ -2,6 +2,7 @@
   "title": "Projects",
   "subtitle": "Research, platform, tooling, and product-facing code.",
   "viewAll": "View all projects",
+  "viewAllWithCount": "View all {{count}} projects",
   "viewAllTitle": "All Projects",
   "viewAllDescription": "Browse projects, repositories, and status.",
   "repoLabel": "Repository",

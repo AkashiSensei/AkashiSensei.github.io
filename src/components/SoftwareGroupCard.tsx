@@ -55,7 +55,11 @@ export function SoftwareGroupCard({
                 <img
                   src={software.icon}
                   alt={cycleIndex === 0 ? software.name : ""}
-                  className="h-11 w-11 object-contain drop-shadow-sm"
+                  className={cn(
+                    "h-11 w-11 object-contain drop-shadow-sm",
+                    software.id === "solidworks" &&
+                      "dark:drop-shadow-[0_0_14px_rgb(255_255_255_/_0.62)]",
+                  )}
                   loading="lazy"
                 />
               </div>

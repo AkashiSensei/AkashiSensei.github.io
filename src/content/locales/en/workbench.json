@@ -2,6 +2,7 @@
   "title": "Workbench",
   "subtitle": "Software and workflows I use every day.",
   "viewAll": "View All",
+  "viewAllWithCount": "View {{count}} tool groups",
   "viewAllTitle": "Full Workbench",
   "viewAllDescription": "Browse software groups and workflows.",
   "morePoints": "{{count}} more points",

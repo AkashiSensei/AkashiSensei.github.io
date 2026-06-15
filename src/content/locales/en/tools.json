@@ -4,6 +4,7 @@
   "description": "As AI becomes part of everyday work and learning, a personal set of skills and tools can preserve habits, workflows, and judgment while reducing repeated setup and rework.",
   "tags": ["Skills", "Prompts", "Templates"],
   "viewAll": "View All",
+  "viewAllWithCount": "View all {{count}} small tools",
   "viewAllTitle": "Full Tool List",
   "viewAllDescription": "Browse tools for context, research, and agents.",
   "morePoints": "{{count}} more points",
