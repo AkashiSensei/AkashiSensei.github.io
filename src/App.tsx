@@ -1,9 +1,10 @@
-import { useEffect } from "react"
+import { Suspense, lazy, useEffect, useLayoutEffect, useRef, useState } from "react"
 import { Route, Routes, useLocation } from "react-router-dom"
 import { useTranslation } from "react-i18next"
 
 import { AppLink } from "@/components/AppLink"
 import { Layout } from "@/components/Layout"
+import LightRays from "@/components/LightRays.jsx"
 import { Button } from "@/components/ui/button"
 import { HomePage } from "@/pages/HomePage"
 import { CourseProjectsPage } from "@/pages/CourseProjectsPage"
@@ -30,10 +31,181 @@ const pageTitles: Record<string, string> = {
   "/knowledge": "Akashi - Knowledge",
 }
 
+const LiquidEther = lazy(() => import("@/components/LiquidEther.jsx"))
+const LIQUID_ETHER_DARK_COLORS = ["#7b1024", "#5227FF", "#063d66"]
+const LIQUID_ETHER_LIGHT_COLORS = ["#dc565d", "#df7186", "#c8577a"]
+const LIGHT_RAYS_DARK_COLOR = "#ffffff"
+const LIGHT_RAYS_LIGHT_COLOR = "#17191d"
+const LIGHT_RAYS_PARALLAX_SPEED = 0.15
+
+function clamp01(value: number) {
+  return Math.min(1, Math.max(0, value))
+}
+
+function interpolate(start: number, end: number, progress: number) {
+  return start + (end - start) * progress
+}
+
+function smoothstep(progress: number) {
+  return progress * progress * (3 - 2 * progress)
+}
+
+function interpolateRgb(
+  start: [number, number, number],
+  end: [number, number, number],
+  progress: number,
+) {
+  return start.map((channel, index) =>
+    Math.round(interpolate(channel, end[index], progress)),
+  ) as [number, number, number]
+}
+
+function getLiquidColorProgress(pathname: string, scrollY: number, viewportHeight: number) {
+  const projectsElement =
+    pathname === "/resume" ? document.getElementById("projects") : null
+  const progressStart =
+    projectsElement ?
+      scrollY + projectsElement.getBoundingClientRect().top
+    : 0
+  const transitionDistance = Math.max(viewportHeight * 4.5, 1)
+
+  return clamp01((scrollY - progressStart) / transitionDistance)
+}
+
+function getLightRaysTransitionProgress(
+  pathname: string,
+  scrollY: number,
+  viewportHeight: number,
+) {
+  const projectsElement =
+    pathname === "/resume" ? document.getElementById("projects") : null
+  const transitionEnd =
+    projectsElement ?
+      scrollY + projectsElement.getBoundingClientRect().top
+    : viewportHeight
+
+  return smoothstep(clamp01(scrollY / Math.max(transitionEnd, 1)))
+}
+
+function getLiquidEtherTransitionProgress(
+  pathname: string,
+  scrollY: number,
+  viewportHeight: number,
+) {
+  const projectsElement =
+    pathname === "/resume" ? document.getElementById("projects") : null
+  const transitionStart = viewportHeight * 0.5
+  const transitionEnd =
+    projectsElement ?
+      scrollY + projectsElement.getBoundingClientRect().top + viewportHeight * 0.5
+    : viewportHeight
+  const fadeEnd = Math.max(transitionEnd, transitionStart + 1)
+  const linearProgress =
+    fadeEnd <= transitionStart ?
+      1
+    : clamp01((scrollY - transitionStart) / (fadeEnd - transitionStart))
+
+  return smoothstep(linearProgress)
+}
+
+function isCurrentThemeDark() {
+  return (
+    typeof document !== "undefined"
+    && document.documentElement.classList.contains("dark")
+  )
+}
+
+function useIsDarkTheme() {
+  const [isDarkTheme, setIsDarkTheme] = useState(isCurrentThemeDark)
+
+  useEffect(() => {
+    const rootElement = document.documentElement
+    const updateTheme = () => {
+      setIsDarkTheme(rootElement.classList.contains("dark"))
+    }
+
+    updateTheme()
+
+    const observer = new MutationObserver(updateTheme)
+    observer.observe(rootElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    })
+
+    return () => {
+      observer.disconnect()
+    }
+  }, [])
+
+  return isDarkTheme
+}
+
+function applyLiquidColorState(
+  element: HTMLDivElement,
+  pathname: string,
+  scrollY: number,
+  viewportHeight: number,
+  isDarkTheme: boolean,
+) {
+  const progress = getLiquidColorProgress(pathname, scrollY, viewportHeight)
+
+  if (!isDarkTheme) {
+    const [red, green, blue] =
+      progress < 0.5 ?
+        interpolateRgb([252, 250, 248], [249, 247, 253], progress * 2)
+      : interpolateRgb([249, 247, 253], [244, 249, 253], (progress - 0.5) * 2)
+    const brightness =
+      progress < 0.5 ?
+        interpolate(1.22, 1.18, progress * 2)
+      : interpolate(1.18, 1.14, (progress - 0.5) * 2)
+    const saturation =
+      progress < 0.5 ?
+        interpolate(1.22, 1.18, progress * 2)
+      : interpolate(1.18, 1.24, (progress - 0.5) * 2)
+    const hueShift =
+      progress < 0.5 ?
+        interpolate(0, -48, progress * 2)
+      : interpolate(-48, -104, (progress - 0.5) * 2)
+    const patternOpacity =
+      progress < 0.5 ?
+        interpolate(0.18, 0.22, progress * 2)
+      : interpolate(0.22, 0.28, (progress - 0.5) * 2)
+
+    element.style.setProperty("--liquid-bg-color", `rgb(${red} ${green} ${blue})`)
+    element.style.setProperty("--liquid-hue-shift", `${hueShift.toFixed(2)}deg`)
+    element.style.setProperty("--liquid-brightness", brightness.toFixed(3))
+    element.style.setProperty("--liquid-saturation", saturation.toFixed(3))
+    element.style.setProperty("--liquid-pattern-opacity", patternOpacity.toFixed(3))
+    return
+  }
+
+  const hueShift =
+    progress < 0.5 ?
+      interpolate(58, 0, progress * 2)
+    : interpolate(0, -34, (progress - 0.5) * 2)
+  const brightness =
+    progress < 0.5 ?
+      interpolate(0.76, 1, progress * 2)
+    : interpolate(1, 0.58, (progress - 0.5) * 2)
+  const saturation =
+    progress < 0.5 ?
+      interpolate(1.32, 1.08, progress * 2)
+    : interpolate(1.08, 1.22, (progress - 0.5) * 2)
+  const red = Math.round(interpolate(3, 0, progress))
+  const green = Math.round(interpolate(2, 10, progress))
+  const blue = Math.round(interpolate(7, 24, progress))
+
+  element.style.setProperty("--liquid-bg-color", `rgb(${red} ${green} ${blue})`)
+  element.style.setProperty("--liquid-hue-shift", `${hueShift.toFixed(2)}deg`)
+  element.style.setProperty("--liquid-brightness", brightness.toFixed(3))
+  element.style.setProperty("--liquid-saturation", saturation.toFixed(3))
+  element.style.setProperty("--liquid-pattern-opacity", "1")
+}
+
 function RouteEffects() {
   const { pathname } = useLocation()
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     window.scrollTo(0, 0)
   }, [pathname])
 
@@ -93,11 +265,214 @@ function NotFoundPage() {
   )
 }
 
+function LightRaysBackground({
+  pathname,
+  isDarkTheme,
+}: {
+  pathname: string
+  isDarkTheme: boolean
+}) {
+  const backgroundRef = useRef<HTMLDivElement>(null)
+  const shouldRenderRef = useRef(true)
+  const [shouldRenderLightRays, setShouldRenderLightRays] = useState(true)
+
+  useLayoutEffect(() => {
+    let animationFrame: number | null = null
+
+    const updateBackgroundOffset = () => {
+      animationFrame = null
+
+      const backgroundElement = backgroundRef.current
+
+      if (!backgroundElement) {
+        return
+      }
+
+      const scrollY = window.scrollY
+      const viewportHeight = window.innerHeight || 1
+      const opacity =
+        1 - getLightRaysTransitionProgress(pathname, scrollY, viewportHeight)
+
+      backgroundElement.style.transform = `translate3d(0, ${scrollY * -LIGHT_RAYS_PARALLAX_SPEED}px, 0)`
+      backgroundElement.style.opacity = String(opacity)
+
+      const nextShouldRenderLightRays = opacity > 0
+      if (shouldRenderRef.current !== nextShouldRenderLightRays) {
+        shouldRenderRef.current = nextShouldRenderLightRays
+        setShouldRenderLightRays(nextShouldRenderLightRays)
+      }
+    }
+
+    const requestBackgroundOffset = () => {
+      if (animationFrame !== null) {
+        return
+      }
+
+      animationFrame = window.requestAnimationFrame(updateBackgroundOffset)
+    }
+
+    updateBackgroundOffset()
+    window.addEventListener("scroll", requestBackgroundOffset, { passive: true })
+    window.addEventListener("resize", requestBackgroundOffset)
+
+    return () => {
+      if (animationFrame !== null) {
+        window.cancelAnimationFrame(animationFrame)
+      }
+
+      window.removeEventListener("scroll", requestBackgroundOffset)
+      window.removeEventListener("resize", requestBackgroundOffset)
+    }
+  }, [pathname])
+
+  return (
+    <div ref={backgroundRef} className="site-background" aria-hidden="true">
+      {shouldRenderLightRays ? (
+        <LightRays
+          raysOrigin="top-center"
+          raysColor={isDarkTheme ? LIGHT_RAYS_DARK_COLOR : LIGHT_RAYS_LIGHT_COLOR}
+          raysSpeed={1}
+          lightSpread={isDarkTheme ? 0.5 : 0.4}
+          rayLength={isDarkTheme ? 3 : 2.38}
+          fadeDistance={isDarkTheme ? 1 : 0.76}
+          saturation={isDarkTheme ? 1 : 0.6}
+          followMouse
+          mouseInfluence={isDarkTheme ? 0.1 : 0.06}
+          noiseAmount={0}
+          distortion={0}
+          className={
+            isDarkTheme ?
+              "site-light-rays site-light-rays-dark"
+            : "site-light-rays site-light-rays-light"
+          }
+        />
+      ) : null}
+    </div>
+  )
+}
+
+function LiquidEtherBackground({
+  pathname,
+  isDarkTheme,
+}: {
+  pathname: string
+  isDarkTheme: boolean
+}) {
+  const backgroundRef = useRef<HTMLDivElement>(null)
+  const shouldRenderRef = useRef(pathname !== "/resume")
+  const [shouldRenderLiquidEther, setShouldRenderLiquidEther] = useState(
+    pathname !== "/resume",
+  )
+  const liquidColors =
+    isDarkTheme ? LIQUID_ETHER_DARK_COLORS : LIQUID_ETHER_LIGHT_COLORS
+
+  useLayoutEffect(() => {
+    let animationFrame: number | null = null
+
+    const updateBackgroundOpacity = () => {
+      animationFrame = null
+
+      const backgroundElement = backgroundRef.current
+
+      if (!backgroundElement) {
+        return
+      }
+
+      const scrollY = window.scrollY
+      const viewportHeight = window.innerHeight || 1
+      let opacity = 1
+
+      if (pathname === "/resume") {
+        opacity = getLiquidEtherTransitionProgress(pathname, scrollY, viewportHeight)
+      }
+
+      backgroundElement.style.opacity = String(opacity)
+      applyLiquidColorState(
+        backgroundElement,
+        pathname,
+        scrollY,
+        viewportHeight,
+        isDarkTheme,
+      )
+
+      const nextShouldRenderLiquidEther = opacity > 0
+      if (shouldRenderRef.current !== nextShouldRenderLiquidEther) {
+        shouldRenderRef.current = nextShouldRenderLiquidEther
+        setShouldRenderLiquidEther(nextShouldRenderLiquidEther)
+      }
+    }
+
+    const requestBackgroundOpacity = () => {
+      if (animationFrame !== null) {
+        return
+      }
+
+      animationFrame = window.requestAnimationFrame(updateBackgroundOpacity)
+    }
+
+    updateBackgroundOpacity()
+    window.addEventListener("scroll", requestBackgroundOpacity, { passive: true })
+    window.addEventListener("resize", requestBackgroundOpacity)
+
+    return () => {
+      if (animationFrame !== null) {
+        window.cancelAnimationFrame(animationFrame)
+      }
+
+      window.removeEventListener("scroll", requestBackgroundOpacity)
+      window.removeEventListener("resize", requestBackgroundOpacity)
+    }
+  }, [isDarkTheme, pathname])
+
+  return (
+    <div ref={backgroundRef} className="site-liquid-background" aria-hidden="true">
+      {shouldRenderLiquidEther ? (
+        <Suspense fallback={null}>
+          <LiquidEther
+            key={isDarkTheme ? "dark-liquid-ether" : "light-liquid-ether"}
+            colors={liquidColors}
+            mouseForce={20}
+            cursorSize={100}
+            isViscous
+            viscous={30}
+            iterationsViscous={32}
+            iterationsPoisson={32}
+            resolution={0.5}
+            isBounce={false}
+            autoDemo
+            autoSpeed={0.5}
+            autoIntensity={2.2}
+            takeoverDuration={0.25}
+            autoResumeDelay={500}
+            autoRampDuration={0.6}
+            className="site-liquid-ether"
+          />
+        </Suspense>
+      ) : null}
+    </div>
+  )
+}
+
+function shouldUseLiquidEtherForPath(pathname: string) {
+  return pathname === "/resume"
+}
+
 function App() {
+  const { pathname } = useLocation()
+  const isDarkTheme = useIsDarkTheme()
+  const shouldUseLiquidEtherRoute = shouldUseLiquidEtherForPath(pathname)
+
   return (
     <>
       <RouteEffects />
-      <div className="site-background" aria-hidden="true" />
+      <LightRaysBackground pathname={pathname} isDarkTheme={isDarkTheme} />
+      {shouldUseLiquidEtherRoute ? (
+        <LiquidEtherBackground
+          key={pathname}
+          pathname={pathname}
+          isDarkTheme={isDarkTheme}
+        />
+      ) : null}
       <div className="site-content">
         <Routes>
           <Route path="/" element={<HomePage />} />
