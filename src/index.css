@@ -164,10 +164,86 @@
   .site-background {
     pointer-events: none;
     position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: clamp(32rem, 92svh, 58rem);
+    z-index: 0;
+    background: transparent;
+    overflow: hidden;
+    transform: translateZ(0);
+    will-change: transform;
+  }
+  .site-background::before,
+  .site-background::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    left: 0;
+    pointer-events: none;
+  }
+  .site-background::before {
     inset: 0;
     z-index: 0;
-    background-color: var(--background);
+    background: #fbfaf7;
+  }
+  .site-background::after {
+    bottom: 0;
+    z-index: 4;
+    height: 34%;
+    background: linear-gradient(to bottom, rgb(251 250 247 / 0), var(--background));
+  }
+  .dark .site-background::before {
+    background: #120f17;
+  }
+  .dark .site-background::after {
+    background: linear-gradient(to bottom, rgb(18 15 23 / 0), var(--background));
+  }
+  .site-liquid-background {
+    --liquid-bg-color: rgb(252 250 248);
+    --liquid-hue-shift: 0deg;
+    --liquid-brightness: 1.22;
+    --liquid-saturation: 1.22;
+    --liquid-pattern-opacity: 0.18;
+    pointer-events: none;
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    background:
+      radial-gradient(circle at 20% 8%, rgb(216 74 74 / 0.035), transparent 38%),
+      radial-gradient(circle at 48% 42%, rgb(124 58 237 / 0.032), transparent 44%),
+      radial-gradient(circle at 78% 82%, rgb(37 99 235 / 0.035), transparent 46%),
+      var(--liquid-bg-color);
+    overflow: hidden;
+    opacity: 0;
     transform: translateZ(0);
+    transition: background-color 180ms linear;
+    will-change: opacity, background;
+  }
+  .dark .site-liquid-background {
+    --liquid-bg-color: rgb(3 2 7);
+    --liquid-hue-shift: 58deg;
+    --liquid-brightness: 0.68;
+    --liquid-saturation: 1.18;
+    --liquid-pattern-opacity: 0.86;
+    background: var(--liquid-bg-color);
+  }
+  .site-liquid-ether {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: var(--liquid-pattern-opacity);
+    filter:
+      hue-rotate(var(--liquid-hue-shift))
+      saturate(var(--liquid-saturation))
+      brightness(var(--liquid-brightness));
+  }
+  .site-light-rays-light {
+    opacity: 0.34;
+  }
+  .site-light-rays-dark {
+    opacity: 1;
   }
   .site-content {
     position: relative;
@@ -381,6 +457,17 @@
     .resume-hero-section {
       height: 100svh;
       min-height: 100svh;
+    }
+
+    .resume-rhythm-section.small-tools-rhythm-section {
+      align-content: center;
+      align-items: center;
+      padding-block: clamp(3.5rem, 8svh, 5rem);
+    }
+
+    .small-tools-rhythm-section .resume-feature-offset,
+    .small-tools-rhythm-section .small-tool-list-offset {
+      padding-top: 0;
     }
   }
 

@@ -31,6 +31,7 @@ type CardSwapProps = {
   children: ReactNode
   className?: string
   delay?: number
+  dropDistance?: number
   easing?: "elastic" | "linear"
   height?: CSSProperties["height"]
   onActiveIndexChange?: (idx: number) => void
@@ -47,7 +48,7 @@ type CardSwapChild = ReactElement<
   }
 >
 
-const DROP_DISTANCE = 500
+const DEFAULT_DROP_DISTANCE = 500
 
 export const Card = forwardRef<HTMLDivElement, CardProps>(
   ({ className, customClass, ...rest }, ref) => (
@@ -122,6 +123,7 @@ export default function CardSwap({
   children,
   className,
   delay = 5000,
+  dropDistance = DEFAULT_DROP_DISTANCE,
   easing = "elastic",
   height = 400,
   onActiveIndexChange,
@@ -197,7 +199,7 @@ export default function CardSwap({
     timeline.to(frontElement, {
       duration: config.durDrop,
       ease: config.ease,
-      y: `+=${DROP_DISTANCE}`,
+      y: `+=${dropDistance}`,
     })
 
     timeline.addLabel("promote", `-=${config.durDrop * config.promoteOverlap}`)
@@ -266,6 +268,7 @@ export default function CardSwap({
     config.ease,
     config.promoteOverlap,
     config.returnDelay,
+    dropDistance,
     onActiveIndexChange,
     placeCurrentOrder,
     refs,

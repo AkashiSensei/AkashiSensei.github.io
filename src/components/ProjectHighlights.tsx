@@ -35,6 +35,7 @@ type ProjectTranslationNamespace = "projects" | "courseProjects"
 const COVER_CAROUSEL_INTERVAL_MS = 6800
 const COVER_CAROUSEL_STAGGER_MS = 1300
 const PROJECT_CARD_IMAGE_ASPECT_RATIO = "1280 / 780"
+const PROJECT_CARD_HEIGHT_RATIO = 780 / 1280
 const PROJECT_HIGHLIGHT_ROTATION_INTERVAL_MS = 6000
 const PROJECT_HIGHLIGHT_IDS = [
   "crater",
@@ -359,6 +360,9 @@ function ProjectFeatureRow({
   const cardSwapVerticalDistance = Math.round(
     Math.min(24, Math.max(6, estimatedCardWidth * 0.033)),
   )
+  const cardSwapDropDistance = Math.round(
+    estimatedCardWidth * PROJECT_CARD_HEIGHT_RATIO * 0.5,
+  )
   const projectCardStackStyle = {
     "--project-card-stack-bottom": `${Math.max(14, cardSwapVerticalDistance + 4)}px`,
     "--project-card-stack-top": `${cardSwapVerticalDistance * (projects.length - 1) + 10}px`,
@@ -410,6 +414,7 @@ function ProjectFeatureRow({
               cardDistance={cardSwapDistance}
               className="bottom-0 left-0"
               delay={PROJECT_HIGHLIGHT_ROTATION_INTERVAL_MS}
+              dropDistance={cardSwapDropDistance}
               height="100%"
               onActiveIndexChange={onActiveProjectIndexChange}
               onCardClick={onActiveProjectIndexChange}
