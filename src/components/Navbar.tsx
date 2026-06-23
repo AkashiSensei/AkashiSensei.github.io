@@ -2,11 +2,12 @@ import { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
 import { toString as qrToString } from "qrcode";
+import { useAnimationPreference } from "@/components/animation-provider";
 import { useTheme } from "@/components/theme-provider";
 import { AppLink } from "@/components/AppLink";
 import { ContactDialog } from "@/components/ContactDialog";
 import { SpotlightCard } from "@/components/SpotlightCard";
-import { Sun, Moon, Menu, X, Mail, QrCode } from "lucide-react";
+import { Sun, Moon, Menu, X, Mail, QrCode, Sparkles, CircleOff } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const phoneQrPanelWidth = 224;
@@ -43,6 +44,8 @@ function getPhoneQrPanelPosition(
 export function Navbar() {
   const { t, i18n } = useTranslation(["common", "nav"]);
   const { theme, setTheme } = useTheme();
+  const { animationMode, isAnimationEnabled, toggleAnimationMode } =
+    useAnimationPreference();
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [phoneQrOpen, setPhoneQrOpen] = useState(false);
@@ -437,6 +440,36 @@ export function Navbar() {
     </div>
   );
 
+  const renderAnimationButton = (className: string) => {
+    const label =
+      isAnimationEnabled ?
+        t("a11y.switchAnimationToStatic")
+      : t("a11y.switchAnimationToFull");
+    const srLabel =
+      animationMode === "full" ?
+        t("a11y.animationFullSr")
+      : t("a11y.animationStaticSr");
+
+    return (
+      <button
+        type="button"
+        onClick={toggleAnimationMode}
+        className={cn(
+          className,
+          !isAnimationEnabled && "bg-muted/50 text-tone-1",
+        )}
+        title={label}
+        aria-label={label}
+        aria-pressed={!isAnimationEnabled}
+      >
+        {isAnimationEnabled ?
+          <Sparkles className="h-4 w-4" />
+        : <CircleOff className="h-4 w-4" />}
+        <span className="sr-only">{srLabel}</span>
+      </button>
+    );
+  };
+
   const renderPhoneQrPanel = () => {
     if (!phoneQrOpen || !phoneQrPanelPosition) {
       return null;
@@ -490,6 +523,15 @@ export function Navbar() {
             </AppLink>
           </div>
           <div className="flex items-center gap-1.5 sm:gap-2 text-sm font-medium text-foreground/80">
+            <ContactDialog>
+              <button
+                className="flex h-9 w-9 items-center justify-center rounded-full hover:bg-muted/50 transition-colors md:h-8 md:w-8"
+                title={t("a11y.viewContact")}
+              >
+                <Mail className="h-4 w-4" />
+                <span className="sr-only">{t("a11y.viewContact")}</span>
+              </button>
+            </ContactDialog>
             <button 
               onClick={toggleLanguage}
               className="flex h-9 w-9 items-center justify-center rounded-full text-sm font-medium hover:bg-muted/50 transition-colors md:h-8 md:w-8 md:text-sm"
@@ -506,15 +548,7 @@ export function Navbar() {
               <Moon className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
               <span className="sr-only">{t("a11y.toggleThemeSr")}</span>
             </button>
-            <ContactDialog>
-              <button
-                className="flex h-9 w-9 items-center justify-center rounded-full hover:bg-muted/50 transition-colors md:h-8 md:w-8"
-                title={t("a11y.viewContact")}
-              >
-                <Mail className="h-4 w-4" />
-                <span className="sr-only">{t("a11y.viewContact")}</span>
-              </button>
-            </ContactDialog>
+            {renderAnimationButton("flex h-9 w-9 items-center justify-center rounded-full hover:bg-muted/50 transition-colors md:h-8 md:w-8")}
 
             <button 
               onClick={toggleDesktopMenu}
@@ -569,6 +603,7 @@ export function Navbar() {
             <Moon className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
             <span className="sr-only">{t("a11y.toggleThemeSr")}</span>
           </button>
+          {renderAnimationButton("desktop-menu-item flex h-8 w-8 items-center justify-center rounded-full hover:bg-muted/50")}
           {renderPhoneQrButton("compact")}
           <button
             onClick={toggleDesktopMenu}
@@ -645,6 +680,7 @@ export function Navbar() {
             <Moon className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
             <span className="sr-only">{t("a11y.toggleThemeSr")}</span>
           </button>
+          {renderAnimationButton("desktop-menu-item flex h-8 w-8 items-center justify-center rounded-full hover:bg-muted/50")}
           {renderPhoneQrButton("full")}
         </SpotlightCard>
       </div>

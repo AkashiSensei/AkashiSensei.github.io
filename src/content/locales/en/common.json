@@ -7,6 +7,10 @@
     "toggleTheme": "Switch between dark and light mode",
     "toggleMenu": "Open or close the navigation menu",
     "toggleThemeSr": "Toggle theme",
+    "switchAnimationToStatic": "Switch to static background",
+    "switchAnimationToFull": "Enable background animation",
+    "animationFullSr": "Background animation is enabled",
+    "animationStaticSr": "Background is in static mode",
     "viewContact": "View personal information",
     "viewOnPhone": "View current page on phone"
   },
