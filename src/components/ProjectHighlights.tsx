@@ -412,12 +412,11 @@ function ProjectFeatureRow({
             <CardSwap
               activeIndex={activeProjectIndex}
               cardDistance={cardSwapDistance}
-              className="bottom-0 left-0"
+              className="bottom-0 left-0 [touch-action:pan-y]"
               delay={PROJECT_HIGHLIGHT_ROTATION_INTERVAL_MS}
               dropDistance={cardSwapDropDistance}
               height="100%"
               onActiveIndexChange={onActiveProjectIndexChange}
-              onCardClick={onActiveProjectIndexChange}
               pauseOnHover
               skewAmount={0}
               verticalDistance={cardSwapVerticalDistance}
@@ -437,6 +436,7 @@ function ProjectFeatureRow({
                         cardAutoCycle
                         cardAutoCycleStaggerIndex={projectIndex}
                         cardImageFit="contain"
+                        cardInteractive={false}
                         cardScrollable={false}
                         images={galleryProject.images}
                         className="h-full"

@@ -13,6 +13,7 @@
 
 ## History
 
+- 2026-06-23 | [Archived: Display effects regression fixes](archive/20260623_Display-effects-regression-fixes.md) | Repaired course/project image ratios, large-image preview sizing and backgrounds, detail masonry ordering, and resume project carousel scroll handling while preserving the current frosted-glass style.
 - 2026-06-23 | [Archived: Parallel Programming A material refresh](archive/20260623_Parallel-programming-A-material-refresh.md) | Featured the graduate Parallel Programming A assignment on the resume, added CUDA/Nsight performance-analysis screenshots and bilingual detail copy, and preserved data-driven course-project routes.
 - 2026-06-22 | [Archived: Background effects tuning](archive/20260622_Background-effects-tuning.md) | Added reusable React Bits LightRays and resume-scoped Liquid Ether backgrounds with theme-aware palettes, smooth scroll fades, centralized parallax speed, reduced route-change flicker, and related paginated resume layout fixes.
 - 2026-06-15 | [Archived: Personal information profile card](archive/20260615_Personal-information-profile-card.md) | Integrated a React Bits profile-card-based personal/contact dialog with public email, social links, mobile-specific layout, theme-aware card tuning, and resume CTA/layout polish.

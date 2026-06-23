@@ -402,7 +402,7 @@ export function SmallToolImageGallery({
         }}
       >
         <DialogContent
-          className="flex h-[calc(100dvh-8rem)] max-h-[calc(100dvh-8rem)] w-[calc(100vw-1rem)] max-w-[120rem] flex-col gap-2 overflow-hidden border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.66)] p-2 shadow-lg backdrop-blur-xl sm:max-w-[120rem] dark:border-white/10 dark:bg-black/45 md:h-[calc(100dvh-12rem)] md:max-h-[calc(100dvh-12rem)] md:w-[calc(100vw-4rem)] md:p-3 [&_[data-slot=dialog-close]]:right-3 [&_[data-slot=dialog-close]]:top-3 md:[&_[data-slot=dialog-close]]:right-4 md:[&_[data-slot=dialog-close]]:top-4"
+          className="image-preview-dialog flex flex-col gap-2 overflow-hidden border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.66)] p-2 shadow-lg backdrop-blur-xl dark:border-white/10 dark:bg-black/45 md:p-3 [&_[data-slot=dialog-close]]:right-3 [&_[data-slot=dialog-close]]:top-3 md:[&_[data-slot=dialog-close]]:right-4 md:[&_[data-slot=dialog-close]]:top-4"
         >
           <DialogTitle className="sr-only">
             {selectedImage.alt}
@@ -418,15 +418,14 @@ export function SmallToolImageGallery({
             {images.map((image) => (
               <div
                 key={image.src}
-                className="flex h-full basis-full shrink-0 snap-start items-center justify-center px-2 pb-1 pt-10 md:px-4 md:pt-12"
+                className="flex h-full min-w-0 basis-full shrink-0 snap-start items-center justify-center px-2 pb-1 pt-10 md:px-4 md:pt-12"
               >
-                <div className="relative flex max-h-full max-w-full overflow-hidden">
+                <div className="relative flex h-full min-h-0 w-full min-w-0 items-center justify-center overflow-hidden">
                   <img
                     src={image.src}
                     alt={image.alt}
-                    className="max-h-full max-w-full object-contain"
+                    className="h-full w-full object-contain"
                   />
-                  <ImageBrightnessOverlay brightness={image.brightness} />
                 </div>
               </div>
             ))}
