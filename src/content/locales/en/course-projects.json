@@ -57,13 +57,21 @@
       "title": "Parallel Programming A Assignments",
       "summary": "A BUAA graduate Parallel Programming A repository for experiment problems, code, scripts, and run records.",
       "images": {
+        "ncuSharedMemory8192": "NCU memory analysis for the shared-memory version",
+        "ncuSharedSource8192": "NCU source-level analysis for the shared-memory version",
+        "ncuSharedWarpState8192": "NCU warp state analysis for the shared-memory version",
+        "gemmSharedUsage": "GEMM shared memory usage diagram",
+        "ncuNaiveO0Roofline4096": "NCU roofline analysis for the naive O0 version",
+        "ncuNaiveO0PipeUtil4096": "NCU pipeline utilization analysis for the naive O0 version",
+        "ncuNaiveO0Memory8192": "NCU memory analysis for the naive O0 version",
         "mpiMatrixProcessTimeline": "MPI large-scale matrix multiplication process timeline",
         "mpiMatrixTimeResult": "MPI large-scale matrix multiplication timing result",
         "parallelQuicksortResult": "Parallel quicksort result"
       },
       "points": [
         "Uses C, Makefile, Shell, and Python to organize reproducible experiment code and helper scripts.",
-        "Records the shift from serial to parallel implementations for typical course problems and classic libraries."
+        "Records the shift from serial to parallel implementations for typical course problems and classic libraries.",
+        "Implemented naive and shared-memory CUDA matrix multiplication kernels, then used Nsight Systems and Nsight Compute to study performance through memory access, warp state, and pipeline utilization, building a clearer model of GPU execution."
       ]
     },
     "vr-experiments-2026": {
