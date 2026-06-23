@@ -57,13 +57,21 @@
       "title": "《并行程序设计 A》课程作业",
       "summary": "北航研究生《并行程序设计A》课程作业仓库，围绕并行程序设计中的实验题目组织代码、脚本和运行记录。",
       "images": {
+        "ncuSharedMemory8192": "NCU 共享内存版本内存分析",
+        "ncuSharedSource8192": "NCU 共享内存版本源码级分析",
+        "ncuSharedWarpState8192": "NCU 共享内存版本 Warp 状态分析",
+        "gemmSharedUsage": "GEMM 共享内存使用示意",
+        "ncuNaiveO0Roofline4096": "NCU 朴素 O0 版本 Roofline 分析",
+        "ncuNaiveO0PipeUtil4096": "NCU 朴素 O0 版本流水线利用率分析",
+        "ncuNaiveO0Memory8192": "NCU 朴素 O0 版本内存分析",
         "mpiMatrixProcessTimeline": "MPI 大规模矩阵乘进程时间线",
         "mpiMatrixTimeResult": "MPI 大规模矩阵乘时间结果",
         "parallelQuicksortResult": "并行快排结果"
       },
       "points": [
         "以 C、Makefile、Shell 和 Python 组织实验代码与辅助脚本，便于复现实验流程。",
-        "面向并行程序设计课程中的典型问题和经典库，记录从串行实现到并行实现的代码演进。"
+        "面向并行程序设计课程中的典型问题和经典库，记录从串行实现到并行实现的代码演进。",
+        "实现朴素版本与共享内存优化版本的 CUDA 矩阵乘法，并结合 Nsight Systems、Nsight Compute 分析性能表现，从内存访问、Warp 状态和流水线利用率等维度理解 GPU 执行机制。"
       ]
     },
     "vr-experiments-2026": {
