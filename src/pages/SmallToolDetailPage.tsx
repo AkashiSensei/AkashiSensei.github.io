@@ -4,10 +4,10 @@ import { useTranslation } from "react-i18next"
 import { useParams } from "react-router-dom"
 
 import { BackButton } from "@/components/BackButton"
+import { DetailImageMasonry } from "@/components/DetailImageMasonry"
 import { FeaturePointList } from "@/components/FeaturePointList"
 import { GitHubRepoStats } from "@/components/GitHubRepoStats"
 import { GlassPanel } from "@/components/GlassPanel"
-import { ImageBrightnessOverlay } from "@/components/ImageBrightnessOverlay"
 import { Layout } from "@/components/Layout"
 import { LazyImage } from "@/components/LazyImage"
 import { SmallToolImageGallery } from "@/components/SmallToolImageGallery"
@@ -49,32 +49,31 @@ function SmallToolImageWall({
 
   return (
     <>
-      <div className="hidden md:block">
-        <div className="columns-2 gap-4 min-[1000px]:columns-3">
-          {images.map((image) => (
-            <button
-              key={image.src}
-              type="button"
-              className="group/wall-image mb-3 block w-full break-inside-avoid overflow-hidden rounded-2xl border border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.32)] p-0 text-left shadow-sm backdrop-blur-md transition-colors hover:bg-[rgb(var(--site-surface-rgb)_/_0.48)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/45 dark:border-white/10 dark:bg-white/[0.04] dark:hover:bg-white/[0.08]"
-              onClick={() => setPreviewImage(image)}
-              aria-label={image.alt}
-            >
-              <LazyImage
-                src={image.src}
-                alt={image.alt}
-                width={image.width}
-                height={image.height}
-                placeholderTitle={image.alt}
-                loadingLabel={t("imageLoading")}
-                brightness={image.brightness}
-                containerClassName="w-full"
-                imageClassName="h-auto w-full object-contain transition-transform duration-300 group-hover/wall-image:scale-[1.015]"
-                style={{ aspectRatio: `${image.width} / ${image.height}` }}
-              />
-            </button>
-          ))}
-        </div>
-      </div>
+      <DetailImageMasonry
+        images={images}
+        renderImage={(image) => (
+          <button
+            key={image.src}
+            type="button"
+            className="group/wall-image block w-full overflow-hidden rounded-2xl border border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.32)] p-0 text-left shadow-sm backdrop-blur-md transition-colors hover:bg-[rgb(var(--site-surface-rgb)_/_0.48)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/45 dark:border-white/10 dark:bg-white/[0.04] dark:hover:bg-white/[0.08]"
+            onClick={() => setPreviewImage(image)}
+            aria-label={image.alt}
+          >
+            <LazyImage
+              src={image.src}
+              alt={image.alt}
+              width={image.width}
+              height={image.height}
+              placeholderTitle={image.alt}
+              loadingLabel={t("imageLoading")}
+              brightness={image.brightness}
+              containerClassName="w-full"
+              imageClassName="h-auto w-full object-contain transition-transform duration-300 group-hover/wall-image:scale-[1.015]"
+              style={{ aspectRatio: `${image.width} / ${image.height}` }}
+            />
+          </button>
+        )}
+      />
 
       <Dialog
         open={Boolean(previewImage)}
@@ -84,7 +83,7 @@ function SmallToolImageWall({
           }
         }}
       >
-        <DialogContent className="flex h-[calc(100dvh-8rem)] max-h-[calc(100dvh-8rem)] w-[calc(100vw-1rem)] max-w-[120rem] items-center justify-center overflow-hidden border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.66)] p-2 shadow-lg backdrop-blur-xl sm:max-w-[120rem] dark:border-white/10 dark:bg-black/45 md:h-[calc(100dvh-12rem)] md:max-h-[calc(100dvh-12rem)] md:w-[calc(100vw-4rem)] md:p-4 [&_[data-slot=dialog-close]]:right-3 [&_[data-slot=dialog-close]]:top-3 md:[&_[data-slot=dialog-close]]:right-4 md:[&_[data-slot=dialog-close]]:top-4">
+        <DialogContent className="image-preview-dialog flex items-center justify-center overflow-hidden border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.66)] p-2 shadow-lg backdrop-blur-xl dark:border-white/10 dark:bg-black/45 md:p-4 [&_[data-slot=dialog-close]]:right-3 [&_[data-slot=dialog-close]]:top-3 md:[&_[data-slot=dialog-close]]:right-4 md:[&_[data-slot=dialog-close]]:top-4">
           <DialogTitle className="sr-only">
             {previewImage?.alt ?? t("imageLoading")}
           </DialogTitle>
@@ -92,13 +91,12 @@ function SmallToolImageWall({
             {previewImage?.alt ?? t("imageLoading")}
           </DialogDescription>
           {previewImage ? (
-            <div className="relative flex max-h-full max-w-full overflow-hidden">
+            <div className="relative flex h-full min-h-0 w-full min-w-0 items-center justify-center overflow-hidden">
               <img
                 src={previewImage.src}
                 alt={previewImage.alt}
-                className="max-h-full max-w-full object-contain"
+                className="h-full w-full object-contain"
               />
-              <ImageBrightnessOverlay brightness={previewImage.brightness} />
             </div>
           ) : null}
         </DialogContent>

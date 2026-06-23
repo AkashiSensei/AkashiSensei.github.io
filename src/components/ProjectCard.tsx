@@ -70,6 +70,7 @@ export function ProjectCard({
     >
       {project.images?.length ? (
         <ProjectImageGallery
+          cardAspectRatioMode={variant === "full" ? "natural" : "bounded"}
           images={project.images}
           translationNamespace={translationNamespace}
         />

@@ -321,7 +321,11 @@ export default function CardSwap({
       return undefined
     }
 
-    const pause = () => {
+    const pause = (event: PointerEvent) => {
+      if (event.pointerType === "touch") {
+        return
+      }
+
       timelineRef.current?.pause()
 
       if (intervalRef.current !== null) {
@@ -330,7 +334,11 @@ export default function CardSwap({
       }
     }
 
-    const resume = () => {
+    const resume = (event: PointerEvent) => {
+      if (event.pointerType === "touch") {
+        return
+      }
+
       timelineRef.current?.play()
 
       if (intervalRef.current === null && childArr.length > 1) {
@@ -338,12 +346,12 @@ export default function CardSwap({
       }
     }
 
-    node.addEventListener("mouseenter", pause)
-    node.addEventListener("mouseleave", resume)
+    node.addEventListener("pointerenter", pause)
+    node.addEventListener("pointerleave", resume)
 
     return () => {
-      node.removeEventListener("mouseenter", pause)
-      node.removeEventListener("mouseleave", resume)
+      node.removeEventListener("pointerenter", pause)
+      node.removeEventListener("pointerleave", resume)
     }
   }, [childArr.length, delay, pauseOnHover, swap])
 

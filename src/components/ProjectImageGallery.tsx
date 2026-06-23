@@ -14,8 +14,10 @@ import { cn } from "@/lib/utils"
 
 type ProjectImageGalleryProps = {
   cardAspectRatio?: string
+  cardAspectRatioMode?: "bounded" | "natural"
   cardAutoCycle?: boolean
   cardAutoCycleStaggerIndex?: number
+  cardInteractive?: boolean
   images: ProjectImage[]
   cardScrollable?: boolean
   cardImageFit?: "contain" | "cover"
@@ -28,6 +30,15 @@ const CARD_AUTO_CYCLE_STAGGER_MS = 1300
 const MIN_CARD_IMAGE_ASPECT_RATIO = 4 / 5
 const MAX_CARD_IMAGE_ASPECT_RATIO = 16 / 9
 const CARD_IMAGE_GALLERY_MAX_HEIGHT = "min(72vh, 32rem)"
+
+function getImageAspectRatio(image: ProjectImage) {
+  const rawRatio = image.width / image.height
+  const aspectRatio = Number.isFinite(rawRatio) && rawRatio > 0
+    ? rawRatio
+    : 16 / 10
+
+  return `${aspectRatio.toFixed(4)} / 1`
+}
 
 function getBoundedImageAspectRatio(image: ProjectImage) {
   const rawRatio = image.width / image.height
@@ -83,8 +94,10 @@ function positionThumbnailIndicator(
 
 export function ProjectImageGallery({
   cardAspectRatio,
+  cardAspectRatioMode = "bounded",
   cardAutoCycle = false,
   cardAutoCycleStaggerIndex = 0,
+  cardInteractive = true,
   cardImageFit = "contain",
   cardScrollable = true,
   images,
@@ -338,6 +351,10 @@ export function ProjectImageGallery({
   const hasMultipleImages = images.length > 1
   const shouldRenderCardRail = cardScrollable || (cardAutoCycle && hasMultipleImages)
   const cardImages = shouldRenderCardRail ? images : [selectedImage]
+  const resolvedCardAspectRatio = cardAspectRatio
+    ?? (cardAspectRatioMode === "natural"
+      ? getImageAspectRatio(firstImage)
+      : getBoundedImageAspectRatio(firstImage))
 
   const openPreview = (imageIndex: number) => {
     initialPreviewImageIndexRef.current = imageIndex
@@ -420,18 +437,23 @@ export function ProjectImageGallery({
       <div
         ref={galleryRef}
         className={cn(
-          "flex w-full min-w-0 max-w-full shrink-0 overscroll-y-none [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
+          "flex w-full min-w-0 max-w-full shrink-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
           cardScrollable
-            ? "max-h-[72svh] snap-x snap-mandatory overflow-x-auto md:max-h-none"
+            ? "max-h-[72svh] snap-x snap-mandatory overflow-x-auto overscroll-y-none md:max-h-none"
             : shouldRenderCardRail
-              ? "max-h-full snap-x snap-mandatory overflow-hidden"
+              ? "max-h-full overflow-hidden"
               : "max-h-full overflow-hidden",
           className,
         )}
         style={{
-          aspectRatio: cardAspectRatio ?? getBoundedImageAspectRatio(firstImage),
-          maxHeight: cardAspectRatio ? undefined : CARD_IMAGE_GALLERY_MAX_HEIGHT,
-          touchAction: cardScrollable ? "pan-x" : "pan-y",
+          aspectRatio: resolvedCardAspectRatio,
+          maxHeight:
+            cardAspectRatio || cardAspectRatioMode === "natural"
+              ? undefined
+              : CARD_IMAGE_GALLERY_MAX_HEIGHT,
+          touchAction: cardInteractive
+            ? cardScrollable ? "pan-x" : "pan-y"
+            : "auto",
         }}
         onScroll={cardScrollable ? handleCardGalleryScroll : undefined}
       >
@@ -443,21 +465,37 @@ export function ProjectImageGallery({
           return (
             <div
               key={image.src}
-              role="button"
-              tabIndex={cardScrollable || imageIndex === selectedImageIndex ? 0 : -1}
+              role={cardInteractive ? "button" : undefined}
+              tabIndex={
+                cardInteractive
+                  ? cardScrollable || imageIndex === selectedImageIndex ? 0 : -1
+                  : undefined
+              }
               aria-hidden={!cardScrollable && imageIndex !== selectedImageIndex}
               className="relative flex h-full min-w-0 basis-full shrink-0 snap-start items-center justify-center overflow-hidden p-0"
-              style={{ touchAction: cardScrollable ? "pan-x" : "pan-y" }}
-              onClick={() => openPreview(imageIndex)}
-              onKeyDown={(event) => {
-                if (event.key !== "Enter" && event.key !== " ") {
-                  return
-                }
-
-                event.preventDefault()
-                openPreview(imageIndex)
+              style={{
+                touchAction: cardInteractive
+                  ? cardScrollable ? "pan-x" : "pan-y"
+                  : "auto",
               }}
-              aria-label={t("imagePreview.open", { image: t(image.altKey) })}
+              onClick={cardInteractive ? () => openPreview(imageIndex) : undefined}
+              onKeyDown={
+                cardInteractive
+                  ? (event) => {
+                      if (event.key !== "Enter" && event.key !== " ") {
+                        return
+                      }
+
+                      event.preventDefault()
+                      openPreview(imageIndex)
+                    }
+                  : undefined
+              }
+              aria-label={
+                cardInteractive
+                  ? t("imagePreview.open", { image: t(image.altKey) })
+                  : undefined
+              }
             >
               <LazyImage
                 src={image.src}
@@ -471,7 +509,11 @@ export function ProjectImageGallery({
                   cardImageFit === "cover" ? "object-cover" : "object-contain",
                 )}
                 draggable={false}
-                style={{ touchAction: cardScrollable ? "pan-x" : "pan-y" }}
+                style={{
+                  touchAction: cardInteractive
+                    ? cardScrollable ? "pan-x" : "pan-y"
+                    : "auto",
+                }}
               />
             </div>
           )
@@ -489,7 +531,7 @@ export function ProjectImageGallery({
         }}
       >
         <DialogContent
-          className="flex h-[calc(100dvh-8rem)] max-h-[calc(100dvh-8rem)] w-[calc(100vw-1rem)] max-w-[120rem] flex-col gap-2 overflow-hidden border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.66)] p-2 shadow-lg backdrop-blur-xl sm:max-w-[120rem] dark:border-white/10 dark:bg-black/45 md:h-[calc(100dvh-12rem)] md:max-h-[calc(100dvh-12rem)] md:w-[calc(100vw-4rem)] md:p-3 [&_[data-slot=dialog-close]]:right-3 [&_[data-slot=dialog-close]]:top-3 md:[&_[data-slot=dialog-close]]:right-4 md:[&_[data-slot=dialog-close]]:top-4"
+          className="image-preview-dialog flex flex-col gap-2 overflow-hidden border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.66)] p-2 shadow-lg backdrop-blur-xl dark:border-white/10 dark:bg-black/45 md:p-3 [&_[data-slot=dialog-close]]:right-3 [&_[data-slot=dialog-close]]:top-3 md:[&_[data-slot=dialog-close]]:right-4 md:[&_[data-slot=dialog-close]]:top-4"
         >
           <DialogTitle className="sr-only">
             {selectedImage ? t(selectedImage.altKey) : t("imagePreview.title")}
@@ -507,13 +549,12 @@ export function ProjectImageGallery({
                 key={image.src}
                 className="flex h-full min-w-0 basis-full shrink-0 snap-start items-center justify-center px-2 pb-1 pt-10 md:px-4 md:pt-12"
               >
-                <div className="relative flex min-h-0 min-w-0 max-h-full max-w-full items-center justify-center overflow-hidden">
+                <div className="relative flex h-full min-h-0 w-full min-w-0 items-center justify-center overflow-hidden">
                   <img
                     src={image.src}
                     alt={t(image.altKey)}
-                    className="h-auto w-auto max-h-full max-w-full object-contain"
+                    className="h-full w-full object-contain"
                   />
-                  <ImageBrightnessOverlay brightness={image.brightness} />
                 </div>
               </div>
             ))}

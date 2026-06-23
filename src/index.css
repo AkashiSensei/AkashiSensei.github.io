@@ -253,6 +253,37 @@
 }
 
 @layer components {
+  .image-preview-dialog {
+    --image-preview-dialog-inline-gap: 0.5rem;
+    --image-preview-dialog-block-gap: 4rem;
+
+    width: calc(100vw - (var(--image-preview-dialog-inline-gap) * 2)) !important;
+    height: calc(100dvh - (var(--image-preview-dialog-block-gap) * 2)) !important;
+    max-width: 120rem !important;
+    max-height: calc(100dvh - (var(--image-preview-dialog-block-gap) * 2)) !important;
+  }
+
+  @media (min-width: 768px) {
+    .image-preview-dialog {
+      --image-preview-dialog-inline-gap: clamp(2rem, 4vw, 4rem);
+      --image-preview-dialog-block-gap: clamp(3rem, 7dvh, 5rem);
+    }
+  }
+
+  @media (min-width: 768px) and (min-aspect-ratio: 4 / 3) {
+    .image-preview-dialog {
+      --image-preview-dialog-inline-gap: clamp(3rem, 6vw, 10rem);
+      --image-preview-dialog-block-gap: clamp(0.5rem, 2dvh, 1.5rem);
+    }
+  }
+
+  @media (min-width: 768px) and (max-aspect-ratio: 4 / 5) {
+    .image-preview-dialog {
+      --image-preview-dialog-inline-gap: clamp(0.5rem, 2vw, 1.25rem);
+      --image-preview-dialog-block-gap: clamp(5rem, 10dvh, 9rem);
+    }
+  }
+
   .lit-glass-card {
     position: relative;
     isolation: isolate;
