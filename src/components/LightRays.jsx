@@ -44,6 +44,8 @@ const LightRays = ({
   mouseInfluence = 0.1,
   noiseAmount = 0.0,
   distortion = 0.0,
+  staticMode = false,
+  staticFrameTime = 2.4,
   className = ''
 }) => {
   const containerRef = useRef(null);
@@ -257,16 +259,20 @@ void main() {
         const { anchor, dir } = getAnchorAndDir(raysOrigin, w, h);
         uniforms.rayPos.value = anchor;
         uniforms.rayDir.value = dir;
+
+        if (staticMode && meshRef.current) {
+          renderFrame(staticFrameTime * 1000);
+        }
       };
 
-      const loop = t => {
+      const renderFrame = t => {
         if (!rendererRef.current || !uniformsRef.current || !meshRef.current) {
           return;
         }
 
-        uniforms.iTime.value = t * 0.001;
+        uniforms.iTime.value = staticMode ? staticFrameTime : t * 0.001;
 
-        if (followMouse && mouseInfluence > 0.0) {
+        if (!staticMode && followMouse && mouseInfluence > 0.0) {
           const smoothing = 0.92;
 
           smoothMouseRef.current.x = smoothMouseRef.current.x * smoothing + mouseRef.current.x * (1 - smoothing);
@@ -277,16 +283,29 @@ void main() {
 
         try {
           renderer.render({ scene: mesh });
-          animationIdRef.current = requestAnimationFrame(loop);
         } catch (error) {
           console.warn('WebGL rendering error:', error);
           return;
         }
       };
 
+      const loop = t => {
+        animationIdRef.current = null;
+        renderFrame(t);
+
+        if (!staticMode) {
+          animationIdRef.current = requestAnimationFrame(loop);
+        }
+      };
+
       window.addEventListener('resize', updatePlacement);
       updatePlacement();
-      animationIdRef.current = requestAnimationFrame(loop);
+
+      if (staticMode) {
+        renderFrame(staticFrameTime * 1000);
+      } else {
+        animationIdRef.current = requestAnimationFrame(loop);
+      }
 
       cleanupFunctionRef.current = () => {
         if (animationIdRef.current) {
@@ -339,7 +358,9 @@ void main() {
     followMouse,
     mouseInfluence,
     noiseAmount,
-    distortion
+    distortion,
+    staticMode,
+    staticFrameTime
   ]);
 
   useEffect(() => {
@@ -355,15 +376,20 @@ void main() {
     u.pulsating.value = pulsating ? 1.0 : 0.0;
     u.fadeDistance.value = fadeDistance;
     u.saturation.value = saturation;
-    u.mouseInfluence.value = mouseInfluence;
+    u.mouseInfluence.value = staticMode ? 0 : mouseInfluence;
     u.noiseAmount.value = noiseAmount;
     u.distortion.value = distortion;
+    u.iTime.value = staticMode ? staticFrameTime : u.iTime.value;
 
     const { clientWidth: wCSS, clientHeight: hCSS } = containerRef.current;
     const dpr = renderer.dpr;
     const { anchor, dir } = getAnchorAndDir(raysOrigin, wCSS * dpr, hCSS * dpr);
     u.rayPos.value = anchor;
     u.rayDir.value = dir;
+
+    if (staticMode && meshRef.current) {
+      renderer.render({ scene: meshRef.current });
+    }
   }, [
     raysColor,
     raysSpeed,
@@ -375,7 +401,9 @@ void main() {
     saturation,
     mouseInfluence,
     noiseAmount,
-    distortion
+    distortion,
+    staticMode,
+    staticFrameTime
   ]);
 
   useEffect(() => {

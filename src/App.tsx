@@ -3,6 +3,7 @@ import { Route, Routes, useLocation } from "react-router-dom"
 import { useTranslation } from "react-i18next"
 
 import { AppLink } from "@/components/AppLink"
+import { useAnimationPreference } from "@/components/animation-provider"
 import { Layout } from "@/components/Layout"
 import LightRays from "@/components/LightRays.jsx"
 import { Button } from "@/components/ui/button"
@@ -268,9 +269,11 @@ function NotFoundPage() {
 function LightRaysBackground({
   pathname,
   isDarkTheme,
+  isAnimationEnabled,
 }: {
   pathname: string
   isDarkTheme: boolean
+  isAnimationEnabled: boolean
 }) {
   const backgroundRef = useRef<HTMLDivElement>(null)
   const shouldRenderRef = useRef(true)
@@ -336,10 +339,11 @@ function LightRaysBackground({
           rayLength={isDarkTheme ? 3 : 2.38}
           fadeDistance={isDarkTheme ? 1 : 0.76}
           saturation={isDarkTheme ? 1 : 0.6}
-          followMouse
+          followMouse={isAnimationEnabled}
           mouseInfluence={isDarkTheme ? 0.1 : 0.06}
           noiseAmount={0}
           distortion={0}
+          staticMode={!isAnimationEnabled}
           className={
             isDarkTheme ?
               "site-light-rays site-light-rays-dark"
@@ -354,9 +358,11 @@ function LightRaysBackground({
 function LiquidEtherBackground({
   pathname,
   isDarkTheme,
+  isAnimationEnabled,
 }: {
   pathname: string
   isDarkTheme: boolean
+  isAnimationEnabled: boolean
 }) {
   const backgroundRef = useRef<HTMLDivElement>(null)
   const shouldRenderRef = useRef(pathname !== "/resume")
@@ -445,6 +451,7 @@ function LiquidEtherBackground({
             takeoverDuration={0.25}
             autoResumeDelay={500}
             autoRampDuration={0.6}
+            staticMode={!isAnimationEnabled}
             className="site-liquid-ether"
           />
         </Suspense>
@@ -460,17 +467,23 @@ function shouldUseLiquidEtherForPath(pathname: string) {
 function App() {
   const { pathname } = useLocation()
   const isDarkTheme = useIsDarkTheme()
+  const { isAnimationEnabled } = useAnimationPreference()
   const shouldUseLiquidEtherRoute = shouldUseLiquidEtherForPath(pathname)
 
   return (
     <>
       <RouteEffects />
-      <LightRaysBackground pathname={pathname} isDarkTheme={isDarkTheme} />
+      <LightRaysBackground
+        pathname={pathname}
+        isDarkTheme={isDarkTheme}
+        isAnimationEnabled={isAnimationEnabled}
+      />
       {shouldUseLiquidEtherRoute ? (
         <LiquidEtherBackground
           key={pathname}
           pathname={pathname}
           isDarkTheme={isDarkTheme}
+          isAnimationEnabled={isAnimationEnabled}
         />
       ) : null}
       <div className="site-content">

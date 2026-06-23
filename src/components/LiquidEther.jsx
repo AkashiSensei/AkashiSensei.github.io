@@ -21,15 +21,21 @@ export default function LiquidEther({
   autoIntensity = 2.2,
   takeoverDuration = 0.25,
   autoResumeDelay = 1000,
-  autoRampDuration = 0.6
+  autoRampDuration = 0.6,
+  staticMode = false
 }) {
   const mountRef = useRef(null);
   const webglRef = useRef(null);
+  const staticModeRef = useRef(staticMode);
   const resizeObserverRef = useRef(null);
   const rafRef = useRef(null);
   const intersectionObserverRef = useRef(null);
   const isVisibleRef = useRef(true);
   const resizeRafRef = useRef(null);
+
+  useEffect(() => {
+    staticModeRef.current = staticMode;
+  }, [staticMode]);
 
   useEffect(() => {
     if (!mountRef.current) return;
@@ -926,6 +932,7 @@ export default function LiquidEther({
     class WebGLManager {
       constructor(props) {
         this.props = props;
+        this.staticMode = props.staticMode;
         Common.init(props.$wrapper);
         Mouse.init(props.$wrapper);
         Mouse.autoIntensity = props.autoIntensity;
@@ -970,12 +977,21 @@ export default function LiquidEther({
         Common.update();
         this.output.update();
       }
+      renderStill() {
+        Common.update();
+        this.output.render();
+      }
       loop() {
-        if (!this.running) return; // safety
+        if (!this.running || this.staticMode) return; // safety
         this.render();
         rafRef.current = requestAnimationFrame(this._loop);
       }
       start() {
+        if (this.staticMode) {
+          this.renderStill();
+          return;
+        }
+
         if (this.running) return;
         this.running = true;
         this._loop();
@@ -985,6 +1001,19 @@ export default function LiquidEther({
         if (rafRef.current) {
           cancelAnimationFrame(rafRef.current);
           rafRef.current = null;
+        }
+      }
+      setStaticMode(staticMode) {
+        this.staticMode = staticMode;
+
+        if (staticMode) {
+          this.pause();
+          this.renderStill();
+          return;
+        }
+
+        if (isVisibleRef.current && !document.hidden) {
+          this.start();
         }
       }
       dispose() {
@@ -1010,6 +1039,7 @@ export default function LiquidEther({
 
     const webgl = new WebGLManager({
       $wrapper: container,
+      staticMode: staticModeRef.current,
       autoDemo,
       autoSpeed,
       autoIntensity,
@@ -1068,6 +1098,9 @@ export default function LiquidEther({
       resizeRafRef.current = requestAnimationFrame(() => {
         if (!webglRef.current) return;
         webglRef.current.resize();
+        if (webglRef.current.staticMode) {
+          webglRef.current.renderStill();
+        }
       });
     });
     ro.observe(container);
@@ -1144,7 +1177,11 @@ export default function LiquidEther({
     }
     if (resolution !== prevRes) {
       sim.resize();
+      if (webgl.staticMode) {
+        webgl.renderStill();
+      }
     }
+    webgl.setStaticMode(staticMode);
   }, [
     mouseForce,
     cursorSize,
@@ -1161,7 +1198,8 @@ export default function LiquidEther({
     autoIntensity,
     takeoverDuration,
     autoResumeDelay,
-    autoRampDuration
+    autoRampDuration,
+    staticMode
   ]);
 
   return <div ref={mountRef} className={`liquid-ether-container ${className || ''}`} style={style} />;

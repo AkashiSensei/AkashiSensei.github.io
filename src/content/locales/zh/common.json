@@ -7,6 +7,10 @@
     "toggleTheme": "切换深色或浅色模式",
     "toggleMenu": "展开或收起导航菜单",
     "toggleThemeSr": "切换主题",
+    "switchAnimationToStatic": "切换为静态背景",
+    "switchAnimationToFull": "启用背景动画",
+    "animationFullSr": "背景动画已开启",
+    "animationStaticSr": "背景已切换为静态模式",
     "viewContact": "查看个人信息",
     "viewOnPhone": "在手机上查看当前页面"
   },
