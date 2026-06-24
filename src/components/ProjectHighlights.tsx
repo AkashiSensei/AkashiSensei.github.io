@@ -203,10 +203,12 @@ function getProjectRepoLinks(project: Project) {
 }
 
 function ProjectRepoLinks({
+  interactive = true,
   project,
   textClassName,
   translationNamespace,
 }: {
+  interactive?: boolean
   project: Project
   textClassName: string
   translationNamespace: ProjectTranslationNamespace
@@ -245,7 +247,7 @@ function ProjectRepoLinks({
           </>
         )
 
-        return link.url ? (
+        return interactive && link.url ? (
           <a
             key={link.url}
             href={link.url}
@@ -300,6 +302,107 @@ function ProjectTagList({
   )
 }
 
+function ProjectFeatureCopyContent({
+  interactive = true,
+  project,
+  projectViewportMode,
+}: {
+  interactive?: boolean
+  project: Project
+  projectViewportMode: ProjectViewportMode
+}) {
+  const { i18n, t } = useTranslation(["projects", "common"])
+  const points = getPoints(t(`items.${project.id}.points`, { returnObjects: true }))
+  const isEnglish = (i18n.resolvedLanguage ?? i18n.language).startsWith("en")
+  const visiblePointCount = projectViewportMode.isCompactDesktop
+    ? 0
+    : projectViewportMode.isMobile
+      ? 3
+      : isEnglish || projectViewportMode.isNarrowSplitDesktop
+        ? 1
+        : 3
+  const visiblePoints = points.slice(0, visiblePointCount)
+  const shouldShowProjectTags = !projectViewportMode.isCompactDesktop
+  const title = t(`items.${project.id}.title`)
+  const detailPath = getProjectDetailPath(project, "projects")
+
+  return (
+    <>
+      <div className="flex flex-col gap-2.5">
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+          <h3 className="min-w-0 text-2xl font-normal leading-tight tracking-tight text-tone-1 md:text-[1.7rem] lg:text-3xl">
+            {interactive ? (
+              <AppLink
+                to={detailPath}
+                className="detail-link-trigger detail-link-emphasis transition-colors hover:text-tone-1"
+              >
+                {title}
+              </AppLink>
+            ) : (
+              <span>{title}</span>
+            )}
+          </h3>
+        </div>
+        <ProjectRepoLinks
+          interactive={interactive}
+          project={project}
+          translationNamespace="projects"
+          textClassName="text-sm text-tone-4"
+        />
+      </div>
+
+      {shouldShowProjectTags ? (
+        <ProjectTagList project={project} translationNamespace="projects" />
+      ) : null}
+
+      <p className="max-w-2xl text-sm leading-relaxed text-tone-2 sm:text-base md:text-[0.9375rem] lg:text-base">
+        {t(`items.${project.id}.summary`)}
+      </p>
+
+      {visiblePoints.length ? (
+        <ul className="grid gap-1.5 text-[0.8125rem] leading-snug text-tone-3 sm:text-[0.875rem] md:gap-1">
+          {visiblePoints.map((point) => (
+            <li key={point} className="flex gap-2">
+              <span className="mt-[0.55em] h-1 w-1 shrink-0 rounded-full bg-tone-5" />
+              <span>{point}</span>
+            </li>
+          ))}
+        </ul>
+      ) : null}
+
+      {interactive ? (
+        <AppLink
+          to={detailPath}
+          className={cn(
+            "detail-link-trigger detail-link-emphasis group/detail inline-flex w-fit items-center gap-1.5 text-sm font-normal text-tone-2 transition-colors hover:text-tone-1",
+            visiblePoints.length && "-mt-2",
+          )}
+        >
+          {t("common:details.viewDetails")}
+          <ArrowRight className="detail-link-arrow h-4 w-4 transition-transform group-hover/detail:translate-x-0.5" />
+        </AppLink>
+      ) : (
+        <span
+          className={cn(
+            "inline-flex w-fit items-center gap-1.5 text-sm font-normal text-tone-2",
+            visiblePoints.length && "-mt-2",
+          )}
+        >
+          {t("common:details.viewDetails")}
+          <ArrowRight className="h-4 w-4" />
+        </span>
+      )}
+    </>
+  )
+}
+
+type ProjectViewportMode = {
+  isCompactDesktop: boolean
+  isMobile: boolean
+  isNarrowSplitDesktop: boolean
+  width: number
+}
+
 function ProjectFeatureRow({
   activeProjectIndex,
   onActiveProjectIndexChange,
@@ -310,7 +413,7 @@ function ProjectFeatureRow({
   projects: Project[]
 }) {
   const { i18n, t } = useTranslation(["projects", "common"])
-  const getProjectViewportMode = () => {
+  const getProjectViewportMode = (): ProjectViewportMode => {
     if (typeof window === "undefined") {
       return {
         isMobile: false,
@@ -335,20 +438,12 @@ function ProjectFeatureRow({
   const [projectViewportMode, setProjectViewportMode] = useState(
     getProjectViewportMode,
   )
+  const projectCopyMeasureRefs = useRef<Record<string, HTMLDivElement | null>>({})
+  const [mobileProjectCopyHeight, setMobileProjectCopyHeight] = useState<
+    number | null
+  >(null)
   const project = projects[activeProjectIndex] ?? projects[0]
-  const points = getPoints(t(`items.${project.id}.points`, { returnObjects: true }))
-  const isEnglish = (i18n.resolvedLanguage ?? i18n.language).startsWith("en")
-  const visiblePointCount = projectViewportMode.isCompactDesktop
-    ? 0
-    : projectViewportMode.isMobile
-    ? 3
-    : isEnglish || projectViewportMode.isNarrowSplitDesktop
-      ? 1
-      : 3
-  const visiblePoints = points.slice(0, visiblePointCount)
-  const shouldShowProjectTags = !projectViewportMode.isCompactDesktop
   const title = t(`items.${project.id}.title`)
-  const detailPath = getProjectDetailPath(project, "projects")
   const estimatedCardWidth = projectViewportMode.isMobile
     ? Math.max(260, projectViewportMode.width - 40)
     : projectViewportMode.isCompactDesktop
@@ -373,6 +468,11 @@ function ProjectFeatureRow({
     | "--project-card-stack-top",
     string
   >
+  const projectCopyHeightStyle = {
+    "--project-mobile-copy-height": mobileProjectCopyHeight
+      ? `${mobileProjectCopyHeight}px`
+      : "26rem",
+  } as CSSProperties & Record<"--project-mobile-copy-height", string>
 
   useEffect(() => {
     const updateProjectViewportMode = () => {
@@ -397,6 +497,64 @@ function ProjectFeatureRow({
       window.visualViewport?.removeEventListener("resize", updateProjectViewportMode)
     }
   }, [])
+
+  useLayoutEffect(() => {
+    if (!projectViewportMode.isMobile) {
+      return
+    }
+
+    const measureElements = projects
+      .map((measureProject) => projectCopyMeasureRefs.current[measureProject.id])
+      .filter((element): element is HTMLDivElement => Boolean(element))
+
+    if (measureElements.length === 0) {
+      return
+    }
+
+    let animationFrameId: number | null = null
+    let isCancelled = false
+
+    const measureCopyHeight = () => {
+      if (isCancelled) {
+        return
+      }
+
+      const nextHeight = Math.max(
+        ...measureElements.map((element) => Math.ceil(element.scrollHeight)),
+      )
+
+      if (nextHeight > 0) {
+        setMobileProjectCopyHeight((currentHeight) =>
+          currentHeight === nextHeight ? currentHeight : nextHeight,
+        )
+      }
+    }
+
+    animationFrameId = window.requestAnimationFrame(measureCopyHeight)
+
+    const resizeObserver = typeof ResizeObserver === "undefined"
+      ? null
+      : new ResizeObserver(measureCopyHeight)
+
+    measureElements.forEach((element) => resizeObserver?.observe(element))
+    document.fonts?.ready.then(measureCopyHeight)
+
+    return () => {
+      isCancelled = true
+
+      if (animationFrameId !== null) {
+        window.cancelAnimationFrame(animationFrameId)
+      }
+
+      resizeObserver?.disconnect()
+    }
+  }, [
+    i18n.language,
+    i18n.resolvedLanguage,
+    projectViewportMode.isMobile,
+    projectViewportMode.width,
+    projects,
+  ])
 
   return (
     <article
@@ -465,57 +623,39 @@ function ProjectFeatureRow({
         </div>
       </div>
 
-      <div
-        key={project.id}
-        className="project-feature-copy-swap detail-link-pair flex min-w-0 flex-col gap-4 overflow-hidden [--detail-link-active-color:var(--text-tone-1)] md:h-[22.5rem] md:self-start md:justify-start md:gap-3.5 md:pr-2 md:pt-[var(--project-card-copy-top)] lg:h-[24rem] xl:h-[25rem] min-[1440px]:h-[26.5rem] min-[1800px]:!h-[29rem]"
-      >
-        <div className="flex flex-col gap-2.5">
-          <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
-            <h3 className="min-w-0 text-2xl font-normal leading-tight tracking-tight text-tone-1 md:text-[1.7rem] lg:text-3xl">
-              <AppLink
-                to={detailPath}
-                className="detail-link-trigger detail-link-emphasis transition-colors hover:text-tone-1"
-              >
-                {title}
-              </AppLink>
-            </h3>
-          </div>
-          <ProjectRepoLinks
+      <div className="relative min-w-0 md:self-start">
+        <div
+          key={project.id}
+          className="project-feature-copy-swap detail-link-pair flex h-[var(--project-mobile-copy-height)] min-w-0 flex-col gap-4 overflow-visible pr-1 [--detail-link-active-color:var(--text-tone-1)] md:h-[22.5rem] md:justify-start md:gap-3.5 md:overflow-hidden md:pr-2 md:pt-[var(--project-card-copy-top)] lg:h-[24rem] xl:h-[25rem] min-[1440px]:h-[26.5rem] min-[1800px]:!h-[29rem]"
+          style={projectCopyHeightStyle}
+        >
+          <ProjectFeatureCopyContent
             project={project}
-            translationNamespace="projects"
-            textClassName="text-sm text-tone-4"
+            projectViewportMode={projectViewportMode}
           />
         </div>
 
-        {shouldShowProjectTags ? (
-          <ProjectTagList project={project} translationNamespace="projects" />
-        ) : null}
-
-        <p className="max-w-2xl text-sm leading-relaxed text-tone-2 sm:text-base md:text-[0.9375rem] lg:text-base">
-          {t(`items.${project.id}.summary`)}
-        </p>
-
-        {visiblePoints.length ? (
-          <ul className="grid gap-1.5 text-[0.8125rem] leading-snug text-tone-3 sm:text-[0.875rem] md:gap-1">
-            {visiblePoints.map((point) => (
-              <li key={point} className="flex gap-2">
-                <span className="mt-[0.55em] h-1 w-1 shrink-0 rounded-full bg-tone-5" />
-                <span>{point}</span>
-              </li>
-            ))}
-          </ul>
-        ) : null}
-
-        <AppLink
-          to={detailPath}
-          className={cn(
-            "detail-link-trigger detail-link-emphasis group/detail inline-flex w-fit items-center gap-1.5 text-sm font-normal text-tone-2 transition-colors hover:text-tone-1",
-            visiblePoints.length && "-mt-2",
-          )}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 top-0 -z-10 flex min-w-0 flex-col gap-4 overflow-hidden pr-1 opacity-0 md:hidden"
+          inert
         >
-          {t("common:details.viewDetails")}
-          <ArrowRight className="detail-link-arrow h-4 w-4 transition-transform group-hover/detail:translate-x-0.5" />
-        </AppLink>
+          {projects.map((measureProject) => (
+            <div
+              key={measureProject.id}
+              ref={(element) => {
+                projectCopyMeasureRefs.current[measureProject.id] = element
+              }}
+              className="detail-link-pair flex min-w-0 flex-col gap-4 [--detail-link-active-color:var(--text-tone-1)]"
+            >
+              <ProjectFeatureCopyContent
+                interactive={false}
+                project={measureProject}
+                projectViewportMode={projectViewportMode}
+              />
+            </div>
+          ))}
+        </div>
       </div>
     </article>
   )
