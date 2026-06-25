@@ -40,17 +40,21 @@
         "predictorInterface": "Predictor interface",
         "qwenInferenceResourceUsage": "Qwen inference resource usage chart"
       },
-      "points": [
-        "Uses XGBoost to estimate NPU AI Core, Vector Core, HBM, and other resource usage from recommendation-model workload features.",
-        "Uses LightGBM to predict large-model inference performance, including TTFT, TPOT, KV Cache, and the hardware resource usage above.",
-        "Explores GNNs for ONNX/PyTorch recommendation-model structures, aiming to generalize to unseen models.",
-        "Led a data collection framework covering TorchRec, DeepCTR, Torch-RecHub, RecSDK, and other recommendation stacks.",
-        "Implemented configuration parsing, validation, and version management for safe large-scale experiments.",
-        "Implemented multiple NPU-side monitoring tools based on npu-smi, npu-exporter, DCMI programming interfaces, and related components.",
-        "Implemented CPU-side monitoring with vmstat, sar, cgroup, and lxcfs, using cross-validation for accurate container data.",
-        "Built hands-on understanding of Ascend NPU architecture, workload behavior, and hardware debugging.",
-        "Continuing to push forward work related to large models..."
-      ]
+      "points": {
+        "projectIntro": [
+          "Uses XGBoost to estimate NPU AI Core, Vector Core, HBM, and other resource usage from recommendation-model workload features.",
+          "Uses LightGBM to predict large-model inference performance, including TTFT, TPOT, KV Cache, and the hardware resource usage above.",
+          "Explores GNNs for ONNX/PyTorch recommendation-model structures, aiming to generalize to unseen models.",
+          "Continuing to push forward work related to large models..."
+        ],
+        "personalWork": [
+          "Led a data collection framework covering TorchRec, DeepCTR, Torch-RecHub, RecSDK, and other recommendation stacks.",
+          "Implemented configuration parsing, validation, and version management for safe large-scale experiments.",
+          "Implemented multiple NPU-side monitoring tools based on npu-smi, npu-exporter, DCMI programming interfaces, and related components.",
+          "Implemented CPU-side monitoring with vmstat, sar, cgroup, and lxcfs, using cross-validation for accurate container data.",
+          "Built hands-on understanding of Ascend NPU architecture, workload behavior, and hardware debugging."
+        ]
+      }
     },
     "crater": {
       "title": "Crater Cloud-Native AI Platform",
@@ -64,18 +68,24 @@
         "jobManagement": "Job management interface",
         "nodeManagement": "Node management interface"
       },
-      "points": [
-        "Our deployment manages 280+ accelerators and 5,600+ CPU cores, with 200+ jobs created per day for 600+ users.",
-        "Replaces the lab's previous Slurm tooling with a polished GUI for teachers and students.",
-        "Also serves as a systems research platform for scheduling algorithms, distributed storage, and related experiments.",
-        "Implemented Crater's own admission controller, working with Kubernetes, the Volcano scheduler, and self-developed algorithms to schedule user workloads fairly and efficiently.",
-        "Supports snapshots and multiple image-building workflows with Buildx, Envd, and related tools.",
-        "Supports NFS, Ceph, and large user/shared datasets for reuse across images.",
-        "Provides model and dataset download/management to reduce waiting time and storage pressure.",
-        "Mostly completed an embedded Q&A agent to help users query and locate problems faster.",
-        "As a **core project maintainer**, joined project decisions, contributed opinions, and reviewed code.",
-        "Faced real **user needs** directly and built practical engineering problem-solving experience."
-      ]
+      "points": {
+        "projectIntro": [
+          "Our deployment manages 280+ accelerators and 5,600+ CPU cores, with 200+ jobs created per day for 600+ users.",
+          "Replaces the lab's previous Slurm tooling with a polished GUI for teachers and students.",
+          "Also serves as a systems research platform for scheduling algorithms, distributed storage, and related experiments.",
+          "Implemented Crater's own admission controller, working with Kubernetes, the Volcano scheduler, and self-developed algorithms to schedule user workloads fairly and efficiently.",
+          "Supports snapshots and multiple image-building workflows with Buildx, Envd, and related tools.",
+          "Supports NFS, Ceph, and large user/shared datasets for reuse across images.",
+          "Provides model and dataset download/management to reduce waiting time and storage pressure.",
+          "Mostly completed an embedded Q&A agent to help users query and locate problems faster."
+        ],
+        "personalWork": [
+          "As a **core project maintainer**, actively shaped product direction, requirements analysis and specifications, implementation reviews, and led project interns through hands-on delivery.",
+          "Developed new features with AI, reported and fixed bugs, improved UX, and reviewed PRs to deliver a better experience for platform users.",
+          "Built a complete set of development Skills for the project, capturing constraints and experience to help AI developers write code, author documentation, and manage releases more effectively.",
+          "Faced real **user needs** directly and built practical engineering problem-solving experience."
+        ]
+      }
     },
     "crater-cli": {
       "title": "Crater CLI",
@@ -87,15 +97,20 @@
         "jsonErrorOutput": "JSON-formatted error output",
         "prCommentReviewSnapshot": "Review snapshot"
       },
-      "points": [
-        "Provides architecture, spec, command, and review docs, using documentation-driven development for AI-era coding.",
-        "Provides multilingual Tab completion and survey-style interactive selection across shells.",
-        "Distributes Skills, supports non-interactive/formatted output, and defines error codes for agent use and troubleshooting.",
-        "Implements sandboxed network and storage access so tests do not affect real environments or cluster data.",
-        "Improves AI-generated code reliability with unit tests and sandbox-based snapshot/golden-file outputs.",
-        "Gradually connecting the APIs of Crater modules...",
-        "Designed from scratch, accumulating architecture design experience and real engineering reflections."
-      ]
+      "points": {
+        "projectIntro": [
+          "Provides a new way to access and operate the Crater platform for script/CLI users and AI agents in the new era.",
+          "Gradually connecting the APIs of Crater modules..."
+        ],
+        "personalWork": [
+          "Provides architecture, spec, command, and review docs, using documentation-driven development for AI-era coding.",
+          "Provides multilingual Tab completion and survey-style interactive selection across shells.",
+          "Distributes Skills, supports non-interactive/formatted output, and defines error codes for agent use and troubleshooting.",
+          "Implements sandboxed network and storage access so tests do not affect real environments or cluster data.",
+          "Improves AI-generated code reliability with unit tests and a sandbox-based snapshot/golden-file mechanism that leaves reference examples for later AI coding and lets reviewers see real command output.",
+          "Designed from scratch, accumulating architecture design experience and real engineering reflections."
+        ]
+      }
     },
     "model-requirements-evaluator": {
       "title": "Equivalent Modeling and Evaluation of Model Compute Requirements",
@@ -110,33 +125,43 @@
         "resultTabsMemoryBreakdown": "Result tabs and memory breakdown",
         "latencyBreakdown": "Latency breakdown"
       },
-      "points": [
-        "Won third prize in the 2nd 'China Data Valley Huawei Cup' China Graduate Operating System Open Source Innovation Competition.",
-        "Decomposes large language model structure and uses mathematical methods to model the storage and compute requirements of each part of the model.",
-        "Built a modern frontend with Vue 3, TypeScript, Vite, and Element Plus, packaging backend capabilities into an interactive product.",
-        "Integrated ECharts and ECharts-GL to visualize latency, throughput, memory, and phase progress, showing how requirement changes affect deployment cost."
-      ]
+      "points": {
+        "projectIntro": [
+          "Won third prize in the 2nd 'China Data Valley Huawei Cup' China Graduate Operating System Open Source Innovation Competition.",
+          "Decomposes large language model structure and uses mathematical methods to model the storage and compute requirements of each part of the model."
+        ],
+        "personalWork": [
+          "Built a modern frontend with Vue 3, TypeScript, Vite, and Element Plus, packaging backend capabilities into an interactive product.",
+          "Integrated ECharts and ECharts-GL to visualize latency, throughput, memory, and phase progress, showing how requirement changes affect deployment cost."
+        ]
+      }
     },
     "tododag": {
       "title": "ToDoDAG",
       "summary": "A DAG-based task app for complex dependencies and long-running tasks. By making dependencies explicit, it shows what is truly actionable now. It mainly serves my own needs.",
-      "points": [
-        "My tasks often form a DAG: one task may unlock many others, or several tasks may block one task.",
-        "Some tasks come from sudden ideas I decide to pursue, while others are suddenly assigned to me. I need to write them down so I do not forget.",
-        "A linear to-do list hides dependencies, forcing me to scan nearly a hundred items for what can start now.",
-        "I want a graph-structured app to guide work instead of staring at an unfocused linear list.",
-        "Starts on macOS, with planned expansion to iOS, iPadOS, and watchOS using local-first storage and private iCloud sync.",
-        "Currently in early planning/prototype stage, with functional boundaries, interaction principles, and Apple-native constraints clarified.",
-        "Researching communication and collaboration mechanisms, with plans to connect ToDoDAG to AI systems so AI can help complete my tasks."
-      ]
+      "points": {
+        "projectIntro": [
+          "My tasks often form a DAG: one task may unlock many others, or several tasks may block one task.",
+          "Some tasks come from sudden ideas I decide to pursue, while others are suddenly assigned to me. I need to write them down so I do not forget.",
+          "A linear to-do list hides dependencies, forcing me to scan nearly a hundred items for what can start now.",
+          "I want a graph-structured app to guide work instead of staring at an unfocused linear list.",
+          "Starts on macOS, with planned expansion to iOS, iPadOS, and watchOS using local-first storage and private iCloud sync.",
+          "Currently in early planning/prototype stage, with functional boundaries, interaction principles, and Apple-native constraints clarified. I plan to have Codex start development as soon as I have time.",
+          "Researching communication and collaboration mechanisms, with plans to connect ToDoDAG to AI systems so AI can help complete my tasks."
+        ],
+        "personalWork": []
+      }
     },
     "personal-homepage": {
       "title": "Personal Homepage and Content System",
       "summary": "This site is also a long-running frontend project for HR, interviewers, open-source peers, and students. It organizes job-search presentation, open-source activity, and related content into a maintainable static site.",
-      "points": [
-        "Lets HR and interviewers understand my projects, direction, toolchain, and working style without searching across scattered repositories.",
-        "Supports multilingual content, responsive layout, and light/dark modes, while controlling maximum image brightness in dark mode to avoid glare."
-      ]
+      "points": {
+        "projectIntro": [
+          "Lets HR and interviewers understand my projects, direction, toolchain, and working style without searching across scattered repositories.",
+          "Supports multilingual content, responsive layout, and light/dark modes, while controlling maximum image brightness in dark mode to avoid glare."
+        ],
+        "personalWork": []
+      }
     }
   }
 }

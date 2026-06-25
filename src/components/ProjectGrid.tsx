@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next"
 
 import { ProjectCard } from "@/components/ProjectCard"
 import { type Project } from "@/data/projects"
+import { getProjectPointSections } from "@/lib/project-points"
 
 type ProjectGridProps = {
   projects: Project[]
@@ -45,15 +46,10 @@ export function ProjectGrid({
       estimatedHeight += Math.ceil((summary?.length || 0) / 24) * 24
 
       const points = t(`items.${project.id}.points`, { returnObjects: true })
-      if (Array.isArray(points)) {
-        estimatedHeight += points.reduce((total, point) => {
-          if (typeof point !== "string") {
-            return total
-          }
-
-          return total + Math.ceil(point.length / 30) * 22 + 10
-        }, 0)
-      }
+      estimatedHeight += getProjectPointSections(points).points.reduce(
+        (total, point) => total + Math.ceil(point.length / 30) * 22 + 10,
+        0,
+      )
 
       estimatedHeight += (project.links?.length ?? 1) * 28
       estimatedHeight += Math.ceil(project.tags.length / 3) * 32

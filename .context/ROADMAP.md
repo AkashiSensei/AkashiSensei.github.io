@@ -13,6 +13,7 @@
 
 ## History
 
+- 2026-06-25 | [Archived: Resume bullet contribution structure](archive/20260625_Resume-bullet-contribution-structure.md) | Split project/course bullets into editable project-intro and personal-work locale sections, highlighted personal work on cards, and tuned detail-page section rendering.
 - 2026-06-24 | [Archived: Mobile project copy height](archive/20260624_Mobile-project-copy-height.md) | Stabilized the mobile resume project carousel copy area by measuring the tallest localized project text block and reusing that height during card swaps.
 - 2026-06-23 | [Archived: Animation preference toggle](archive/20260623_Animation-preference-toggle.md) | Added a persistent menu-bar animation preference that freezes LightRays and Liquid Ether in place to reduce ongoing CPU/GPU work while preserving the frosted-glass background look.
 - 2026-06-23 | [Archived: Display effects regression fixes](archive/20260623_Display-effects-regression-fixes.md) | Repaired course/project image ratios, large-image preview sizing and backgrounds, detail masonry ordering, and resume project carousel scroll handling while preserving the current frosted-glass style.

@@ -18,6 +18,7 @@ import { ImageBrightnessOverlay } from "@/components/ImageBrightnessOverlay"
 import { ProjectImageGallery } from "@/components/ProjectImageGallery"
 import { projects, type Project } from "@/data/projects"
 import { type ImageBrightness } from "@/lib/image-brightness"
+import { getProjectPointSections } from "@/lib/project-points"
 import {
   getCourseProjectSemesterTagClassName,
   getSemanticTagClassName,
@@ -110,12 +111,6 @@ export function ProjectHighlights() {
       </div>
     </section>
   )
-}
-
-function getPoints(value: unknown) {
-  return Array.isArray(value)
-    ? value.filter((point): point is string => typeof point === "string")
-    : []
 }
 
 function ProjectCoverCarousel({
@@ -312,7 +307,9 @@ function ProjectFeatureCopyContent({
   projectViewportMode: ProjectViewportMode
 }) {
   const { i18n, t } = useTranslation(["projects", "common"])
-  const points = getPoints(t(`items.${project.id}.points`, { returnObjects: true }))
+  const { points, highlightedIndexes } = getProjectPointSections(
+    t(`items.${project.id}.points`, { returnObjects: true }),
+  )
   const isEnglish = (i18n.resolvedLanguage ?? i18n.language).startsWith("en")
   const visiblePointCount = projectViewportMode.isCompactDesktop
     ? 0
@@ -322,6 +319,7 @@ function ProjectFeatureCopyContent({
         ? 1
         : 3
   const visiblePoints = points.slice(0, visiblePointCount)
+  const highlightedPointSet = new Set(highlightedIndexes)
   const shouldShowProjectTags = !projectViewportMode.isCompactDesktop
   const title = t(`items.${project.id}.title`)
   const detailPath = getProjectDetailPath(project, "projects")
@@ -361,12 +359,29 @@ function ProjectFeatureCopyContent({
 
       {visiblePoints.length ? (
         <ul className="grid gap-1.5 text-[0.8125rem] leading-snug text-tone-3 sm:text-[0.875rem] md:gap-1">
-          {visiblePoints.map((point) => (
-            <li key={point} className="flex gap-2">
-              <span className="mt-[0.55em] h-1 w-1 shrink-0 rounded-full bg-tone-5" />
-              <span>{point}</span>
-            </li>
-          ))}
+          {visiblePoints.map((point, pointIndex) => {
+            const highlighted = highlightedPointSet.has(pointIndex)
+
+            return (
+              <li
+                key={point}
+                className={cn(
+                  "flex gap-2",
+                  highlighted && "text-amber-700 dark:text-violet-300",
+                )}
+              >
+                <span
+                  className={cn(
+                    "mt-[0.55em] h-1 w-1 shrink-0 rounded-full",
+                    highlighted
+                      ? "bg-amber-700 dark:bg-violet-300"
+                      : "bg-tone-5",
+                  )}
+                />
+                <span>{point}</span>
+              </li>
+            )
+          })}
         </ul>
       ) : null}
 
@@ -682,8 +697,11 @@ export function ProjectArchiveCard({
   const detailPath =
     getProjectDetailPath(project, translationNamespace)
   const repoLinks = getProjectRepoLinks(project)
-  const points = getPoints(t(`items.${project.id}.points`, { returnObjects: true }))
+  const { points, highlightedIndexes } = getProjectPointSections(
+    t(`items.${project.id}.points`, { returnObjects: true }),
+  )
   const visiblePoints = points
+  const highlightedPointSet = new Set(highlightedIndexes)
   const title = t(`items.${project.id}.title`)
   const isCourseProject = translationNamespace === "courseProjects"
   const cardRef = useRef<HTMLElement>(null)
@@ -918,25 +936,37 @@ export function ProjectArchiveCard({
                     : "text-[0.8125rem] text-white/76",
                 )}
               >
-                {visiblePoints.map((point, pointIndex) => (
-                  <li
-                    key={point}
-                    className={cn(
-                      "flex gap-2",
-                      pointIndex >= 2 && "hidden min-[1800px]:flex",
-                    )}
-                  >
-                    <span
+                {visiblePoints.map((point, pointIndex) => {
+                  const highlighted = highlightedPointSet.has(pointIndex)
+
+                  return (
+                    <li
+                      key={point}
                       className={cn(
-                        "mt-[0.55em] h-1 w-1 shrink-0 rounded-full",
-                        isCourseProject
-                          ? "bg-tone-3 dark:bg-white/72"
-                          : "bg-white/58",
+                        "flex gap-2",
+                        pointIndex >= 2 && "hidden min-[1800px]:flex",
+                        highlighted &&
+                          (isCourseProject
+                            ? "text-amber-700 dark:text-violet-200"
+                            : "text-amber-200 dark:text-violet-200"),
                       )}
-                    />
-                    <span>{point}</span>
-                  </li>
-                ))}
+                    >
+                      <span
+                        className={cn(
+                          "mt-[0.55em] h-1 w-1 shrink-0 rounded-full",
+                          highlighted
+                            ? isCourseProject
+                              ? "bg-amber-700 dark:bg-violet-200"
+                              : "bg-amber-200 dark:bg-violet-200"
+                            : isCourseProject
+                              ? "bg-tone-3 dark:bg-white/72"
+                              : "bg-white/58",
+                        )}
+                      />
+                      <span>{point}</span>
+                    </li>
+                  )
+                })}
               </ul>
             ) : null}
           </div>

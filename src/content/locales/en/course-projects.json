@@ -68,11 +68,14 @@
         "mpiMatrixTimeResult": "MPI large-scale matrix multiplication timing result",
         "parallelQuicksortResult": "Parallel quicksort result"
       },
-      "points": [
-        "Uses C, Makefile, Shell, and Python to organize reproducible experiment code and helper scripts.",
-        "Records the shift from serial to parallel implementations for typical course problems and classic libraries.",
-        "Implemented naive and shared-memory CUDA matrix multiplication kernels, then used Nsight Systems and Nsight Compute to study performance through memory access, warp state, and pipeline utilization, building a clearer model of GPU execution."
-      ]
+      "points": {
+        "projectIntro": [
+          "Uses C, Makefile, Shell, and Python to organize experiment code and helper scripts for reproducible workflows.",
+          "Addresses typical parallel programming course problems using classic models such as OpenMP, pthread, and MPI, implements various parallel algorithms, and analyzes their performance.",
+          "Implemented naive and shared-memory optimized CUDA matrix multiplication, and used Nsight Systems and Nsight Compute to analyze performance across memory access, warp state, and pipeline utilization, building a clearer understanding of GPU execution."
+        ],
+        "personalWork": []
+      }
     },
     "vr-experiments-2026": {
       "title": "Virtual Reality Integrated Experiments",
@@ -83,9 +86,12 @@
         "dogSkeleton": "Dog skeleton",
         "dogAction": "Dog action"
       },
-      "points": [
-        "Organizes project files and explanatory materials for virtual reality course experiments."
-      ]
+      "points": {
+        "projectIntro": [
+          "Organizes project files and explanatory materials for virtual reality course experiments."
+        ],
+        "personalWork": []
+      }
     },
     "os2023": {
       "title": "MOS Operating System Labs",
@@ -100,13 +106,16 @@
         "refillChallengesSolution2": "Fast refill challenges and solutions (2)",
         "refillCode": "Fast refill code excerpt"
       },
-      "points": [
-        "Read a large amount of OS code and developed a deeper understanding of how operating systems work.",
-        "Kept asking and answering my own questions, leaving behind a large set of lab notes.",
-        "Used GXemul to emulate the MIPS R3000 processor, with implementation in C and MIPS assembly.",
-        "Includes paged memory, processes, IPC, exceptions, file system, and Shell.",
-        "As extra credit, studied page tables, $k0/$k1, and the coprocessor, then implemented full page-table fast refill with about 4x speedup in specific cases."
-      ]
+      "points": {
+        "projectIntro": [
+          "Read a large amount of OS code and developed a deeper understanding of how operating systems work.",
+          "Kept asking and answering my own questions, leaving behind a large set of lab notes.",
+          "Used GXemul to emulate the MIPS R3000 processor, with implementation in C and MIPS assembly.",
+          "Includes paged memory, processes, IPC, exceptions, file system, and Shell.",
+          "As extra credit, studied page tables, $k0/$k1, and the coprocessor, then implemented full page-table fast refill with about 4x speedup in specific cases."
+        ],
+        "personalWork": []
+      }
     },
     "parallel-architecture-2025": {
       "title": "Parallel Processing and Architecture Assignment",
@@ -121,11 +130,14 @@
         "luPerfHotspots": "Perf hotspots of original LU program with 64 threads",
         "luDrcctprofComparison": "DrCCTProf analysis comparison before and after LU optimization"
       },
-      "points": [
-        "Designed OpenMP programs with different bottlenecks, optimized them, and compared performance across thread counts and data scales.",
-        "Experimented with compiler optimization, OpenMP thread binding, and NUMA binding.",
-        "Used DrCCTProf and Linux Performance Counters to analyze classic parallel algorithms, find bottlenecks, optimize them, and verify results."
-      ]
+      "points": {
+        "projectIntro": [
+          "Designed OpenMP programs with different bottlenecks, optimized them, and compared performance across thread counts and data scales.",
+          "Experimented with compiler optimization, OpenMP thread binding, and NUMA binding.",
+          "Used DrCCTProf and Linux Performance Counters to analyze classic parallel algorithms, find bottlenecks, optimize them, and verify results."
+        ],
+        "personalWork": []
+      }
     },
     "road-accident-risk": {
       "title": "Road Accident Risk Prediction",
@@ -137,11 +149,14 @@
         "numericFeatureDistribution": "Numeric feature distribution",
         "numericFeatureTargetCorrelation": "Correlation between numeric features and target variable"
       },
-      "points": [
-        "Used Python for data preprocessing and analysis to guide feature engineering.",
-        "Combined key risk factors and created cross features and basic risk features from domain knowledge.",
-        "Built a risk prediction model with XGBoost and used Optuna for hyperparameter search."
-      ]
+      "points": {
+        "projectIntro": [
+          "Used Python for data preprocessing and analysis to guide feature engineering.",
+          "Combined key risk factors and created cross features and basic risk features from domain knowledge.",
+          "Built a risk prediction model with XGBoost and used Optuna for hyperparameter search."
+        ],
+        "personalWork": []
+      }
     },
     "kernel-analysis-thesis": {
       "title": "Undergraduate thesis",
@@ -163,11 +178,14 @@
         "yolov8ThroughputPrediction": "YOLOv8 GPU compute throughput utilization prediction capability",
         "yolov8nRuntimeVariance": "YOLOv8n kernel runtime performance variance"
       },
-      "points": [
-        "Decomposed model computation graphs, mapped operators to GPU kernels, generated kernel-level computation graphs, and studied operator-to-kernel mapping patterns.",
-        "Built feature prediction models for compute and memory-access behavior, verified experimentally for later interference analysis and scheduling.",
-        "Developed automated tools to improve performance analysis and modeling efficiency."
-      ]
+      "points": {
+        "projectIntro": [
+          "Decomposed model computation graphs, mapped operators to GPU kernels, generated kernel-level computation graphs, and studied operator-to-kernel mapping patterns.",
+          "Built feature prediction models for compute and memory-access behavior, verified experimentally for later interference analysis and scheduling.",
+          "Developed automated tools to improve performance analysis and modeling efficiency."
+        ],
+        "personalWork": []
+      }
     },
     "rotating-calipers": {
       "title": "Diameter of a Point Set Algorithm Visualization",
@@ -175,18 +193,24 @@
       "images": {
         "executionProcess": "Execution process"
       },
-      "points": [
-        "Allows users to create arbitrary points on a plane, then shows the process of building the convex hull and using rotating calipers to find the farthest pair of points."
-      ]
+      "points": {
+        "projectIntro": [
+          "Allows users to create arbitrary points on a plane, then shows the process of building the convex hull and using rotating calipers to find the farthest pair of points."
+        ],
+        "personalWork": []
+      }
     },
     "oop-iteration-2022": {
       "title": "School of Software Cloud Platform (Youth Edition)",
       "summary": "A BUAA Object-Oriented Programming (Java) iterative assignment with four requirement rounds, teacher/student clients, and most traditional SCS functions.",
-      "points": [
-        "Practiced Java object-oriented modeling and code organization through multiple rounds of iterative tasks.",
-        "The teacher client supports course and experiment CRUD, plus adding students and teaching assistants.",
-        "Students can join courses and submit experiments; teaching assistants can help teachers manage courses."
-      ]
+      "points": {
+        "projectIntro": [
+          "Practiced Java object-oriented modeling and code organization through multiple rounds of iterative tasks.",
+          "The teacher client supports course and experiment CRUD, plus adding students and teaching assistants.",
+          "Students can join courses and submit experiments; teaching assistants can help teachers manage courses."
+        ],
+        "personalWork": []
+      }
     },
     "career-yiyan": {
       "title": "Career YIYAN Recruitment Website",
@@ -202,15 +226,18 @@
         "privateChat": "Private chat",
         "notifications": "Notifications"
       },
-      "points": [
-        "Followed Scrum, managed the Scrum board, and completed two requirement iterations in 11 days.",
-        "Participated across Scrum standups, story-point tracking, pair programming, automated checks, and manual code review.",
-        "Companies can manage employees, profiles, recruitment positions, and jobs; job seekers can manage resumes and apply.",
-        "Users and companies can publish, like, and comment on posts to understand each other better.",
-        "Users can send and manage private messages for closer job seeker-HR communication.",
-        "Implemented notifications for private messages, likes, and comments.",
-        "Used a large model to provide suggestions for improving resumes uploaded by users."
-      ]
+      "points": {
+        "projectIntro": [
+          "Strictly followed Scrum agile practices, managed the Scrum board through the course-provided platform, and completed two requirement iterations in 11 days.",
+          "Participated across Scrum standups, story-point tracking, pair programming, automated checks, and manual code review.",
+          "Companies can manage employees, profiles, recruitment positions, and jobs; job seekers can manage resumes and apply.",
+          "Users and companies can publish, like, and comment on posts to understand each other better.",
+          "Users can send and manage private messages for closer job seeker-HR communication.",
+          "Implemented notifications for private messages, likes, and comments.",
+          "Used a large model to provide suggestions for improving resumes uploaded by users."
+        ],
+        "personalWork": []
+      }
     },
     "cloud-yiyan": {
       "title": "Cloud YIYAN Software Engineering Team Collaboration and Management Platform",
@@ -229,19 +256,24 @@
         "messageNotifications": "Message notifications",
         "userCenter": "User profile center"
       },
-      "points": [
-        "Followed agile development with daily standups/reports and Alibaba Cloud DevOps, completing two iterations in 10 days.",
-        "Uses projects as the unit for team management, chat, documents, and prototype design.",
-        "Supports rich-text collaborative documents, mentions, and external sharing with permissions.",
-        "Supports chat with text, images, files, groups, delivery status, and read status.",
-        "Provides online Web prototype creation and editing for later page development.",
-        "Notifies users when mentioned in documents or when new chat messages arrive.",
-        "Collected team members' technical summaries to preserve and share development experience."
-      ]
+      "points": {
+        "projectIntro": [
+          "Strictly followed agile development with daily standups and status reports, managed progress on Alibaba Cloud DevOps, and completed two requirement iterations in 10 days.",
+          "Uses projects as the unit for team management, chat, documents, prototype design, and more, allowing users to create, join, and manage projects.",
+          "Provides project documents with rich-text and multi-user online collaborative editing; users can mention others in documents or share documents outside the project with desired permissions.",
+          "Provides chat and messaging: users can send text, images, files, and more to other users or in created groups, with delivery and read status.",
+          "Provides online prototype design for creating and editing Web page prototypes as the baseline for later development.",
+          "Implemented a notification system that alerts users when mentioned in documents or when new chat messages arrive.",
+          "Compiled development and technical summaries capturing each team member's reflections to preserve and share knowledge for future team development."
+        ],
+        "personalWork": [
+          "Served primarily as frontend developer and Scrum Master, delivering frontend and backend code aligned with the project's positioning and design style, and reviewing code from other developers."
+        ]
+      }
     },
     "yiyan-microservices": {
       "title": "YIYAN Academic Achievement Sharing Platform",
-      "summary": "A BUAA Software System Analysis and Design assignment: a high-concurrency academic achievement platform based on Vue, Java, Kubernetes, and Elastic Search.",
+      "summary": "A BUAA Software System Analysis and Design assignment: a high-concurrency academic achievement platform based on Vue, Java, Kubernetes, and Elasticsearch.",
       "images": {
         "advancedSearchHome": "Advanced search home page",
         "literatureDetail": "Literature details",
@@ -252,14 +284,20 @@
         "institutionPortal": "Research institution portal",
         "k8sDeployment": "K8s deployment"
       },
-      "points": [
-        "Completed the full process from requirements and modeling to architecture, data design, coding, deployment, and documentation.",
-        "Split modules into microservices and scheduled them to suitable nodes by task characteristics.",
-        "Supports full-text literature search and advanced search, combining keywords through operators such as AND, OR, and NOT.",
-        "Analyzes and visualizes research directions, collaborations, and citation relationships.",
-        "Provides personalized literature recommendations based on users' historical reading, downloads, and favorites.",
-        "Allows readers to discuss literature or cite it in column articles."
-      ]
+      "points": {
+        "projectIntro": [
+          "Went through the full process from requirements research, requirements modeling, and analysis modeling to architecture research and design, data design, coding, and deployment, producing documentation along the way.",
+          "On Kubernetes, created Deployments and other resources tailored to each microservice, used Ingress for load balancing, and delivered a high-availability deployment that supports high concurrency.",
+          "Used Elasticsearch for full-text and advanced literature search, combining keywords with operators such as AND, OR, and NOT.",
+          "Analyzes and visualizes researchers' research directions, collaborations, and citation relationships.",
+          "Provides personalized literature recommendations based on users' reading, download, and favorite history.",
+          "Allows readers to discuss literature or cite it in column articles with analysis and introductions."
+        ],
+        "personalWork": [
+          "Participated deeply in every stage starting from requirements research, and communicated requirement details multiple times with our virtual users (instructors and teaching assistants).",
+          "Served as project architect, frontend developer, and related roles, designed the overall system architecture, and delivered frontend and backend code aligned with the project's positioning and design style."
+        ]
+      }
     },
     "compiler": {
       "title": "SysY MIPS Compiler",
@@ -273,12 +311,15 @@
         "symbolTableDetail1": "Detailed output: real-time symbol table (1)",
         "targetCodeOutput": "Detailed output: target code generation"
       },
-      "points": [
-        "SysY is a subset of the C language and does not include pointer variables or floating-point numbers.",
-        "Controls compiler behavior through configuration options, including optimization and detailed output for each stage.",
-        "Supports detailed output with recursive structures and displays real-time symbol tables to make debugging easier.",
-        "Uses constant propagation, strength reduction, and pointer constant optimization to improve target-code performance."
-      ]
+      "points": {
+        "projectIntro": [
+          "SysY is a subset of the C language and does not include pointer variables or floating-point numbers.",
+          "Controls compiler behavior through configuration options, including optimization and detailed output for each stage.",
+          "Supports detailed output with recursive structures and displays real-time symbol tables to make debugging easier.",
+          "Uses constant propagation, strength reduction, and pointer constant optimization to improve target-code performance."
+        ],
+        "personalWork": []
+      }
     },
     "learning-living-platform": {
       "title": "YIYAN Learning and Living Platform",
@@ -295,13 +336,19 @@
         "newResource": "Create resource",
         "analytics": "Data statistics and analysis"
       },
-      "points": [
-        "Used waterfall project management and produced documents from requirements and design to deployment and maintenance.",
-        "Designed a task-fitting frontend with detailed prompts and embedded guidance.",
-        "Used JWT Token for authentication and a heartbeat mechanism to detect whether users are online.",
-        "Developed a resource deletion queue so unreferenced dead resources do not accumulate.",
-        "Deployed frontend, backend, and database in the cloud with nginx load balancing and GitHub Actions CI/CD."
-      ]
+      "points": {
+        "projectIntro": [
+          "Used waterfall project management and produced standardized documentation across the full lifecycle from requirements analysis and system design to deployment and maintenance.",
+          "Designed a task-oriented frontend with detailed prompts and embedded guidance to deliver the best user experience.",
+          "Used JWT Token for authentication and a heartbeat mechanism to detect whether users are online.",
+          "Developed a self-designed resource deletion queue algorithm to prevent unreferenced dead resources from accumulating in platform storage.",
+          "Deployed frontend, backend, and database in the cloud with nginx for load balancing and GitHub Actions CI/CD."
+        ],
+        "personalWork": [
+          "Served as project lead, coordinating progress, assigning tasks, and ensuring on-time delivery.",
+          "Served as frontend developer, designing and implementing frontend code aligned with the project's positioning and style, refining details carefully to deliver an excellent user experience."
+        ]
+      }
     },
     "archive-system": {
       "title": "Java Archive Management System",
@@ -311,11 +358,14 @@
         "searchResultsExpanded": "Expanded search result screen",
         "userRegistration": "User registration screen"
       },
-      "points": [
-        "An assignment from when I was first learning Java, supporting user management, archive upload, download, search, deletion, and related functions.",
-        "Implemented the GUI with Java Swing and used FlatLaf to provide different style and theme choices.",
-        "Used Git for version management and provided detailed guidance and prompts for users to improve the user experience."
-      ]
+      "points": {
+        "projectIntro": [
+          "An assignment from when I was first learning Java, supporting user management, archive upload, download, search, deletion, and related functions.",
+          "Implemented the GUI with Java Swing and used FlatLaf to provide different style and theme choices.",
+          "Used Git for version management and provided detailed guidance and prompts for users to improve the user experience."
+        ],
+        "personalWork": []
+      }
     }
   }
 }
