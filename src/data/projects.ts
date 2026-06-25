@@ -35,7 +35,6 @@ export type Project = {
   links?: ProjectLink[]
   featured?: boolean
   featuredOrder?: number
-  highlightPointIndexes?: number[]
   lifecycleStatus: ProjectLifecycleStatus
   status?: ProjectStatus[]
   tags: string[]

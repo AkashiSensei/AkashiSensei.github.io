@@ -18,6 +18,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { type Project } from "@/data/projects"
+import { getProjectPointSections } from "@/lib/project-points"
 import {
   getCourseProjectSemesterTagClassName,
   getSemanticTagClassName,
@@ -43,10 +44,6 @@ const detailTagClassName =
   "border-[rgb(var(--site-surface-rgb)_/_0.56)] bg-[rgb(var(--site-surface-rgb)_/_0.56)] text-foreground/75 shadow-sm shadow-black/5 backdrop-blur-md dark:border-white/20 dark:bg-white/12 dark:text-foreground/85 dark:shadow-black/20"
 
 const detailSectionClassName = "px-2 sm:px-4"
-
-function getPoints(value: unknown) {
-  return Array.isArray(value) ? value.filter((point): point is string => typeof point === "string") : []
-}
 
 function ProjectImageWall({
   images,
@@ -157,7 +154,9 @@ export function ProjectDetailPage({
   }
 
   const title = t(`items.${project.id}.title`)
-  const points = getPoints(t(`items.${project.id}.points`, { returnObjects: true }))
+  const { projectIntroPoints, personalWorkPoints } = getProjectPointSections(
+    t(`items.${project.id}.points`, { returnObjects: true }),
+  )
   const repoLinks =
     project.links ??
     (project.externalUrl || project.repoName
@@ -240,12 +239,30 @@ export function ProjectDetailPage({
         ) : null}
 
         <div className={cn("grid gap-7 sm:gap-6 lg:grid-cols-[minmax(0,1fr)_30rem] xl:grid-cols-[minmax(0,1fr)_34rem]", detailSectionClassName)}>
-          <section className="order-2 flex min-w-0 flex-col lg:order-1 lg:-mt-1">
-            <FeaturePointList
-              points={points}
-              highlightedIndexes={project.highlightPointIndexes}
-              className="gap-3 text-base"
-            />
+          <section className="order-2 flex min-w-0 flex-col gap-8 lg:order-1 lg:-mt-1">
+            {projectIntroPoints.length ? (
+              <div className="flex flex-col gap-3">
+                <h2 className="text-xl font-semibold leading-tight text-foreground/90 dark:text-foreground">
+                  {t("common:details.projectIntro")}
+                </h2>
+                <FeaturePointList
+                  points={projectIntroPoints}
+                  className="gap-3 text-base"
+                />
+              </div>
+            ) : null}
+
+            {personalWorkPoints.length ? (
+              <div className="flex flex-col gap-3">
+                <h2 className="text-xl font-semibold leading-tight text-foreground/90 dark:text-foreground">
+                  {t("common:details.personalWork")}
+                </h2>
+                <FeaturePointList
+                  points={personalWorkPoints}
+                  className="gap-3 text-base"
+                />
+              </div>
+            ) : null}
           </section>
 
           <aside className="order-1 flex min-w-0 flex-col gap-3 lg:order-2">

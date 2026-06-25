@@ -89,6 +89,7 @@ This section is the standing brief for future page design work. When modifying o
 - When a redesigned layout needs additional text to make hierarchy, rhythm, or composition work, draft realistic placeholder copy rather than using lorem ipsum or empty boxes. Such copy should live in the existing i18n/content structure and be suitable for the user to hand-edit or keep after review.
 - Summary cards should stay scannable. Richer narrative, long bullet lists, galleries, metadata, and relations belong on detail pages unless the module explicitly calls for overview bullets, such as 工作台.
 - Detail pages should use page-level composition rather than wrapping the entire entry in one oversized card. Prefer an unframed hero/header, constrained narrative sections, metadata/link clusters, and image/gallery bands.
+- Resume-facing project/course/detail bullets should prioritize the author's concrete role, decisions, implementation work, trade-offs, and measurable impact. It is acceptable to briefly explain the project context, but bullet lists must not become mostly product/function descriptions that hide what the author personally did.
 
 ### 3.6 Text contrast scale
 

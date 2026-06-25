@@ -1,4 +1,4 @@
-import { ArrowRight, ArrowUpRight } from "lucide-react"
+import { ArrowUpRight } from "lucide-react"
 import { useTranslation } from "react-i18next"
 
 import { AppLink } from "@/components/AppLink"
@@ -8,6 +8,7 @@ import { GlassPanel } from "@/components/GlassPanel"
 import { LazyImage } from "@/components/LazyImage"
 import { ProjectImageGallery } from "@/components/ProjectImageGallery"
 import { type Project } from "@/data/projects"
+import { getProjectPointSections } from "@/lib/project-points"
 import {
   getCourseProjectSemesterTagClassName,
   getSemanticTagClassName,
@@ -41,9 +42,7 @@ export function ProjectCard({
 }: ProjectCardProps) {
   const { t } = useTranslation([translationNamespace, "common"])
   const pointsValue = t(`items.${project.id}.points`, { returnObjects: true })
-  const points = Array.isArray(pointsValue)
-    ? pointsValue.filter((point): point is string => typeof point === "string")
-    : []
+  const { points, highlightedIndexes } = getProjectPointSections(pointsValue)
   const detailPath =
     translationNamespace === "courseProjects"
       ? `/course-projects/${project.id}`
@@ -221,18 +220,11 @@ export function ProjectCard({
           {variant === "full" && points.length ? (
             <FeaturePointList
               points={points}
-              highlightedIndexes={project.highlightPointIndexes}
+              highlightedIndexes={highlightedIndexes}
               className="gap-2 text-sm"
             />
           ) : null}
 
-          <AppLink
-            to={detailPath}
-            className="detail-link-trigger detail-link-emphasis group/detail inline-flex w-fit items-center gap-1.5 text-sm font-semibold text-foreground/65 transition-colors hover:text-foreground dark:text-foreground/75 dark:hover:text-foreground"
-          >
-            {t("common:details.viewDetails")}
-            <ArrowRight className="detail-link-arrow h-4 w-4 transition-transform group-hover/detail:translate-x-0.5" />
-          </AppLink>
         </div>
 
       </div>
