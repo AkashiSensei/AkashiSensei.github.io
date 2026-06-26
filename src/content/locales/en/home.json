@@ -4,5 +4,132 @@
   "description": "Thank you for visiting.\nI hope you may become my teacher or friend.\n\nFor projects, experience, and how I work, please see my online resume.\n\nThis site is still under construction. Some content may be incomplete or incorrect. Thank you for understanding.",
   "resumeCta": "View Online Resume",
   "contact": "Contact",
-  "github": "GitHub"
+  "github": "GitHub",
+  "fpv": {
+    "page01": {
+      "tags": {
+        "student": "Student",
+        "infj": "INFJ",
+        "anime": "Anime & Manga"
+      },
+      "title": "Akashi",
+      "maxim": "Please tell me to stop scrolling",
+      "lines": {
+        "softwareMaster": "Software Engineering master's student",
+        "building": "This is still a small space under construction, thank you for visiting",
+        "friend": "I hope you may become my teacher or friend"
+      },
+      "cta": "How to tell me to stop scrolling"
+    },
+    "page02": {
+      "title": "Interested in",
+      "subtitle": "I am interested in some of what I study, though perhaps not as much as I should be.",
+      "notes": {
+        "visual": "I learned drawing as a child, played with PS, AE, and C4D in high school, and now somehow have no time.",
+        "music": "I once learned keyboard and saxophone, but have forgotten all of it. I am now completely tone-deaf.",
+        "plushies": "I like cute things, and I own quite a few plush toys."
+      }
+    },
+    "page03": {
+      "title": "Study",
+      "subtitle": "Will I graduate?",
+      "bigline": "There is not much here yet.",
+      "lines": {
+        "engineering": "Both of my parents are engineers. Compared with research, I am more drawn to building things.",
+        "lowLevel": "I like looking into lower-level systems.",
+        "advisor": "My advisor is very kind, so I should probably be able to graduate."
+      },
+      "cta": "This is also rather empty",
+      "aside": "Engineering over ceremony."
+    },
+    "page04": {
+      "title": "Slacking off again",
+      "subtitle": "Hopefully you have already reminded me to stop looking at my phone.",
+      "activities": {
+        "fitness": {
+          "title": "Fitness",
+          "bullets": [
+            "My coach is asking me to train again.",
+            "I have found that Codex and treadmill climbing are surprisingly compatible."
+          ]
+        },
+        "swimming": {
+          "title": "Swimming",
+          "bullets": [
+            "It makes my neck feel much better.",
+            "A 6100 lung capacity lets me swim for quite a while."
+          ]
+        },
+        "archery": {
+          "title": "Archery",
+          "bullets": [
+            "If I skip practice again, I will feel a little guilty toward the team captain.",
+            "Every time I pause for a while, I have to readjust my form and find the feeling again."
+          ]
+        },
+        "overwatch": {
+          "title": "Overwatch",
+          "bullets": [
+            "I once used Kiriko to shut down every Sigma ultimate from the other team in a ranked match.",
+            "I do not argue back when people flame me."
+          ]
+        },
+        "worldOfWarships": {
+          "title": "World of Warships",
+          "bullets": [
+            "Sea monkey, meaning not especially skilled.",
+            "When people flame me, I reply with \"thank you\"."
+          ]
+        },
+        "photography": {
+          "title": "Photography",
+          "bullets": [
+            "My old point-and-shoot and mirrorless cameras both broke.",
+            "I am using an impulsively bought film camera now, and I still have not finished the first roll."
+          ]
+        },
+        "travel": {
+          "title": "Travel",
+          "bullets": [
+            "Recently I really want to go places: Chongqing, Japan, and New Zealand.",
+            "Since the end of Gaokao, I have wanted to go to Japan to play Kantai Collection Arcade, but the game is basically gone and I still have not made it to Japan."
+          ]
+        },
+        "flight": {
+          "title": "Flight",
+          "bullets": [
+            "One day, when I have time, I must learn to fly a plane."
+          ]
+        }
+      },
+      "aside": "I am very lucky to have friends who keep playing alongside me."
+    },
+    "page05": {
+      "title": "Still searching",
+      "subtitle": "I do not want to project negativity, but I really am quite lost right now.",
+      "lines": {
+        "ai": "With the shock of AI, finding work feels very difficult.",
+        "future": "I am not sure what kind of future I want, so I do not yet have a clear goal to pursue.",
+        "world": "I want to widen my view and see broader worlds and more varied ways to live.",
+        "balance": "I want to understand how people actually practice work-life balance."
+      },
+      "endline": "Recently I have wanted more coffee chats, and to meet more specific, concrete people.",
+      "whisper": "I miss Overwatch."
+    },
+    "page06": {
+      "title": "Friends",
+      "subtitle": "Thank you for being here along the way.",
+      "roster": {
+        "pending": {
+          "title": "List in progress",
+          "description": "This will become a careful place for people, projects, and kindness I truly want to recommend."
+        },
+        "exchange": {
+          "title": "Link exchange",
+          "description": "If you would like to be here too, come say hello first."
+        }
+      },
+      "aside": "Links are not decoration."
+    }
+  }
 }

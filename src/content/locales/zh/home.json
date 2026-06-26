@@ -4,5 +4,132 @@
   "description": "感谢您的访问。\n希望您能够成为我的老师或朋友。\n\n这里先保持简单。\n如果您想了解我的项目、经历和工作方式，可以去看看在线简历。\n\n本站仍在建设中，内容可能还不完善或者有错误，感谢理解。",
   "resumeCta": "查看在线简历",
   "contact": "联系方式",
-  "github": "GitHub"
+  "github": "GitHub",
+  "fpv": {
+    "page01": {
+      "tags": {
+        "student": "学生",
+        "infj": "INFJ",
+        "anime": "Anime & Manga"
+      },
+      "title": "Akashi",
+      "maxim": "快提醒我别再玩手机了",
+      "lines": {
+        "softwareMaster": "软件工程在读硕士生，每天祈祷能毕业的同时不要毕业即失业",
+        "building": "感谢您的来访，这里是一个还在建设中的小空间",
+        "friend": "期待您能够成为我的老师和朋友，分享给我新的知识，或者和我玩"
+      },
+      "cta": "点这里看如何告诉我别玩手机了"
+    },
+    "page02": {
+      "title": "Interested in",
+      "subtitle": "我对我所学东西的一部分有一些兴趣，但可能不多。",
+      "notes": {
+        "visual": "小的时候学过画画，高中的时候折腾 PS、AE、C4D，现在没空了。",
+        "music": "虽然学过电子琴、萨克斯，但是全部忘完了，现在完全是音痴。",
+        "plushies": "喜欢可爱的东西，有很多毛绒玩具。"
+      }
+    },
+    "page03": {
+      "title": "学业",
+      "subtitle": "我会毕业吗？",
+      "bigline": "这里空空如也",
+      "lines": {
+        "engineering": "我的父母都是工程师，相比于做科研，我更喜欢干工程。",
+        "lowLevel": "喜欢研究更加底层的东西。",
+        "advisor": "我的导师很好，应该不会卡我毕业。"
+      },
+      "cta": "这里也空空如也",
+      "aside": "Engineering over ceremony."
+    },
+    "page04": {
+      "title": "又在摸鱼了",
+      "subtitle": "希望你已经提醒过我停止玩手机了。",
+      "activities": {
+        "fitness": {
+          "title": "健身",
+          "bullets": [
+            "我的教练又催我去训练了。",
+            "我发现 Codex 和爬坡简直是绝配。"
+          ]
+        },
+        "swimming": {
+          "title": "游泳",
+          "bullets": [
+            "这让我的颈椎感觉很棒。",
+            "6100 的肺活量让我可以游很久。"
+          ]
+        },
+        "archery": {
+          "title": "射箭",
+          "bullets": [
+            "再不去训练有点愧对队长了。",
+            "每次隔一段时间就得重新调整动作找感觉。"
+          ]
+        },
+        "overwatch": {
+          "title": "守望先锋",
+          "bullets": [
+            "曾使用雾子在一把排位中解掉了对面西格玛所有的大招。",
+            "挨骂不会还嘴。"
+          ]
+        },
+        "worldOfWarships": {
+          "title": "战舰世界",
+          "bullets": [
+            "海猴，表示技术不佳。",
+            "挨骂会发“谢谢你”。"
+          ]
+        },
+        "photography": {
+          "title": "摄影",
+          "bullets": [
+            "之前的傻瓜机和微单都坏了。",
+            "现在在用一台冲动消费的胶卷机，但是还没用完第一卷胶片。"
+          ]
+        },
+        "travel": {
+          "title": "旅游",
+          "bullets": [
+            "最近很想到处玩，想去重庆、日本、新西兰。",
+            "从高考结束就想去日本玩《艦これアーケード》，但是这游戏都没了我都还没去成日本。"
+          ]
+        },
+        "flight": {
+          "title": "飞行",
+          "bullets": [
+            "有空了一定要去学开飞机。"
+          ]
+        }
+      },
+      "aside": "我非常幸运，能够有一帮陪我玩的朋友。"
+    },
+    "page05": {
+      "title": "我还在寻找",
+      "subtitle": "我不想输出负面情绪，但我现在确实很迷茫。",
+      "lines": {
+        "ai": "在 AI 的冲击下，我感到找工作非常困难。",
+        "future": "我不太清楚我想要的未来是什么样的，所以我没有明确的努力目标。",
+        "world": "我希望让视野更宽一些，看到更广阔的世界和更多样的人生。",
+        "balance": "我想知道如何做 work-life balance。"
+      },
+      "endline": "最近想约 coffee chat，想接触更多具体的人。",
+      "whisper": "想 O 了"
+    },
+    "page06": {
+      "title": "友链",
+      "subtitle": "感谢大家一路的陪伴。",
+      "roster": {
+        "pending": {
+          "title": "名单整理中",
+          "description": "这里会认真放下我愿意推荐的人、项目和一路遇到的善意。"
+        },
+        "exchange": {
+          "title": "交换链接",
+          "description": "如果你也想出现在这里，可以先来和我打个招呼。"
+        }
+      },
+      "aside": "Links are not decoration."
+    }
+  }
 }
