@@ -253,6 +253,811 @@
 }
 
 @layer components {
+  .fpv-home {
+    position: relative;
+    min-height: 600svh;
+    background: #050506;
+    color: white;
+  }
+
+  .fpv-home-sticky {
+    position: sticky;
+    top: 0;
+    min-height: 100svh;
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  .fpv-home-video {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background: #050506;
+  }
+
+  .fpv-home-shade {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background:
+      linear-gradient(90deg, rgb(0 0 0 / 0.62), rgb(0 0 0 / 0.12) 42%, rgb(0 0 0 / 0.36)),
+      linear-gradient(180deg, rgb(0 0 0 / 0.55), transparent 34%, rgb(0 0 0 / 0.58)),
+      radial-gradient(circle at 32% 38%, rgb(255 255 255 / 0.08), transparent 32%);
+  }
+
+  .fpv-edge {
+    pointer-events: none;
+    position: absolute;
+    z-index: 5;
+    display: flex;
+    gap: 1rem;
+    color: rgb(255 255 255 / 0.68);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    line-height: 1;
+    text-transform: uppercase;
+    text-shadow: 0 1px 14px rgb(0 0 0 / 0.45);
+  }
+
+  .fpv-edge-left {
+    left: clamp(1rem, 3vw, 2.5rem);
+    top: 50%;
+    transform: translateY(-50%) rotate(-90deg);
+    transform-origin: left center;
+  }
+
+  .fpv-edge-right {
+    right: clamp(1rem, 3vw, 2.5rem);
+    bottom: 50%;
+    transform: translateY(50%) rotate(90deg);
+    transform-origin: right center;
+  }
+
+  .fpv-css3d-layer {
+    pointer-events: auto;
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    overflow: hidden;
+  }
+
+  .fpv-css3d-renderer {
+    pointer-events: auto;
+    position: absolute;
+    overflow: hidden;
+  }
+
+  .fpv-css3d-renderer > div {
+    pointer-events: none;
+  }
+
+  .fpv-css3d-item {
+    box-sizing: border-box;
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+    will-change: transform, opacity, filter;
+  }
+
+  .fpv-css3d-attachment {
+    overflow: visible;
+    transform-style: preserve-3d;
+  }
+
+  .fpv-attachment-anchor-hidden {
+    visibility: hidden;
+  }
+
+  .fpv-virtual-screen-debug .fpv-attachment-anchor-hidden {
+    visibility: visible;
+  }
+
+  .fpv-attachment-anchor-reference {
+    position: relative;
+    transform-box: border-box;
+  }
+
+  .fpv-virtual-screen-debug .fpv-attachment-anchor-reference {
+    outline: 2px dashed hsl(var(--screen-hue) 100% 72% / 0.9);
+    outline-offset: 0.18rem;
+    background: hsl(var(--screen-hue) 100% 62% / 0.16);
+    color: hsl(var(--screen-hue) 100% 86% / 0.72);
+  }
+
+  .fpv-attachment-clone {
+    margin: 0;
+  }
+
+  .fpv-virtual-screen {
+    position: relative;
+    box-sizing: border-box;
+    overflow: hidden;
+    transform-style: preserve-3d;
+  }
+
+  .fpv-virtual-screen-mount,
+  .fpv-virtual-page {
+    position: absolute;
+    inset: 0;
+  }
+
+  .fpv-virtual-page {
+    color: white;
+  }
+
+  .fpv-page-node {
+    position: absolute;
+    --node-progress: 1;
+    transform-origin: center;
+  }
+
+  .fpv-virtual-screen-debug-surface {
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+    z-index: 20;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    border: 2px solid hsl(var(--screen-hue) 100% 72% / 0.78);
+    background:
+      linear-gradient(
+        135deg,
+        hsl(var(--screen-hue) 100% 62% / 0.26),
+        hsl(calc(var(--screen-hue) + 54) 100% 68% / 0.12)
+      ),
+      repeating-linear-gradient(
+        0deg,
+        rgb(255 255 255 / 0.08) 0,
+        rgb(255 255 255 / 0.08) 1px,
+        transparent 1px,
+        transparent 48px
+      ),
+      repeating-linear-gradient(
+        90deg,
+        rgb(255 255 255 / 0.07) 0,
+        rgb(255 255 255 / 0.07) 1px,
+        transparent 1px,
+        transparent 48px
+      );
+    box-shadow:
+      inset 0 0 0 1px rgb(255 255 255 / 0.16),
+      0 0 46px hsl(var(--screen-hue) 100% 66% / 0.18);
+  }
+
+  .fpv-virtual-screen-debug-surface span {
+    margin: 18px;
+    border: 1px solid rgb(255 255 255 / 0.26);
+    border-radius: 4px;
+    background: rgb(0 0 0 / 0.28);
+    padding: 0.45rem 0.55rem;
+    color: rgb(255 255 255 / 0.82);
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .fpv-page-01-intro {
+    right: 13%;
+    top: 45%;
+    transform: translateY(-50%);
+    width: 44%;
+  }
+
+  .fpv-page-01-intro .fpv-tag-row {
+    gap: 0.38rem;
+    margin-bottom: 1.85rem;
+  }
+
+  .fpv-page-01-intro .fpv-tag-row span {
+    padding: 0.3rem 0.58rem;
+    line-height: 0.92;
+  }
+
+  .fpv-page-01-intro .fpv-page-maxim {
+    margin-top: 0.62rem !important;
+  }
+
+  .fpv-page-01-intro .fpv-page-line-stack {
+    margin-top: 1.35rem;
+  }
+
+  .fpv-page-01-title-anchor {
+    --fpv-attachment-depth: 20;
+    margin-top: 0.32rem !important;
+    transform: translateX(0.32rem);
+    width: max-content;
+  }
+
+  .fpv-page-02-title {
+    left: 10%;
+    top: 12%;
+    width: 34%;
+  }
+
+  .fpv-page-02-tags {
+    left: 10%;
+    top: 36%;
+    width: 30%;
+  }
+
+  .fpv-page-02-notes {
+    left: 10%;
+    top: 66%;
+    width: 34%;
+  }
+
+  .fpv-page-02-study-title {
+    left: 54%;
+    top: 12%;
+    width: 34%;
+  }
+
+  .fpv-page-02-study-card {
+    left: 54%;
+    top: 38%;
+    width: 38%;
+  }
+
+  .fpv-page-03-word {
+    left: 10%;
+    top: 16%;
+    width: 38%;
+  }
+
+  .fpv-page-03-card {
+    left: 46%;
+    top: 34%;
+    width: 42%;
+  }
+
+  .fpv-page-03-label {
+    left: 11%;
+    top: 72%;
+    width: 28%;
+  }
+
+  .fpv-page-04-title {
+    left: 8%;
+    top: 13%;
+    width: 42%;
+  }
+
+  .fpv-page-04-card {
+    left: 8%;
+    top: 33%;
+    width: 78%;
+  }
+
+  .fpv-page-04-label {
+    left: 58%;
+    top: 17%;
+    width: 28%;
+  }
+
+  .fpv-page-05-title {
+    left: 10%;
+    top: 16%;
+    width: 48%;
+  }
+
+  .fpv-page-05-card {
+    left: 54%;
+    top: 31%;
+    width: 36%;
+  }
+
+  .fpv-page-05-label {
+    left: 10%;
+    top: 67%;
+    width: 44%;
+  }
+
+  .fpv-page-06-title {
+    left: 10%;
+    top: 16%;
+    width: 40%;
+  }
+
+  .fpv-page-06-card {
+    left: 48%;
+    top: 38%;
+    width: 38%;
+  }
+
+  .fpv-page-06-label {
+    left: 10%;
+    top: 72%;
+    width: 32%;
+  }
+
+  .fpv-page-copy {
+    color: rgb(255 255 255 / 0.92);
+    text-shadow:
+      0 2px 12px rgb(0 0 0 / 0.72),
+      0 1px 2px rgb(0 0 0 / 0.62);
+  }
+
+  .fpv-page-copy-right {
+    text-align: right;
+  }
+
+  .fpv-page-copy h1,
+  .fpv-page-copy h2,
+  .fpv-page-copy p {
+    margin: 0;
+  }
+
+  .fpv-page-copy h1 {
+    font-size: 5.75rem;
+    font-weight: 760;
+    line-height: 0.92;
+  }
+
+  .fpv-page-copy h2 {
+    font-size: 4.15rem;
+    font-weight: 720;
+    line-height: 0.96;
+  }
+
+  .fpv-page-subtitle {
+    margin-top: 0.75rem !important;
+    max-width: 36rem;
+    color: rgb(255 255 255 / 0.68);
+    font-size: 1.24rem;
+    font-weight: 520;
+    line-height: 1.45;
+  }
+
+  .fpv-page-copy-right .fpv-page-subtitle {
+    margin-left: auto;
+  }
+
+  .fpv-page-maxim {
+    margin-top: 1.1rem !important;
+    color: rgb(255 255 255 / 0.86);
+    font-size: 2.55rem;
+    font-weight: 690;
+    line-height: 1.08;
+  }
+
+  .fpv-page-bigline {
+    color: rgb(255 255 255 / 0.9);
+    font-size: 2.9rem;
+    font-weight: 710;
+    line-height: 1;
+  }
+
+  .fpv-page-line-stack {
+    display: grid;
+    gap: 0.55rem;
+    margin-top: 1.2rem;
+    color: rgb(255 255 255 / 0.68);
+    font-size: 1.08rem;
+    font-weight: 470;
+    line-height: 1.5;
+  }
+
+  .fpv-page-line-stack p {
+    margin: 0;
+  }
+
+  .fpv-tag-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    margin-bottom: 1rem;
+  }
+
+  .fpv-tag-row-right {
+    justify-content: flex-end;
+  }
+
+  .fpv-tag-row span,
+  .fpv-interest-tags span {
+    border: 1px solid rgb(255 255 255 / 0.22);
+    border-radius: 999px;
+    background: rgb(255 255 255 / 0.08);
+    padding: 0.36rem 0.62rem;
+    color: rgb(255 255 255 / 0.74);
+    font-size: 0.8rem;
+    font-weight: 620;
+    line-height: 1;
+    backdrop-filter: blur(14px);
+  }
+
+  .fpv-action-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1.35rem;
+    border: 1px solid rgb(255 255 255 / 0.28);
+    border-radius: 999px;
+    background: rgb(255 255 255 / 0.12);
+    padding: 0.68rem 0.96rem;
+    color: rgb(255 255 255 / 0.88);
+    font-size: 0.95rem;
+    font-weight: 650;
+    line-height: 1;
+    backdrop-filter: blur(18px);
+  }
+
+  .fpv-action-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.72rem;
+    margin-top: 1.35rem;
+  }
+
+  .fpv-action-row-right {
+    justify-content: flex-end;
+  }
+
+  .fpv-action-row .fpv-action-pill {
+    margin-top: 0;
+  }
+
+  .fpv-page-01-action-row {
+    margin-top: 5px;
+    pointer-events: auto;
+    width: max-content;
+  }
+
+  .fpv-page-01-action-row-anchor {
+    --fpv-attachment-depth: 20;
+    transform: translateX(0.32rem);
+  }
+
+  .fpv-action-pill-solid {
+    pointer-events: auto;
+    cursor: pointer;
+    border-color: rgb(255 255 255 / 0.92);
+    background: rgb(255 255 255 / 0.92);
+    color: rgb(6 8 12 / 0.96);
+    box-shadow:
+      0 1px 0 rgb(255 255 255 / 0.32) inset,
+      0 18px 40px rgb(0 0 0 / 0.22);
+    transition:
+      background-color 160ms ease,
+      border-color 160ms ease,
+      box-shadow 160ms ease;
+  }
+
+  .fpv-action-pill-solid:hover {
+    border-color: rgb(255 255 255);
+    background: rgb(255 255 255);
+    box-shadow:
+      0 1px 0 rgb(255 255 255 / 0.4) inset,
+      0 22px 50px rgb(0 0 0 / 0.28);
+  }
+
+  .fpv-action-pill-solid:focus-visible {
+    outline: 2px solid rgb(255 255 255 / 0.72);
+    outline-offset: 3px;
+  }
+
+  .fpv-page-03-action {
+    box-shadow: none;
+    text-shadow: none;
+  }
+
+  .fpv-page-03-action:hover {
+    box-shadow: none;
+  }
+
+  .fpv-action-pill-outline {
+    pointer-events: auto;
+    cursor: pointer;
+    background: rgb(255 255 255 / 0.08);
+    text-decoration: none;
+    transition:
+      background-color 160ms ease,
+      border-color 160ms ease,
+      color 160ms ease;
+  }
+
+  .fpv-action-pill-outline:hover {
+    border-color: rgb(255 255 255 / 0.66);
+    background: rgb(255 255 255 / 0.16);
+    color: rgb(255 255 255 / 0.96);
+  }
+
+  .fpv-action-pill-outline:focus-visible {
+    outline: 2px solid rgb(255 255 255 / 0.52);
+    outline-offset: 3px;
+  }
+
+
+  .fpv-interest-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    align-content: flex-start;
+  }
+
+  .fpv-interest-tags span {
+    font-size: 1rem;
+    padding: 0.64rem 0.86rem;
+  }
+
+  .fpv-note-list {
+    display: grid;
+    gap: 0.95rem;
+    border-left: 1px solid rgb(255 255 255 / 0.24);
+    padding-left: 1.05rem;
+    color: rgb(255 255 255 / 0.72);
+    font-size: 1.08rem;
+    font-weight: 470;
+    line-height: 1.5;
+    text-shadow:
+      0 2px 10px rgb(0 0 0 / 0.66),
+      0 1px 2px rgb(0 0 0 / 0.52);
+  }
+
+  .fpv-note-list p {
+    margin: 0;
+  }
+
+  .fpv-note-list-large {
+    gap: 0.82rem;
+    color: rgb(255 255 255 / 0.74);
+    font-size: 1.06rem;
+  }
+
+  .fpv-small-aside {
+    color: rgb(255 255 255 / 0.58);
+    font-size: 0.9rem;
+    font-weight: 650;
+    line-height: 1.35;
+    text-shadow:
+      0 2px 8px rgb(0 0 0 / 0.62),
+      0 1px 1px rgb(0 0 0 / 0.48);
+  }
+
+  .fpv-activity-list {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.72rem;
+    color: rgb(255 255 255 / 0.74);
+    text-shadow:
+      0 2px 10px rgb(0 0 0 / 0.66),
+      0 1px 2px rgb(0 0 0 / 0.52);
+  }
+
+  .fpv-activity-list section {
+    min-height: 7.35rem;
+    border: 1px solid rgb(255 255 255 / 0.2);
+    border-radius: 0.78rem;
+    background:
+      linear-gradient(135deg, rgb(255 255 255 / 0.16), rgb(255 255 255 / 0.06)),
+      rgb(20 24 32 / 0.24);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.14),
+      0 0.6rem 1.8rem rgb(0 0 0 / 0.16);
+    padding: 0.78rem 0.86rem;
+    backdrop-filter: blur(16px) saturate(125%);
+    -webkit-backdrop-filter: blur(16px) saturate(125%);
+  }
+
+  .fpv-activity-list h3 {
+    margin: 0 0 0.46rem;
+    color: rgb(255 255 255 / 0.9);
+    font-size: 0.98rem;
+    font-weight: 760;
+    line-height: 1.1;
+  }
+
+  .fpv-activity-list ul {
+    margin: 0;
+    padding-left: 1rem;
+  }
+
+  .fpv-activity-list li {
+    margin: 0.24rem 0 0;
+    color: rgb(255 255 255 / 0.64);
+    font-size: 0.73rem;
+    font-weight: 520;
+    line-height: 1.34;
+  }
+
+  .fpv-page-endline {
+    color: rgb(255 255 255 / 0.86);
+    font-size: 1.48rem;
+    font-weight: 680;
+    line-height: 1.28;
+  }
+
+  .fpv-floating-whisper {
+    display: inline-flex;
+    margin-top: 1rem;
+    color: rgb(255 255 255 / 0.52);
+    font-size: 0.94rem;
+    font-weight: 620;
+  }
+
+  .fpv-link-roster {
+    display: grid;
+    gap: 1rem;
+    color: rgb(255 255 255 / 0.72);
+    text-shadow:
+      0 2px 10px rgb(0 0 0 / 0.66),
+      0 1px 2px rgb(0 0 0 / 0.52);
+  }
+
+  .fpv-link-roster div {
+    border-top: 1px solid rgb(255 255 255 / 0.24);
+    padding-top: 0.85rem;
+  }
+
+  .fpv-link-roster span {
+    display: block;
+    margin-bottom: 0.38rem;
+    color: rgb(255 255 255 / 0.9);
+    font-size: 1.14rem;
+    font-weight: 700;
+  }
+
+  .fpv-link-roster p {
+    margin: 0;
+    color: rgb(255 255 255 / 0.62);
+    font-size: 0.96rem;
+    font-weight: 470;
+    line-height: 1.45;
+  }
+
+  .fpv-space-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.28rem;
+    color: rgb(255 255 255 / 0.92);
+    font-size: 1.3rem;
+    font-weight: 620;
+    line-height: 0.96;
+    text-shadow:
+      0 2px 12px rgb(0 0 0 / 0.72),
+      0 1px 2px rgb(0 0 0 / 0.62);
+    text-wrap: balance;
+  }
+
+  .fpv-space-text p {
+    margin: 0;
+  }
+
+  .fpv-space-text span {
+    color: rgb(255 255 255 / 0.58);
+    font-size: 0.72rem;
+    font-weight: 520;
+    line-height: 1.25;
+    text-transform: lowercase;
+  }
+
+  .fpv-space-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 0.85rem;
+    overflow: hidden;
+    border: 1px solid rgb(255 255 255 / 0.24);
+    border-radius: 8px;
+    background:
+      linear-gradient(145deg, rgb(255 255 255 / 0.2), rgb(255 255 255 / 0.07)),
+      rgb(10 12 16 / 0.25);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.22),
+      0 22px 60px rgb(0 0 0 / 0.35);
+    padding: clamp(0.8rem, 1.25vw, 1.15rem);
+    backdrop-filter: blur(18px);
+  }
+
+  .fpv-space-card span {
+    color: rgb(255 255 255 / 0.9);
+    font-size: 0.95rem;
+    font-weight: 640;
+    line-height: 1.15;
+    text-transform: lowercase;
+  }
+
+  .fpv-space-card p {
+    margin: 0;
+    color: rgb(255 255 255 / 0.66);
+    font-size: 0.76rem;
+    font-weight: 450;
+    line-height: 1.42;
+  }
+
+  .fpv-space-label {
+    width: max-content !important;
+    border: 1px solid rgb(255 255 255 / 0.24);
+    border-radius: 4px;
+    background: rgb(0 0 0 / 0.24);
+    padding: 0.36rem 0.5rem;
+    color: rgb(255 255 255 / 0.68);
+    font-size: 0.62rem;
+    font-weight: 650;
+    letter-spacing: 0.1em;
+    line-height: 1;
+    text-transform: uppercase;
+    backdrop-filter: blur(12px);
+  }
+
+  @media (max-width: 767px) {
+    .fpv-edge {
+      display: none;
+    }
+
+    .fpv-home-shade {
+      background:
+        linear-gradient(180deg, rgb(0 0 0 / 0.66), rgb(0 0 0 / 0.22) 46%, rgb(0 0 0 / 0.72)),
+        linear-gradient(90deg, rgb(0 0 0 / 0.46), transparent 72%);
+    }
+
+    .fpv-css3d-layer {
+      opacity: 0.78;
+    }
+
+    .fpv-space-card {
+      padding: 0.72rem;
+    }
+
+    .fpv-space-card p {
+      display: none;
+    }
+
+    .fpv-page-copy h1 {
+      font-size: 3.55rem;
+    }
+
+    .fpv-page-copy h2 {
+      font-size: 2.55rem;
+    }
+
+    .fpv-page-maxim {
+      font-size: 1.65rem;
+    }
+
+    .fpv-page-bigline {
+      font-size: 1.95rem;
+    }
+
+    .fpv-page-subtitle,
+    .fpv-page-line-stack,
+    .fpv-note-list {
+      font-size: 0.86rem;
+    }
+
+    .fpv-activity-list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.7rem 0.9rem;
+    }
+
+    .fpv-activity-list section {
+      min-height: 5.6rem;
+      padding: 0.58rem 0.66rem;
+      border-radius: 0.62rem;
+    }
+
+    .fpv-activity-list h3 {
+      font-size: 0.78rem;
+    }
+
+    .fpv-activity-list li {
+      font-size: 0.58rem;
+      line-height: 1.25;
+    }
+
+    .fpv-interest-tags span {
+      font-size: 0.8rem;
+      padding: 0.5rem 0.62rem;
+    }
+
+  }
+
   .image-preview-dialog {
     --image-preview-dialog-inline-gap: 0.5rem;
     --image-preview-dialog-block-gap: 4rem;
