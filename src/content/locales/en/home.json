@@ -22,12 +22,51 @@
       "cta": "How to tell me to stop scrolling"
     },
     "page02": {
-      "title": "Interested in",
-      "subtitle": "I am interested in some of what I study, though perhaps not as much as I should be.",
-      "notes": {
-        "visual": "I learned drawing as a child, played with PS, AE, and C4D in high school, and now somehow have no time.",
-        "music": "I once learned keyboard and saxophone, but have forgotten all of it. I am now completely tone-deaf.",
-        "plushies": "I like cute things, and I own quite a few plush toys."
+      "title": "Receptive Field",
+      "subtitle": "Sensing the world",
+      "description": [
+        "I have some interest in what I study, though perhaps not too much.",
+        "A workstation should not be the edge of my view.",
+        "Sometimes I want to experience a richer and more complete world."
+      ],
+      "fields": {
+        "study": {
+          "title": "Study & Engineering",
+          "subtitle": "My real-world coordinate system",
+          "bullets": [
+            "Unfortunately, this part is still rather empty.",
+            "My advisor is very kind, so I should probably be able to graduate."
+          ],
+          "cta": "This part is not that empty"
+        },
+        "world": {
+          "title": "World & Society",
+          "subtitle": "Modeling the world and human society",
+          "bullets": [
+            "How does society work? At least not exactly the way we were taught as children.",
+            "How does one make money? Work? Start a company? Move a mountain with a small lever?",
+            "How can I create the life I want?"
+          ]
+        },
+        "beingHuman": {
+          "title": "Born, Then Becoming",
+          "subtitle": "How a person can live",
+          "bullets": [
+            "What kind of life do I want?",
+            "I want to understand and experience more varied ways of living.",
+            "I am curious about different professions and different cities, without being trapped by conventional ideas of good or bad.",
+            "I like living in different places for a while, though after entering university I have had almost no vacations."
+          ]
+        },
+        "expression": {
+          "title": "Expression & Feeling",
+          "subtitle": "Keeping the sensitive part of me",
+          "bullets": [
+            "Visuals, photography, aesthetics, anime, and cute things.",
+            "I have been playing with PS, AE, C4D, and similar tools since middle and high school.",
+            "I like pink-blue gradients."
+          ]
+        }
       }
     },
     "page03": {
@@ -44,7 +83,7 @@
     },
     "page04": {
       "title": "Slacking off again",
-      "subtitle": "Hopefully you have already reminded me to stop looking at my phone.",
+      "subtitle": "Hopefully you have already reminded me to stop looking at my phone",
       "activities": {
         "fitness": {
           "title": "Fitness",

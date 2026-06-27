@@ -23,12 +23,11 @@ const NIGHT_VIDEO_URL = "/assets/homepage-fpv/night-gop3.mp4"
 const STATIC_PROGRESS = 0
 const VIDEO_FRAME_RATE = 90
 const SCROLL_TIMELINE_DURATION = 8
-const KEYBOARD_SCREEN_SCROLL_DURATION = 1000
+const KEYBOARD_SCREEN_SCROLL_DURATION = 2000
 const SCREEN_NAVIGATION_EPSILON = 0.035
 const SHOW_DEBUG_SURFACES = import.meta.env.VITE_FPV_DEBUG_SURFACES === "true"
 const ENABLE_DEV_LIVE_CSS3D_SYNC = import.meta.env.DEV
 const DEFAULT_VISIBILITY_FADE_RATIO = 0.9
-const MAX_SCREEN_BLUR_PX = 10
 
 type RenderState = {
   progress: number
@@ -47,6 +46,7 @@ type Css3DScreen = {
   element: HTMLDivElement
   root: Root
   scale: number
+  currentTimeDelta: number
   lastTimeDelta: number
   objects: Css3DLayerObject[]
   attachments: Css3DAttachment[]
@@ -491,6 +491,7 @@ function parseFiniteNumber(value: string | undefined) {
 function getAttachmentDepth(
   attachment: Css3DAttachment,
   anchor: HTMLElement,
+  screen: Css3DScreen,
 ) {
   const dataDepth = parseFiniteNumber(anchor.dataset.fpvAttachmentDepth)
 
@@ -498,11 +499,32 @@ function getAttachmentDepth(
     return dataDepth
   }
 
+  if (attachment.definition.getDepth) {
+    return attachment.definition.getDepth({
+      viewport: screen.viewport,
+      timeDelta: screen.currentTimeDelta,
+    })
+  }
+
   const cssDepth = parseFiniteNumber(
     window.getComputedStyle(anchor).getPropertyValue("--fpv-attachment-depth"),
   )
 
-  return cssDepth ?? attachment.definition.depth ?? 0
+  if (cssDepth !== null) {
+    return cssDepth
+  }
+
+  return attachment.definition.depth ?? 0
+}
+
+function getAttachmentStyle(
+  attachment: Css3DAttachment,
+  screen: Css3DScreen,
+) {
+  return attachment.definition.getStyle?.({
+    viewport: screen.viewport,
+    timeDelta: screen.currentTimeDelta,
+  })
 }
 
 function syncScreenAttachments(screen: Css3DScreen) {
@@ -537,11 +559,22 @@ function syncScreenAttachments(screen: Css3DScreen) {
     attachment.element.style.width = `${anchorRect.width}px`
     attachment.element.style.height = `${anchorRect.height}px`
     attachment.element.style.visibility = "visible"
-    attachment.object.position.set(
-      localX,
-      localY,
-      getAttachmentDepth(attachment, anchor),
+    const attachmentDepth = getAttachmentDepth(attachment, anchor, screen)
+    const attachmentStyle = getAttachmentStyle(attachment, screen)
+    attachment.element.dataset.fpvAttachmentDepth = attachmentDepth.toFixed(2)
+    attachment.element.dataset.fpvAttachmentOpacity =
+      attachmentStyle?.opacity?.toFixed(3) ?? ""
+    attachment.element.dataset.fpvAttachmentBlur =
+      attachmentStyle?.blur?.toFixed(2) ?? ""
+    attachment.element.style.setProperty(
+      "--fpv-attachment-opacity",
+      String(attachmentStyle?.opacity ?? 1),
     )
+    attachment.element.style.setProperty(
+      "--fpv-attachment-blur",
+      `${attachmentStyle?.blur ?? 0}px`,
+    )
+    attachment.object.position.set(localX, localY, attachmentDepth)
     attachment.object.scale.set(screen.scale, screen.scale, 1)
   }
 }
@@ -695,6 +728,7 @@ function createCss3DSceneBundle(
       element: virtualScreen.element,
       root: virtualScreen.root,
       scale,
+      currentTimeDelta: 0,
       lastTimeDelta: 0,
       objects: [
         {
@@ -736,6 +770,7 @@ function renderCss3DScene(
     )
     const timeDelta = Number((time - screen.screen.time).toFixed(4))
     const opacity = getOpacityFromDisplayProgress(displayProgress)
+    screen.currentTimeDelta = timeDelta
 
     if (screen.lastTimeDelta !== timeDelta) {
       flushSync(() => {
@@ -765,9 +800,15 @@ function renderCss3DScene(
     syncScreenAttachments(screen)
 
     for (const { object, interactive } of screen.objects) {
-      const blur = (1 - opacity) * MAX_SCREEN_BLUR_PX
-      object.element.style.opacity = opacity.toFixed(3)
-      object.element.style.filter = `blur(${blur.toFixed(2)}px)`
+      const attachmentOpacity = parseFiniteNumber(
+        object.element.style.getPropertyValue("--fpv-attachment-opacity"),
+      ) ?? 1
+      const attachmentBlur = parseFiniteNumber(
+        object.element.style.getPropertyValue("--fpv-attachment-blur"),
+      ) ?? 0
+      object.element.style.opacity = (opacity * attachmentOpacity).toFixed(3)
+      object.element.style.filter =
+        attachmentBlur > 0 ? `blur(${attachmentBlur.toFixed(2)}px)` : ""
       object.element.style.pointerEvents =
         interactive && opacity > 0.08 ? "auto" : "none"
     }
