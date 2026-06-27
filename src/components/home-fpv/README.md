@@ -87,6 +87,31 @@ attachments: [
 
 The original anchor remains in normal layout, so responsive positioning still works. The visible attachment is placed from the anchor's actual local position.
 
+For auto-height cards, let the hidden anchor keep the real card markup in normal layout. Do not give the visible attachment wrapper a fixed card height. The sync step reads the anchor's local rect, then applies that measured width and height to the floating CSS3D object. The clone should fill that measured box:
+
+```css
+.fpv-css3d-attachment > .fpv-attachment-clone.fpv-card-anchor {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+}
+```
+
+For live-tuned offsets, move the anchor itself with ordinary CSS:
+
+```css
+.fpv-example-anchor {
+  --fpv-attachment-depth: 20;
+  transform: translateX(-1rem);
+}
+
+.fpv-css3d-attachment > .fpv-attachment-clone.fpv-example-anchor {
+  transform: none;
+}
+```
+
+Do not put layout offsets on the attachment wrapper class. The wrapper is a `CSS3DObject`, and the renderer owns its inline `transform`.
+
 ## Attachment Depth
 
 `depth` moves the attachment along the virtual screen's local `+Z` axis, toward the camera at the time the screen is created.
@@ -99,11 +124,41 @@ For live tuning or animation, prefer a CSS variable on the anchor:
 }
 ```
 
+Animated React screens can update the same variable inline:
+
+```tsx
+<section
+  data-fpv-attachment-anchor="page04-card"
+  style={{ "--fpv-attachment-depth": animatedDepth } as React.CSSProperties}
+>
+  ...
+</section>
+```
+
+For per-frame depth animation, prefer `getDepth` on the attachment definition instead of rerendering a CSS variable through React. The anchor still controls responsive position and measured height; only depth is computed directly in the CSS3D sync step.
+
+```ts
+attachments: [
+  {
+    id: "page04-card-float",
+    anchor: "page04-card",
+    getDepth: ({ timeDelta }) => 30 - timeDelta * 20,
+    getStyle: ({ timeDelta }) => ({
+      opacity: Math.min(Math.max(timeDelta, 0), 1),
+      blur: Math.max(0, 8 - timeDelta * 8),
+    }),
+  },
+]
+```
+
+`getStyle` is for attachment-local animation only. It does not re-enable global virtual-screen blur during screen fade in/out.
+
 Runtime priority is:
 
 1. `data-fpv-attachment-depth`
-2. `--fpv-attachment-depth`
-3. `attachments[].depth`
+2. `attachments[].getDepth`
+3. `--fpv-attachment-depth`
+4. `attachments[].depth`
 
 In development, attachment positions are live-synced so CSS variable edits can take effect without a full page refresh. Production does not run the extra dev sync loop.
 

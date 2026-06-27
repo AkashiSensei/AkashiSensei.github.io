@@ -41,6 +41,11 @@ export type VirtualScreenAttachmentDefinition = {
   id: string
   anchor: string
   depth?: number
+  getDepth?: (props: VirtualScreenAttachmentProps) => number
+  getStyle?: (props: VirtualScreenAttachmentProps) => {
+    opacity?: number
+    blur?: number
+  }
   className?: string
   interactive?: boolean
   cloneAnchor?: boolean
