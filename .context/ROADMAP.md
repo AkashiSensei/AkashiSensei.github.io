@@ -13,6 +13,7 @@
 
 ## History
 
+- 2026-06-28 | [Archived: Homepage FPV display fixes](archive/20260628_Homepage-FPV-display-fixes.md) | Fixed FPV homepage display regressions across wide viewports and Firefox by aligning video/CSS3D cover behavior, replacing fragile filtered glass on small controls/cards, weakening homepage-only local effects, centering the receipt scene, and deferring CSS3D React root cleanup.
 - 2026-06-28 | [Archived: Homepage FPV desktop polish](archive/20260628_Homepage-FPV-desktop-polish.md) | Completed the desktop FPV homepage pass with tuned virtual screens, floating attachments, coffee-chat receipt, friend-link capsules, and a noted follow-up for mobile/narrow responsive polish.
 - 2026-06-26 | Homepage FPV baseline | Replaced the root homepage entry with a scroll-scrubbed FPV video scene, added CSS3D virtual screens, floating attachment cards for true depth, bilingual FPV copy, debug surfaces, and implementation notes for future tuning.
 - 2026-06-25 | [Archived: Resume bullet contribution structure](archive/20260625_Resume-bullet-contribution-structure.md) | Split project/course bullets into editable project-intro and personal-work locale sections, highlighted personal work on cards, and tuned detail-page section rendering.

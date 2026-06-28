@@ -27,7 +27,13 @@ function easeOutCubic(value: number) {
   return 1 - (1 - value) ** 3
 }
 
-function getReceiptMotionStyle(timeDelta: number) {
+function getReceiptMotionStyle(timeDelta: number, isAnimationEnabled: boolean) {
+  if (!isAnimationEnabled) {
+    return {
+      "--fpv-page-05-receipt-y": "0%",
+    } as CSSProperties
+  }
+
   const enterProgress = clamp01((timeDelta - receiptEnterStart) / receiptEnterDuration)
 
   if (enterProgress < 1) {
@@ -60,14 +66,14 @@ function Page05ContactButton() {
   )
 }
 
-function Page05({ timeDelta }: VirtualScreenProps) {
+function Page05({ timeDelta, isAnimationEnabled }: VirtualScreenProps) {
   const receiptStageRef = useRef<HTMLDivElement>(null)
   const [receiptWindowHeight, setReceiptWindowHeight] = useState(0)
   const { t } = useTranslation("home")
   const receiptData = buildCoffeeChatReceiptData(t)
   const subtitle = t("fpv.page05.subtitle")
   const endline = t("fpv.page05.endline")
-  const receiptMotionStyle = getReceiptMotionStyle(timeDelta)
+  const receiptMotionStyle = getReceiptMotionStyle(timeDelta, isAnimationEnabled)
   const receiptWindowStyle = {
     "--receipt-fpv-window-height": receiptWindowHeight > 0 ? `${receiptWindowHeight}px` : undefined,
   } as CSSProperties

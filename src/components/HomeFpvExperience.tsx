@@ -48,6 +48,7 @@ type Css3DScreen = {
   scale: number
   currentTimeDelta: number
   lastTimeDelta: number
+  lastAnimationEnabled: boolean | null
   objects: Css3DLayerObject[]
   attachments: Css3DAttachment[]
 }
@@ -55,6 +56,7 @@ type Css3DScreen = {
 type Css3DLayerObject = {
   object: CSS3DObject
   interactive: boolean
+  attachmentDriven?: boolean
 }
 
 type Css3DAttachment = {
@@ -118,6 +120,10 @@ function clamp01(value: number) {
 
 function degreesToRadians(value: number) {
   return (value * Math.PI) / 180
+}
+
+function radiansToDegrees(value: number) {
+  return (value * 180) / Math.PI
 }
 
 function normalizeAngle(value: number) {
@@ -299,13 +305,46 @@ function aePositionToThree(position: [number, number, number], track: CameraTrac
   )
 }
 
+function getTrackAspect(track: CameraTrack) {
+  const aspect = track.comp.width / Math.max(track.comp.height, 1)
+
+  return Number.isFinite(aspect) && aspect > 0 ? aspect : 16 / 9
+}
+
+function getFrameHorizontalFov(frame: CameraFrame, track: CameraTrack) {
+  if (Number.isFinite(frame.fov.horizontal) && frame.fov.horizontal > 0) {
+    return frame.fov.horizontal
+  }
+
+  const sourceAspect = getTrackAspect(track)
+  const verticalFov = degreesToRadians(frame.fov.vertical)
+
+  return radiansToDegrees(2 * Math.atan(Math.tan(verticalFov / 2) * sourceAspect))
+}
+
+function getCoverAdjustedVerticalFov(
+  frame: CameraFrame,
+  track: CameraTrack,
+  projectionAspect: number,
+) {
+  const sourceAspect = getTrackAspect(track)
+
+  if (projectionAspect <= sourceAspect) {
+    return frame.fov.vertical
+  }
+
+  const horizontalFov = degreesToRadians(getFrameHorizontalFov(frame, track))
+
+  return radiansToDegrees(2 * Math.atan(Math.tan(horizontalFov / 2) / projectionAspect))
+}
+
 function applyAeCameraFrame(
   camera: THREE.PerspectiveCamera,
   frame: CameraFrame,
   track: CameraTrack,
   projectionAspect: number,
 ) {
-  camera.fov = frame.fov.vertical
+  camera.fov = getCoverAdjustedVerticalFov(frame, track, projectionAspect)
   camera.aspect = projectionAspect
   camera.position.copy(aePositionToThree(frame.position, track))
   camera.rotation.set(
@@ -492,6 +531,7 @@ function getAttachmentDepth(
   attachment: Css3DAttachment,
   anchor: HTMLElement,
   screen: Css3DScreen,
+  isAnimationEnabled: boolean,
 ) {
   const dataDepth = parseFiniteNumber(anchor.dataset.fpvAttachmentDepth)
 
@@ -503,6 +543,7 @@ function getAttachmentDepth(
     return attachment.definition.getDepth({
       viewport: screen.viewport,
       timeDelta: screen.currentTimeDelta,
+      isAnimationEnabled,
     })
   }
 
@@ -520,14 +561,16 @@ function getAttachmentDepth(
 function getAttachmentStyle(
   attachment: Css3DAttachment,
   screen: Css3DScreen,
+  isAnimationEnabled: boolean,
 ) {
   return attachment.definition.getStyle?.({
     viewport: screen.viewport,
     timeDelta: screen.currentTimeDelta,
+    isAnimationEnabled,
   })
 }
 
-function syncScreenAttachments(screen: Css3DScreen) {
+function syncScreenAttachments(screen: Css3DScreen, isAnimationEnabled: boolean) {
   if (screen.attachments.length === 0) {
     return
   }
@@ -559,8 +602,17 @@ function syncScreenAttachments(screen: Css3DScreen) {
     attachment.element.style.width = `${anchorRect.width}px`
     attachment.element.style.height = `${anchorRect.height}px`
     attachment.element.style.visibility = "visible"
-    const attachmentDepth = getAttachmentDepth(attachment, anchor, screen)
-    const attachmentStyle = getAttachmentStyle(attachment, screen)
+    const attachmentDepth = getAttachmentDepth(
+      attachment,
+      anchor,
+      screen,
+      isAnimationEnabled,
+    )
+    const attachmentStyle = getAttachmentStyle(
+      attachment,
+      screen,
+      isAnimationEnabled,
+    )
     attachment.element.dataset.fpvAttachmentDepth = attachmentDepth.toFixed(2)
     attachment.element.dataset.fpvAttachmentOpacity =
       attachmentStyle?.opacity?.toFixed(3) ?? ""
@@ -574,6 +626,12 @@ function syncScreenAttachments(screen: Css3DScreen) {
       "--fpv-attachment-blur",
       `${attachmentStyle?.blur ?? 0}px`,
     )
+    attachment.element.style.setProperty(
+      "--fpv-attachment-filter",
+      attachmentStyle?.blur && attachmentStyle.blur > 0 ?
+        `blur(${attachmentStyle.blur.toFixed(2)}px)`
+      : "none",
+    )
     attachment.object.position.set(localX, localY, attachmentDepth)
     attachment.object.scale.set(screen.scale, screen.scale, 1)
   }
@@ -583,6 +641,7 @@ function createVirtualScreenElement(
   screen: VirtualScreenDefinition,
   viewport: ViewportState,
   index: number,
+  isAnimationEnabled: boolean,
 ) {
   const element = document.createElement("div")
   element.className = [
@@ -610,7 +669,13 @@ function createVirtualScreenElement(
 
   const root = createRoot(mount)
   flushSync(() => {
-    root.render(<screen.Component viewport={viewport} timeDelta={0} />)
+    root.render(
+      <screen.Component
+        viewport={viewport}
+        timeDelta={0}
+        isAnimationEnabled={isAnimationEnabled}
+      />,
+    )
   })
 
   return {
@@ -622,6 +687,7 @@ function createVirtualScreenElement(
 function createAttachmentObject(
   attachment: VirtualScreenAttachmentDefinition,
   viewport: ViewportState,
+  isAnimationEnabled: boolean,
 ) {
   const element = document.createElement("div")
   element.className = [
@@ -642,7 +708,13 @@ function createAttachmentObject(
     const AttachmentComponent = attachment.Component
 
     flushSync(() => {
-      root.render(<AttachmentComponent viewport={viewport} timeDelta={0} />)
+      root.render(
+        <AttachmentComponent
+          viewport={viewport}
+          timeDelta={0}
+          isAnimationEnabled={isAnimationEnabled}
+        />,
+      )
     })
   }
 
@@ -659,11 +731,15 @@ function createCss3DSceneBundle(
   track: CameraTrack,
   viewport: ViewportState,
   container: HTMLDivElement,
+  isAnimationEnabled: boolean,
 ): Css3DSceneBundle {
   const projectionAspect = viewport.width / Math.max(viewport.height, 1)
   const scene = new THREE.Scene()
+  const initialFrame = track.camera.frames[0]
   const camera = new THREE.PerspectiveCamera(
-    track.camera.frames[0]?.fov.vertical ?? 50,
+    initialFrame ?
+      getCoverAdjustedVerticalFov(initialFrame, track, projectionAspect)
+    : 50,
     projectionAspect,
     1,
     10000,
@@ -692,7 +768,7 @@ function createCss3DSceneBundle(
     const distance = bornFrame.zoom * screen.distanceMultiplier
     const { width, height } = getScreenFrameAtDistance(
       distance,
-      bornFrame.fov.vertical,
+      getCoverAdjustedVerticalFov(bornFrame, track, projectionAspect),
       projectionAspect,
     )
     const [offsetX, offsetY] = screen.offset ?? [0, 0]
@@ -707,7 +783,12 @@ function createCss3DSceneBundle(
     group.quaternion.copy(bornCamera.quaternion)
     scene.add(group)
 
-    const virtualScreen = createVirtualScreenElement(screen, viewport, screenIndex)
+    const virtualScreen = createVirtualScreenElement(
+      screen,
+      viewport,
+      screenIndex,
+      isAnimationEnabled,
+    )
     const screenObject = new CSS3DObject(virtualScreen.element)
     const scale = width / viewport.width
 
@@ -716,7 +797,11 @@ function createCss3DSceneBundle(
     group.add(screenObject)
 
     const attachments = (screen.attachments ?? []).map((attachment) => {
-      const attachmentObject = createAttachmentObject(attachment, viewport)
+      const attachmentObject = createAttachmentObject(
+        attachment,
+        viewport,
+        isAnimationEnabled,
+      )
       group.add(attachmentObject.object)
 
       return attachmentObject
@@ -730,6 +815,7 @@ function createCss3DSceneBundle(
       scale,
       currentTimeDelta: 0,
       lastTimeDelta: 0,
+      lastAnimationEnabled: null,
       objects: [
         {
           object: screenObject,
@@ -738,12 +824,13 @@ function createCss3DSceneBundle(
         ...attachments.map((attachment) => ({
           object: attachment.object,
           interactive: attachment.definition.interactive ?? false,
+          attachmentDriven: true,
         })),
       ],
       attachments,
     }
 
-    syncScreenAttachments(css3dScreen)
+    syncScreenAttachments(css3dScreen, isAnimationEnabled)
     screens.push(css3dScreen)
   }
 
@@ -756,10 +843,22 @@ function createCss3DSceneBundle(
   }
 }
 
+function disposeCss3DSceneBundle(bundle: Css3DSceneBundle) {
+  for (const screen of bundle.screens) {
+    screen.root.unmount()
+    for (const attachment of screen.attachments) {
+      attachment.root?.unmount()
+    }
+  }
+
+  bundle.renderer.domElement.remove()
+}
+
 function renderCss3DScene(
   bundle: Css3DSceneBundle,
   track: CameraTrack,
   time: number,
+  isAnimationEnabled: boolean,
 ) {
   const frame = sampleCameraFrame(track, time)
   applyAeCameraFrame(bundle.camera, frame, track, bundle.projectionAspect)
@@ -772,12 +871,16 @@ function renderCss3DScene(
     const opacity = getOpacityFromDisplayProgress(displayProgress)
     screen.currentTimeDelta = timeDelta
 
-    if (screen.lastTimeDelta !== timeDelta) {
+    if (
+      screen.lastTimeDelta !== timeDelta ||
+      screen.lastAnimationEnabled !== isAnimationEnabled
+    ) {
       flushSync(() => {
         screen.root.render(
           <screen.screen.Component
             viewport={screen.viewport}
             timeDelta={timeDelta}
+            isAnimationEnabled={isAnimationEnabled}
           />,
         )
         for (const attachment of screen.attachments) {
@@ -790,27 +893,29 @@ function renderCss3DScene(
             <AttachmentComponent
               viewport={screen.viewport}
               timeDelta={timeDelta}
+              isAnimationEnabled={isAnimationEnabled}
             />,
           )
         }
       })
       screen.lastTimeDelta = timeDelta
+      screen.lastAnimationEnabled = isAnimationEnabled
     }
 
-    syncScreenAttachments(screen)
+    syncScreenAttachments(screen, isAnimationEnabled)
 
-    for (const { object, interactive } of screen.objects) {
+    for (const { object, interactive, attachmentDriven } of screen.objects) {
       const attachmentOpacity = parseFiniteNumber(
         object.element.style.getPropertyValue("--fpv-attachment-opacity"),
       ) ?? 1
-      const attachmentBlur = parseFiniteNumber(
-        object.element.style.getPropertyValue("--fpv-attachment-blur"),
-      ) ?? 0
-      object.element.style.opacity = (opacity * attachmentOpacity).toFixed(3)
-      object.element.style.filter =
-        attachmentBlur > 0 ? `blur(${attachmentBlur.toFixed(2)}px)` : ""
+      object.element.style.opacity = opacity.toFixed(3)
+      object.element.style.filter = ""
       object.element.style.pointerEvents =
-        interactive && opacity > 0.08 ? "auto" : "none"
+        interactive && opacity * attachmentOpacity > 0.08 ? "auto" : "none"
+      object.element.classList.toggle(
+        "fpv-css3d-attachment-driven",
+        attachmentDriven ?? false,
+      )
     }
   }
 
@@ -865,12 +970,14 @@ export function HomeFpvExperience() {
   const { isAnimationEnabled } = useAnimationPreference()
   const isDarkTheme = useIsDarkTheme()
   const reducedMotion = useReducedMotion()
-  const isMotionAllowed = isAnimationEnabled && !reducedMotion
+  const isSceneMotionAllowed = !reducedMotion
+  const isLocalFpvEffectsEnabled = isAnimationEnabled && !reducedMotion
   const sectionRef = useRef<HTMLElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
   const css3dLayerRef = useRef<HTMLDivElement>(null)
   const css3dBundleRef = useRef<Css3DSceneBundle | null>(null)
   const renderTimeRef = useRef(0)
+  const localFpvEffectsEnabledRef = useRef(isAnimationEnabled && !reducedMotion)
   const keyboardScrollFrameRef = useRef<number | null>(null)
   const [track, setTrack] = useState<CameraTrack | null>(null)
   const [viewport, setViewport] = useState<ViewportState>(() => ({
@@ -888,6 +995,10 @@ export function HomeFpvExperience() {
 
   const videoSrc = isDarkTheme ? NIGHT_VIDEO_URL : DAY_VIDEO_URL
 
+  useEffect(() => {
+    localFpvEffectsEnabledRef.current = isLocalFpvEffectsEnabled
+  }, [isLocalFpvEffectsEnabled])
+
   const renderSceneAt = useCallback(
     (time: number) => {
       if (!track || !css3dBundleRef.current) {
@@ -896,9 +1007,14 @@ export function HomeFpvExperience() {
 
       const syncedTime = clamp(time, 0, SCROLL_TIMELINE_DURATION)
       renderTimeRef.current = syncedTime
-      renderCss3DScene(css3dBundleRef.current, track, syncedTime)
+      renderCss3DScene(
+        css3dBundleRef.current,
+        track,
+        syncedTime,
+        isLocalFpvEffectsEnabled,
+      )
     },
-    [track],
+    [isLocalFpvEffectsEnabled, track],
   )
 
   const seekVideoTo = useCallback(
@@ -933,7 +1049,7 @@ export function HomeFpvExperience() {
     const { sectionTop, scrollDistance } =
       section ? getSectionScrollMetrics(section) : { sectionTop: 0, scrollDistance: 1 }
     const progress =
-      isMotionAllowed ?
+      isSceneMotionAllowed ?
         clamp01((window.scrollY - sectionTop) / scrollDistance)
       : STATIC_PROGRESS
     const time = progress * SCROLL_TIMELINE_DURATION
@@ -950,7 +1066,7 @@ export function HomeFpvExperience() {
     })
     renderSceneAt(time)
     seekVideoTo(time)
-  }, [isMotionAllowed, renderSceneAt, seekVideoTo])
+  }, [isSceneMotionAllowed, renderSceneAt, seekVideoTo])
 
   const cancelKeyboardScreenScroll = useCallback(() => {
     if (keyboardScrollFrameRef.current !== null) {
@@ -977,7 +1093,7 @@ export function HomeFpvExperience() {
       const targetY = clamp(getScrollYForScreenTime(section, targetTime), 0, maxScrollY)
       const deltaY = targetY - startY
 
-      if (!isMotionAllowed || Math.abs(deltaY) < 1) {
+      if (!isSceneMotionAllowed || Math.abs(deltaY) < 1) {
         window.scrollTo(0, targetY)
         return
       }
@@ -1000,7 +1116,7 @@ export function HomeFpvExperience() {
 
       keyboardScrollFrameRef.current = window.requestAnimationFrame(tick)
     },
-    [cancelKeyboardScreenScroll, isMotionAllowed],
+    [cancelKeyboardScreenScroll, isSceneMotionAllowed],
   )
 
   useEffect(() => {
@@ -1009,22 +1125,50 @@ export function HomeFpvExperience() {
       return
     }
 
-    const bundle = createCss3DSceneBundle(track, viewport, container)
-    css3dBundleRef.current = bundle
-    renderCss3DScene(bundle, track, renderTimeRef.current)
+    let disposed = false
 
-    return () => {
-      for (const screen of bundle.screens) {
-        screen.root.unmount()
-        for (const attachment of screen.attachments) {
-          attachment.root?.unmount()
-        }
+    queueMicrotask(() => {
+      if (disposed) {
+        return
       }
 
-      container.replaceChildren()
+      const bundle = createCss3DSceneBundle(
+        track,
+        viewport,
+        container,
+        localFpvEffectsEnabledRef.current,
+      )
+
+      if (disposed) {
+        disposeCss3DSceneBundle(bundle)
+        return
+      }
+
+      css3dBundleRef.current = bundle
+      renderCss3DScene(
+        bundle,
+        track,
+        renderTimeRef.current,
+        localFpvEffectsEnabledRef.current,
+      )
+    })
+
+    return () => {
+      disposed = true
+      const bundle = css3dBundleRef.current
+
+      if (bundle) {
+        queueMicrotask(() => disposeCss3DSceneBundle(bundle))
+      }
       css3dBundleRef.current = null
     }
   }, [track, viewport])
+
+  useEffect(() => {
+    queueMicrotask(() => {
+      renderSceneAt(renderTimeRef.current)
+    })
+  }, [renderSceneAt])
 
   useEffect(() => {
     if (!ENABLE_DEV_LIVE_CSS3D_SYNC) {
