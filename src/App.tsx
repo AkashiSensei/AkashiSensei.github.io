@@ -13,6 +13,7 @@ import { KnowledgeDetailPage } from "@/pages/KnowledgeDetailPage"
 import { KnowledgePage } from "@/pages/KnowledgePage"
 import { ProjectDetailPage } from "@/pages/ProjectDetailPage"
 import { ProjectsPage } from "@/pages/ProjectsPage"
+import { ReceiptPreviewPage } from "@/pages/ReceiptPreviewPage"
 import { ResumePage } from "@/pages/ResumePage"
 import { SmallToolDetailPage } from "@/pages/SmallToolDetailPage"
 import { ToolsPage } from "@/pages/ToolsPage"
@@ -30,6 +31,7 @@ const pageTitles: Record<string, string> = {
   "/workbench": "Akashi - Workspace",
   "/tools": "Akashi - Tools",
   "/knowledge": "Akashi - Knowledge",
+  "/receipt-preview": "Akashi - Receipt Preview",
 }
 
 const LiquidEther = lazy(() => import("@/components/LiquidEther.jsx"))
@@ -490,6 +492,7 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/resume" element={<ResumePage />} />
+          <Route path="/receipt-preview" element={<ReceiptPreviewPage />} />
           <Route path="/projects" element={<ProjectsPage />} />
           <Route
             path="/projects/:projectId"

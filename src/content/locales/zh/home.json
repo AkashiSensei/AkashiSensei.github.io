@@ -145,31 +145,74 @@
       "aside": "我非常幸运，能够有一帮陪我玩的朋友"
     },
     "page05": {
+      "eyebrow": "交换彼此世界的一角",
       "title": "我还在寻找",
-      "subtitle": "我不想输出负面情绪，但我现在确实很迷茫。",
+      "subtitle": "",
       "lines": {
-        "ai": "在 AI 的冲击下，我感到找工作非常困难。",
-        "future": "我不太清楚我想要的未来是什么样的，所以我没有明确的努力目标。",
-        "world": "我希望让视野更宽一些，看到更广阔的世界和更多样的人生。",
-        "balance": "我想知道如何做 work-life balance。"
+        "work": "我感到找工作非常困难",
+        "future": "我不太清楚我想要的未来是什么样的",
+        "balance": "我想知道如何做 work-life balance",
+        "world": "我希望看到更广阔的世界和多样的人生",
+        "people": "我希望接触更多具体的人"
       },
-      "endline": "最近想约 coffee chat，想接触更多具体的人。",
-      "whisper": "想 O 了"
+      "endline": "",
+      "whisper": "想 O（玩守望先锋）了",
+      "receipt": {
+        "title": "感谢交流",
+        "description": "欢迎找我约 Coffee Chat，或者只是线上交流都可以",
+        "highlights": {
+          "coffee": "Coffee Chat",
+          "online": "线上交流"
+        },
+        "items": {
+          "meal": {
+            "name": "Coffee、小吃，甚至时间合适的话也可以是一顿正餐",
+            "quantityLabel": "作为坐下来聊一会儿的轻松理由",
+            "price": "你的时间"
+          },
+          "listening": {
+            "name": "认真倾听你的故事、想法、问题，或者最近的烦恼",
+            "quantityLabel": "不需要提前组织得很完整",
+            "price": "你的分享"
+          },
+          "professional": {
+            "name": "我的专业知识、产品感觉，以及一些工程经验",
+            "quantityLabel": "主要关于软件、AI 工具和如何做东西",
+            "price": "你的问题"
+          },
+          "worldview": {
+            "name": "我的生活、世界观，以及对这个世界还在建设中的理解",
+            "quantityLabel": "不一定成熟，但会真诚分享",
+            "price": "你的想法"
+          }
+        },
+        "total": "一顿饭的时间",
+        "summary": {
+          "mode": "线下 / 线上",
+          "respect": "彼此尊重"
+        },
+        "promoTitle": "带上你的故事、问题，或者任何你觉得值得分享的东西",
+        "promoCaption": "通过 QR code 了解更完整的我"
+      }
     },
     "page06": {
       "title": "友链",
-      "subtitle": "感谢大家一路的陪伴。",
-      "roster": {
-        "pending": {
-          "title": "名单整理中",
-          "description": "这里会认真放下我愿意推荐的人、项目和一路遇到的善意。"
+      "subtitle": "感谢大家一路的陪伴",
+      "links": [
+        {
+          "name": "隆隆隆",
+          "quote": "神了",
+          "avatar": "/assets/friend-links/yunlong315.webp",
+          "href": "https://github.com/yunlong315"
         },
-        "exchange": {
-          "title": "交换链接",
-          "description": "如果你也想出现在这里，可以先来和我打个招呼。"
+        {
+          "name": "Pcpa",
+          "quote": "我一直在哭",
+          "avatar": "/assets/friend-links/pcpa.webp",
+          "href": "https://pcpas.github.io/"
         }
-      },
-      "aside": "Links are not decoration."
+      ],
+      "aside": "期待更多的朋友"
     }
   }
 }

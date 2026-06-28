@@ -101,7 +101,6 @@ function Page04(_props: VirtualScreenProps) {
       >
         {activityColumns.map((activityColumn, columnIndex) => (
           <div
-            // eslint-disable-next-line react/no-array-index-key
             key={columnIndex}
             className="fpv-activity-column"
           >
