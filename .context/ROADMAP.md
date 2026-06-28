@@ -13,6 +13,7 @@
 
 ## History
 
+- 2026-06-28 | [Archived: Homepage FPV desktop polish](archive/20260628_Homepage-FPV-desktop-polish.md) | Completed the desktop FPV homepage pass with tuned virtual screens, floating attachments, coffee-chat receipt, friend-link capsules, and a noted follow-up for mobile/narrow responsive polish.
 - 2026-06-26 | Homepage FPV baseline | Replaced the root homepage entry with a scroll-scrubbed FPV video scene, added CSS3D virtual screens, floating attachment cards for true depth, bilingual FPV copy, debug surfaces, and implementation notes for future tuning.
 - 2026-06-25 | [Archived: Resume bullet contribution structure](archive/20260625_Resume-bullet-contribution-structure.md) | Split project/course bullets into editable project-intro and personal-work locale sections, highlighted personal work on cards, and tuned detail-page section rendering.
 - 2026-06-24 | [Archived: Mobile project copy height](archive/20260624_Mobile-project-copy-height.md) | Stabilized the mobile resume project carousel copy area by measuring the tallest localized project text block and reusing that height during card swaps.
