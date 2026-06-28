@@ -37,7 +37,15 @@ function getActivityStaggerOrder(activityIndex: number) {
   return row + column
 }
 
-function getActivityAttachmentDepth(timeDelta: number, staggerOrder: number) {
+function getActivityAttachmentDepth(
+  timeDelta: number,
+  staggerOrder: number,
+  isAnimationEnabled: boolean,
+) {
+  if (!isAnimationEnabled) {
+    return 0
+  }
+
   const enterDelay = staggerOrder * activityStaggerStep
   const leaveDelay = staggerOrder * activityStaggerStep
   const enterProgress = clamp01(
@@ -56,7 +64,18 @@ function getActivityAttachmentDepth(timeDelta: number, staggerOrder: number) {
   return Number(depth.toFixed(2))
 }
 
-function getActivityAttachmentStyle(timeDelta: number, staggerOrder: number) {
+function getActivityAttachmentStyle(
+  timeDelta: number,
+  staggerOrder: number,
+  isAnimationEnabled: boolean,
+) {
+  if (!isAnimationEnabled) {
+    return {
+      opacity: 1,
+      blur: 0,
+    }
+  }
+
   const enterDelay = staggerOrder * activityStaggerStep
   const leaveDelay = staggerOrder * activityStaggerStep
   const enterProgress = clamp01(
@@ -153,8 +172,10 @@ export const page04Screen: VirtualScreenDefinition = {
       id: `page04-activity-${activityKey}-float`,
       anchor: `page04-activity-${activityKey}`,
       className: "fpv-page-04-activity-float",
-      getDepth: ({ timeDelta }) => getActivityAttachmentDepth(timeDelta, staggerOrder),
-      getStyle: ({ timeDelta }) => getActivityAttachmentStyle(timeDelta, staggerOrder),
+      getDepth: ({ timeDelta, isAnimationEnabled }) =>
+        getActivityAttachmentDepth(timeDelta, staggerOrder, isAnimationEnabled),
+      getStyle: ({ timeDelta, isAnimationEnabled }) =>
+        getActivityAttachmentStyle(timeDelta, staggerOrder, isAnimationEnabled),
     }
   }),
   Component: Page04,
