@@ -23,8 +23,7 @@ function Page01ActionRow() {
   )
 }
 
-function Page01(_props: VirtualScreenProps) {
-  void _props
+function Page01({ isMobileViewport }: VirtualScreenProps) {
   const { t } = useTranslation("home")
 
   return (
@@ -50,17 +49,20 @@ function Page01(_props: VirtualScreenProps) {
           <p>{t("fpv.page01.lines.building")}</p>
           <p>{t("fpv.page01.lines.friend")}</p>
         </div>
-        <div
-          className="fpv-attachment-anchor-hidden fpv-attachment-anchor-reference fpv-action-row fpv-page-01-action-row fpv-page-01-action-row-anchor"
-          data-fpv-attachment-anchor="page01-actions"
-        >
-          <button type="button" className="fpv-action-pill fpv-action-pill-solid">
-            {t("fpv.page01.cta")}
-          </button>
-          <a href="/resume" className="fpv-action-pill fpv-action-pill-outline">
-            简历
-          </a>
-        </div>
+        {isMobileViewport ?
+          <Page01ActionRow />
+        : <div
+            className="fpv-attachment-anchor-hidden fpv-attachment-anchor-reference fpv-action-row fpv-page-01-action-row fpv-page-01-action-row-anchor"
+            data-fpv-attachment-anchor="page01-actions"
+          >
+            <button type="button" className="fpv-action-pill fpv-action-pill-solid">
+              {t("fpv.page01.cta")}
+            </button>
+            <a href="/resume" className="fpv-action-pill fpv-action-pill-outline">
+              简历
+            </a>
+          </div>
+        }
       </div>
     </div>
   )

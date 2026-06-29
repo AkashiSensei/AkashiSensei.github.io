@@ -8,6 +8,10 @@ const fieldKeys = [
   "beingHuman",
   "expression",
 ] as const
+const fieldColumns = [
+  fieldKeys.filter((_, fieldIndex) => fieldIndex % 2 === 0),
+  fieldKeys.filter((_, fieldIndex) => fieldIndex % 2 === 1),
+]
 
 function Page02(_props: VirtualScreenProps) {
   void _props
@@ -49,40 +53,57 @@ function Page02(_props: VirtualScreenProps) {
       <div
         className="fpv-page-node fpv-page-02-field-grid"
       >
-        {fieldKeys.map((fieldKey) => {
-          const bulletsValue = t(`fpv.page02.fields.${fieldKey}.bullets`, {
-            returnObjects: true,
-          })
-          const bullets = Array.isArray(bulletsValue)
-            ? bulletsValue.filter((bullet): bullet is string => typeof bullet === "string")
-            : []
+        {fieldColumns.map((fieldColumn, columnIndex) => (
+          <div
+            key={columnIndex}
+            className="fpv-field-column"
+          >
+            {fieldColumn.map((fieldKey) => {
+              const bulletsValue = t(`fpv.page02.fields.${fieldKey}.bullets`, {
+                returnObjects: true,
+              })
+              const bullets = Array.isArray(bulletsValue)
+                ? bulletsValue.filter((bullet): bullet is string => typeof bullet === "string")
+                : []
 
-          return (
-            <section
-              key={fieldKey}
-              className={`fpv-attachment-anchor-hidden fpv-attachment-anchor-reference fpv-field-card fpv-field-card-${fieldKey}`}
-              data-fpv-attachment-anchor={`page02-field-${fieldKey}`}
-            >
-              <div>
-                <p>{t(`fpv.page02.fields.${fieldKey}.subtitle`)}</p>
-                <span>{t(`fpv.page02.fields.${fieldKey}.title`)}</span>
-              </div>
-              <ul>
-                {bullets.map((bullet) => (
-                  <li key={bullet}>{bullet}</li>
-                ))}
-              </ul>
-              {fieldKey === "study" ? (
-                <a
-                  href="/resume"
-                  className="fpv-action-pill fpv-action-pill-solid fpv-page-03-action"
+              return (
+                <section
+                  key={fieldKey}
+                  className={`fpv-attachment-anchor-hidden fpv-attachment-anchor-reference fpv-field-card fpv-field-card-${fieldKey}`}
+                  data-fpv-attachment-anchor={`page02-field-${fieldKey}`}
                 >
-                  {t("fpv.page02.fields.study.cta")}
-                </a>
-              ) : null}
-            </section>
-          )
-        })}
+                  <div>
+                    <p>{t(`fpv.page02.fields.${fieldKey}.subtitle`)}</p>
+                    <span>{t(`fpv.page02.fields.${fieldKey}.title`)}</span>
+                  </div>
+                  <ul>
+                    {bullets.map((bullet) => (
+                      <li key={bullet}>{bullet}</li>
+                    ))}
+                  </ul>
+                  {fieldKey === "study" ? (
+                    <div className="fpv-field-card-actions">
+                      <a
+                        href="/resume"
+                        className="fpv-action-pill fpv-action-pill-solid fpv-page-03-action"
+                      >
+                        {t("fpv.page02.fields.study.cta")}
+                      </a>
+                      <a
+                        href="https://github.com/AkashiSensei"
+                        className="fpv-action-pill fpv-action-pill-outline fpv-page-03-action"
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        GitHub
+                      </a>
+                    </div>
+                  ) : null}
+                </section>
+              )
+            })}
+          </div>
+        ))}
       </div>
     </div>
   )

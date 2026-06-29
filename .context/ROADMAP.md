@@ -13,6 +13,7 @@
 
 ## History
 
+- 2026-06-29 | [Archived: Homepage FPV mobile adaptation](archive/20260629_Homepage-FPV-mobile-adaptation.md) | Stabilized the FPV homepage on mobile with viewport-specific layout, content-sized cards and friend capsules, page-dot navigation, 45fps all-keyframe mobile video, frame-boundary seeking, dark-mode first-paint sync, and poster fallback for iOS video wakeup.
 - 2026-06-28 | [Archived: Homepage FPV display fixes](archive/20260628_Homepage-FPV-display-fixes.md) | Fixed FPV homepage display regressions across wide viewports and Firefox by aligning video/CSS3D cover behavior, replacing fragile filtered glass on small controls/cards, weakening homepage-only local effects, centering the receipt scene, and deferring CSS3D React root cleanup.
 - 2026-06-28 | [Archived: Homepage FPV desktop polish](archive/20260628_Homepage-FPV-desktop-polish.md) | Completed the desktop FPV homepage pass with tuned virtual screens, floating attachments, coffee-chat receipt, friend-link capsules, and a noted follow-up for mobile/narrow responsive polish.
 - 2026-06-26 | Homepage FPV baseline | Replaced the root homepage entry with a scroll-scrubbed FPV video scene, added CSS3D virtual screens, floating attachment cards for true depth, bilingual FPV copy, debug surfaces, and implementation notes for future tuning.

@@ -512,20 +512,26 @@ export function Navbar() {
       className="site-navbar-shell fixed bottom-7 inset-x-6 z-50 mx-auto max-w-5xl transition-transform duration-[460ms] ease-out will-change-transform sm:bottom-8 sm:inset-x-8 md:bottom-auto md:top-4 md:inset-x-12 md:mx-0 md:max-w-none min-[900px]:inset-x-14 min-[1000px]:w-auto min-[1000px]:px-0 xl:inset-x-32 2xl:inset-x-44"
       style={{ transform: `translate3d(0, ${scrollDisplacement.toFixed(2)}px, 0)` }}
     >
-      <SpotlightCard asChild className="lit-glass-card relative z-50 flex items-center justify-between rounded-full border border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.42)] px-3.5 py-2.5 shadow-sm backdrop-blur-md transition-all duration-300 dark:border-white/10 dark:bg-white/10 sm:px-4 md:hidden">
+      <SpotlightCard asChild className="mobile-navbar-pill lit-glass-card relative z-50 flex h-12 items-center justify-between rounded-full border border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.42)] py-2 pl-[11px] pr-3 shadow-sm backdrop-blur-md transition-all duration-300 dark:border-white/10 dark:bg-white/10 md:hidden">
         <nav>
-          <div className="flex items-center gap-2 sm:gap-4">
+          <div className="mobile-navbar-brand flex min-w-0 items-center gap-2">
+            <img
+              src="/favicon.png"
+              alt=""
+              className="h-6 w-6 shrink-0 rounded-full object-contain"
+              aria-hidden="true"
+            />
             <AppLink
               to="/"
-              className="font-semibold text-lg md:text-lg tracking-tight hover:opacity-80 transition-opacity"
+              className="truncate font-semibold text-lg tracking-tight transition-opacity hover:opacity-80"
             >
               {t("site.displayName")}
             </AppLink>
           </div>
-          <div className="flex items-center gap-1.5 sm:gap-2 text-sm font-medium text-foreground/80">
+          <div className="mobile-navbar-actions flex items-center gap-0.5 text-sm font-medium text-foreground/80">
             <ContactDialog>
               <button
-                className="flex h-9 w-9 items-center justify-center rounded-full hover:bg-muted/50 transition-colors md:h-8 md:w-8"
+                className="flex h-8 w-8 items-center justify-center rounded-full transition-colors hover:bg-muted/50"
                 title={t("a11y.viewContact")}
               >
                 <Mail className="h-4 w-4" />
@@ -534,25 +540,25 @@ export function Navbar() {
             </ContactDialog>
             <button 
               onClick={toggleLanguage}
-              className="flex h-9 w-9 items-center justify-center rounded-full text-sm font-medium hover:bg-muted/50 transition-colors md:h-8 md:w-8 md:text-sm"
+              className="flex h-8 w-8 items-center justify-center rounded-full text-sm font-medium transition-colors hover:bg-muted/50"
               title={t("a11y.toggleLanguage")}
             >
               {(i18n.resolvedLanguage ?? i18n.language).startsWith("zh") ? t("ui.langSwitchToEn") : t("ui.langSwitchToZh")}
             </button>
             <button 
               onClick={toggleTheme}
-              className="flex h-9 w-9 items-center justify-center rounded-full hover:bg-muted/50 transition-colors md:h-8 md:w-8"
+              className="flex h-8 w-8 items-center justify-center rounded-full transition-colors hover:bg-muted/50"
               title={t("a11y.toggleTheme")}
             >
               <Sun className="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
               <Moon className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
               <span className="sr-only">{t("a11y.toggleThemeSr")}</span>
             </button>
-            {renderAnimationButton("flex h-9 w-9 items-center justify-center rounded-full hover:bg-muted/50 transition-colors md:h-8 md:w-8")}
+            {renderAnimationButton("flex h-8 w-8 items-center justify-center rounded-full transition-colors hover:bg-muted/50")}
 
             <button 
               onClick={toggleDesktopMenu}
-              className="ml-0.5 flex h-9 w-9 items-center justify-center rounded-full hover:bg-muted/50 transition-colors"
+              className="flex h-8 w-8 items-center justify-center rounded-full transition-colors hover:bg-muted/50"
               title={t("a11y.toggleMenu")}
             >
               {mobileMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
