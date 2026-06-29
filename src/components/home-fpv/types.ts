@@ -34,6 +34,7 @@ export type VirtualScreenProps = {
   viewport: ViewportState
   timeDelta: number
   isAnimationEnabled: boolean
+  isMobileViewport: boolean
 }
 
 export type VirtualScreenAttachmentProps = VirtualScreenProps

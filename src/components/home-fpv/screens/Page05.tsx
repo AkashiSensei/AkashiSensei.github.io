@@ -66,7 +66,7 @@ function Page05ContactButton() {
   )
 }
 
-function Page05({ timeDelta, isAnimationEnabled }: VirtualScreenProps) {
+function Page05({ timeDelta, isAnimationEnabled, isMobileViewport }: VirtualScreenProps) {
   const receiptStageRef = useRef<HTMLDivElement>(null)
   const [receiptWindowHeight, setReceiptWindowHeight] = useState(0)
   const { t } = useTranslation("home")
@@ -147,14 +147,17 @@ function Page05({ timeDelta, isAnimationEnabled }: VirtualScreenProps) {
             ))}
           </div>
 
-          <div
-            className="fpv-attachment-anchor-hidden fpv-attachment-anchor-reference fpv-page-05-contact-row fpv-page-05-contact-anchor"
-            data-fpv-attachment-anchor="page05-contact"
-          >
-            <button type="button" className="fpv-action-pill fpv-action-pill-solid">
-              {t("contact")}
-            </button>
-          </div>
+          {isMobileViewport ?
+            <Page05ContactButton />
+          : <div
+              className="fpv-attachment-anchor-hidden fpv-attachment-anchor-reference fpv-page-05-contact-row fpv-page-05-contact-anchor"
+              data-fpv-attachment-anchor="page05-contact"
+            >
+              <button type="button" className="fpv-action-pill fpv-action-pill-solid">
+                {t("contact")}
+              </button>
+            </div>
+          }
 
           <div className="fpv-page-copy">
             {endline ? <p className="fpv-page-endline">{endline}</p> : null}
@@ -162,15 +165,17 @@ function Page05({ timeDelta, isAnimationEnabled }: VirtualScreenProps) {
           </div>
         </div>
 
-        <div className="fpv-page-05-receipt" style={receiptWindowStyle}>
-          <div
-            ref={receiptStageRef}
-            className="fpv-page-05-receipt-stage"
-            style={receiptMotionStyle}
-          >
-            <ReceiptCard data={receiptData} showPromo={false} />
+        {!isMobileViewport ? (
+          <div className="fpv-page-05-receipt" style={receiptWindowStyle}>
+            <div
+              ref={receiptStageRef}
+              className="fpv-page-05-receipt-stage"
+              style={receiptMotionStyle}
+            >
+              <ReceiptCard data={receiptData} showPromo={false} />
+            </div>
           </div>
-        </div>
+        ) : null}
       </div>
     </div>
   )

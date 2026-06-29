@@ -94,16 +94,16 @@ function getActivityAttachmentStyle(
   }
 }
 
-function Page04(_props: VirtualScreenProps) {
-  void _props
+function Page04({ isMobileViewport }: VirtualScreenProps) {
   const { t } = useTranslation("home")
-  const activityColumns = Array.from({ length: activityColumnCount }, (_, columnIndex) =>
+  const columnCount = isMobileViewport ? 2 : activityColumnCount
+  const activityColumns = Array.from({ length: columnCount }, (_, columnIndex) =>
     activityKeys
       .map((activityKey, activityIndex) => ({
         activityKey,
         activityIndex,
       }))
-      .filter(({ activityIndex }) => activityIndex % activityColumnCount === columnIndex),
+      .filter(({ activityIndex }) => activityIndex % columnCount === columnIndex),
   )
 
   return (

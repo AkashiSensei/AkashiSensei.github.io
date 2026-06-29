@@ -5,6 +5,29 @@
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      (() => {
+        const getSystemTheme = () =>
+          window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
+        let theme = "system"
+
+        try {
+          const storedTheme = localStorage.getItem("vite-ui-theme")
+
+          if (storedTheme === "light" || storedTheme === "dark" || storedTheme === "system") {
+            theme = storedTheme
+          }
+        } catch {
+          theme = "system"
+        }
+
+        const resolvedTheme = theme === "system" ? getSystemTheme() : theme
+
+        document.documentElement.classList.remove("light", "dark")
+        document.documentElement.classList.add(resolvedTheme)
+        document.documentElement.style.colorScheme = resolvedTheme
+      })()
+    </script>
     <title>Akashi - Homepage</title>
   </head>
   <body>

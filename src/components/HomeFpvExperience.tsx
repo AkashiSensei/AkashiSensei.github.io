@@ -20,11 +20,21 @@ import type {
 const CAMERA_TRACK_URL = "/assets/homepage-fpv/camera.json"
 const DAY_VIDEO_URL = "/assets/homepage-fpv/day-gop3.mp4"
 const NIGHT_VIDEO_URL = "/assets/homepage-fpv/night-gop3.mp4"
+const DAY_MOBILE_VIDEO_URL = "/assets/homepage-fpv/day-mobile-45-all-i.mp4"
+const NIGHT_MOBILE_VIDEO_URL = "/assets/homepage-fpv/night-mobile-45-all-i.mp4"
+const DAY_MOBILE_POSTER_URL = "/assets/homepage-fpv/day-mobile-poster.webp"
+const NIGHT_MOBILE_POSTER_URL = "/assets/homepage-fpv/night-mobile-poster.webp"
 const STATIC_PROGRESS = 0
-const VIDEO_FRAME_RATE = 90
+const DESKTOP_VIDEO_FRAME_RATE = 90
+const MOBILE_VIDEO_FRAME_RATE = 45
+const MIN_VIDEO_SEEK_THRESHOLD = 0.004
 const SCROLL_TIMELINE_DURATION = 8
 const KEYBOARD_SCREEN_SCROLL_DURATION = 2000
+const VIDEO_THEME_CROSSFADE_DURATION = 220
 const SCREEN_NAVIGATION_EPSILON = 0.035
+const SCREEN_ACTIVE_AFTER_ANCHOR_DELAY = 0.5
+const MOBILE_VIDEO_MAX_WIDTH = 767
+const MOBILE_LANDSCAPE_MAX_HEIGHT = 480
 const SHOW_DEBUG_SURFACES = import.meta.env.VITE_FPV_DEBUG_SURFACES === "true"
 const ENABLE_DEV_LIVE_CSS3D_SYNC = import.meta.env.DEV
 const DEFAULT_VISIBILITY_FADE_RATIO = 0.9
@@ -105,6 +115,14 @@ type LocalRect = {
   height: number
 }
 
+type VideoElementWithFrameCallback = HTMLVideoElement & {
+  requestVideoFrameCallback?: (callback: () => void) => number
+}
+
+type VideoSlotId = "a" | "b"
+type VideoSlotSources = Record<VideoSlotId, string | null>
+type VideoSlotVisibility = Record<VideoSlotId, boolean>
+
 const SCREEN_TIMES = Array.from(
   new Set(HOME_FPV_SCREENS.map((screen) => screen.time)),
 ).sort((a, b) => a - b)
@@ -168,8 +186,8 @@ function getScrollYForScreenTime(section: HTMLElement, time: number) {
 function getScreenIndexAtTime(time: number) {
   let screenIndex = 0
 
-  for (let index = 0; index < SCREEN_TIMES.length; index += 1) {
-    if (time >= SCREEN_TIMES[index] - SCREEN_NAVIGATION_EPSILON) {
+  for (let index = 1; index < SCREEN_TIMES.length; index += 1) {
+    if (time >= SCREEN_TIMES[index - 1] + SCREEN_ACTIVE_AFTER_ANCHOR_DELAY) {
       screenIndex = index
     }
   }
@@ -544,6 +562,7 @@ function getAttachmentDepth(
       viewport: screen.viewport,
       timeDelta: screen.currentTimeDelta,
       isAnimationEnabled,
+      isMobileViewport: shouldUseMobileFpvLayout(screen.viewport),
     })
   }
 
@@ -567,6 +586,7 @@ function getAttachmentStyle(
     viewport: screen.viewport,
     timeDelta: screen.currentTimeDelta,
     isAnimationEnabled,
+    isMobileViewport: shouldUseMobileFpvLayout(screen.viewport),
   })
 }
 
@@ -674,6 +694,7 @@ function createVirtualScreenElement(
         viewport={viewport}
         timeDelta={0}
         isAnimationEnabled={isAnimationEnabled}
+        isMobileViewport={shouldUseMobileFpvLayout(viewport)}
       />,
     )
   })
@@ -713,6 +734,7 @@ function createAttachmentObject(
           viewport={viewport}
           timeDelta={0}
           isAnimationEnabled={isAnimationEnabled}
+          isMobileViewport={shouldUseMobileFpvLayout(viewport)}
         />,
       )
     })
@@ -754,6 +776,7 @@ function createCss3DSceneBundle(
   container.appendChild(renderer.domElement)
 
   const screens: Css3DScreen[] = []
+  const useMobileFpvLayout = shouldUseMobileFpvLayout(viewport)
 
   for (const [screenIndex, screen] of HOME_FPV_SCREENS.entries()) {
     const bornFrame = sampleCameraFrame(track, screen.time)
@@ -796,16 +819,19 @@ function createCss3DSceneBundle(
     screenObject.scale.set(scale, scale, 1)
     group.add(screenObject)
 
-    const attachments = (screen.attachments ?? []).map((attachment) => {
-      const attachmentObject = createAttachmentObject(
-        attachment,
-        viewport,
-        isAnimationEnabled,
-      )
-      group.add(attachmentObject.object)
+    const attachments =
+      useMobileFpvLayout ?
+        []
+      : (screen.attachments ?? []).map((attachment) => {
+          const attachmentObject = createAttachmentObject(
+            attachment,
+            viewport,
+            isAnimationEnabled,
+          )
+          group.add(attachmentObject.object)
 
-      return attachmentObject
-    })
+          return attachmentObject
+        })
     const css3dScreen: Css3DScreen = {
       visibility: getScreenVisibility(screen),
       screen,
@@ -881,6 +907,7 @@ function renderCss3DScene(
             viewport={screen.viewport}
             timeDelta={timeDelta}
             isAnimationEnabled={isAnimationEnabled}
+            isMobileViewport={shouldUseMobileFpvLayout(screen.viewport)}
           />,
         )
         for (const attachment of screen.attachments) {
@@ -894,6 +921,7 @@ function renderCss3DScene(
               viewport={screen.viewport}
               timeDelta={timeDelta}
               isAnimationEnabled={isAnimationEnabled}
+              isMobileViewport={shouldUseMobileFpvLayout(screen.viewport)}
             />,
           )
         }
@@ -922,9 +950,9 @@ function renderCss3DScene(
   bundle.renderer.render(bundle.scene, bundle.camera)
 }
 
-function getVideoFrameNumber(time: number, duration: number) {
-  const totalFrames = Math.max(1, Math.round(duration * VIDEO_FRAME_RATE))
-  const frame = clamp(Math.floor(time * VIDEO_FRAME_RATE) + 1, 1, totalFrames)
+function getVideoFrameNumber(time: number, duration: number, frameRate: number) {
+  const totalFrames = Math.max(1, Math.round(duration * frameRate))
+  const frame = clamp(Math.floor(time * frameRate) + 1, 1, totalFrames)
 
   return {
     frame,
@@ -947,7 +975,9 @@ function useReducedMotion() {
 }
 
 function useIsDarkTheme() {
-  const [isDarkTheme, setIsDarkTheme] = useState(false)
+  const [isDarkTheme, setIsDarkTheme] = useState(() => (
+    document.documentElement.classList.contains("dark")
+  ))
 
   useEffect(() => {
     const root = document.documentElement
@@ -966,6 +996,92 @@ function useIsDarkTheme() {
   return isDarkTheme
 }
 
+function shouldUseMobileVideo(viewport: ViewportState) {
+  const hasCoarsePointer =
+    typeof window !== "undefined" &&
+    typeof window.matchMedia === "function" &&
+    window.matchMedia("(pointer: coarse)").matches
+
+  return (
+    viewport.width <= MOBILE_VIDEO_MAX_WIDTH ||
+    (hasCoarsePointer && viewport.height <= MOBILE_LANDSCAPE_MAX_HEIGHT)
+  )
+}
+
+function shouldUseMobileFpvLayout(viewport: ViewportState) {
+  return shouldUseMobileVideo(viewport)
+}
+
+function getVideoPosterForSrc(src: string | null) {
+  return src?.includes("night") ? NIGHT_MOBILE_POSTER_URL : DAY_MOBILE_POSTER_URL
+}
+
+function waitForVideoPaintFrame(video: HTMLVideoElement) {
+  return new Promise<void>((resolve) => {
+    const videoWithFrameCallback = video as VideoElementWithFrameCallback
+
+    if (typeof videoWithFrameCallback.requestVideoFrameCallback === "function") {
+      videoWithFrameCallback.requestVideoFrameCallback(() => resolve())
+      return
+    }
+
+    window.requestAnimationFrame(() => {
+      window.requestAnimationFrame(() => resolve())
+    })
+  })
+}
+
+function getVideoSeekTime(
+  targetTime: number,
+  duration: number,
+  frameRate: number,
+  shouldAlignToFrame: boolean,
+) {
+  const clampedTarget = clamp(targetTime, 0, duration)
+
+  if (!shouldAlignToFrame) {
+    return clampedTarget
+  }
+
+  return clamp(Math.round(clampedTarget * frameRate) / frameRate, 0, duration)
+}
+
+function getVideoSeekThreshold(frameRate: number) {
+  return Math.max(MIN_VIDEO_SEEK_THRESHOLD, 1 / frameRate / 2)
+}
+
+async function primeVideoPaintFrame(
+  video: HTMLVideoElement,
+  targetTime: number,
+  frameRate: number,
+  shouldAlignToFrame: boolean,
+) {
+  if (!Number.isFinite(video.duration) || video.duration <= 0) {
+    return
+  }
+
+  const seekTarget = getVideoSeekTime(
+    targetTime,
+    video.duration,
+    frameRate,
+    shouldAlignToFrame,
+  )
+  const seekThreshold = getVideoSeekThreshold(frameRate)
+  video.muted = true
+  video.playsInline = true
+
+  if (Math.abs(video.currentTime - seekTarget) > seekThreshold) {
+    video.currentTime = seekTarget
+  }
+
+  try {
+    await video.play()
+    await waitForVideoPaintFrame(video)
+  } finally {
+    video.pause()
+  }
+}
+
 export function HomeFpvExperience() {
   const { isAnimationEnabled } = useAnimationPreference()
   const isDarkTheme = useIsDarkTheme()
@@ -973,12 +1089,16 @@ export function HomeFpvExperience() {
   const isSceneMotionAllowed = !reducedMotion
   const isLocalFpvEffectsEnabled = isAnimationEnabled && !reducedMotion
   const sectionRef = useRef<HTMLElement>(null)
-  const videoRef = useRef<HTMLVideoElement>(null)
+  const videoARef = useRef<HTMLVideoElement>(null)
+  const videoBRef = useRef<HTMLVideoElement>(null)
   const css3dLayerRef = useRef<HTMLDivElement>(null)
   const css3dBundleRef = useRef<Css3DSceneBundle | null>(null)
   const renderTimeRef = useRef(0)
   const localFpvEffectsEnabledRef = useRef(isAnimationEnabled && !reducedMotion)
   const keyboardScrollFrameRef = useRef<number | null>(null)
+  const videoFadeCleanupTimeoutRef = useRef<number | null>(null)
+  const activeVideoSlotRef = useRef<VideoSlotId>("a")
+  const desiredVideoSrcRef = useRef<string | null>(null)
   const [track, setTrack] = useState<CameraTrack | null>(null)
   const [viewport, setViewport] = useState<ViewportState>(() => ({
     width: window.innerWidth,
@@ -993,11 +1113,57 @@ export function HomeFpvExperience() {
     duration: 0,
   })
 
-  const videoSrc = isDarkTheme ? NIGHT_VIDEO_URL : DAY_VIDEO_URL
+  const useMobileVideo = shouldUseMobileVideo(viewport)
+  const useMobileFpvLayout = shouldUseMobileFpvLayout(viewport)
+  const activeVideoFrameRate =
+    useMobileVideo ? MOBILE_VIDEO_FRAME_RATE : DESKTOP_VIDEO_FRAME_RATE
+  const shouldAlignVideoSeekToFrame = useMobileVideo
+  const videoSrc =
+    isDarkTheme ?
+      useMobileVideo ? NIGHT_MOBILE_VIDEO_URL : NIGHT_VIDEO_URL
+    : useMobileVideo ? DAY_MOBILE_VIDEO_URL
+    : DAY_VIDEO_URL
+  const [activeVideoSlot, setActiveVideoSlot] = useState<VideoSlotId>("a")
+  const [videoSlotSources, setVideoSlotSources] = useState<VideoSlotSources>(() => ({
+    a: videoSrc,
+    b: null,
+  }))
+  const [visibleVideoSlots, setVisibleVideoSlots] = useState<VideoSlotVisibility>({
+    a: false,
+    b: false,
+  })
+  const activeVideoSrc = videoSlotSources[activeVideoSlot] ?? videoSrc
+  const videoPosterSrc = getVideoPosterForSrc(activeVideoSrc)
+
+  const getVideoBySlot = useCallback((slot: VideoSlotId) => (
+    slot === "a" ? videoARef.current : videoBRef.current
+  ), [])
+
+  const getActiveVideo = useCallback(
+    () => getVideoBySlot(activeVideoSlotRef.current),
+    [getVideoBySlot],
+  )
+
+  const clearVideoFadeCleanup = useCallback(() => {
+    if (videoFadeCleanupTimeoutRef.current !== null) {
+      window.clearTimeout(videoFadeCleanupTimeoutRef.current)
+      videoFadeCleanupTimeoutRef.current = null
+    }
+  }, [])
 
   useEffect(() => {
     localFpvEffectsEnabledRef.current = isLocalFpvEffectsEnabled
   }, [isLocalFpvEffectsEnabled])
+
+  useEffect(() => {
+    activeVideoSlotRef.current = activeVideoSlot
+  }, [activeVideoSlot])
+
+  useEffect(() => {
+    desiredVideoSrcRef.current = videoSrc
+  }, [videoSrc])
+
+  useEffect(() => clearVideoFadeCleanup, [clearVideoFadeCleanup])
 
   const renderSceneAt = useCallback(
     (time: number) => {
@@ -1019,17 +1185,22 @@ export function HomeFpvExperience() {
 
   const seekVideoTo = useCallback(
     (targetTime: number) => {
-      const video = videoRef.current
+      const video = getActiveVideo()
 
       if (!video || !Number.isFinite(video.duration) || video.duration <= 0) {
         return
       }
 
-      const clampedTarget = clamp(targetTime, 0, video.duration)
-      const seekThreshold = Math.max(0.004, 1 / VIDEO_FRAME_RATE / 2)
+      const seekTarget = getVideoSeekTime(
+        targetTime,
+        video.duration,
+        activeVideoFrameRate,
+        shouldAlignVideoSeekToFrame,
+      )
+      const seekThreshold = getVideoSeekThreshold(activeVideoFrameRate)
 
-      if (Math.abs(video.currentTime - clampedTarget) > seekThreshold) {
-        video.currentTime = clampedTarget
+      if (Math.abs(video.currentTime - seekTarget) > seekThreshold) {
+        video.currentTime = seekTarget
       }
 
       setVideoDebugState({
@@ -1037,7 +1208,7 @@ export function HomeFpvExperience() {
         duration: video.duration,
       })
     },
-    [],
+    [activeVideoFrameRate, getActiveVideo, shouldAlignVideoSeekToFrame],
   )
 
   const updateRenderState = useCallback(() => {
@@ -1298,82 +1469,268 @@ export function HomeFpvExperience() {
   }, [cancelKeyboardScreenScroll])
 
   useEffect(() => {
-    const video = videoRef.current
+    const activeSrc = videoSlotSources[activeVideoSlot]
+
+    if (activeSrc === videoSrc) {
+      return
+    }
+
+    const pendingSlot: VideoSlotId = activeVideoSlot === "a" ? "b" : "a"
+    const pendingSrc = videoSlotSources[pendingSlot]
+    let disposed = false
+    clearVideoFadeCleanup()
+
+    queueMicrotask(() => {
+      if (disposed) {
+        return
+      }
+
+      if (pendingSrc !== videoSrc) {
+        setVisibleVideoSlots((current) => ({
+          ...current,
+          [pendingSlot]: false,
+        }))
+      }
+      setVideoSlotSources((current) =>
+        current[pendingSlot] === videoSrc ?
+          current
+        : {
+            ...current,
+            [pendingSlot]: videoSrc,
+          },
+      )
+    })
+
+    return () => {
+      disposed = true
+    }
+  }, [activeVideoSlot, clearVideoFadeCleanup, videoSlotSources, videoSrc])
+
+  useEffect(() => {
+    const activeSrc = videoSlotSources[activeVideoSlot]
+
+    if (activeSrc === videoSrc) {
+      return
+    }
+
+    const pendingSlot: VideoSlotId = activeVideoSlot === "a" ? "b" : "a"
+    const pendingSrc = videoSlotSources[pendingSlot]
+
+    if (pendingSrc !== videoSrc) {
+      return
+    }
+
+    const video = getVideoBySlot(pendingSlot)
     if (!video) {
       return
     }
 
-    const handleMetadata = () => {
+    let disposed = false
+    let didPromote = false
+
+    const preparePendingVideo = () => {
       setVideoDebugState({
         time: video.currentTime,
         duration: video.duration,
       })
       updateRenderState()
+
+      void primeVideoPaintFrame(
+        video,
+        renderTimeRef.current,
+        activeVideoFrameRate,
+        shouldAlignVideoSeekToFrame,
+      )
+        .then(() => {
+          if (disposed || didPromote || desiredVideoSrcRef.current !== pendingSrc) {
+            return
+          }
+
+          if (video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
+            didPromote = true
+            const previousSlot = activeVideoSlot
+
+            clearVideoFadeCleanup()
+            setVisibleVideoSlots((current) => ({
+              ...current,
+              [previousSlot]: true,
+              [pendingSlot]: true,
+            }))
+            setActiveVideoSlot(pendingSlot)
+            setVideoDebugState({
+              time: video.currentTime,
+              duration: video.duration,
+            })
+            videoFadeCleanupTimeoutRef.current = window.setTimeout(() => {
+              videoFadeCleanupTimeoutRef.current = null
+
+              if (
+                desiredVideoSrcRef.current !== pendingSrc ||
+                activeVideoSlotRef.current !== pendingSlot
+              ) {
+                return
+              }
+
+              setVisibleVideoSlots((current) => ({
+                ...current,
+                [previousSlot]: false,
+                [pendingSlot]: true,
+              }))
+              setVideoSlotSources((current) => {
+                if (activeVideoSlotRef.current !== pendingSlot) {
+                  return current
+                }
+
+                return {
+                  ...current,
+                  [previousSlot]: null,
+                }
+              })
+            }, VIDEO_THEME_CROSSFADE_DURATION)
+          }
+        })
+        .catch(() => undefined)
     }
-    video.addEventListener("loadedmetadata", handleMetadata)
+
+    video.addEventListener("loadedmetadata", preparePendingVideo)
+    video.addEventListener("canplay", preparePendingVideo, { once: true })
+    video.load()
     video.pause()
 
-    return () => {
-      video.removeEventListener("loadedmetadata", handleMetadata)
+    if (video.readyState >= HTMLMediaElement.HAVE_METADATA) {
+      preparePendingVideo()
     }
-  }, [updateRenderState, videoSrc])
+
+    return () => {
+      disposed = true
+      video.removeEventListener("loadedmetadata", preparePendingVideo)
+      video.removeEventListener("canplay", preparePendingVideo)
+    }
+  }, [
+    activeVideoSlot,
+    activeVideoFrameRate,
+    clearVideoFadeCleanup,
+    getVideoBySlot,
+    shouldAlignVideoSeekToFrame,
+    updateRenderState,
+    videoSlotSources,
+    videoSrc,
+  ])
 
   useEffect(() => {
-    const video = videoRef.current
+    const video = getActiveVideo()
     if (!video) {
       return
     }
 
     const updateVideoDebug = () => {
+      updateRenderState()
+
+      if (video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
+        setVisibleVideoSlots((current) => ({
+          ...current,
+          [activeVideoSlot]: true,
+        }))
+      }
+
       setVideoDebugState({
         time: video.currentTime,
         duration: video.duration,
       })
     }
 
+    video.addEventListener("loadedmetadata", updateVideoDebug)
     video.addEventListener("seeked", updateVideoDebug)
     video.addEventListener("loadeddata", updateVideoDebug)
+    video.addEventListener("canplay", updateVideoDebug)
+    video.load()
+
+    if (video.readyState >= HTMLMediaElement.HAVE_METADATA) {
+      updateVideoDebug()
+    }
 
     return () => {
+      video.removeEventListener("loadedmetadata", updateVideoDebug)
       video.removeEventListener("seeked", updateVideoDebug)
       video.removeEventListener("loadeddata", updateVideoDebug)
+      video.removeEventListener("canplay", updateVideoDebug)
     }
-  }, [videoSrc])
+  }, [activeVideoSlot, getActiveVideo, activeVideoSrc, updateRenderState])
 
   const edgeStep = useMemo(
     () => clamp(getScreenIndexAtTime(renderState.time) + 1, 1, SCROLL_SCREENS),
     [renderState.time],
   )
+  const activeScreenIndex = edgeStep - 1
   const videoFrame = getVideoFrameNumber(
     videoDebugState.time,
     videoDebugState.duration || SCROLL_TIMELINE_DURATION,
+    activeVideoFrameRate,
   )
 
   return (
     <section
       ref={sectionRef}
-      className="fpv-home"
+      className={[
+        "fpv-home",
+        useMobileFpvLayout ? "fpv-home-mobile" : "",
+      ].filter(Boolean).join(" ")}
       style={{ minHeight: `${SCROLL_SCREENS * 100}svh` }}
     >
       <div className="fpv-home-sticky">
-        <video
-          key={videoSrc}
-          ref={videoRef}
-          className="fpv-home-video"
-          src={videoSrc}
-          muted
-          playsInline
-          preload="auto"
+        <div
+          className="fpv-home-poster"
+          style={{ backgroundImage: `url(${videoPosterSrc})` }}
           aria-hidden="true"
         />
+        {(["a", "b"] as const).map((slot) => {
+          const slotSrc = videoSlotSources[slot]
+
+          if (!slotSrc) {
+            return null
+          }
+
+          return (
+            <video
+              key={`${slot}-${slotSrc}`}
+              ref={slot === "a" ? videoARef : videoBRef}
+              className={[
+                "fpv-home-video",
+                visibleVideoSlots[slot] ? "fpv-home-video-ready" : "",
+                slot === activeVideoSlot ? "fpv-home-video-front" : "",
+              ].filter(Boolean).join(" ")}
+              src={slotSrc}
+              poster={getVideoPosterForSrc(slotSrc)}
+              muted
+              playsInline
+              preload="auto"
+              aria-hidden="true"
+            />
+          )
+        })}
         <div className="fpv-home-shade" aria-hidden="true" />
 
-        <div className="fpv-edge fpv-edge-left" aria-hidden="true">
-          <span>FPV HOME</span>
-          <span>
-            {String(edgeStep).padStart(2, "0")} / {String(SCROLL_SCREENS).padStart(2, "0")}
-          </span>
-        </div>
+        <nav className="fpv-screen-nav" aria-label="Homepage sections">
+          {SCREEN_TIMES.map((screenTime, screenIndex) => {
+            const isActive = screenIndex === activeScreenIndex
+
+            return (
+              <button
+                key={screenTime}
+                type="button"
+                className={[
+                  "fpv-screen-nav-button",
+                  isActive ? "fpv-screen-nav-button-active" : "",
+                ].filter(Boolean).join(" ")}
+                onClick={() => animateScrollToScreenTime(screenTime)}
+                aria-label={`Go to homepage section ${screenIndex + 1}`}
+                aria-current={isActive ? "step" : undefined}
+              >
+                {screenIndex + 1}
+              </button>
+            )
+          })}
+        </nav>
         <div className="fpv-edge fpv-edge-right" aria-hidden="true">
           <span>{track ? `${track.camera.frames.length} CAMERA FRAMES` : "CAMERA LOADING"}</span>
           <span>VIDEO {videoDebugState.time.toFixed(2)}S</span>
