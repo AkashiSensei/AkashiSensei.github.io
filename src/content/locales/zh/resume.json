@@ -22,6 +22,9 @@
       "description": "问题永无止境，但我们总能再多问一个。一次又一次的追问与回答，积少成多，让零散的好奇慢慢沉淀为经验、判断与理解。"
     }
   ],
+  "plain": {
+    "valuesTitle": "判断"
+  },
   "contact": "联系方式",
   "github": "动态",
   "githubActivity": {

@@ -5,6 +5,11 @@
   "resumeCta": "查看在线简历",
   "contact": "联系方式",
   "github": "GitHub",
+  "plain": {
+    "kicker": "plain text / low distraction",
+    "actionsLabel": "主页快捷操作",
+    "friendAvatarAlt": "{{name}} 的头像"
+  },
   "fpv": {
     "page01": {
       "tags": {
@@ -198,6 +203,11 @@
     "page06": {
       "title": "友链",
       "subtitle": "感谢大家一路的陪伴",
+      "friendHoverLabel": "你好",
+      "friendHoverLabels": {
+        "hello": "你好",
+        "overwatch": "O"
+      },
       "links": [
         {
           "name": "隆隆隆",
@@ -209,7 +219,8 @@
           "name": "Pcpa",
           "quote": "我一直在哭",
           "avatar": "/assets/friend-links/pcpa.webp",
-          "href": "https://pcpas.github.io/"
+          "href": "https://pcpas.github.io/",
+          "hoverLabelKey": "overwatch"
         }
       ],
       "aside": "期待更多的朋友"

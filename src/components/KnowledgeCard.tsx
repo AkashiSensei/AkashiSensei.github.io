@@ -15,7 +15,7 @@ import { GlassPanel } from "@/components/GlassPanel"
 import { AppLink } from "@/components/AppLink"
 import { type KnowledgeEntry } from "@/data/knowledge"
 import { getGitHubRepoUpdatedDate } from "@/lib/github-repo-stats"
-import { getSemanticTagClassName } from "@/lib/tag-styles"
+import { defaultTagClassName, getSemanticTagClassName } from "@/lib/tag-styles"
 import { ProjectImageGallery } from "@/components/ProjectImageGallery"
 import { cn } from "@/lib/utils"
 
@@ -43,9 +43,6 @@ const kindClassName: Record<KnowledgeEntry["kind"], string> = {
   insights:
     "border-violet-300/50 bg-violet-100/70 text-violet-800 dark:border-violet-300/25 dark:bg-violet-300/12 dark:text-violet-200",
 }
-
-const defaultTagClassName =
-  "border-[rgb(var(--site-surface-rgb)_/_0.45)] bg-[rgb(var(--site-surface-rgb)_/_0.28)] text-foreground/60 dark:border-white/10 dark:bg-white/[0.04] dark:text-foreground/70"
 
 export function KnowledgeCard({
   entry,

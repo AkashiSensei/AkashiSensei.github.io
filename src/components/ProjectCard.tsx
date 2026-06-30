@@ -10,6 +10,7 @@ import { ProjectImageGallery } from "@/components/ProjectImageGallery"
 import { type Project } from "@/data/projects"
 import { getProjectPointSections } from "@/lib/project-points"
 import {
+  defaultTagClassName,
   getCourseProjectSemesterTagClassName,
   getSemanticTagClassName,
 } from "@/lib/tag-styles"
@@ -30,9 +31,6 @@ const lifecycleStatusClassName = {
   completed:
     "border-zinc-300/70 bg-zinc-100/80 text-zinc-700 dark:border-zinc-300/25 dark:bg-zinc-300/10 dark:text-zinc-200",
 } satisfies Record<Project["lifecycleStatus"], string>
-
-const defaultTagClassName =
-  "border-[rgb(var(--site-surface-rgb)_/_0.45)] bg-[rgb(var(--site-surface-rgb)_/_0.28)] text-foreground/60 dark:border-white/10 dark:bg-white/[0.04] dark:text-foreground/70"
 
 export function ProjectCard({
   project,

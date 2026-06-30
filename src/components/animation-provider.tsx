@@ -1,6 +1,6 @@
 import { createContext, useContext, useMemo, useState } from "react"
 
-type AnimationMode = "full" | "static"
+export type AnimationMode = "full" | "static" | "plain"
 
 type AnimationProviderProps = {
   children: React.ReactNode
@@ -11,6 +11,7 @@ type AnimationProviderProps = {
 type AnimationProviderState = {
   animationMode: AnimationMode
   isAnimationEnabled: boolean
+  isPlainDisplayMode: boolean
   setAnimationMode: (mode: AnimationMode) => void
   toggleAnimationMode: () => void
 }
@@ -18,6 +19,7 @@ type AnimationProviderState = {
 const initialState: AnimationProviderState = {
   animationMode: "full",
   isAnimationEnabled: true,
+  isPlainDisplayMode: false,
   setAnimationMode: () => null,
   toggleAnimationMode: () => null,
 }
@@ -26,7 +28,7 @@ const AnimationProviderContext =
   createContext<AnimationProviderState>(initialState)
 
 function isAnimationMode(value: string | null): value is AnimationMode {
-  return value === "full" || value === "static"
+  return value === "full" || value === "static" || value === "plain"
 }
 
 function getInitialAnimationMode(
@@ -64,6 +66,7 @@ export function AnimationProvider({
     return {
       animationMode,
       isAnimationEnabled: animationMode === "full",
+      isPlainDisplayMode: animationMode === "plain",
       setAnimationMode,
       toggleAnimationMode: () => {
         setAnimationMode(animationMode === "full" ? "static" : "full")

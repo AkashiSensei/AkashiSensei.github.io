@@ -1,12 +1,19 @@
 import { useTranslation } from "react-i18next"
 
 import { BackButton } from "@/components/BackButton"
+import { useAnimationPreference } from "@/components/animation-provider"
 import { KnowledgeGrid } from "@/components/KnowledgeGrid"
 import { Layout } from "@/components/Layout"
+import { PlainKnowledgeIndexPage } from "@/components/PlainKnowledgeIndexPage"
 import { knowledgeEntries } from "@/data/knowledge"
 
 export function KnowledgePage() {
   const { t } = useTranslation("knowledge")
+  const { isPlainDisplayMode } = useAnimationPreference()
+
+  if (isPlainDisplayMode) {
+    return <PlainKnowledgeIndexPage entries={knowledgeEntries} />
+  }
 
   return (
     <Layout>

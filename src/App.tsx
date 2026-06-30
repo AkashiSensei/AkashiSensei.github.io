@@ -241,6 +241,24 @@ function RouteEffects() {
 
 function NotFoundPage() {
   const { t } = useTranslation("common")
+  const { isPlainDisplayMode } = useAnimationPreference()
+
+  if (isPlainDisplayMode) {
+    return (
+      <Layout mainClassName="plain-home-main">
+        <article className="plain-home-document plain-detail-document" aria-labelledby="plain-not-found-title">
+          <header className="plain-home-header plain-detail-header">
+            <p className="plain-home-kicker">404</p>
+            <h1 id="plain-not-found-title">{t("notFound.title")}</h1>
+            <p className="plain-home-lede">{t("notFound.description")}</p>
+            <div className="plain-home-actions">
+              <AppLink to="/">{t("notFound.homeCta")}</AppLink>
+            </div>
+          </header>
+        </article>
+      </Layout>
+    )
+  }
 
   return (
     <Layout>
@@ -469,17 +487,20 @@ function shouldUseLiquidEtherForPath(pathname: string) {
 function App() {
   const { pathname } = useLocation()
   const isDarkTheme = useIsDarkTheme()
-  const { isAnimationEnabled } = useAnimationPreference()
-  const shouldUseLiquidEtherRoute = shouldUseLiquidEtherForPath(pathname)
+  const { isAnimationEnabled, isPlainDisplayMode } = useAnimationPreference()
+  const shouldUsePlainRoute = isPlainDisplayMode && pathname !== "/receipt-preview"
+  const shouldUseLiquidEtherRoute = shouldUseLiquidEtherForPath(pathname) && !shouldUsePlainRoute
 
   return (
     <>
       <RouteEffects />
-      <LightRaysBackground
-        pathname={pathname}
-        isDarkTheme={isDarkTheme}
-        isAnimationEnabled={isAnimationEnabled}
-      />
+      {!shouldUsePlainRoute ? (
+        <LightRaysBackground
+          pathname={pathname}
+          isDarkTheme={isDarkTheme}
+          isAnimationEnabled={isAnimationEnabled}
+        />
+      ) : null}
       {shouldUseLiquidEtherRoute ? (
         <LiquidEtherBackground
           key={pathname}

@@ -17,6 +17,9 @@ export const semanticTagTone = {
   public: "emerald",
 } as const satisfies Record<string, TagTone>
 
+export const defaultTagClassName =
+  "border-foreground/12 bg-[rgb(var(--site-surface-rgb)_/_0.30)] text-tone-3 dark:border-white/10 dark:bg-white/[0.05] dark:text-foreground/70"
+
 export const tagToneClassName: Record<TagTone, string> = {
   amber:
     "border-amber-400/30 bg-amber-400/12 text-amber-800 dark:border-amber-300/20 dark:bg-amber-300/10 dark:text-amber-200",

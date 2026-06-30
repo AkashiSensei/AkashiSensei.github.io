@@ -1,12 +1,24 @@
 import { useTranslation } from "react-i18next"
 
 import { BackButton } from "@/components/BackButton"
+import { useAnimationPreference } from "@/components/animation-provider"
 import { Layout } from "@/components/Layout"
+import { PlainProjectIndexPage } from "@/components/PlainProjectIndexPage"
 import { ProjectGrid } from "@/components/ProjectGrid"
 import { courseProjects } from "@/data/course-projects"
 
 export function CourseProjectsPage() {
   const { t } = useTranslation("courseProjects")
+  const { isPlainDisplayMode } = useAnimationPreference()
+
+  if (isPlainDisplayMode) {
+    return (
+      <PlainProjectIndexPage
+        projects={courseProjects}
+        translationNamespace="courseProjects"
+      />
+    )
+  }
 
   return (
     <Layout>

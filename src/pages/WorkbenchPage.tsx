@@ -2,11 +2,18 @@ import { useTranslation } from "react-i18next"
 
 import { Layout } from "@/components/Layout"
 import { BackButton } from "@/components/BackButton"
+import { useAnimationPreference } from "@/components/animation-provider"
+import { PlainWorkbenchIndexPage } from "@/components/PlainWorkbenchIndexPage"
 import { SoftwareGroupGrid } from "@/components/SoftwareGroupGrid"
 import { workbenchGroups } from "@/data/workbench"
 
 export function WorkbenchPage() {
   const { t } = useTranslation("workbench")
+  const { isPlainDisplayMode } = useAnimationPreference()
+
+  if (isPlainDisplayMode) {
+    return <PlainWorkbenchIndexPage groups={workbenchGroups} />
+  }
 
   return (
     <Layout>

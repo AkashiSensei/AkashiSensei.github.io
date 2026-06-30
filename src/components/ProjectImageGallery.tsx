@@ -291,7 +291,10 @@ export function ProjectImageGallery({
         const nextIndex = (currentIndex + 1) % images.length
 
         setCaptionImageIndex(nextIndex)
-        scrollGalleryToIndex(galleryRef.current, nextIndex)
+
+        if (cardScrollable) {
+          scrollGalleryToIndex(galleryRef.current, nextIndex)
+        }
 
         return nextIndex
       })
@@ -316,7 +319,7 @@ export function ProjectImageGallery({
         window.clearInterval(intervalId)
       }
     }
-  }, [cardAutoCycle, cardAutoCycleStaggerIndex, images.length, previewOpen])
+  }, [cardAutoCycle, cardAutoCycleStaggerIndex, cardScrollable, images.length, previewOpen])
 
   useEffect(() => {
     if (!previewOpen) {
@@ -350,6 +353,7 @@ export function ProjectImageGallery({
     ?? selectedImage
   const hasMultipleImages = images.length > 1
   const shouldRenderCardRail = cardScrollable || (cardAutoCycle && hasMultipleImages)
+  const shouldUseTransformCardRail = !cardScrollable && shouldRenderCardRail
   const cardImages = shouldRenderCardRail ? images : [selectedImage]
   const resolvedCardAspectRatio = cardAspectRatio
     ?? (cardAspectRatioMode === "natural"
@@ -368,7 +372,9 @@ export function ProjectImageGallery({
   const selectPreviewImage = (imageIndex: number) => {
     thumbnailScrollBehaviorRef.current = "smooth"
     setSelectedIndex(imageIndex)
-    scrollCardGalleryToIndex(imageIndex)
+    if (cardScrollable) {
+      scrollCardGalleryToIndex(imageIndex)
+    }
     scrollPreviewGalleryToIndex(imageIndex)
   }
 
@@ -429,20 +435,85 @@ export function ProjectImageGallery({
     }
 
     setSelectedIndex(nextIndex)
-    scrollCardGalleryToIndex(nextIndex)
+    if (cardScrollable) {
+      scrollCardGalleryToIndex(nextIndex)
+    }
   }
+
+  const cardSlideNodes = cardImages.map((image, renderedImageIndex) => {
+    const imageIndex = shouldRenderCardRail
+      ? renderedImageIndex
+      : selectedImageIndex
+
+    return (
+      <div
+        key={image.src}
+        role={cardInteractive ? "button" : undefined}
+        tabIndex={
+          cardInteractive
+            ? cardScrollable || imageIndex === selectedImageIndex ? 0 : -1
+            : undefined
+        }
+        aria-hidden={!cardScrollable && imageIndex !== selectedImageIndex}
+        className="relative flex h-full min-w-0 basis-full shrink-0 snap-start items-center justify-center overflow-hidden p-0"
+        style={{
+          touchAction: cardInteractive
+            ? cardScrollable ? "pan-x" : "pan-y"
+            : "auto",
+        }}
+        onClick={cardInteractive ? () => openPreview(imageIndex) : undefined}
+        onKeyDown={
+          cardInteractive
+            ? (event) => {
+                if (event.key !== "Enter" && event.key !== " ") {
+                  return
+                }
+
+                event.preventDefault()
+                openPreview(imageIndex)
+              }
+            : undefined
+        }
+        aria-label={
+          cardInteractive
+            ? t("imagePreview.open", { image: t(image.altKey) })
+            : undefined
+        }
+      >
+        <LazyImage
+          src={image.src}
+          alt={t(image.altKey)}
+          placeholderTitle={t(image.altKey)}
+          loadingLabel={t("common:imageLoading")}
+          brightness={image.brightness}
+          containerClassName="relative z-10 h-full w-full min-w-0 max-w-full"
+          imageClassName={cn(
+            "block h-full w-full max-w-full",
+            cardImageFit === "cover" ? "object-cover" : "object-contain",
+          )}
+          draggable={false}
+          style={{
+            touchAction: cardInteractive
+              ? cardScrollable ? "pan-x" : "pan-y"
+              : "auto",
+          }}
+        />
+      </div>
+    )
+  })
 
   return (
     <>
       <div
         ref={galleryRef}
         className={cn(
-          "flex w-full min-w-0 max-w-full shrink-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
+          "w-full min-w-0 max-w-full shrink-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
+          shouldUseTransformCardRail ? "relative" : "flex",
           cardScrollable
             ? "max-h-[72svh] snap-x snap-mandatory overflow-x-auto overscroll-y-none md:max-h-none"
             : shouldRenderCardRail
-              ? "max-h-full overflow-hidden"
-              : "max-h-full overflow-hidden",
+              ? "max-h-full overflow-hidden overflow-x-clip"
+              : "max-h-full overflow-hidden overflow-x-clip",
           className,
         )}
         style={{
@@ -457,67 +528,17 @@ export function ProjectImageGallery({
         }}
         onScroll={cardScrollable ? handleCardGalleryScroll : undefined}
       >
-        {cardImages.map((image, renderedImageIndex) => {
-          const imageIndex = shouldRenderCardRail
-            ? renderedImageIndex
-            : selectedImageIndex
-
-          return (
-            <div
-              key={image.src}
-              role={cardInteractive ? "button" : undefined}
-              tabIndex={
-                cardInteractive
-                  ? cardScrollable || imageIndex === selectedImageIndex ? 0 : -1
-                  : undefined
-              }
-              aria-hidden={!cardScrollable && imageIndex !== selectedImageIndex}
-              className="relative flex h-full min-w-0 basis-full shrink-0 snap-start items-center justify-center overflow-hidden p-0"
-              style={{
-                touchAction: cardInteractive
-                  ? cardScrollable ? "pan-x" : "pan-y"
-                  : "auto",
-              }}
-              onClick={cardInteractive ? () => openPreview(imageIndex) : undefined}
-              onKeyDown={
-                cardInteractive
-                  ? (event) => {
-                      if (event.key !== "Enter" && event.key !== " ") {
-                        return
-                      }
-
-                      event.preventDefault()
-                      openPreview(imageIndex)
-                    }
-                  : undefined
-              }
-              aria-label={
-                cardInteractive
-                  ? t("imagePreview.open", { image: t(image.altKey) })
-                  : undefined
-              }
-            >
-              <LazyImage
-                src={image.src}
-                alt={t(image.altKey)}
-                placeholderTitle={t(image.altKey)}
-                loadingLabel={t("common:imageLoading")}
-                brightness={image.brightness}
-                containerClassName="relative z-10 h-full w-full min-w-0 max-w-full"
-                imageClassName={cn(
-                  "block h-full w-full max-w-full",
-                  cardImageFit === "cover" ? "object-cover" : "object-contain",
-                )}
-                draggable={false}
-                style={{
-                  touchAction: cardInteractive
-                    ? cardScrollable ? "pan-x" : "pan-y"
-                    : "auto",
-                }}
-              />
-            </div>
-          )
-        })}
+        {shouldUseTransformCardRail ? (
+          <div
+            className="flex h-full w-full transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none"
+            style={{
+              transform: `translate3d(${-selectedImageIndex * 100}%, 0, 0)`,
+              willChange: "transform",
+            }}
+          >
+            {cardSlideNodes}
+          </div>
+        ) : cardSlideNodes}
       </div>
 
       <Dialog
