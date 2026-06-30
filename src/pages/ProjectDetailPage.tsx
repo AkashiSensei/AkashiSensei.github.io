@@ -4,12 +4,14 @@ import { useTranslation } from "react-i18next"
 import { useParams } from "react-router-dom"
 
 import { BackButton } from "@/components/BackButton"
+import { useAnimationPreference } from "@/components/animation-provider"
 import { DetailImageMasonry } from "@/components/DetailImageMasonry"
 import { FeaturePointList } from "@/components/FeaturePointList"
 import { GitHubRepoStats } from "@/components/GitHubRepoStats"
 import { GlassPanel } from "@/components/GlassPanel"
 import { Layout } from "@/components/Layout"
 import { LazyImage } from "@/components/LazyImage"
+import { PlainDetailPage } from "@/components/PlainDetailPage"
 import { ProjectImageGallery } from "@/components/ProjectImageGallery"
 import {
   Dialog,
@@ -130,9 +132,21 @@ export function ProjectDetailPage({
 }: ProjectDetailPageProps) {
   const { projectId } = useParams()
   const { t } = useTranslation([translationNamespace, "common"])
+  const { isPlainDisplayMode } = useAnimationPreference()
   const project = projects.find((entry) => entry.id === projectId)
 
   if (!project) {
+    if (isPlainDisplayMode) {
+      return (
+        <PlainDetailPage
+          title={t("common:notFound.title")}
+          summary={t("common:notFound.description")}
+          kicker="404"
+          fallback={fallbackPath}
+        />
+      )
+    }
+
     return (
       <Layout>
         <section className="flex min-h-[calc(100svh-11rem)] max-w-xl flex-col justify-center gap-5 py-12">
@@ -169,6 +183,70 @@ export function ProjectDetailPage({
           },
         ]
       : [])
+
+  if (isPlainDisplayMode) {
+    return (
+      <PlainDetailPage
+        title={title}
+        summary={t(`items.${project.id}.summary`)}
+        kicker={t("title")}
+        fallback={fallbackPath}
+        images={
+          project.images?.map((image) => ({
+            src: image.src,
+            alt: t(image.altKey),
+            width: image.width,
+            height: image.height,
+          })) ??
+          (project.screenshot
+            ? [
+                {
+                  src: project.screenshot.src,
+                  alt: t(project.screenshot.altKey),
+                },
+              ]
+            : undefined)
+        }
+        meta={[
+          t(`lifecycleStatus.${project.lifecycleStatus}`),
+          ...(project.status?.map((status) => t(`status.${status}`)) ?? []),
+        ]}
+        tags={project.tags.map((tag, tagIndex) => {
+          const isCourseProjectTimeTag =
+            translationNamespace === "courseProjects" && tagIndex < 2
+
+          return {
+            label: isCourseProjectTimeTag
+              ? t(`semesterTags.${tag}`, { defaultValue: tag })
+              : tag,
+            className: isCourseProjectTimeTag
+              ? getCourseProjectSemesterTagClassName(project.tags[1])
+              : detailTagClassName,
+          }
+        })}
+        links={repoLinks.map((link) => ({
+          label: link.label ?? link.url ?? t("repoLabel"),
+          href: link.url,
+          meta: link.repoTags?.map((repoTag) => ({
+            label: t(`repoTags.${repoTag}`),
+            className: getSemanticTagClassName(repoTag),
+          })),
+        }))}
+        sections={[
+          {
+            title: t("common:details.projectIntro"),
+            bullets: projectIntroPoints,
+          },
+          {
+            title: t("common:details.personalWork"),
+            bullets: personalWorkPoints,
+          },
+        ]}
+        linksTitle={t("common:details.links")}
+        tagsTitle={t("common:details.tags")}
+      />
+    )
+  }
 
   return (
     <Layout>

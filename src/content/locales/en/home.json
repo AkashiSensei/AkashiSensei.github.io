@@ -5,6 +5,11 @@
   "resumeCta": "View Online Resume",
   "contact": "Contact",
   "github": "GitHub",
+  "plain": {
+    "kicker": "plain text / low distraction",
+    "actionsLabel": "Home quick actions",
+    "friendAvatarAlt": "{{name}}'s avatar"
+  },
   "fpv": {
     "page01": {
       "tags": {
@@ -198,6 +203,11 @@
     "page06": {
       "title": "Friends",
       "subtitle": "Thank you for being here along the way.",
+      "friendHoverLabel": "Hello",
+      "friendHoverLabels": {
+        "hello": "Hello",
+        "overwatch": "OW?"
+      },
       "links": [
         {
           "name": "隆隆隆",
@@ -209,7 +219,8 @@
           "name": "Pcpa",
           "quote": "I'm always crying",
           "avatar": "/assets/friend-links/pcpa.webp",
-          "href": "https://pcpas.github.io/"
+          "href": "https://pcpas.github.io/",
+          "hoverLabelKey": "overwatch"
         }
       ],
       "aside": "Looking forward to more friends."

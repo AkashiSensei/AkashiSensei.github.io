@@ -1,12 +1,19 @@
 import { useTranslation } from "react-i18next"
 
 import { BackButton } from "@/components/BackButton"
+import { useAnimationPreference } from "@/components/animation-provider"
 import { Layout } from "@/components/Layout"
+import { PlainToolIndexPage } from "@/components/PlainToolIndexPage"
 import { SmallToolGrid } from "@/components/SmallToolGrid"
 import { smallTools } from "@/data/tools"
 
 export function ToolsPage() {
   const { t } = useTranslation("tools")
+  const { isPlainDisplayMode } = useAnimationPreference()
+
+  if (isPlainDisplayMode) {
+    return <PlainToolIndexPage tools={smallTools} />
+  }
 
   return (
     <Layout>

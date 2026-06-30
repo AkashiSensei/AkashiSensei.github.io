@@ -8,6 +8,7 @@ type FriendLink = {
   quote: string
   avatar: string
   href: string
+  hoverLabelKey?: string
 }
 
 function isFriendLink(value: unknown): value is FriendLink {
@@ -57,6 +58,10 @@ function Page06(_props: VirtualScreenProps) {
             href={link.href}
             target="_blank"
             rel="noreferrer"
+            data-hover-label={t(
+              `fpv.page06.friendHoverLabels.${link.hoverLabelKey ?? "hello"}`,
+              { defaultValue: t("fpv.page06.friendHoverLabel") },
+            )}
           >
             <span className="fpv-friend-pill-avatar" aria-hidden="true">
               {isImageAvatar(link.avatar) ? <img src={link.avatar} alt="" /> : link.avatar}

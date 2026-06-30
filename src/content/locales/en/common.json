@@ -14,6 +14,24 @@
     "viewContact": "View personal information",
     "viewOnPhone": "View current page on phone"
   },
+  "displayMode": {
+    "menuLabel": "Switch display mode",
+    "full": {
+      "label": "Full atmosphere",
+      "description": "Video, space, and complete visual effects",
+      "sr": "Current display mode is full atmosphere"
+    },
+    "static": {
+      "label": "Low animation",
+      "description": "Keep the mood, reduce motion cost",
+      "sr": "Current display mode is low animation"
+    },
+    "plain": {
+      "label": "Plain document",
+      "description": "Solid colors, left aligned, dense",
+      "sr": "Current display mode is plain document"
+    }
+  },
   "ui": {
     "langSwitchToEn": "EN",
     "langSwitchToZh": "中"

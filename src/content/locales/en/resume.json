@@ -22,6 +22,9 @@
       "description": "Questions never end, but we can always ask one more and answer one more. Question by question, small inquiries accumulate into experience, judgment, and understanding."
     }
   ],
+  "plain": {
+    "valuesTitle": "Principles"
+  },
   "contact": "Contact",
   "github": "Profile",
   "githubActivity": {

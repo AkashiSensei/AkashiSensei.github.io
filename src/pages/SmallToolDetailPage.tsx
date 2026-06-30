@@ -4,12 +4,14 @@ import { useTranslation } from "react-i18next"
 import { useParams } from "react-router-dom"
 
 import { BackButton } from "@/components/BackButton"
+import { useAnimationPreference } from "@/components/animation-provider"
 import { DetailImageMasonry } from "@/components/DetailImageMasonry"
 import { FeaturePointList } from "@/components/FeaturePointList"
 import { GitHubRepoStats } from "@/components/GitHubRepoStats"
 import { GlassPanel } from "@/components/GlassPanel"
 import { Layout } from "@/components/Layout"
 import { LazyImage } from "@/components/LazyImage"
+import { PlainDetailPage } from "@/components/PlainDetailPage"
 import { SmallToolImageGallery } from "@/components/SmallToolImageGallery"
 import {
   Dialog,
@@ -108,9 +110,21 @@ function SmallToolImageWall({
 export function SmallToolDetailPage({ tools }: SmallToolDetailPageProps) {
   const { toolId } = useParams()
   const { t } = useTranslation(["tools", "common"])
+  const { isPlainDisplayMode } = useAnimationPreference()
   const tool = tools.find((entry) => entry.id === toolId)
 
   if (!tool) {
+    if (isPlainDisplayMode) {
+      return (
+        <PlainDetailPage
+          title={t("common:notFound.title")}
+          summary={t("common:notFound.description")}
+          kicker="404"
+          fallback="/tools"
+        />
+      )
+    }
+
     return (
       <Layout>
         <section className="flex min-h-[calc(100svh-11rem)] max-w-xl flex-col justify-center gap-5 py-12">
@@ -132,6 +146,52 @@ export function SmallToolDetailPage({ tools }: SmallToolDetailPageProps) {
   }
 
   const points = getPoints(t(`items.${tool.id}.points`, { returnObjects: true }))
+
+  if (isPlainDisplayMode) {
+    return (
+      <PlainDetailPage
+        title={t(`items.${tool.id}.title`)}
+        summary={t(`items.${tool.id}.summary`)}
+        kicker={t("title")}
+        fallback="/tools"
+        images={
+          tool.screenshots?.map((image) => ({
+            src: image.src,
+            alt: image.alt,
+            width: image.width,
+            height: image.height,
+          })) ??
+          (tool.screenshot
+            ? [
+                {
+                  src: tool.screenshot.src,
+                  alt: tool.screenshot.alt,
+                },
+              ]
+            : undefined)
+        }
+        meta={[
+          t(`labels.${tool.role}`),
+          ...(tool.status ? [t(`labels.${tool.status}`)] : []),
+          ...(tool.archived ? [t("labels.archived")] : []),
+        ]}
+        links={[
+          {
+            label: tool.repoName ?? t("labels.privateTool"),
+            href: tool.repoUrl,
+          },
+        ]}
+        sections={[
+          {
+            title: t("common:details.highlights"),
+            bullets: points,
+          },
+        ]}
+        linksTitle={t("common:details.links")}
+        tagsTitle={t("common:details.tags")}
+      />
+    )
+  }
 
   return (
     <Layout>

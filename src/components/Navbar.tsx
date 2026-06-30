@@ -2,16 +2,33 @@ import { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
 import { toString as qrToString } from "qrcode";
-import { useAnimationPreference } from "@/components/animation-provider";
+import {
+  type AnimationMode,
+  useAnimationPreference,
+} from "@/components/animation-provider";
 import { useTheme } from "@/components/theme-provider";
 import { AppLink } from "@/components/AppLink";
 import { ContactDialog } from "@/components/ContactDialog";
 import { SpotlightCard } from "@/components/SpotlightCard";
-import { Sun, Moon, Menu, X, Mail, QrCode, Sparkles, CircleOff } from "lucide-react";
+import {
+  Check,
+  CircleOff,
+  FileText,
+  Mail,
+  Menu,
+  Moon,
+  QrCode,
+  Sparkles,
+  Sun,
+  X,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const phoneQrPanelWidth = 224;
 const phoneQrPanelGap = 8;
+const displayModePanelWidth = 188;
+const displayModePanelGap = 8;
+const fallbackDisplayModePanelHeight = 138;
 
 function isVisibleElement(element: HTMLElement) {
   const rect = element.getBoundingClientRect();
@@ -41,13 +58,46 @@ function getPhoneQrPanelPosition(
   };
 }
 
+function getDisplayModePanelPosition(
+  button: HTMLButtonElement,
+  container: HTMLDivElement,
+  panelHeight = fallbackDisplayModePanelHeight,
+) {
+  const buttonRect = button.getBoundingClientRect();
+  const menuAnchor =
+    (button.closest(".desktop-menu-cluster") as HTMLElement | null) ?? button;
+  const anchorRect = menuAnchor.getBoundingClientRect();
+  const containerRect = container.getBoundingClientRect();
+  const viewportWidth = window.visualViewport?.width ?? window.innerWidth;
+  const viewportHeight = window.visualViewport?.height ?? window.innerHeight;
+  const viewportPadding = 16;
+  const minLeft = viewportPadding - containerRect.left;
+  const maxLeft =
+    viewportWidth - displayModePanelWidth - viewportPadding - containerRect.left;
+  const preferredLeft = anchorRect.right - displayModePanelWidth - containerRect.left;
+  const shouldOpenUpward = buttonRect.top > viewportHeight / 2;
+  const preferredTop = shouldOpenUpward
+    ? buttonRect.top - containerRect.top - panelHeight - displayModePanelGap
+    : Math.max(buttonRect.bottom, anchorRect.bottom) - containerRect.top + displayModePanelGap;
+
+  return {
+    left: Math.max(minLeft, Math.min(preferredLeft, maxLeft)),
+    top: Math.max(viewportPadding - containerRect.top, preferredTop),
+  };
+}
+
 export function Navbar() {
   const { t, i18n } = useTranslation(["common", "nav"]);
   const { theme, setTheme } = useTheme();
-  const { animationMode, isAnimationEnabled, toggleAnimationMode } =
+  const { animationMode, isAnimationEnabled, setAnimationMode } =
     useAnimationPreference();
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [displayModeMenuOpen, setDisplayModeMenuOpen] = useState(false);
+  const [displayModePanelPosition, setDisplayModePanelPosition] = useState<{
+    left: number;
+    top: number;
+  } | null>(null);
   const [phoneQrOpen, setPhoneQrOpen] = useState(false);
   const [phoneQrPanelPosition, setPhoneQrPanelPosition] = useState<{
     left: number;
@@ -58,6 +108,11 @@ export function Navbar() {
   const [scrollDisplacement, setScrollDisplacement] = useState(0);
   const navRef = useRef<HTMLDivElement>(null);
   const phoneQrPanelRef = useRef<HTMLDivElement>(null);
+  const displayModePanelRef = useRef<HTMLDivElement>(null);
+  const mobileDisplayModeButtonRef = useRef<HTMLButtonElement | null>(null);
+  const compactDisplayModeButtonRef = useRef<HTMLButtonElement | null>(null);
+  const fullDisplayModeButtonRef = useRef<HTMLButtonElement | null>(null);
+  const activeDisplayModeButtonRef = useRef<HTMLButtonElement | null>(null);
   const compactPhoneQrButtonRef = useRef<HTMLButtonElement | null>(null);
   const fullPhoneQrButtonRef = useRef<HTMLButtonElement | null>(null);
   const activePhoneQrButtonRef = useRef<HTMLButtonElement | null>(null);
@@ -79,19 +134,33 @@ export function Navbar() {
     return candidates.find((button) => button && isVisibleElement(button)) ?? null;
   }, []);
 
+  const getActiveDisplayModeButton = useCallback(() => {
+    const candidates = [
+      activeDisplayModeButtonRef.current,
+      fullDisplayModeButtonRef.current,
+      compactDisplayModeButtonRef.current,
+      mobileDisplayModeButtonRef.current,
+    ];
+
+    return candidates.find((button) => button && isVisibleElement(button)) ?? null;
+  }, []);
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent | TouchEvent) => {
       const target = event.target as Node;
       const isInsideNavbar = navRef.current?.contains(target);
       const isInsidePhoneQrPanel = phoneQrPanelRef.current?.contains(target);
+      const isInsideDisplayModePanel = displayModePanelRef.current?.contains(target);
 
       if (
-        (mobileMenuOpen || phoneQrOpen) &&
+        (mobileMenuOpen || phoneQrOpen || displayModeMenuOpen) &&
         !isInsideNavbar &&
-        !isInsidePhoneQrPanel
+        !isInsidePhoneQrPanel &&
+        !isInsideDisplayModePanel
       ) {
         setMobileMenuOpen(false);
         setPhoneQrOpen(false);
+        setDisplayModeMenuOpen(false);
       }
     };
 
@@ -102,7 +171,21 @@ export function Navbar() {
       document.removeEventListener("mousedown", handleClickOutside);
       document.removeEventListener("touchstart", handleClickOutside);
     };
-  }, [mobileMenuOpen, phoneQrOpen]);
+  }, [displayModeMenuOpen, mobileMenuOpen, phoneQrOpen]);
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setDisplayModeMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
 
   const currentPageUrl = useMemo(
     () => `${window.location.origin}${location.pathname}${location.search}${location.hash}`,
@@ -198,6 +281,60 @@ export function Navbar() {
       resizeObserver.disconnect();
     };
   }, [getActivePhoneQrButton, phoneQrOpen]);
+
+  useEffect(() => {
+    if (!displayModeMenuOpen) {
+      return;
+    }
+
+    const updatePanelPosition = () => {
+      const activeButton = getActiveDisplayModeButton();
+      const navContainer = navRef.current;
+      const panelHeight =
+        displayModePanelRef.current?.getBoundingClientRect().height ??
+        fallbackDisplayModePanelHeight;
+
+      if (activeButton && navContainer) {
+        activeDisplayModeButtonRef.current = activeButton;
+        setDisplayModePanelPosition(
+          getDisplayModePanelPosition(activeButton, navContainer, panelHeight),
+        );
+      }
+    };
+
+    window.addEventListener("resize", updatePanelPosition);
+    window.visualViewport?.addEventListener("resize", updatePanelPosition);
+
+    const resizeObserver = new ResizeObserver(updatePanelPosition);
+
+    if (navRef.current) {
+      resizeObserver.observe(navRef.current);
+    }
+
+    if (displayModePanelRef.current) {
+      resizeObserver.observe(displayModePanelRef.current);
+    }
+
+    if (mobileDisplayModeButtonRef.current) {
+      resizeObserver.observe(mobileDisplayModeButtonRef.current);
+    }
+
+    if (compactDisplayModeButtonRef.current) {
+      resizeObserver.observe(compactDisplayModeButtonRef.current);
+    }
+
+    if (fullDisplayModeButtonRef.current) {
+      resizeObserver.observe(fullDisplayModeButtonRef.current);
+    }
+
+    updatePanelPosition();
+
+    return () => {
+      window.removeEventListener("resize", updatePanelPosition);
+      window.visualViewport?.removeEventListener("resize", updatePanelPosition);
+      resizeObserver.disconnect();
+    };
+  }, [displayModeMenuOpen, getActiveDisplayModeButton]);
 
   useEffect(() => {
     const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -362,6 +499,7 @@ export function Navbar() {
     }
 
     setMobileMenuOpen(false);
+    setDisplayModeMenuOpen(false);
     activePhoneQrButtonRef.current = button;
     setPhoneQrPanelPosition(getPhoneQrPanelPosition(button, navContainer));
     setPhoneQrOpen((isOpen) => !isOpen);
@@ -369,7 +507,23 @@ export function Navbar() {
 
   const toggleDesktopMenu = () => {
     setPhoneQrOpen(false);
+    setDisplayModeMenuOpen(false);
     setMobileMenuOpen((isOpen) => !isOpen);
+  };
+
+  const toggleDisplayModeMenu = (button: HTMLButtonElement) => {
+    const navContainer = navRef.current;
+
+    if (!navContainer) {
+      return;
+    }
+
+    setPhoneQrOpen(false);
+    activeDisplayModeButtonRef.current = button;
+    setDisplayModePanelPosition(
+      getDisplayModePanelPosition(button, navContainer),
+    );
+    setDisplayModeMenuOpen((isOpen) => !isOpen);
   };
 
   const renderNavLink = (
@@ -440,33 +594,125 @@ export function Navbar() {
     </div>
   );
 
-  const renderAnimationButton = (className: string) => {
-    const label =
-      isAnimationEnabled ?
-        t("a11y.switchAnimationToStatic")
-      : t("a11y.switchAnimationToFull");
-    const srLabel =
-      animationMode === "full" ?
-        t("a11y.animationFullSr")
-      : t("a11y.animationStaticSr");
+  const displayModeOptions: AnimationMode[] = ["full", "static", "plain"];
+
+  const renderDisplayModeIcon = (mode: AnimationMode) => {
+    if (mode === "plain") {
+      return <FileText className="h-4 w-4" />;
+    }
+
+    if (mode === "static") {
+      return <CircleOff className="h-4 w-4" />;
+    }
+
+    return <Sparkles className="h-4 w-4" />;
+  };
+
+  const renderDisplayModeButton = (
+    className: string,
+    variant: "mobile" | "compact" | "full",
+  ) => {
+    const label = t("displayMode.menuLabel");
+    const srLabel = t(`displayMode.${animationMode}.sr`);
 
     return (
-      <button
-        type="button"
-        onClick={toggleAnimationMode}
-        className={cn(
-          className,
-          !isAnimationEnabled && "bg-muted/50 text-tone-1",
-        )}
-        title={label}
-        aria-label={label}
-        aria-pressed={!isAnimationEnabled}
+      <div className="display-mode-control desktop-menu-item relative">
+        <button
+          ref={(button) => {
+            if (variant === "mobile") {
+              mobileDisplayModeButtonRef.current = button;
+              return;
+            }
+
+            if (variant === "compact") {
+              compactDisplayModeButtonRef.current = button;
+              return;
+            }
+
+            fullDisplayModeButtonRef.current = button;
+          }}
+          type="button"
+          onPointerDown={(event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            toggleDisplayModeMenu(event.currentTarget);
+          }}
+          onClick={(event) => {
+            if (event.detail === 0) {
+              toggleDisplayModeMenu(event.currentTarget);
+            }
+          }}
+          className={cn(
+            className,
+            !isAnimationEnabled && "bg-muted/50 text-tone-1",
+            displayModeMenuOpen && "bg-muted/50 text-tone-1",
+          )}
+          title={label}
+          aria-label={label}
+          aria-haspopup="menu"
+          aria-expanded={displayModeMenuOpen}
+        >
+          {renderDisplayModeIcon(animationMode)}
+          <span className="sr-only">{srLabel}</span>
+        </button>
+      </div>
+    );
+  };
+
+  const renderDisplayModePanel = () => {
+    if (!displayModeMenuOpen || !displayModePanelPosition) {
+      return null;
+    }
+
+    const selectDisplayMode = (mode: AnimationMode) => {
+      setAnimationMode(mode);
+      setDisplayModeMenuOpen(false);
+      setMobileMenuOpen(false);
+    };
+
+    return (
+      <div
+        ref={displayModePanelRef}
+        className="display-mode-menu lit-glass-card"
+        role="menu"
+        aria-label={t("displayMode.menuLabel")}
+        style={{
+          left: `${displayModePanelPosition.left}px`,
+          top: `${displayModePanelPosition.top}px`,
+        }}
       >
-        {isAnimationEnabled ?
-          <Sparkles className="h-4 w-4" />
-        : <CircleOff className="h-4 w-4" />}
-        <span className="sr-only">{srLabel}</span>
-      </button>
+        {displayModeOptions.map((mode) => {
+          const isSelected = mode === animationMode;
+
+          return (
+            <button
+              key={mode}
+              type="button"
+              className={cn(
+                "display-mode-menu-item",
+                isSelected && "display-mode-menu-item-active",
+              )}
+              onClick={() => selectDisplayMode(mode)}
+              role="menuitemradio"
+              aria-checked={isSelected}
+            >
+              <span className="display-mode-menu-icon">
+                {renderDisplayModeIcon(mode)}
+              </span>
+              <span className="display-mode-menu-copy">
+                <span>{t(`displayMode.${mode}.label`)}</span>
+              </span>
+              <Check
+                className={cn(
+                  "display-mode-menu-check h-4 w-4",
+                  !isSelected && "opacity-0",
+                )}
+                aria-hidden="true"
+              />
+            </button>
+          );
+        })}
+      </div>
     );
   };
 
@@ -554,7 +800,7 @@ export function Navbar() {
               <Moon className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
               <span className="sr-only">{t("a11y.toggleThemeSr")}</span>
             </button>
-            {renderAnimationButton("flex h-8 w-8 items-center justify-center rounded-full transition-colors hover:bg-muted/50")}
+            {renderDisplayModeButton("flex h-8 w-8 items-center justify-center rounded-full transition-colors hover:bg-muted/50", "mobile")}
 
             <button 
               onClick={toggleDesktopMenu}
@@ -609,7 +855,7 @@ export function Navbar() {
             <Moon className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
             <span className="sr-only">{t("a11y.toggleThemeSr")}</span>
           </button>
-          {renderAnimationButton("desktop-menu-item flex h-8 w-8 items-center justify-center rounded-full hover:bg-muted/50")}
+          {renderDisplayModeButton("flex h-8 w-8 items-center justify-center rounded-full hover:bg-muted/50", "compact")}
           {renderPhoneQrButton("compact")}
           <button
             onClick={toggleDesktopMenu}
@@ -686,12 +932,13 @@ export function Navbar() {
             <Moon className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
             <span className="sr-only">{t("a11y.toggleThemeSr")}</span>
           </button>
-          {renderAnimationButton("desktop-menu-item flex h-8 w-8 items-center justify-center rounded-full hover:bg-muted/50")}
+          {renderDisplayModeButton("flex h-8 w-8 items-center justify-center rounded-full hover:bg-muted/50", "full")}
           {renderPhoneQrButton("full")}
         </SpotlightCard>
       </div>
 
       {renderPhoneQrPanel()}
+      {renderDisplayModePanel()}
 
       {mobileMenuOpen && (
         <SpotlightCard className="navbar-dropdown-panel lit-glass-card absolute bottom-full left-0 right-0 mb-2 origin-bottom rounded-3xl border border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.42)] p-3 shadow-sm backdrop-blur-md transition-all duration-300 dark:border-white/10 dark:bg-white/10 md:bottom-auto md:left-auto md:right-0 md:top-full md:mt-2 md:w-[22rem] md:origin-top">

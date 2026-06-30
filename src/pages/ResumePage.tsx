@@ -6,9 +6,11 @@ import { GitHubMark } from "@/components/GitHubMark"
 import { KnowledgeHighlights } from "@/components/KnowledgeHighlights"
 import { Layout } from "@/components/Layout"
 import { ProjectHighlights } from "@/components/ProjectHighlights"
+import { ResumePlainExperience } from "@/components/ResumePlainExperience"
 import { SmallToolHighlights } from "@/components/SmallToolHighlights"
 import { Button } from "@/components/ui/button"
 import { WorkbenchHighlights } from "@/components/WorkbenchHighlights"
+import { useAnimationPreference } from "@/components/animation-provider"
 import { useTranslation } from "react-i18next"
 
 type ValueCard = {
@@ -18,6 +20,16 @@ type ValueCard = {
 
 export function ResumePage() {
   const { i18n, t } = useTranslation("resume")
+  const { isPlainDisplayMode } = useAnimationPreference()
+
+  if (isPlainDisplayMode) {
+    return (
+      <Layout mainClassName="plain-home-main">
+        <ResumePlainExperience />
+      </Layout>
+    )
+  }
+
   const isEnglish = (i18n.resolvedLanguage ?? i18n.language).startsWith("en")
   const resumeDescription = t("description", {
     returnObjects: true,

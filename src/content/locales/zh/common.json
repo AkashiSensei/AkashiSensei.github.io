@@ -14,6 +14,24 @@
     "viewContact": "查看个人信息",
     "viewOnPhone": "在手机上查看当前页面"
   },
+  "displayMode": {
+    "menuLabel": "切换显示方案",
+    "full": {
+      "label": "完整效果",
+      "description": "视频、空间和完整氛围效果",
+      "sr": "当前为完整效果显示方案"
+    },
+    "static": {
+      "label": "低动画",
+      "description": "保留视觉氛围，降低动态消耗",
+      "sr": "当前为低动画显示方案"
+    },
+    "plain": {
+      "label": "朴素文档",
+      "description": "纯色、左对齐、高信息密度",
+      "sr": "当前为朴素文档显示方案"
+    }
+  },
   "ui": {
     "langSwitchToEn": "EN",
     "langSwitchToZh": "中"
