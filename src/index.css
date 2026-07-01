@@ -99,6 +99,10 @@
     --glass-shadow-x: 0px;
     --glass-shadow-y: 18px;
     --site-surface-rgb: 255 255 255;
+    --site-footer-bg: oklch(0.965 0.008 86);
+    --site-footer-fg: oklch(0.185 0.012 250);
+    --site-footer-border: oklch(0.185 0.012 250 / 10%);
+    --site-footer-rule: oklch(0.185 0.012 250 / 16%);
     --high-brightness-image-overlay-rgb: 0 0 0;
     --high-brightness-image-overlay-opacity: 0.30;
 }
@@ -143,6 +147,10 @@
     --bg-gradient-1: oklch(0.35 0.12 270 / 40%); /* 宇宙深紫/靛蓝 */
     --bg-gradient-2: oklch(0.30 0.12 320 / 40%); /* 星云紫红 */
     --bg-gradient-3: oklch(0.35 0.10 210 / 40%); /* 深邃青蓝 */
+    --site-footer-bg: oklch(0.145 0.012 250);
+    --site-footer-fg: oklch(0.94 0.006 86);
+    --site-footer-border: oklch(0.94 0.006 86 / 12%);
+    --site-footer-rule: oklch(0.94 0.006 86 / 18%);
 }
 
 @layer base {
@@ -597,6 +605,263 @@
 }
 
 @layer components {
+  .site-footer {
+    --foreground: var(--site-footer-fg);
+    --text-tone-1: color-mix(in oklab, var(--site-footer-fg) 96%, transparent);
+    --text-tone-2: color-mix(in oklab, var(--site-footer-fg) 80%, transparent);
+    --text-tone-3: color-mix(in oklab, var(--site-footer-fg) 64%, transparent);
+    --text-tone-4: color-mix(in oklab, var(--site-footer-fg) 52%, transparent);
+    --text-tone-5: color-mix(in oklab, var(--site-footer-fg) 40%, transparent);
+    --site-footer-inline-padding: 1.25rem;
+    position: relative;
+    z-index: 1;
+    background: var(--site-footer-bg);
+    color: var(--site-footer-fg);
+    border-top: 1px solid var(--site-footer-border);
+    padding-inline: var(--site-footer-inline-padding);
+    font-weight: 300;
+  }
+
+  .site-footer-inner {
+    --site-footer-measure: 80rem;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: clamp(1.65rem, 3vw, 2.5rem);
+    width: min(100%, var(--site-footer-measure));
+    margin-inline: auto;
+    padding-block: clamp(3.25rem, 7vw, 5.5rem) calc(clamp(5rem, 9vw, 6.75rem) + env(safe-area-inset-bottom, 0px));
+  }
+
+  .site-footer[data-display-mode="plain"] .site-footer-inner {
+    --site-footer-measure: 112ch;
+  }
+
+  .site-footer-breadcrumbs ol {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    color: var(--text-tone-4);
+    font-size: 0.94rem;
+    font-weight: 300;
+    line-height: 1.45;
+  }
+
+  .site-footer-breadcrumbs li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    min-width: 0;
+  }
+
+  .site-footer-breadcrumbs li + li::before {
+    content: "›";
+    color: var(--text-tone-5);
+  }
+
+  .site-footer-breadcrumb-link,
+  .site-footer-breadcrumb-current {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .site-footer-breadcrumb-link {
+    transition: color 180ms ease;
+  }
+
+  .site-footer-breadcrumb-link:hover,
+  .site-footer-breadcrumb-link:focus-visible {
+    color: var(--text-tone-1);
+  }
+
+  .site-footer-breadcrumb-link:focus-visible {
+    border-radius: 0.35rem;
+    outline: 2px solid color-mix(in oklab, var(--site-footer-fg) 34%, transparent);
+    outline-offset: 3px;
+  }
+
+  .site-footer-breadcrumb-current {
+    color: var(--text-tone-2);
+  }
+
+  .site-footer-link-region {
+    display: grid;
+    align-content: start;
+    justify-items: start;
+    gap: clamp(1.25rem, 1.8vw, 1.65rem);
+  }
+
+  .site-footer-nav {
+    display: grid;
+    justify-items: start;
+    gap: 0.46rem;
+    max-width: 14rem;
+  }
+
+  .site-footer-settings {
+    display: grid;
+    justify-items: start;
+  }
+
+  .site-footer-settings-list {
+    display: grid;
+    grid-template-columns: max-content minmax(0, 1fr);
+    gap: 0.34rem 0.68rem;
+    margin: 0;
+    padding: 0;
+  }
+
+  .site-footer-settings-item {
+    display: contents;
+  }
+
+  .site-footer-settings-item dt {
+    color: var(--text-tone-5);
+    font-size: 0.82rem;
+    font-weight: 300;
+    line-height: 1.35;
+  }
+
+  .site-footer-settings-item dd {
+    margin: 0;
+    color: var(--text-tone-2);
+    font-size: 0.82rem;
+    font-weight: 300;
+    line-height: 1.35;
+  }
+
+  .site-footer-settings-item dd::before {
+    content: "›";
+    display: inline-block;
+    width: 0.8rem;
+    color: var(--text-tone-5);
+  }
+
+  .site-footer-link,
+  .site-footer-action {
+    color: var(--text-tone-2);
+    font-size: 0.92rem;
+    font-weight: 300;
+    line-height: 1.2;
+    text-decoration: none;
+    transition:
+      color 180ms ease,
+      transform 180ms ease;
+  }
+
+  .site-footer-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 1.42rem;
+  }
+
+  .site-footer-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.65rem;
+  }
+
+  .site-footer-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.42rem;
+    min-height: 2.35rem;
+    border: 1px solid var(--site-footer-rule);
+    border-radius: 999px;
+    background: color-mix(in oklab, var(--site-footer-fg) 5%, transparent);
+    padding: 0.62rem 0.9rem;
+    cursor: pointer;
+    font-weight: 300;
+  }
+
+  .site-footer-link:hover,
+  .site-footer-link:focus-visible,
+  .site-footer-action:hover,
+  .site-footer-action:focus-visible {
+    color: var(--text-tone-1);
+  }
+
+  .site-footer-link:hover,
+  .site-footer-action:hover {
+    transform: translateY(-1px);
+  }
+
+  .site-footer-link:focus-visible,
+  .site-footer-action:focus-visible {
+    border-radius: 0.5rem;
+    outline: 2px solid color-mix(in oklab, var(--site-footer-fg) 42%, transparent);
+    outline-offset: 3px;
+  }
+
+  .site-footer-action:active {
+    transform: translateY(0);
+  }
+
+  .site-footer-meta {
+    display: grid;
+    gap: 1.15rem;
+    padding-top: 1.4rem;
+    border-top: 1px solid var(--site-footer-rule);
+    color: var(--text-tone-4);
+    font-size: 0.78rem;
+    font-weight: 300;
+    line-height: 1.5;
+  }
+
+  @media (min-width: 640px) {
+    .site-footer {
+      --site-footer-inline-padding: 2rem;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .site-footer {
+      --site-footer-inline-padding: 3.5rem;
+    }
+
+    .site-footer-inner {
+      align-items: start;
+      padding-bottom: clamp(3.5rem, 6vw, 5.5rem);
+    }
+
+    .site-footer-link-region {
+      padding-top: 0.4rem;
+    }
+
+    .site-footer-meta {
+      align-items: start;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .site-footer {
+      --site-footer-inline-padding: 4.5rem;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .site-footer {
+      --site-footer-inline-padding: 6rem;
+    }
+  }
+
+  @media (min-width: 1536px) {
+    .site-footer {
+      --site-footer-inline-padding: 8rem;
+    }
+  }
+
+  @media (min-width: 1800px) {
+    .site-footer {
+      --site-footer-inline-padding: 13rem;
+    }
+  }
+
   .fpv-home {
     position: relative;
     min-height: 600svh;

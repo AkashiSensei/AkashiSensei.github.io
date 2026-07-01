@@ -4,7 +4,7 @@
   },
   "a11y": {
     "toggleLanguage": "切换语言",
-    "toggleTheme": "切换深色或浅色模式",
+    "toggleTheme": "切换深色、浅色或跟随系统模式",
     "toggleMenu": "展开或收起导航菜单",
     "toggleThemeSr": "切换主题",
     "switchAnimationToStatic": "切换为静态背景",
@@ -13,6 +13,21 @@
     "animationStaticSr": "背景已切换为静态模式",
     "viewContact": "查看个人信息",
     "viewOnPhone": "在手机上查看当前页面"
+  },
+  "themeMode": {
+    "menuLabel": "切换深浅色模式",
+    "system": {
+      "label": "跟随系统",
+      "sr": "当前为跟随系统深浅色模式"
+    },
+    "light": {
+      "label": "浅色",
+      "sr": "当前为浅色模式"
+    },
+    "dark": {
+      "label": "深色",
+      "sr": "当前为深色模式"
+    }
   },
   "displayMode": {
     "menuLabel": "切换显示方案",
@@ -35,6 +50,33 @@
   "ui": {
     "langSwitchToEn": "EN",
     "langSwitchToZh": "中"
+  },
+  "footer": {
+    "landmarkAria": "站点页脚",
+    "breadcrumbAria": "当前位置",
+    "navAria": "页脚导航",
+    "settingsAria": "当前显示设置",
+    "actionsAria": "页脚外部链接与联系入口",
+    "home": "主页",
+    "currentPage": "当前页面",
+    "receiptPreview": "交流回执预览",
+    "settings": {
+      "theme": "深浅色",
+      "displayMode": "效果",
+      "language": "语言"
+    },
+    "themeValues": {
+      "dark": "深色",
+      "light": "浅色",
+      "system": "{{theme}}（系统）"
+    },
+    "languageValues": {
+      "zh": "中文",
+      "en": "English"
+    },
+    "github": "GitHub",
+    "contact": "联系",
+    "copyright": "© {{year}} Akashi. Built for GitHub Pages."
   },
   "imageLoading": "图片加载中",
   "details": {

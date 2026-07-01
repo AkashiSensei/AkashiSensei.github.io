@@ -16,6 +16,7 @@ import {
   FileText,
   Mail,
   Menu,
+  Monitor,
   Moon,
   QrCode,
   Sparkles,
@@ -29,6 +30,8 @@ const phoneQrPanelGap = 8;
 const displayModePanelWidth = 188;
 const displayModePanelGap = 8;
 const fallbackDisplayModePanelHeight = 138;
+
+type ThemeMode = "system" | "light" | "dark";
 
 function isVisibleElement(element: HTMLElement) {
   const rect = element.getBoundingClientRect();
@@ -98,6 +101,11 @@ export function Navbar() {
     left: number;
     top: number;
   } | null>(null);
+  const [themeMenuOpen, setThemeMenuOpen] = useState(false);
+  const [themePanelPosition, setThemePanelPosition] = useState<{
+    left: number;
+    top: number;
+  } | null>(null);
   const [phoneQrOpen, setPhoneQrOpen] = useState(false);
   const [phoneQrPanelPosition, setPhoneQrPanelPosition] = useState<{
     left: number;
@@ -109,10 +117,15 @@ export function Navbar() {
   const navRef = useRef<HTMLDivElement>(null);
   const phoneQrPanelRef = useRef<HTMLDivElement>(null);
   const displayModePanelRef = useRef<HTMLDivElement>(null);
+  const themePanelRef = useRef<HTMLDivElement>(null);
   const mobileDisplayModeButtonRef = useRef<HTMLButtonElement | null>(null);
   const compactDisplayModeButtonRef = useRef<HTMLButtonElement | null>(null);
   const fullDisplayModeButtonRef = useRef<HTMLButtonElement | null>(null);
   const activeDisplayModeButtonRef = useRef<HTMLButtonElement | null>(null);
+  const mobileThemeButtonRef = useRef<HTMLButtonElement | null>(null);
+  const compactThemeButtonRef = useRef<HTMLButtonElement | null>(null);
+  const fullThemeButtonRef = useRef<HTMLButtonElement | null>(null);
+  const activeThemeButtonRef = useRef<HTMLButtonElement | null>(null);
   const compactPhoneQrButtonRef = useRef<HTMLButtonElement | null>(null);
   const fullPhoneQrButtonRef = useRef<HTMLButtonElement | null>(null);
   const activePhoneQrButtonRef = useRef<HTMLButtonElement | null>(null);
@@ -145,22 +158,36 @@ export function Navbar() {
     return candidates.find((button) => button && isVisibleElement(button)) ?? null;
   }, []);
 
+  const getActiveThemeButton = useCallback(() => {
+    const candidates = [
+      activeThemeButtonRef.current,
+      fullThemeButtonRef.current,
+      compactThemeButtonRef.current,
+      mobileThemeButtonRef.current,
+    ];
+
+    return candidates.find((button) => button && isVisibleElement(button)) ?? null;
+  }, []);
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent | TouchEvent) => {
       const target = event.target as Node;
       const isInsideNavbar = navRef.current?.contains(target);
       const isInsidePhoneQrPanel = phoneQrPanelRef.current?.contains(target);
       const isInsideDisplayModePanel = displayModePanelRef.current?.contains(target);
+      const isInsideThemePanel = themePanelRef.current?.contains(target);
 
       if (
-        (mobileMenuOpen || phoneQrOpen || displayModeMenuOpen) &&
+        (mobileMenuOpen || phoneQrOpen || displayModeMenuOpen || themeMenuOpen) &&
         !isInsideNavbar &&
         !isInsidePhoneQrPanel &&
-        !isInsideDisplayModePanel
+        !isInsideDisplayModePanel &&
+        !isInsideThemePanel
       ) {
         setMobileMenuOpen(false);
         setPhoneQrOpen(false);
         setDisplayModeMenuOpen(false);
+        setThemeMenuOpen(false);
       }
     };
 
@@ -171,12 +198,13 @@ export function Navbar() {
       document.removeEventListener("mousedown", handleClickOutside);
       document.removeEventListener("touchstart", handleClickOutside);
     };
-  }, [displayModeMenuOpen, mobileMenuOpen, phoneQrOpen]);
+  }, [displayModeMenuOpen, mobileMenuOpen, phoneQrOpen, themeMenuOpen]);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         setDisplayModeMenuOpen(false);
+        setThemeMenuOpen(false);
       }
     };
 
@@ -337,6 +365,60 @@ export function Navbar() {
   }, [displayModeMenuOpen, getActiveDisplayModeButton]);
 
   useEffect(() => {
+    if (!themeMenuOpen) {
+      return;
+    }
+
+    const updatePanelPosition = () => {
+      const activeButton = getActiveThemeButton();
+      const navContainer = navRef.current;
+      const panelHeight =
+        themePanelRef.current?.getBoundingClientRect().height ??
+        fallbackDisplayModePanelHeight;
+
+      if (activeButton && navContainer) {
+        activeThemeButtonRef.current = activeButton;
+        setThemePanelPosition(
+          getDisplayModePanelPosition(activeButton, navContainer, panelHeight),
+        );
+      }
+    };
+
+    window.addEventListener("resize", updatePanelPosition);
+    window.visualViewport?.addEventListener("resize", updatePanelPosition);
+
+    const resizeObserver = new ResizeObserver(updatePanelPosition);
+
+    if (navRef.current) {
+      resizeObserver.observe(navRef.current);
+    }
+
+    if (themePanelRef.current) {
+      resizeObserver.observe(themePanelRef.current);
+    }
+
+    if (mobileThemeButtonRef.current) {
+      resizeObserver.observe(mobileThemeButtonRef.current);
+    }
+
+    if (compactThemeButtonRef.current) {
+      resizeObserver.observe(compactThemeButtonRef.current);
+    }
+
+    if (fullThemeButtonRef.current) {
+      resizeObserver.observe(fullThemeButtonRef.current);
+    }
+
+    updatePanelPosition();
+
+    return () => {
+      window.removeEventListener("resize", updatePanelPosition);
+      window.visualViewport?.removeEventListener("resize", updatePanelPosition);
+      resizeObserver.disconnect();
+    };
+  }, [getActiveThemeButton, themeMenuOpen]);
+
+  useEffect(() => {
     const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
     const passiveUpdateVelocityThreshold = 0.025;
     const scrollEventUpdateVelocityThreshold = 0.06;
@@ -474,10 +556,6 @@ export function Navbar() {
     i18n.changeLanguage(nextLang);
   };
 
-  const toggleTheme = () => {
-    setTheme(theme === "dark" ? "light" : "dark");
-  };
-
   const navLinks = [
     { href: "/resume", label: t("nav:resume") },
     { href: "/projects", label: t("nav:projects") },
@@ -500,6 +578,7 @@ export function Navbar() {
 
     setMobileMenuOpen(false);
     setDisplayModeMenuOpen(false);
+    setThemeMenuOpen(false);
     activePhoneQrButtonRef.current = button;
     setPhoneQrPanelPosition(getPhoneQrPanelPosition(button, navContainer));
     setPhoneQrOpen((isOpen) => !isOpen);
@@ -508,6 +587,7 @@ export function Navbar() {
   const toggleDesktopMenu = () => {
     setPhoneQrOpen(false);
     setDisplayModeMenuOpen(false);
+    setThemeMenuOpen(false);
     setMobileMenuOpen((isOpen) => !isOpen);
   };
 
@@ -519,11 +599,28 @@ export function Navbar() {
     }
 
     setPhoneQrOpen(false);
+    setThemeMenuOpen(false);
     activeDisplayModeButtonRef.current = button;
     setDisplayModePanelPosition(
       getDisplayModePanelPosition(button, navContainer),
     );
     setDisplayModeMenuOpen((isOpen) => !isOpen);
+  };
+
+  const toggleThemeMenu = (button: HTMLButtonElement) => {
+    const navContainer = navRef.current;
+
+    if (!navContainer) {
+      return;
+    }
+
+    setPhoneQrOpen(false);
+    setDisplayModeMenuOpen(false);
+    activeThemeButtonRef.current = button;
+    setThemePanelPosition(
+      getDisplayModePanelPosition(button, navContainer),
+    );
+    setThemeMenuOpen((isOpen) => !isOpen);
   };
 
   const renderNavLink = (
@@ -595,6 +692,126 @@ export function Navbar() {
   );
 
   const displayModeOptions: AnimationMode[] = ["full", "static", "plain"];
+  const themeOptions: ThemeMode[] = ["system", "light", "dark"];
+
+  const renderThemeIcon = (mode: ThemeMode) => {
+    if (mode === "system") {
+      return <Monitor className="h-4 w-4" />;
+    }
+
+    if (mode === "light") {
+      return <Sun className="h-4 w-4" />;
+    }
+
+    return <Moon className="h-4 w-4" />;
+  };
+
+  const renderThemeButton = (
+    className: string,
+    variant: "mobile" | "compact" | "full",
+  ) => {
+    const label = t("themeMode.menuLabel");
+    const srLabel = t(`themeMode.${theme}.sr`);
+
+    return (
+      <div className="display-mode-control desktop-menu-item relative">
+        <button
+          ref={(button) => {
+            if (variant === "mobile") {
+              mobileThemeButtonRef.current = button;
+              return;
+            }
+
+            if (variant === "compact") {
+              compactThemeButtonRef.current = button;
+              return;
+            }
+
+            fullThemeButtonRef.current = button;
+          }}
+          type="button"
+          onPointerDown={(event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            toggleThemeMenu(event.currentTarget);
+          }}
+          onClick={(event) => {
+            if (event.detail === 0) {
+              toggleThemeMenu(event.currentTarget);
+            }
+          }}
+          className={cn(
+            className,
+            themeMenuOpen && "bg-muted/50 text-tone-1",
+          )}
+          title={label}
+          aria-label={label}
+          aria-haspopup="menu"
+          aria-expanded={themeMenuOpen}
+        >
+          {renderThemeIcon(theme)}
+          <span className="sr-only">{srLabel}</span>
+        </button>
+      </div>
+    );
+  };
+
+  const renderThemePanel = () => {
+    if (!themeMenuOpen || !themePanelPosition) {
+      return null;
+    }
+
+    const selectTheme = (mode: ThemeMode) => {
+      setTheme(mode);
+      setThemeMenuOpen(false);
+      setMobileMenuOpen(false);
+    };
+
+    return (
+      <div
+        ref={themePanelRef}
+        className="display-mode-menu lit-glass-card"
+        role="menu"
+        aria-label={t("themeMode.menuLabel")}
+        style={{
+          left: `${themePanelPosition.left}px`,
+          top: `${themePanelPosition.top}px`,
+        }}
+      >
+        {themeOptions.map((mode) => {
+          const isSelected = mode === theme;
+
+          return (
+            <button
+              key={mode}
+              type="button"
+              className={cn(
+                "display-mode-menu-item",
+                isSelected && "display-mode-menu-item-active",
+              )}
+              onClick={() => selectTheme(mode)}
+              role="menuitemradio"
+              aria-checked={isSelected}
+            >
+              <span className="display-mode-menu-icon">
+                {renderThemeIcon(mode)}
+              </span>
+              <span className="display-mode-menu-copy">
+                <span>{t(`themeMode.${mode}.label`)}</span>
+              </span>
+              <Check
+                className={cn(
+                  "display-mode-menu-check h-4 w-4",
+                  !isSelected && "opacity-0",
+                )}
+                aria-hidden="true"
+              />
+            </button>
+          );
+        })}
+      </div>
+    );
+  };
 
   const renderDisplayModeIcon = (mode: AnimationMode) => {
     if (mode === "plain") {
@@ -791,15 +1008,7 @@ export function Navbar() {
             >
               {(i18n.resolvedLanguage ?? i18n.language).startsWith("zh") ? t("ui.langSwitchToEn") : t("ui.langSwitchToZh")}
             </button>
-            <button 
-              onClick={toggleTheme}
-              className="flex h-8 w-8 items-center justify-center rounded-full transition-colors hover:bg-muted/50"
-              title={t("a11y.toggleTheme")}
-            >
-              <Sun className="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-              <Moon className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-              <span className="sr-only">{t("a11y.toggleThemeSr")}</span>
-            </button>
+            {renderThemeButton("flex h-8 w-8 items-center justify-center rounded-full transition-colors hover:bg-muted/50", "mobile")}
             {renderDisplayModeButton("flex h-8 w-8 items-center justify-center rounded-full transition-colors hover:bg-muted/50", "mobile")}
 
             <button 
@@ -846,15 +1055,7 @@ export function Navbar() {
           >
             {(i18n.resolvedLanguage ?? i18n.language).startsWith("zh") ? t("ui.langSwitchToEn") : t("ui.langSwitchToZh")}
           </button>
-          <button
-            onClick={toggleTheme}
-            className="desktop-menu-item flex h-8 w-8 items-center justify-center rounded-full hover:bg-muted/50"
-            title={t("a11y.toggleTheme")}
-          >
-            <Sun className="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-            <Moon className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-            <span className="sr-only">{t("a11y.toggleThemeSr")}</span>
-          </button>
+          {renderThemeButton("flex h-8 w-8 items-center justify-center rounded-full hover:bg-muted/50", "compact")}
           {renderDisplayModeButton("flex h-8 w-8 items-center justify-center rounded-full hover:bg-muted/50", "compact")}
           {renderPhoneQrButton("compact")}
           <button
@@ -923,21 +1124,14 @@ export function Navbar() {
           >
             {(i18n.resolvedLanguage ?? i18n.language).startsWith("zh") ? t("ui.langSwitchToEn") : t("ui.langSwitchToZh")}
           </button>
-          <button
-            onClick={toggleTheme}
-            className="desktop-menu-item flex h-8 w-8 items-center justify-center rounded-full hover:bg-muted/50"
-            title={t("a11y.toggleTheme")}
-          >
-            <Sun className="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-            <Moon className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-            <span className="sr-only">{t("a11y.toggleThemeSr")}</span>
-          </button>
+          {renderThemeButton("flex h-8 w-8 items-center justify-center rounded-full hover:bg-muted/50", "full")}
           {renderDisplayModeButton("flex h-8 w-8 items-center justify-center rounded-full hover:bg-muted/50", "full")}
           {renderPhoneQrButton("full")}
         </SpotlightCard>
       </div>
 
       {renderPhoneQrPanel()}
+      {renderThemePanel()}
       {renderDisplayModePanel()}
 
       {mobileMenuOpen && (
