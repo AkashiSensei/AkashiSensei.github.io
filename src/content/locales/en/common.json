@@ -4,7 +4,7 @@
   },
   "a11y": {
     "toggleLanguage": "Switch language",
-    "toggleTheme": "Switch between dark and light mode",
+    "toggleTheme": "Switch between dark, light, and system theme",
     "toggleMenu": "Open or close the navigation menu",
     "toggleThemeSr": "Toggle theme",
     "switchAnimationToStatic": "Switch to static background",
@@ -13,6 +13,21 @@
     "animationStaticSr": "Background is in static mode",
     "viewContact": "View personal information",
     "viewOnPhone": "View current page on phone"
+  },
+  "themeMode": {
+    "menuLabel": "Switch color theme",
+    "system": {
+      "label": "System",
+      "sr": "Current color theme follows the system"
+    },
+    "light": {
+      "label": "Light",
+      "sr": "Current color theme is light"
+    },
+    "dark": {
+      "label": "Dark",
+      "sr": "Current color theme is dark"
+    }
   },
   "displayMode": {
     "menuLabel": "Switch display mode",
@@ -35,6 +50,33 @@
   "ui": {
     "langSwitchToEn": "EN",
     "langSwitchToZh": "中"
+  },
+  "footer": {
+    "landmarkAria": "Site footer",
+    "breadcrumbAria": "Current location",
+    "navAria": "Footer navigation",
+    "settingsAria": "Current display settings",
+    "actionsAria": "Footer external links and contact actions",
+    "home": "Home",
+    "currentPage": "Current page",
+    "receiptPreview": "Receipt preview",
+    "settings": {
+      "theme": "Color",
+      "displayMode": "Effects",
+      "language": "Language"
+    },
+    "themeValues": {
+      "dark": "Dark",
+      "light": "Light",
+      "system": "{{theme}}(System)"
+    },
+    "languageValues": {
+      "zh": "中文",
+      "en": "English"
+    },
+    "github": "GitHub",
+    "contact": "Contact",
+    "copyright": "© {{year}} Akashi. Built for GitHub Pages."
   },
   "imageLoading": "Loading image",
   "details": {

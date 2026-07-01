@@ -13,6 +13,7 @@
 
 ## History
 
+- 2026-07-01 | [Archived: Simple shared footer](archive/20260701_Simple-shared-footer.md) | Added a shared pure-background footer with route breadcrumbs, mobile-safe navigation/contact actions, current theme/display/language summaries, and a menu-based color-theme selector that restores explicit system mode.
 - 2026-06-30 | [Archived: Plain display mode](archive/20260630_Plain-display-mode.md) | Added a persistent plain display mode and extended low-distraction plain layouts across home, resume, module listing, and detail pages while preserving media, repo metadata, tags, i18n, and mobile-safe navigation.
 - 2026-06-29 | [Archived: Homepage FPV mobile adaptation](archive/20260629_Homepage-FPV-mobile-adaptation.md) | Stabilized the FPV homepage on mobile with viewport-specific layout, content-sized cards and friend capsules, page-dot navigation, 45fps all-keyframe mobile video, frame-boundary seeking, dark-mode first-paint sync, and poster fallback for iOS video wakeup.
 - 2026-06-28 | [Archived: Homepage FPV display fixes](archive/20260628_Homepage-FPV-display-fixes.md) | Fixed FPV homepage display regressions across wide viewports and Firefox by aligning video/CSS3D cover behavior, replacing fragile filtered glass on small controls/cards, weakening homepage-only local effects, centering the receipt scene, and deferring CSS3D React root cleanup.
