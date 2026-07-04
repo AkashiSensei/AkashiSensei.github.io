@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react"
 import { flushSync } from "react-dom"
 import { createRoot, type Root } from "react-dom/client"
 import * as THREE from "three"
@@ -35,6 +35,8 @@ const SCREEN_NAVIGATION_EPSILON = 0.035
 const SCREEN_ACTIVE_AFTER_ANCHOR_DELAY = 0.5
 const MOBILE_VIDEO_MAX_WIDTH = 767
 const MOBILE_LANDSCAPE_MAX_HEIGHT = 480
+const MOBILE_FIRST_PAINT_WAKE_FRAMES = 6
+const MOBILE_CSS3D_WAKE_FRAMES = 24
 const SHOW_DEBUG_SURFACES = import.meta.env.VITE_FPV_DEBUG_SURFACES === "true"
 const ENABLE_DEV_LIVE_CSS3D_SYNC = import.meta.env.DEV
 const DEFAULT_VISIBILITY_FADE_RATIO = 0.9
@@ -127,6 +129,32 @@ const SCREEN_TIMES = Array.from(
   new Set(HOME_FPV_SCREENS.map((screen) => screen.time)),
 ).sort((a, b) => a - b)
 const SCROLL_SCREENS = Math.max(SCREEN_TIMES.length, 1)
+const FALLBACK_CAMERA_FRAME_COUNT = 193
+const FALLBACK_CAMERA_FRAME_DURATION =
+  SCROLL_TIMELINE_DURATION / Math.max(FALLBACK_CAMERA_FRAME_COUNT - 1, 1)
+
+const FALLBACK_CAMERA_TRACK: CameraTrack = {
+  comp: {
+    width: 1280,
+    height: 720,
+    frameDuration: FALLBACK_CAMERA_FRAME_DURATION,
+    duration: SCROLL_TIMELINE_DURATION,
+  },
+  camera: {
+    frames: Array.from({ length: FALLBACK_CAMERA_FRAME_COUNT }, (_, frame) => ({
+      frame,
+      time: frame * FALLBACK_CAMERA_FRAME_DURATION,
+      position: [640, 360, -752.092420409905],
+      orientation: [0, 0, 0],
+      rotation: [0, 0, 0],
+      zoom: 752.092420409905,
+      fov: {
+        vertical: 51.1575741071874,
+        horizontal: 80.7928581266117,
+      },
+    })),
+  },
+}
 
 function clamp(value: number, min: number, max: number) {
   return Math.min(max, Math.max(min, value))
@@ -1096,10 +1124,12 @@ export function HomeFpvExperience() {
   const renderTimeRef = useRef(0)
   const localFpvEffectsEnabledRef = useRef(isAnimationEnabled && !reducedMotion)
   const keyboardScrollFrameRef = useRef<number | null>(null)
+  const css3dWakeFrameRef = useRef<number | null>(null)
+  const css3dWakeRemainingFramesRef = useRef(0)
   const videoFadeCleanupTimeoutRef = useRef<number | null>(null)
   const activeVideoSlotRef = useRef<VideoSlotId>("a")
   const desiredVideoSrcRef = useRef<string | null>(null)
-  const [track, setTrack] = useState<CameraTrack | null>(null)
+  const [track, setTrack] = useState<CameraTrack>(FALLBACK_CAMERA_TRACK)
   const [viewport, setViewport] = useState<ViewportState>(() => ({
     width: window.innerWidth,
     height: window.innerHeight,
@@ -1290,50 +1320,73 @@ export function HomeFpvExperience() {
     [cancelKeyboardScreenScroll, isSceneMotionAllowed],
   )
 
-  useEffect(() => {
+  const requestCss3DWake = useCallback(() => {
+    if (!useMobileFpvLayout) {
+      return
+    }
+
+    css3dWakeRemainingFramesRef.current = MOBILE_CSS3D_WAKE_FRAMES
+
+    if (css3dWakeFrameRef.current !== null) {
+      return
+    }
+
+    const tick = () => {
+      const bundle = css3dBundleRef.current
+
+      updateRenderState()
+      renderSceneAt(renderTimeRef.current)
+
+      if (bundle?.renderer.domElement) {
+        bundle.renderer.domElement.style.transform =
+          css3dWakeRemainingFramesRef.current % 2 === 0 ?
+            "translate3d(0, 0.001px, 0)"
+          : "translate3d(0, 0, 0)"
+      }
+
+      css3dWakeRemainingFramesRef.current -= 1
+      if (css3dWakeRemainingFramesRef.current > 0) {
+        css3dWakeFrameRef.current = window.requestAnimationFrame(tick)
+        return
+      }
+
+      if (bundle?.renderer.domElement) {
+        bundle.renderer.domElement.style.transform = "translate3d(0, 0, 0)"
+      }
+      css3dWakeFrameRef.current = null
+    }
+
+    css3dWakeFrameRef.current = window.requestAnimationFrame(tick)
+  }, [renderSceneAt, updateRenderState, useMobileFpvLayout])
+
+  useLayoutEffect(() => {
     const container = css3dLayerRef.current
     if (!track || !container) {
       return
     }
 
-    let disposed = false
-
-    queueMicrotask(() => {
-      if (disposed) {
-        return
-      }
-
-      const bundle = createCss3DSceneBundle(
-        track,
-        viewport,
-        container,
-        localFpvEffectsEnabledRef.current,
-      )
-
-      if (disposed) {
-        disposeCss3DSceneBundle(bundle)
-        return
-      }
-
-      css3dBundleRef.current = bundle
-      renderCss3DScene(
-        bundle,
-        track,
-        renderTimeRef.current,
-        localFpvEffectsEnabledRef.current,
-      )
-    })
+    const bundle = createCss3DSceneBundle(
+      track,
+      viewport,
+      container,
+      localFpvEffectsEnabledRef.current,
+    )
+    css3dBundleRef.current = bundle
+    renderCss3DScene(
+      bundle,
+      track,
+      renderTimeRef.current,
+      localFpvEffectsEnabledRef.current,
+    )
+    requestCss3DWake()
 
     return () => {
-      disposed = true
-      const bundle = css3dBundleRef.current
-
-      if (bundle) {
-        queueMicrotask(() => disposeCss3DSceneBundle(bundle))
+      if (css3dBundleRef.current === bundle) {
+        css3dBundleRef.current = null
       }
-      css3dBundleRef.current = null
+      disposeCss3DSceneBundle(bundle)
     }
-  }, [track, viewport])
+  }, [requestCss3DWake, track, viewport])
 
   useEffect(() => {
     queueMicrotask(() => {
@@ -1379,9 +1432,7 @@ export function HomeFpvExperience() {
         setTrack(cameraTrack)
       })
       .catch(() => {
-        if (isCurrent) {
-          setTrack(null)
-        }
+        // Keep the fallback camera track so the CSS3D foreground still paints.
       })
 
     return () => {
@@ -1623,39 +1674,138 @@ export function HomeFpvExperience() {
       return
     }
 
-    const updateVideoDebug = () => {
-      updateRenderState()
+    let disposed = false
+    let isPrimingPaintFrame = false
+    let didPromotePaintedFrame = false
 
-      if (video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
-        setVisibleVideoSlots((current) => ({
-          ...current,
-          [activeVideoSlot]: true,
-        }))
-      }
-
+    const syncVideoDebug = () => {
       setVideoDebugState({
         time: video.currentTime,
         duration: video.duration,
       })
     }
 
-    video.addEventListener("loadedmetadata", updateVideoDebug)
-    video.addEventListener("seeked", updateVideoDebug)
-    video.addEventListener("loadeddata", updateVideoDebug)
-    video.addEventListener("canplay", updateVideoDebug)
+    const prepareActiveVideo = () => {
+      updateRenderState()
+
+      if (video.readyState < HTMLMediaElement.HAVE_METADATA) {
+        return
+      }
+
+      syncVideoDebug()
+
+      if (
+        didPromotePaintedFrame ||
+        isPrimingPaintFrame ||
+        video.readyState < HTMLMediaElement.HAVE_CURRENT_DATA
+      ) {
+        return
+      }
+
+      isPrimingPaintFrame = true
+      void primeVideoPaintFrame(
+        video,
+        renderTimeRef.current,
+        activeVideoFrameRate,
+        shouldAlignVideoSeekToFrame,
+      )
+        .then(() => {
+          if (disposed) {
+            return
+          }
+
+          didPromotePaintedFrame = true
+          setVisibleVideoSlots((current) => ({
+            ...current,
+            [activeVideoSlot]: true,
+          }))
+          syncVideoDebug()
+          updateRenderState()
+        })
+        .catch(() => {
+          if (!disposed) {
+            syncVideoDebug()
+          }
+        })
+        .finally(() => {
+          isPrimingPaintFrame = false
+        })
+    }
+
+    video.addEventListener("loadedmetadata", prepareActiveVideo)
+    video.addEventListener("seeked", prepareActiveVideo)
+    video.addEventListener("loadeddata", prepareActiveVideo)
+    video.addEventListener("canplay", prepareActiveVideo)
     video.load()
 
     if (video.readyState >= HTMLMediaElement.HAVE_METADATA) {
-      updateVideoDebug()
+      prepareActiveVideo()
     }
 
     return () => {
-      video.removeEventListener("loadedmetadata", updateVideoDebug)
-      video.removeEventListener("seeked", updateVideoDebug)
-      video.removeEventListener("loadeddata", updateVideoDebug)
-      video.removeEventListener("canplay", updateVideoDebug)
+      disposed = true
+      video.removeEventListener("loadedmetadata", prepareActiveVideo)
+      video.removeEventListener("seeked", prepareActiveVideo)
+      video.removeEventListener("loadeddata", prepareActiveVideo)
+      video.removeEventListener("canplay", prepareActiveVideo)
     }
-  }, [activeVideoSlot, getActiveVideo, activeVideoSrc, updateRenderState])
+  }, [
+    activeVideoFrameRate,
+    activeVideoSlot,
+    activeVideoSrc,
+    getActiveVideo,
+    shouldAlignVideoSeekToFrame,
+    updateRenderState,
+  ])
+
+  useEffect(() => {
+    if (!useMobileVideo) {
+      return
+    }
+
+    let frameId: number | null = null
+    let remainingFrames = 0
+
+    const tick = () => {
+      updateRenderState()
+
+      remainingFrames -= 1
+      if (remainingFrames > 0) {
+        frameId = window.requestAnimationFrame(tick)
+        return
+      }
+
+      frameId = null
+    }
+
+    const requestWake = () => {
+      remainingFrames = MOBILE_FIRST_PAINT_WAKE_FRAMES
+      requestCss3DWake()
+
+      if (frameId === null) {
+        frameId = window.requestAnimationFrame(tick)
+      }
+    }
+
+    requestWake()
+    window.addEventListener("pageshow", requestWake)
+    document.addEventListener("visibilitychange", requestWake)
+
+    return () => {
+      if (frameId !== null) {
+        window.cancelAnimationFrame(frameId)
+      }
+      window.removeEventListener("pageshow", requestWake)
+      document.removeEventListener("visibilitychange", requestWake)
+    }
+  }, [requestCss3DWake, updateRenderState, useMobileVideo])
+
+  useEffect(() => () => {
+    if (css3dWakeFrameRef.current !== null) {
+      window.cancelAnimationFrame(css3dWakeFrameRef.current)
+      css3dWakeFrameRef.current = null
+    }
+  }, [])
 
   const edgeStep = useMemo(
     () => clamp(getScreenIndexAtTime(renderState.time) + 1, 1, SCROLL_SCREENS),
