@@ -206,6 +206,7 @@
       "friendHoverLabel": "你好",
       "friendHoverLabels": {
         "hello": "你好",
+        "hathoric": "O",
         "overwatch": "O"
       },
       "links": [
@@ -221,6 +222,31 @@
           "avatar": "/assets/friend-links/pcpa.webp",
           "href": "https://pcpas.github.io/",
           "hoverLabelKey": "overwatch"
+        },
+        {
+          "name": "Hathoric",
+          "quote": "玉玉",
+          "avatar": "/assets/friend-links/hathoric.webp",
+          "href": "https://github.com/Hathoric",
+          "hoverLabelKey": "hathoric"
+        },
+        {
+          "name": "Tony",
+          "quote": "This is the way.",
+          "avatar": "/assets/friend-links/tony.webp",
+          "href": "https://blog.tonys-studio.top"
+        },
+        {
+          "name": "末苏",
+          "quote": "焚思煮梦",
+          "avatar": "/assets/friend-links/mosu.webp",
+          "href": "https://xhslink.com/m/VJLSplulHx"
+        },
+        {
+          "name": "森林里上蹿下跳的蘑菇",
+          "quote": "快来和我一起上蹿下跳",
+          "avatar": "/assets/friend-links/mushroom-forest.webp",
+          "href": "https://xhslink.com/m/2zSegyNHLJr"
         }
       ],
       "aside": "期待更多的朋友"
