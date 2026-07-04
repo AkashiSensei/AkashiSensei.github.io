@@ -2,6 +2,7 @@
 import type { VirtualScreenDefinition, VirtualScreenProps } from "../types"
 import type { CSSProperties } from "react"
 import { ArrowUpRight } from "lucide-react"
+import { useEffect, useRef, useState } from "react"
 import { useTranslation } from "react-i18next"
 
 type FriendLink = {
@@ -55,7 +56,7 @@ function getDisplayUnits(text: string) {
   }, 0)
 }
 
-function truncateByDisplayUnits(text: string, maxUnits: number) {
+function getQuotePreview(text: string, maxUnits: number) {
   let units = 0
   let preview = ""
 
@@ -63,18 +64,42 @@ function truncateByDisplayUnits(text: string, maxUnits: number) {
     const charUnits = getDisplayUnits(char)
 
     if (units + charUnits > maxUnits) {
-      return `${preview.trimEnd()}...`
+      return {
+        preview: `${preview.trimEnd()}...`,
+        isTruncated: true,
+      }
     }
 
     preview += char
     units += charUnits
   }
 
-  return text
+  return {
+    preview: text,
+    isTruncated: false,
+  }
+}
+
+function getFriendLinkKey(link: FriendLink) {
+  return `${link.name}-${link.href}`
 }
 
 function clampNumber(value: number, min: number, max: number) {
   return Math.min(max, Math.max(min, value))
+}
+
+function areTruncationMapsEqual(
+  current: Record<string, boolean>,
+  next: Record<string, boolean>,
+) {
+  const currentKeys = Object.keys(current)
+  const nextKeys = Object.keys(next)
+
+  if (currentKeys.length !== nextKeys.length) {
+    return false
+  }
+
+  return nextKeys.every((key) => current[key] === next[key])
 }
 
 function getFriendPillStyle(link: FriendLink, quotePreview: string) {
@@ -104,10 +129,93 @@ function getFriendPillStyle(link: FriendLink, quotePreview: string) {
 function Page06(_props: VirtualScreenProps) {
   void _props
   const { t } = useTranslation("home")
+  const friendGridRef = useRef<HTMLDivElement | null>(null)
+  const [visuallyTruncatedQuotes, setVisuallyTruncatedQuotes] = useState<Record<string, boolean>>({})
   const linksValue = t("fpv.page06.links", {
     returnObjects: true,
   })
   const links = Array.isArray(linksValue) ? linksValue.filter(isFriendLink) : []
+  const linksSignature = links
+    .map((link) => `${getFriendLinkKey(link)}:${link.quote}`)
+    .join("|")
+
+  useEffect(() => {
+    const friendGrid = friendGridRef.current
+
+    if (!friendGrid) {
+      return undefined
+    }
+
+    let frameId = 0
+    let isActive = true
+
+    const measureQuoteOverflow = () => {
+      frameId = 0
+
+      if (!isActive) {
+        return
+      }
+
+      const nextTruncatedQuotes: Record<string, boolean> = {}
+      const quoteNodes = friendGrid.querySelectorAll<HTMLElement>(
+        "[data-fpv-friend-quote-key]",
+      )
+
+      quoteNodes.forEach((quoteNode) => {
+        const quoteKey = quoteNode.dataset.fpvFriendQuoteKey
+
+        if (!quoteKey) {
+          return
+        }
+
+        if (quoteNode.scrollWidth > quoteNode.clientWidth + 1) {
+          nextTruncatedQuotes[quoteKey] = true
+        }
+      })
+
+      setVisuallyTruncatedQuotes((current) => (
+        areTruncationMapsEqual(current, nextTruncatedQuotes)
+          ? current
+          : nextTruncatedQuotes
+      ))
+    }
+
+    const scheduleQuoteMeasure = () => {
+      if (!isActive) {
+        return
+      }
+
+      if (frameId !== 0) {
+        return
+      }
+
+      frameId = window.requestAnimationFrame(measureQuoteOverflow)
+    }
+
+    scheduleQuoteMeasure()
+
+    const resizeObserver = typeof ResizeObserver === "undefined"
+      ? null
+      : new ResizeObserver(scheduleQuoteMeasure)
+    resizeObserver?.observe(friendGrid)
+    friendGrid.querySelectorAll<HTMLElement>("[data-fpv-friend-quote-key]")
+      .forEach((quoteNode) => resizeObserver?.observe(quoteNode))
+    window.addEventListener("resize", scheduleQuoteMeasure)
+
+    const fontSet = (document as Document & { fonts?: { ready: Promise<unknown> } }).fonts
+    void fontSet?.ready.then(scheduleQuoteMeasure)
+
+    return () => {
+      isActive = false
+
+      if (frameId !== 0) {
+        window.cancelAnimationFrame(frameId)
+      }
+
+      resizeObserver?.disconnect()
+      window.removeEventListener("resize", scheduleQuoteMeasure)
+    }
+  }, [linksSignature])
 
   return (
     <div className="fpv-virtual-page">
@@ -119,41 +227,50 @@ function Page06(_props: VirtualScreenProps) {
       </div>
 
       <div
+        ref={friendGridRef}
         className="fpv-page-node fpv-page-06-friends fpv-attachment-anchor-hidden fpv-attachment-anchor-reference fpv-friend-pill-grid"
         data-fpv-attachment-anchor="page06-friend-links"
       >
         {links.map((link) => {
-          const quotePreview = truncateByDisplayUnits(
+          const linkKey = getFriendLinkKey(link)
+          const quote = getQuotePreview(
             link.quote,
             FRIEND_QUOTE_MAX_DISPLAY_UNITS,
           )
+          const isQuoteCompressed = quote.isTruncated || Boolean(visuallyTruncatedQuotes[linkKey])
+          const quoteTitle = isQuoteCompressed ? `“${link.quote}”` : undefined
 
           return (
             <a
-              key={`${link.name}-${link.href}`}
+              key={linkKey}
               className="fpv-friend-pill"
               href={link.href}
               target="_blank"
               rel="noreferrer"
-              style={getFriendPillStyle(link, quotePreview)}
+              title={quoteTitle}
+              style={getFriendPillStyle(link, quote.preview)}
+              data-quote-truncated={isQuoteCompressed ? "true" : undefined}
               data-hover-label={t(
                 `fpv.page06.friendHoverLabels.${link.hoverLabelKey ?? "hello"}`,
                 { defaultValue: t("fpv.page06.friendHoverLabel") },
               )}
             >
-              <span className="fpv-friend-pill-avatar" aria-hidden="true">
+              <span className="fpv-friend-pill-avatar" aria-hidden="true" title={quoteTitle}>
                 {isImageAvatar(link.avatar) ? <img src={link.avatar} alt="" /> : link.avatar}
               </span>
-              <span className="fpv-friend-pill-copy">
-                <span className="fpv-friend-pill-name">
-                  <span className="fpv-friend-pill-name-text">{link.name}</span>
+              <span className="fpv-friend-pill-copy" title={quoteTitle}>
+                <span className="fpv-friend-pill-name" title={quoteTitle}>
+                  <span className="fpv-friend-pill-name-text" title={quoteTitle}>{link.name}</span>
                 </span>
-                <span className="fpv-friend-pill-quote">“{quotePreview}”</span>
+                <span
+                  className="fpv-friend-pill-quote"
+                  data-fpv-friend-quote-key={linkKey}
+                  title={quoteTitle}
+                >
+                  “{quote.preview}”
+                </span>
               </span>
               <ArrowUpRight className="fpv-friend-pill-icon" aria-hidden="true" />
-              <span className="fpv-friend-pill-quote-tooltip" aria-hidden="true">
-                “{link.quote}”
-              </span>
             </a>
           )
         })}
