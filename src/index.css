@@ -1699,11 +1699,12 @@
   }
 
   .fpv-page-06-friends {
-    --fpv-page-06-hud-safe-inline: clamp(7.5rem, 12vw, 14rem);
+    --fpv-page-06-hud-safe-inline: clamp(4rem, 5vw, 7rem);
+    --fpv-friend-pill-grid-width: min(96rem, calc(100vw - var(--fpv-page-06-hud-safe-inline) * 2));
     left: 50%;
     top: 36%;
-    width: min(96rem, calc(100vw - var(--fpv-page-06-hud-safe-inline) * 2));
-    max-width: calc(100vw - var(--fpv-page-06-hud-safe-inline) * 2);
+    width: var(--fpv-friend-pill-grid-width);
+    max-width: var(--fpv-friend-pill-grid-width);
     transform: translateX(-50%);
   }
 
@@ -2091,7 +2092,7 @@
     align-items: flex-start;
     justify-content: center;
     justify-items: center;
-    width: min(100%, 96rem);
+    width: var(--fpv-friend-pill-grid-width, min(100%, 96rem));
     max-width: 100%;
   }
 
@@ -2264,39 +2265,6 @@
     line-height: 1.22;
     text-overflow: ellipsis;
     white-space: nowrap;
-  }
-
-  .fpv-friend-pill-quote-tooltip {
-    position: absolute;
-    left: 50%;
-    top: calc(100% + 0.66rem);
-    z-index: 3;
-    width: max-content;
-    max-width: min(18rem, 72vw);
-    border-radius: 0.74rem;
-    background: rgb(22 25 31 / 0.84);
-    padding: 0.52rem 0.72rem;
-    color: var(--fpv-text-tone-1);
-    font-size: 0.78rem;
-    font-weight: 360;
-    line-height: 1.35;
-    text-align: left;
-    text-shadow: none;
-    white-space: normal;
-    opacity: 0;
-    pointer-events: none;
-    transform: translate(-50%, -0.2rem);
-    transition:
-      opacity 160ms ease,
-      transform 160ms ease;
-    box-shadow:
-      inset 0 0 0 1px rgb(255 255 255 / 0.12),
-      0 12px 28px rgb(0 0 0 / 0.2);
-  }
-
-  .fpv-friend-pill:is(:hover, :focus-visible) .fpv-friend-pill-quote-tooltip {
-    opacity: 1;
-    transform: translate(-50%, 0);
   }
 
   .fpv-virtual-screen-debug .fpv-friend-pill-grid.fpv-attachment-anchor-hidden {
@@ -2906,8 +2874,7 @@
     }
 
     .fpv-home-mobile .fpv-friend-pill::before,
-    .fpv-home-mobile .fpv-friend-pill::after,
-    .fpv-home-mobile .fpv-friend-pill-quote-tooltip {
+    .fpv-home-mobile .fpv-friend-pill::after {
       display: none;
     }
 
