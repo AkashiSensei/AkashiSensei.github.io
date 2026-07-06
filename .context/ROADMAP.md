@@ -13,6 +13,7 @@
 
 ## History
 
+- 2026-07-06 | [Archived: VR raytracer course project](archive/20260706_VR-raytracer-course-project.md) | Added a separate raytracer course-project entry with WebP gallery and bilingual contribution copy, restored the existing VR experiment entry, marked Parallel Programming A completed, and synced course-project personal-work translations.
 - 2026-07-04 | [Archived: Friend links display and FPV home polish](archive/20260704_Friend-links-display-and-FPV-home-polish.md) | Added new friend links with WebP avatars, tuned FPV friend capsule sizing/wrapping across mobile and desktop, reserved HUD-safe desktop spacing, and fixed homepage display-mode regressions.
 - 2026-07-01 | [Archived: Simple shared footer](archive/20260701_Simple-shared-footer.md) | Added a shared pure-background footer with route breadcrumbs, mobile-safe navigation/contact actions, current theme/display/language summaries, and a menu-based color-theme selector that restores explicit system mode.
 - 2026-06-30 | [Archived: Plain display mode](archive/20260630_Plain-display-mode.md) | Added a persistent plain display mode and extended low-distraction plain layouts across home, resume, module listing, and detail pages while preserving media, repo metadata, tags, i18n, and mobile-safe navigation.

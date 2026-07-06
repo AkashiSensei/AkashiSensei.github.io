@@ -2,6 +2,73 @@ import { type Project } from "@/data/projects"
 
 const courseProjectEntries: Project[] = [
   {
+    id: "vr-raytracer-2026",
+    repoName: "AkashiSensei/raytracer",
+    externalUrl: "https://github.com/AkashiSensei/raytracer",
+    githubRepo: "AkashiSensei/raytracer",
+    repoTags: ["public", "fork"],
+    links: [
+      {
+        label: "AkashiSensei/raytracer",
+        url: "https://github.com/AkashiSensei/raytracer",
+        githubRepo: "AkashiSensei/raytracer",
+        repoTags: ["public", "fork"],
+      },
+      {
+        label: "Sankieqwq/raytracer",
+        url: "https://github.com/Sankieqwq/raytracer",
+        githubRepo: "Sankieqwq/raytracer",
+        repoTags: ["public", "main"],
+      },
+    ],
+    lifecycleStatus: "completed",
+    status: ["public"],
+    tags: ["研一下", "2026春", "C++", "Ray Tracing", "Rendering", "PBR", "BVH", "CUDA", "Blender"],
+    images: [
+      {
+        src: "/assets/course-projects/vr-raytracer-2026/ncu-glass-emissive-source.webp",
+        altKey: "items.vr-raytracer-2026.images.ncuGlassEmissiveSource",
+        width: 4484,
+        height: 2186,
+        brightness: "high",
+      },
+      {
+        src: "/assets/course-projects/vr-raytracer-2026/render-result.webp",
+        altKey: "items.vr-raytracer-2026.images.renderResult",
+        width: 1000,
+        height: 1000,
+      },
+      {
+        src: "/assets/course-projects/vr-raytracer-2026/render-quality-report.webp",
+        altKey: "items.vr-raytracer-2026.images.renderQualityReport",
+        width: 1110,
+        height: 688,
+        brightness: "high",
+      },
+      {
+        src: "/assets/course-projects/vr-raytracer-2026/supported-content.webp",
+        altKey: "items.vr-raytracer-2026.images.supportedContent",
+        width: 2148,
+        height: 804,
+        brightness: "high",
+      },
+      {
+        src: "/assets/course-projects/vr-raytracer-2026/blender-integration.webp",
+        altKey: "items.vr-raytracer-2026.images.blenderIntegration",
+        width: 1540,
+        height: 798,
+        brightness: "high",
+      },
+      {
+        src: "/assets/course-projects/vr-raytracer-2026/blender-nsys-timeline-16spp.webp",
+        altKey: "items.vr-raytracer-2026.images.blenderNsysTimeline16Spp",
+        width: 3222,
+        height: 1386,
+        brightness: "high",
+      },
+    ],
+  },
+  {
     id: "parallel-programming-2026",
     repoName: "AkashiSensei/BUAA-Parallel-Programming-2026-hw",
     externalUrl: "https://github.com/AkashiSensei/BUAA-Parallel-Programming-2026-hw",
@@ -9,8 +76,8 @@ const courseProjectEntries: Project[] = [
     repoTags: ["public"],
     featured: true,
     featuredOrder: 3,
-    lifecycleStatus: "ongoing",
-    status: ["public", "active"],
+    lifecycleStatus: "completed",
+    status: ["public"],
     tags: ["研一下", "2026春", "C", "CUDA", "OpenMP", "MPI", "Parallel Programming"],
     images: [
       {
