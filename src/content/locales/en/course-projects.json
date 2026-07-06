@@ -77,6 +77,32 @@
         "personalWork": []
       }
     },
+    "vr-raytracer-2026": {
+      "title": "Ray Tracing Renderer",
+      "summary": "A BUAA graduate Virtual Reality Integrated Experiment final project: a from-scratch C++ ray tracing renderer with JSON scenes, PPM/PNG output, mesh and material import, rendering reports, and Blender/CUDA exploration.",
+      "images": {
+        "ncuGlassEmissiveSource": "Nsight Compute source-level analysis for the emissive glass scene",
+        "renderResult": "Ray tracing render result",
+        "renderQualityReport": "Automated rendering quality report",
+        "supportedContent": "Renderer capability overview",
+        "blenderIntegration": "Blender renderer integration",
+        "blenderNsysTimeline16Spp": "Nsight Systems timeline for a 16-sample Blender scene"
+      },
+      "points": {
+        "projectIntro": [
+          "Built a C++17 ray tracing renderer from scratch, with JSON scene descriptions and PPM/PNG image output.",
+          "Implemented sphere and triangle-mesh intersection, OBJ/GLB import, BVH acceleration, and material/light support including PBR, textures, transparent media, and emissive surfaces.",
+          "Added build scripts, regression tests, golden images, rendering quality reports, and benchmark scripts to keep image correctness and performance observable.",
+          "Extended the project toward a CUDA acceptance path and a Blender RenderEngine integration, connecting the standalone CLI renderer with a DCC workflow."
+        ],
+        "personalWork": [
+          "Proposed the ray tracing renderer direction based on my own interest in and understanding of rendering, graphics, and toolchain integration.",
+          "Built Blender scenes and supported the Blender plugin, local bridge program, and remote rendering server, connecting the standalone command-line renderer with a Blender workflow.",
+          "Integrated the OIDN denoiser and exported albedo and normal auxiliary buffers to improve denoising quality and visual stability for low-sample renders.",
+          "Used Nsight Systems and Nsight Compute to analyze the CUDA implementation, identifying that oversized kernels used so many registers that they exceeded the limit and spilled register values into local memory; the implementation also did not use shared, texture, or surface memory, causing heavy long scoreboard stalls and very low efficiency."
+        ]
+      }
+    },
     "vr-experiments-2026": {
       "title": "Virtual Reality Integrated Experiments",
       "summary": "A BUAA graduate course assignment repository for Virtual Reality Integrated Experiments.",
@@ -236,7 +262,9 @@
           "Implemented notifications for private messages, likes, and comments.",
           "Used a large model to provide suggestions for improving resumes uploaded by users."
         ],
-        "personalWork": []
+        "personalWork": [
+          "Served primarily as frontend developer and Scrum Master, delivered code aligned with the project's positioning and visual style, coordinated tasks, and reviewed code from other developers."
+        ]
       }
     },
     "cloud-yiyan": {
@@ -267,7 +295,7 @@
           "Compiled development and technical summaries capturing each team member's reflections to preserve and share knowledge for future team development."
         ],
         "personalWork": [
-          "Served primarily as frontend developer and Scrum Master, delivering frontend and backend code aligned with the project's positioning and design style, and reviewing code from other developers."
+          "Served primarily as frontend developer, delivered frontend and backend code aligned with the project's positioning and visual style, participated in overall project design and discussion, and reviewed code from other developers."
         ]
       }
     },

@@ -77,6 +77,32 @@
         "personalWork": []
       }
     },
+    "vr-raytracer-2026": {
+      "title": "光线追踪渲染器",
+      "summary": "北航研究生《虚拟现实综合实验》课程大作业。从零开始实现的 C++ 光线追踪渲染器，支持 JSON 场景、PPM/PNG 输出、网格与材质导入、渲染报告，以及 Blender/CUDA 方向的扩展探索。",
+      "images": {
+        "ncuGlassEmissiveSource": "发光玻璃场景的 Nsight Compute 源码级分析",
+        "renderResult": "光线追踪渲染结果",
+        "renderQualityReport": "渲染质量自动报告",
+        "supportedContent": "渲染器支持内容清单",
+        "blenderIntegration": "Blender 渲染器集成",
+        "blenderNsysTimeline16Spp": "16 采样 Blender 场景 Nsight Systems 时间线"
+      },
+      "points": {
+        "projectIntro": [
+          "从零开始实现 C++17 光线追踪渲染器，支持通过 JSON 描述场景并输出 PPM/PNG 渲染结果。",
+          "实现球体与三角网格求交、OBJ/GLB 模型导入、BVH 加速结构，以及 PBR、纹理、透明介质和自发光等材质与光照能力。",
+          "配套构建脚本、回归测试、golden image、渲染质量报告和性能基准脚本，便于持续验证渲染正确性与性能表现。",
+          "扩展到 CUDA 后端验收路径和 Blender RenderEngine 集成，探索从独立命令行渲染器到 DCC 工作流的衔接。"
+        ],
+        "personalWork": [
+          "基于个人对渲染、图形学和工具链集成的兴趣与了解，为团队提供光线追踪渲染器的选题方向。",
+          "搭建 Blender 场景，并支持 Blender 插件、本地桥接程序和远程渲染服务器，让渲染器能够从独立命令行程序接入 Blender 工作流。",
+          "接入 OIDN 降噪器，并输出 albedo 与 normal 辅助 buffer，提升低采样渲染结果的降噪效果和视觉稳定性。",
+          "使用 Nsight Systems 和 Nsight Compute 分析 CUDA 实现，定位过重 kernel 因使用大量寄存器甚至超出上限而回退到 local memory 保存寄存器值；同时确认实现没有使用 shared、texture、surface memory，导致大量 long scoreboard stall 和很低的执行效率。"
+        ]
+      }
+    },
     "vr-experiments-2026": {
       "title": "《虚拟现实综合实验》任务",
       "summary": "北航研究生《虚拟现实综合实验》课程作业仓库。",
@@ -236,7 +262,9 @@
           "实现通知系统，避免用户错过私信、动态的点赞和评论。",
           "使用大模型，为用户上传的简历提出修改意见。"
         ],
-        "personalWork": []
+        "personalWork": [
+          "主要承担前端开发者和 Scrum Master 的角色，提交符合项目定位和风格设计的代码，协调任务，并审查来自其它开发者的代码。"
+        ]
       }
     },
     "cloud-yiyan": {
@@ -267,7 +295,7 @@
           "整理包含团队每位成员心得的开发与技术总结，沉淀和共享知识，为后续团队开发贡献经验。"
         ],
         "personalWork": [
-          "主要承担前端开发者和 Scrum Master 的角色，提交符合项目定位和风格设计的前后端代码，并审查来自其它开发者的代码。"
+          "主要承担前端开发者的角色，提交符合项目定位和风格设计的前后端代码，参与整个项目的设计与讨论，并审查来自其它开发者的代码。"
         ]
       }
     },
