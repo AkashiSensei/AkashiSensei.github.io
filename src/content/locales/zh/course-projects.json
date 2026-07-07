@@ -105,8 +105,26 @@
     },
     "vr-experiments-2026": {
       "title": "《虚拟现实综合实验》任务",
-      "summary": "北航研究生《虚拟现实综合实验》课程作业仓库。",
+      "summary": "北航研究生《虚拟现实综合实验》课程作业合集。实验实现本身保持简要呈现，重点放在 CUDA 物理动画后的 Nsight Systems / Nsight Compute profiling、瓶颈观察与多卡性能分析。",
       "images": {
+        "clothNsysComputeActive": "布料多卡解算计算活跃期 Nsight Systems 时间线",
+        "clothNsysOverallTimeline": "布料多卡解算整体 Nsight Systems 时间线",
+        "clothNsysFinishSyncFree": "布料仿真帧末 CPU 等待与显存释放时间线",
+        "clothNcuOverview": "布料仿真 Nsight Compute kernel 概述",
+        "clothStageRoofline": "布料仿真临时状态构造 kernel Roofline",
+        "clothDerivativeRoofline": "布料仿真主要受力计算 kernel Roofline",
+        "clothIntegrateRoofline": "布料仿真 RK4 加权合成 kernel Roofline",
+        "clothDerivativeMemoryChart": "布料仿真主要受力计算 kernel Memory Chart",
+        "clothDerivativeSource": "布料仿真主要受力计算 kernel 源码级访存分析",
+        "clothDerivativeWarpScheduler": "布料仿真主要受力计算 kernel Warp Scheduler",
+        "clothDerivativeWarpState": "布料仿真主要受力计算 kernel Warp State",
+        "clothDerivativeOccupancy": "布料仿真主要受力计算 kernel occupancy 影响",
+        "clothIntegrateWarpState": "布料仿真 RK4 加权合成 kernel Warp State",
+        "clothNvlink": "布料仿真服务器 NVLink 拓扑",
+        "fluidNsysComputeActive": "流体多卡解算计算活跃期 Nsight Systems 时间线",
+        "clothSimulationPreview": "CUDA 布料仿真效果示意图",
+        "fluidSimulationPreview": "三维 SPH 流体仿真效果示意图",
+        "softTissueDeformationPreview": "弹簧质点软组织变形效果示意图",
         "dogRun": "小狗行走动画",
         "dogModel": "小狗模型",
         "dogSkeleton": "小狗骨骼",
@@ -114,7 +132,15 @@
       },
       "points": {
         "projectIntro": [
-          "围绕虚拟现实课程实验整理工程文件和说明材料。"
+          "通过 Nsight Systems 时间线拆解程序初始化、数据准备、GPU kernel、同步等待和资源释放等阶段的耗时，理解在整体 profiling 视角下核心 kernel 活跃区只占很短一段，并进一步理解多卡之间的同步与数据搬运机制。",
+          "阅读 Nsight Compute 的 kernel 概况与 Roofline 图，判断不同 kernel 更偏计算受限还是访存受限，区分临时状态构造、主要受力计算和 RK4 加权合成等阶段的性能特征。",
+          "结合质点数据结构和 Source Counters 中的实际访存指令，理解 NCU 对布料解算主要计算 kernel 的优化建议：AoS 布局导致相邻线程访问同一分量时地址不连续，sector 数据利用率偏低。",
+          "结合 Warp Stall 分布、源码指令编排和数据依赖，解释 long scoreboard、math pipe、barrier、branch resolving 等 stall 来源，并理解 Warp Scheduler 中 eligible warp 偏少的原因。",
+          "结合 occupancy 图表理解寄存器用量、每 block shared memory、block size 和硬件驻留上限等资源如何共同限制理论 occupancy。",
+          "四足动物动画实验使用 Blender 完成模型、绑定和行走/奔跑动画，并导出 GLB、视频和汇报材料。",
+          "OpenGL / GLSL 实验围绕同一个动物模型完成 STL、OBJ、3DS 解析、交互查看器，以及固定颜色、纹理混合、Gouraud 和 Phong 光照等 shader 阶段。",
+          "虚拟手术实验基于脑组织模型实现弹簧质点软组织变形，用于观察鼠标拖拽下的局部形变和回弹效果。",
+          "CUDA 物理动画实验实现布料与三维 SPH 流体仿真，使用 shared memory 优化邻域计算并在多卡环境运行，重点使用 Nsight Systems / Nsight Compute 分析 kernel、访存和 GPU 间同步。"
         ],
         "personalWork": []
       }
