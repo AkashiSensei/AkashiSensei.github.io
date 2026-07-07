@@ -105,8 +105,26 @@
     },
     "vr-experiments-2026": {
       "title": "Virtual Reality Integrated Experiments",
-      "summary": "A BUAA graduate course assignment repository for Virtual Reality Integrated Experiments.",
+      "summary": "A BUAA graduate Virtual Reality Integrated Experiments assignment collection. The implementation details are kept lightweight here; the emphasis is on Nsight Systems / Nsight Compute profiling, bottleneck observation, and multi-GPU performance analysis after the CUDA physical-animation work.",
       "images": {
+        "clothNsysComputeActive": "Nsight Systems compute-active timeline for multi-GPU cloth simulation",
+        "clothNsysOverallTimeline": "Overall Nsight Systems timeline for multi-GPU cloth simulation",
+        "clothNsysFinishSyncFree": "CPU synchronization and memory-release timeline for cloth simulation",
+        "clothNcuOverview": "Nsight Compute kernel overview for cloth simulation",
+        "clothStageRoofline": "Roofline view for the cloth stage-state kernel",
+        "clothDerivativeRoofline": "Roofline view for the main cloth force-computation kernel",
+        "clothIntegrateRoofline": "Roofline view for the RK4 integration kernel",
+        "clothDerivativeMemoryChart": "Memory chart for the main cloth force-computation kernel",
+        "clothDerivativeSource": "Source-level memory analysis for the main cloth force-computation kernel",
+        "clothDerivativeWarpScheduler": "Warp scheduler view for the main cloth force-computation kernel",
+        "clothDerivativeWarpState": "Warp state view for the main cloth force-computation kernel",
+        "clothDerivativeOccupancy": "Occupancy impact for the main cloth force-computation kernel",
+        "clothIntegrateWarpState": "Warp state view for the RK4 integration kernel",
+        "clothNvlink": "NVLink topology for the cloth simulation server",
+        "fluidNsysComputeActive": "Nsight Systems compute-active timeline for multi-GPU fluid simulation",
+        "clothSimulationPreview": "CUDA cloth simulation preview",
+        "fluidSimulationPreview": "3D SPH fluid simulation preview",
+        "softTissueDeformationPreview": "Mass-spring soft-tissue deformation preview",
         "dogRun": "Dog walking animation",
         "dogModel": "Dog model",
         "dogSkeleton": "Dog skeleton",
@@ -114,7 +132,15 @@
       },
       "points": {
         "projectIntro": [
-          "Organizes project files and explanatory materials for virtual reality course experiments."
+          "Used the Nsight Systems timeline to break down time spent in initialization, data preparation, GPU kernels, synchronization waits, and resource release, observing that the core kernel-active region is short in the overall profiling view and deepening my understanding of multi-GPU synchronization and data movement.",
+          "Read Nsight Compute kernel summaries and Roofline charts to judge whether each kernel is more compute-bound or memory-bound, separating the performance traits of stage-state construction, main force computation, and RK4 weighted integration.",
+          "Combined the particle data structure with Source Counters' instruction-level memory behavior to understand NCU's optimization direction for the main cloth-solving kernel: the AoS layout causes neighboring threads to access non-contiguous addresses for the same component, lowering sector utilization.",
+          "Connected Warp Stall distributions with source-level instruction scheduling and data dependencies to explain stalls such as long scoreboard, math pipe throttle, barrier, and branch resolving, clarifying why the Warp Scheduler view shows relatively few eligible warps.",
+          "Used the occupancy chart to understand how register usage, per-block shared memory, block size, and hardware residency limits jointly constrain theoretical occupancy.",
+          "The quadruped animation assignment used Blender to build the model, rigging, and walk/run animation, then exported GLB, video, and presentation materials.",
+          "The OpenGL / GLSL assignments used the same animal model for STL, OBJ, and 3DS parsing, an interactive viewer, and shader stages including fixed color, texture mixing, Gouraud lighting, and Phong lighting.",
+          "The virtual-surgery assignment implemented mass-spring soft-tissue deformation on a brain model to observe local deformation and recovery under mouse dragging.",
+          "The CUDA physical-animation assignment implemented cloth and 3D SPH fluid simulation, used shared memory to optimize neighborhood computation, ran in a multi-GPU environment, and focused on Nsight Systems / Nsight Compute analysis of kernels, memory access, and GPU synchronization."
         ],
         "personalWork": []
       }

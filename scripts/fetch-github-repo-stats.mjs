@@ -90,6 +90,12 @@ const fallbackCourseProjectRepoStats = {
     isPrivate: false,
     stars: 1,
   },
+  "AkashiSensei/raytracer": {
+    commits: 56,
+    defaultBranch: "main",
+    isPrivate: false,
+    stars: 0,
+  },
   "AkashiSensei/Learning_and_Living_Platform_Submit": {
     commits: 7,
     defaultBranch: "main",
@@ -143,6 +149,12 @@ const fallbackCourseProjectRepoStats = {
     defaultBranch: "main",
     isPrivate: false,
     stars: 1,
+  },
+  "Sankieqwq/raytracer": {
+    commits: 177,
+    defaultBranch: "main",
+    isPrivate: false,
+    stars: 4,
   },
   "Yiyan2023/CareerYiyan-backend": {
     commits: 3,
