@@ -290,15 +290,6 @@ export const projects: Project[] = [
     ],
   },
   {
-    id: "tododag",
-    repoName: "AkashiSensei/ToDoDAG",
-    githubRepo: "AkashiSensei/ToDoDAG",
-    repoTags: ["private"],
-    lifecycleStatus: "starting",
-    status: ["private", "early"],
-    tags: ["Swift", "macOS", "DAG", "Product Design"],
-  },
-  {
     id: "personal-homepage",
     repoName: "AkashiSensei/AkashiSensei.github.io",
     externalUrl: "https://github.com/AkashiSensei/AkashiSensei.github.io",

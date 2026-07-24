@@ -84,6 +84,16 @@ This section is the standing brief for future page design work. When modifying o
 - Responsive breakpoint semantics for current content-card pages: treat a viewport as "narrow/mobile" when the card grid can only fit one card per row. The canonical narrow-to-wide breakpoint is **768px (`md`)**: below 768px use one-card/mobile behavior; at 768px and above, card grids may fit two cards per row. Do not use `sm` (640px) as the wide-card threshold.
 - A page is not visually complete until mobile, standard landscape, and standard portrait / tall workspace profiles feel excellent, and less common large-width / unusual-ratio profiles still remain readable, coherent, and visually intentional.
 
+#### 3.4.1 Height-balanced dynamic columns
+
+- Any listing, gallery, Highlight, or similar dynamic collection that presents **variable-height items in two or more vertical columns** must use height-balanced masonry behavior. Process entries in their canonical data order and place each next entry into the column with the lowest accumulated height at that point.
+- Do **not** create independent left/right sequences by splitting the dataset into halves, alternating items by index, assigning fixed rows, or otherwise distributing entries without considering their height. Do **not** force the final, draft, featured, or otherwise special entry into a chosen or taller column merely to control its geometric position.
+- “Last in the list” means the entry is processed last; it does not mean the entry must be forced to the visually lowest position. Editorial priority and ordering belong in structured data, while column placement is determined by layout balance.
+- Height balancing must account for the content that materially changes rendered height, including responsive column width, localized title and summary length, visible points, tags, links, metadata, media aspect ratio, and inter-item spacing. As content, locale, or viewport changes, the allocation must be recalculated rather than relying on a permanently fixed partition.
+- At single-column breakpoints, render the canonical data sequence directly.
+- Fixed grids or manually grouped columns are exempt only when the grouping itself carries intentional narrative or semantic meaning, or when items are deliberately equal-height. A dynamic variable-height collection must not use fixed grouping merely for implementation convenience.
+- Apply the same rule consistently across primary and plain display modes, and across projects, course projects, knowledge entries, workbench groups, small tools, resume Highlights, and future content modules.
+
 ### 3.5 Content, copy & layout rhythm
 
 - Keep structured data separate from UI presentation. Layout changes should reuse the same content entities and i18n structures rather than duplicating page-specific content.
@@ -113,6 +123,16 @@ Use a centralized five-level text contrast scale for ordinary page typography in
 
 - Locales: Chinese (source of truth), English, Italian, Japanese
 - Non-Chinese copy: AI-generated drafts, **human-reviewed** before publish
+
+### 4.1 English copy for content entities
+
+- For concrete content entities—projects, course projects, small tools, knowledge entries, work experience, and future modules—English copy should be a native-facing rewrite, not a literal or structurally mirrored translation of the Chinese source.
+- Preserve the facts and intended positioning, but allow the English summary and points to be shorter, reordered, combined, or reframed when that produces clearer English.
+- Lead with what the entry helps a visitor do or understand. Prefer concise, idiomatic, benefit-led language, active voice, and short sentences that scan naturally.
+- Emphasize practical value, ease of use, personal contribution, and memorable differentiators. Omit low-level implementation details unless they materially explain the value or distinguish the work.
+- Avoid exhaustive feature inventories, Chinese-style parallel phrasing, repeated context, and wording that sounds translated. A strong English line may use a direct product-style hook when it stays accurate (for example, “show AI what you mean”).
+- Treat generated English as a draft until human review; applying this style does not imply native-speaker approval.
+- **Agent transparency**: whenever an AI agent uses this standing English-copy brief to draft or revise entity copy, it must explicitly tell the user that the brief was applied and invite review. Do not apply the brief silently.
 
 ## 5. Content Modules
 

@@ -1,5 +1,7 @@
 # 站点文案（可编辑）
 
+> 本文件只说明内容目录与维护入口。进行开发、内容新增或结构调整前，请先阅读 [项目上下文说明](../../.context/README.md)、[项目规格](../../.context/SPEC.md) 和 [当前任务](../../.context/ACTIVE_TASK.md)；需要追溯原始需求与设计意图时，再查看 [原始需求记录](../../.context/RAW_REQUIREMENTS.md)。项目目标、架构约束、内容与国际化规则、Agent 协作边界及当前任务范围以 `.context/` 中的文档为准。
+
 面向访客的展示文案按语言和领域拆分在：
 
 - `src/content/locales/zh/` — 中文

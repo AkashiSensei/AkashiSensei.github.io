@@ -12,10 +12,21 @@
     "author": "Owner",
     "contributor": "Contributor",
     "doing": "Doing",
+    "draft": "Draft",
     "archived": "Archived",
     "privateTool": "Private Tool"
   },
   "items": {
+    "prompt-sketch": {
+      "title": "PromptSketch",
+      "summary": "A lightweight sketchpad for showing AI what you mean. Paste a screenshot or start with a blank canvas, mark it up in seconds, then copy or save the result.",
+      "points": [
+        "No sign-up or uploads—open the page and start drawing.",
+        "Use freehand strokes, whole-stroke erasing, and simple shapes to annotate screenshots or sketch from scratch.",
+        "Undo, redo, shortcuts, zoom, and pan keep the workflow quick with a mouse, trackpad, or stylus.",
+        "Copy the finished canvas or save it as an image for prompts, messages, and documents."
+      ]
+    },
     "project-context-meta-skill": {
       "title": "Project Context Meta-Skill",
       "summary": "A personal meta-skill for building AI-native engineering environments. Three decoupled subsystems provide structured project context and help the AI question, reason, and weigh trade-offs independently.",
@@ -63,6 +74,16 @@
         "Turns Crater development experience, recurring requirements, and collaboration habits into working instructions that can be given directly to AI.",
         "Helps agents enter the existing engineering context faster, reducing invalid work and repeated communication.",
         "Externalizes implicit experience into a reusable collaboration entry point."
+      ]
+    },
+    "tododag": {
+      "title": "ToDoDAG",
+      "summary": "An early task-manager concept for work that does not fit a flat to-do list. It maps dependencies as a DAG so I can see what is actionable now and what is still blocked.",
+      "points": [
+        "Turns a long backlog into a graph of prerequisites, blockers, and newly unlocked work.",
+        "Keeps sudden ideas, assigned tasks, and long-term plans together without losing their dependencies.",
+        "Planned as a native, local-first Apple app with private iCloud sync across devices.",
+        "Still at the planning and prototype stage, with AI-assisted task execution being explored."
       ]
     }
   }
