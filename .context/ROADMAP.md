@@ -13,6 +13,7 @@
 
 ## History
 
+- 2026-07-24 | [Archived: PromptSketch and small-tools content refresh](archive/20260724_PromptSketch-and-small-tools-content-refresh.md) | Added PromptSketch with bilingual copy and a WebP gallery, moved ToDoDAG into Small Tools, refined English-copy/context governance, and standardized height-balanced dynamic columns.
 - 2026-07-07 | [Archived: VR experiment Nsight profiling refresh](archive/20260707_VR-experiment-Nsight-profiling-refresh.md) | Reframed the VR experiment task around Nsight profiling, converted and reordered the local WebP gallery, added profiling tags, refreshed raytracer repo stats, and put the raytracer main repository before its fork.
 - 2026-07-06 | [Archived: VR raytracer course project](archive/20260706_VR-raytracer-course-project.md) | Added a separate raytracer course-project entry with WebP gallery and bilingual contribution copy, restored the existing VR experiment entry, marked Parallel Programming A completed, and synced course-project personal-work translations.
 - 2026-07-04 | [Archived: Friend links display and FPV home polish](archive/20260704_Friend-links-display-and-FPV-home-polish.md) | Added new friend links with WebP avatars, tuned FPV friend capsule sizing/wrapping across mobile and desktop, reserved HUD-safe desktop spacing, and fixed homepage display-mode regressions.

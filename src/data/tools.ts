@@ -6,7 +6,7 @@ export type SmallTool = {
   repoUrl?: string
   githubRepo?: string
   role: "author" | "contributor"
-  status?: "doing"
+  status?: "doing" | "draft"
   archived?: boolean
   featured?: boolean
   featuredOrder?: number
@@ -27,13 +27,45 @@ export type SmallTool = {
 
 export const smallTools: SmallTool[] = [
   {
+    id: "prompt-sketch",
+    repoName: "AkashiSensei/PromptSketch",
+    repoUrl: "https://github.com/AkashiSensei/PromptSketch",
+    githubRepo: "AkashiSensei/PromptSketch",
+    role: "author",
+    status: "doing",
+    featured: true,
+    featuredOrder: 1,
+    screenshots: [
+      {
+        src: "/assets/tools/prompt-sketch/simple-drawing.webp",
+        alt: "PromptSketch freehand drawing on a blank canvas",
+        width: 2000,
+        height: 1326,
+      },
+      {
+        src: "/assets/tools/prompt-sketch/quick-card-sketch.webp",
+        alt: "PromptSketch card layout sketched with shapes and strokes",
+        width: 2000,
+        height: 1326,
+        brightness: "high",
+      },
+      {
+        src: "/assets/tools/prompt-sketch/screenshot-annotation.webp",
+        alt: "PromptSketch annotations over a pasted screenshot",
+        width: 1912,
+        height: 1238,
+        brightness: "high",
+      },
+    ],
+  },
+  {
     id: "project-context-meta-skill",
     repoName: "AkashiSensei/project-context-meta-skill",
     repoUrl: "https://github.com/AkashiSensei/project-context-meta-skill",
     githubRepo: "AkashiSensei/project-context-meta-skill",
     role: "author",
     featured: true,
-    featuredOrder: 1,
+    featuredOrder: 2,
     screenshots: [
       {
         src: "/assets/tools/project-context-meta-skill/roadmap.webp",
@@ -68,7 +100,7 @@ export const smallTools: SmallTool[] = [
     githubRepo: "AkashiSensei/research-skills",
     role: "author",
     featured: true,
-    featuredOrder: 3,
+    featuredOrder: 4,
     screenshots: [
       {
         src: "/assets/tools/research-skills/codex-result.webp",
@@ -103,11 +135,12 @@ export const smallTools: SmallTool[] = [
     ],
   },
   {
-    id: "latex-resume",
+    id: "crater-prompt",
+    repoName: "AkashiSensei/crater-prompt",
+    repoUrl: "https://github.com/AkashiSensei/crater-prompt",
+    githubRepo: "AkashiSensei/crater-prompt",
     role: "author",
-    status: "doing",
-    featured: true,
-    featuredOrder: 4,
+    archived: true,
   },
   {
     id: "anysearch-skill",
@@ -116,15 +149,19 @@ export const smallTools: SmallTool[] = [
     githubRepo: "anysearch-ai/anysearch-skill",
     role: "contributor",
     featured: true,
-    featuredOrder: 2,
+    featuredOrder: 3,
   },
   {
-    id: "crater-prompt",
-    repoName: "AkashiSensei/crater-prompt",
-    repoUrl: "https://github.com/AkashiSensei/crater-prompt",
-    githubRepo: "AkashiSensei/crater-prompt",
+    id: "latex-resume",
     role: "author",
-    archived: true,
+    status: "doing",
+  },
+  {
+    id: "tododag",
+    repoName: "AkashiSensei/ToDoDAG",
+    githubRepo: "AkashiSensei/ToDoDAG",
+    role: "author",
+    status: "draft",
   },
 ]
 

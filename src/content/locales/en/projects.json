@@ -136,22 +136,6 @@
         ]
       }
     },
-    "tododag": {
-      "title": "ToDoDAG",
-      "summary": "A DAG-based task app for complex dependencies and long-running tasks. By making dependencies explicit, it shows what is truly actionable now. It mainly serves my own needs.",
-      "points": {
-        "projectIntro": [
-          "My tasks often form a DAG: one task may unlock many others, or several tasks may block one task.",
-          "Some tasks come from sudden ideas I decide to pursue, while others are suddenly assigned to me. I need to write them down so I do not forget.",
-          "A linear to-do list hides dependencies, forcing me to scan nearly a hundred items for what can start now.",
-          "I want a graph-structured app to guide work instead of staring at an unfocused linear list.",
-          "Starts on macOS, with planned expansion to iOS, iPadOS, and watchOS using local-first storage and private iCloud sync.",
-          "Currently in early planning/prototype stage, with functional boundaries, interaction principles, and Apple-native constraints clarified. I plan to have Codex start development as soon as I have time.",
-          "Researching communication and collaboration mechanisms, with plans to connect ToDoDAG to AI systems so AI can help complete my tasks."
-        ],
-        "personalWork": []
-      }
-    },
     "personal-homepage": {
       "title": "Personal Homepage and Content System",
       "summary": "This site is also a long-running frontend project for HR, interviewers, open-source peers, and students. It organizes job-search presentation, open-source activity, and related content into a maintainable static site.",
