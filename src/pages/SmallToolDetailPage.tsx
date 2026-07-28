@@ -20,6 +20,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { type SmallTool } from "@/data/tools"
+import { getSemanticTagClassName } from "@/lib/tag-styles"
 import { cn } from "@/lib/utils"
 
 type SmallToolDetailPageProps = {
@@ -44,10 +45,13 @@ function SmallToolImageWall({
 }: {
   images: NonNullable<SmallTool["screenshots"]>
 }) {
-  const { t } = useTranslation("common")
+  const { t } = useTranslation(["tools", "common"])
   const [previewImage, setPreviewImage] = useState<
     NonNullable<SmallTool["screenshots"]>[number] | null
   >(null)
+  const getImageTitle = (
+    image: NonNullable<SmallTool["screenshots"]>[number],
+  ) => image.titleKey ? t(image.titleKey) : image.alt
 
   return (
     <>
@@ -59,7 +63,7 @@ function SmallToolImageWall({
             type="button"
             className="group/wall-image block w-full overflow-hidden rounded-2xl border border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.32)] p-0 text-left shadow-sm backdrop-blur-md transition-colors hover:bg-[rgb(var(--site-surface-rgb)_/_0.48)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/45 dark:border-white/10 dark:bg-white/[0.04] dark:hover:bg-white/[0.08]"
             onClick={() => setPreviewImage(image)}
-            aria-label={image.alt}
+            aria-label={getImageTitle(image)}
           >
             <LazyImage
               src={image.src}
@@ -67,7 +71,7 @@ function SmallToolImageWall({
               width={image.width}
               height={image.height}
               placeholderTitle={image.alt}
-              loadingLabel={t("imageLoading")}
+              loadingLabel={t("common:imageLoading")}
               brightness={image.brightness}
               containerClassName="w-full"
               imageClassName="h-auto w-full object-contain transition-transform duration-300 group-hover/wall-image:scale-[1.015]"
@@ -85,21 +89,26 @@ function SmallToolImageWall({
           }
         }}
       >
-        <DialogContent className="image-preview-dialog flex items-center justify-center overflow-hidden border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.66)] p-2 shadow-lg backdrop-blur-xl dark:border-white/10 dark:bg-black/45 md:p-4 [&_[data-slot=dialog-close]]:right-3 [&_[data-slot=dialog-close]]:top-3 md:[&_[data-slot=dialog-close]]:right-4 md:[&_[data-slot=dialog-close]]:top-4">
+        <DialogContent className="image-preview-dialog flex flex-col gap-2 overflow-hidden border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.66)] p-2 shadow-lg backdrop-blur-xl dark:border-white/10 dark:bg-black/45 md:p-4 [&_[data-slot=dialog-close]]:right-3 [&_[data-slot=dialog-close]]:top-3 md:[&_[data-slot=dialog-close]]:right-4 md:[&_[data-slot=dialog-close]]:top-4">
           <DialogTitle className="sr-only">
-            {previewImage?.alt ?? t("imageLoading")}
+            {previewImage ? getImageTitle(previewImage) : t("common:imageLoading")}
           </DialogTitle>
           <DialogDescription className="sr-only">
-            {previewImage?.alt ?? t("imageLoading")}
+            {previewImage ? getImageTitle(previewImage) : t("common:imageLoading")}
           </DialogDescription>
           {previewImage ? (
-            <div className="relative flex h-full min-h-0 w-full min-w-0 items-center justify-center overflow-hidden">
-              <img
-                src={previewImage.src}
-                alt={previewImage.alt}
-                className="h-full w-full object-contain"
-              />
-            </div>
+            <>
+              <div className="relative flex min-h-0 w-full min-w-0 flex-1 items-center justify-center overflow-hidden">
+                <img
+                  src={previewImage.src}
+                  alt={previewImage.alt}
+                  className="h-full w-full object-contain"
+                />
+              </div>
+              <p className="h-8 shrink-0 truncate px-8 text-center text-lg font-medium leading-8 text-foreground/65 dark:text-white/90">
+                {getImageTitle(previewImage)}
+              </p>
+            </>
           ) : null}
         </DialogContent>
       </Dialog>
@@ -158,6 +167,7 @@ export function SmallToolDetailPage({ tools }: SmallToolDetailPageProps) {
           tool.screenshots?.map((image) => ({
             src: image.src,
             alt: image.alt,
+            title: image.titleKey ? t(image.titleKey) : image.alt,
             width: image.width,
             height: image.height,
           })) ??
@@ -179,6 +189,10 @@ export function SmallToolDetailPage({ tools }: SmallToolDetailPageProps) {
           {
             label: tool.repoName ?? t("labels.privateTool"),
             href: tool.repoUrl,
+            meta: tool.repoTags?.map((repoTag) => ({
+              label: t(`repoTags.${repoTag}`),
+              className: getSemanticTagClassName(repoTag),
+            })),
           },
         ]}
         sections={[
@@ -275,13 +289,37 @@ export function SmallToolDetailPage({ tools }: SmallToolDetailPageProps) {
                   rel="noreferrer"
                   className="group/repo flex min-w-0 items-center gap-1.5 text-sm font-semibold text-foreground/70 transition-colors hover:text-foreground dark:text-foreground/80"
                 >
+                  {tool.repoTags?.map((repoTag) => (
+                    <span
+                      key={repoTag}
+                      className={cn(
+                        "shrink-0 whitespace-nowrap rounded-full border px-2 py-0.5 text-[0.6875rem] font-semibold leading-none",
+                        getSemanticTagClassName(repoTag),
+                      )}
+                    >
+                      {t(`repoTags.${repoTag}`)}
+                    </span>
+                  ))}
                   <span className="min-w-0 truncate">{tool.repoName}</span>
                   <ArrowUpRight className="h-4 w-4 shrink-0 transition-transform group-hover/repo:-translate-y-0.5 group-hover/repo:translate-x-0.5" />
                   <GitHubRepoStats repo={tool.githubRepo} />
                 </a>
               ) : (
-                <span className="text-sm font-semibold text-foreground/65 dark:text-foreground/75">
-                  {tool.repoName ?? t("labels.privateTool")}
+                <span className="flex min-w-0 items-center gap-1.5 text-sm font-semibold text-foreground/65 dark:text-foreground/75">
+                  {tool.repoTags?.map((repoTag) => (
+                    <span
+                      key={repoTag}
+                      className={cn(
+                        "shrink-0 whitespace-nowrap rounded-full border px-2 py-0.5 text-[0.6875rem] font-semibold leading-none",
+                        getSemanticTagClassName(repoTag),
+                      )}
+                    >
+                      {t(`repoTags.${repoTag}`)}
+                    </span>
+                  ))}
+                  <span className="min-w-0 truncate">
+                    {tool.repoName ?? t("labels.privateTool")}
+                  </span>
                 </span>
               )}
             </GlassPanel>

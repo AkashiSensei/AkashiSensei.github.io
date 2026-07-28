@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next"
 
 import { AppLink } from "@/components/AppLink"
 import { featuredSmallTools, smallTools, type SmallTool } from "@/data/tools"
+import { getSemanticTagClassName } from "@/lib/tag-styles"
 import { cn } from "@/lib/utils"
 
 const roleToneClassName = {
@@ -97,6 +98,17 @@ function SmallToolLineItem({ tool }: { tool: SmallTool }) {
             <span className={cn("font-normal", roleToneClassName[tool.role])}>
               {t(`labels.${tool.role}`)}
             </span>
+            {tool.repoTags?.map((repoTag) => (
+              <span
+                key={repoTag}
+                className={cn(
+                  "shrink-0 whitespace-nowrap rounded-full border px-1.5 py-0.5 text-[0.625rem] leading-none",
+                  getSemanticTagClassName(repoTag),
+                )}
+              >
+                {t(`repoTags.${repoTag}`)}
+              </span>
+            ))}
             {statusLabel ? <span className="text-tone-5">{statusLabel}</span> : null}
             {tool.archived ? (
               <span className="text-tone-5">{t("labels.archived")}</span>

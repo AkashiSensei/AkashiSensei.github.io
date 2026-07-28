@@ -3914,6 +3914,13 @@
     background: color-mix(in oklab, var(--foreground) 4%, transparent);
   }
 
+  .plain-detail-image-grid figcaption {
+    margin-top: 0.45rem;
+    color: var(--text-tone-4);
+    font-size: 0.75rem;
+    line-height: 1.4;
+  }
+
   .plain-detail-layout {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(12rem, var(--plain-detail-aside-width));

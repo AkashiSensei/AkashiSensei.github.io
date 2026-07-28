@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils"
 export type PlainIndexImage = {
   src: string
   alt: string
+  title?: string
   width?: number
   height?: number
 }

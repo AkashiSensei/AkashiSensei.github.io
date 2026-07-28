@@ -78,6 +78,7 @@ export function PlainDetailPage({
                     height={image.height}
                     loading="lazy"
                   />
+                  {image.title ? <figcaption>{image.title}</figcaption> : null}
                 </figure>
               ))}
             </div>

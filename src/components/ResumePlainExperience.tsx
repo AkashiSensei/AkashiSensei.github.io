@@ -547,6 +547,21 @@ export function ResumePlainExperience() {
           {featuredSmallTools.map((tool) => (
             <section key={tool.id} className="plain-resume-mini-item">
               <h3><AppLink to={`/tools/${tool.id}`}>{t(`tools:items.${tool.id}.title`)}</AppLink></h3>
+              {tool.repoTags?.length ? (
+                <ul className="plain-index-tags" aria-label={t(`tools:items.${tool.id}.title`)}>
+                  {tool.repoTags.map((repoTag) => (
+                    <li
+                      key={repoTag}
+                      className={cn(
+                        "plain-index-tag-pill rounded-full border px-2 py-0.5 text-[0.6875rem] font-semibold leading-none",
+                        getSemanticTagClassName(repoTag),
+                      )}
+                    >
+                      {t(`tools:repoTags.${repoTag}`)}
+                    </li>
+                  ))}
+                </ul>
+              ) : null}
               <p>{t(`tools:items.${tool.id}.summary`)}</p>
             </section>
           ))}

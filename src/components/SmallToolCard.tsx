@@ -7,6 +7,7 @@ import { GlassPanel } from "@/components/GlassPanel"
 import { LazyImage } from "@/components/LazyImage"
 import { SmallToolImageGallery } from "@/components/SmallToolImageGallery"
 import { type SmallTool } from "@/data/tools"
+import { getSemanticTagClassName } from "@/lib/tag-styles"
 import { cn } from "@/lib/utils"
 
 type SmallToolCardProps = {
@@ -79,13 +80,37 @@ export function SmallToolCard({
               rel="noreferrer"
               className="group/repo inline-flex min-w-0 w-fit max-w-full items-center gap-1.5 text-sm font-semibold text-foreground/60 transition-colors hover:text-foreground/90 dark:text-foreground/75 dark:hover:text-foreground"
             >
+              {tool.repoTags?.map((repoTag) => (
+                <span
+                  key={repoTag}
+                  className={cn(
+                    "shrink-0 whitespace-nowrap rounded-full border px-2 py-0.5 text-[0.6875rem] font-semibold leading-none",
+                    getSemanticTagClassName(repoTag),
+                  )}
+                >
+                  {t(`repoTags.${repoTag}`)}
+                </span>
+              ))}
               <span className="min-w-0 truncate">{tool.repoName}</span>
               <ArrowUpRight className="h-4 w-4 shrink-0 transition-transform group-hover/repo:-translate-y-0.5 group-hover/repo:translate-x-0.5" />
               <GitHubRepoStats repo={tool.githubRepo} />
             </a>
           ) : (
-            <span className="inline-flex min-w-0 w-fit max-w-full text-sm font-semibold text-foreground/60 dark:text-foreground/75">
-              {tool.repoName ?? t("labels.privateTool")}
+            <span className="inline-flex min-w-0 w-fit max-w-full items-center gap-1.5 text-sm font-semibold text-foreground/60 dark:text-foreground/75">
+              {tool.repoTags?.map((repoTag) => (
+                <span
+                  key={repoTag}
+                  className={cn(
+                    "shrink-0 whitespace-nowrap rounded-full border px-2 py-0.5 text-[0.6875rem] font-semibold leading-none",
+                    getSemanticTagClassName(repoTag),
+                  )}
+                >
+                  {t(`repoTags.${repoTag}`)}
+                </span>
+              ))}
+              <span className="min-w-0 truncate">
+                {tool.repoName ?? t("labels.privateTool")}
+              </span>
             </span>
           )}
         </div>
