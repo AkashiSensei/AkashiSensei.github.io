@@ -16,7 +16,32 @@
     "archived": "已归档",
     "privateTool": "私有工具"
   },
+  "repoTags": {
+    "private": "私有",
+    "public": "公开"
+  },
   "items": {
+    "typelift": {
+      "title": "TypeLift",
+      "summary": "一个不打断当前输入流的 macOS 翻译工具。用全局快捷键唤起悬浮输入框，以熟悉的语言写下短文本，在效率优先的翻译 API 与能力优先的大模型 API 之间快速切换，再将结果直接回填到原来的光标位置。",
+      "images": {
+        "writingFlow": "论文撰写",
+        "translationCandidates": "社交媒体互动",
+        "floatingInput": "终端工作流",
+        "caretPlacement": "代码编辑器",
+        "multilingualWriting": "多语言写作",
+        "translationPaths": "多语言翻译配置",
+        "translationStyles": "多场合表达配置",
+        "menuBarAndDock": "macOS 桌面行为配置",
+        "placementPriority": "多窗口定位配置"
+      },
+      "points": [
+        "不打断当前工作流，通过全局快捷键唤起悬浮输入框，翻译后将结果直接写回原光标位置，输入时自动切换到源语言输入法，并在结束后恢复",
+        "兼顾效率、成本与表达能力，标准翻译侧重速度和成本，大模型翻译侧重语境理解和表达，两种方案同时可用时可按 Tab 快速切换",
+        "灵活适配不同表达场合，大模型翻译内置自然、简洁、正式、社交等多种风格，同时允许用户增删、排序并自定义风格名称和翻译要求",
+        "丰富的自定义能力，可分别设置源语言、目标语言和应用界面语言，控制菜单栏图标与程序坞图标的显示和点击行为，并调整悬浮窗口定位策略的优先级"
+      ]
+    },
     "prompt-sketch": {
       "title": "PromptSketch",
       "summary": "一个面向 AI 视觉沟通的轻量草图工具。粘贴截图或新建画布后，即可用笔画和形状快速标注意图，再一键复制或保存结果，减少反复用文字解释视觉需求的成本。",

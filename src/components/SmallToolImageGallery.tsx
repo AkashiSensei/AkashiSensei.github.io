@@ -72,7 +72,7 @@ export function SmallToolImageGallery({
   images,
   className,
 }: SmallToolImageGalleryProps) {
-  const { t } = useTranslation("common")
+  const { t } = useTranslation(["tools", "common"])
   const galleryRef = useRef<HTMLDivElement>(null)
   const previewGalleryRef = useRef<HTMLDivElement>(null)
   const initialPreviewImageIndexRef = useRef<number | null>(null)
@@ -90,6 +90,8 @@ export function SmallToolImageGallery({
   const selectedImageIndex = images.length > 0
     ? Math.min(selectedIndex, images.length - 1)
     : 0
+  const getImageTitle = (image: SmallToolScreenshot) =>
+    image.titleKey ? t(image.titleKey) : image.alt
 
   function clearProgrammaticPreviewTarget() {
     if (programmaticPreviewTimeoutRef.current !== null) {
@@ -426,13 +428,13 @@ export function SmallToolImageGallery({
           event.preventDefault()
           openPreview(imageIndex)
         }}
-        aria-label={image.alt}
+        aria-label={getImageTitle(image)}
       >
         <LazyImage
           src={image.src}
           alt={image.alt}
           placeholderTitle={image.alt}
-          loadingLabel={t("imageLoading")}
+          loadingLabel={t("common:imageLoading")}
           brightness={image.brightness}
           containerClassName="h-full w-full"
           imageClassName="block h-full w-full object-contain"
@@ -488,7 +490,7 @@ export function SmallToolImageGallery({
           className="image-preview-dialog flex flex-col gap-2 overflow-hidden border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.66)] p-2 shadow-lg backdrop-blur-xl dark:border-white/10 dark:bg-black/45 md:p-3 [&_[data-slot=dialog-close]]:right-3 [&_[data-slot=dialog-close]]:top-3 md:[&_[data-slot=dialog-close]]:right-4 md:[&_[data-slot=dialog-close]]:top-4"
         >
           <DialogTitle className="sr-only">
-            {selectedImage.alt}
+            {getImageTitle(selectedImage)}
           </DialogTitle>
           <DialogDescription className="sr-only">
             {selectedImageIndex + 1} / {images.length}
@@ -523,7 +525,7 @@ export function SmallToolImageGallery({
                 captionVisible ? "opacity-100" : "opacity-0",
               )}
             >
-              {captionImage.alt}
+              {getImageTitle(captionImage)}
             </span>
           </p>
           {hasMultipleImages ? (
@@ -553,7 +555,7 @@ export function SmallToolImageGallery({
                         : "opacity-70 hover:border-foreground/35 hover:opacity-100",
                     )}
                     onClick={() => selectPreviewImage(imageIndex)}
-                    aria-label={image.alt}
+                    aria-label={getImageTitle(image)}
                     aria-pressed={isSelected}
                   >
                     <span className="relative block h-full w-full overflow-hidden rounded-[0.2rem]">

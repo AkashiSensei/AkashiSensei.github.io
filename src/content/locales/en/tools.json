@@ -16,7 +16,32 @@
     "archived": "Archived",
     "privateTool": "Private Tool"
   },
+  "repoTags": {
+    "private": "Private",
+    "public": "Public"
+  },
   "items": {
+    "typelift": {
+      "title": "TypeLift",
+      "summary": "A lightweight macOS translator that stays inside your typing flow. Summon a floating input, choose between a fast, cost-conscious translation API and a more capable language-model API, then send the result straight back to the original cursor.",
+      "images": {
+        "writingFlow": "Academic writing",
+        "translationCandidates": "Social media conversations",
+        "floatingInput": "Terminal workflows",
+        "caretPlacement": "Code editors",
+        "multilingualWriting": "Multilingual writing",
+        "translationPaths": "Multilingual translation settings",
+        "translationStyles": "Writing style settings",
+        "menuBarAndDock": "macOS desktop behavior settings",
+        "placementPriority": "Window placement settings"
+      },
+      "points": [
+        "Stay in your flow with a global shortcut, a floating input, automatic input-source switching, and translations returned directly to the original cursor",
+        "Balance speed, cost, and capability with standard translation for fast, economical results and language-model translation for deeper context and more expressive wording, then press Tab to switch whenever both are available",
+        "Write for different situations with built-in Natural, Concise, Formal, and Social styles, or add, reorder, rename, and tailor styles of your own",
+        "Make TypeLift work your way by setting source, target, and interface languages, choosing how its menu bar and Dock icons behave, and prioritizing floating-window placement strategies"
+      ]
+    },
     "prompt-sketch": {
       "title": "PromptSketch",
       "summary": "A lightweight sketchpad for showing AI what you mean. Paste a screenshot or start with a blank canvas, mark it up in seconds, then copy or save the result.",

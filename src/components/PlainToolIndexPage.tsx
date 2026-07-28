@@ -9,6 +9,7 @@ import { Layout } from "@/components/Layout"
 import { SmallToolImageGallery } from "@/components/SmallToolImageGallery"
 import { renderPlainRichText } from "@/components/PlainRichText"
 import { type SmallTool } from "@/data/tools"
+import { getSemanticTagClassName } from "@/lib/tag-styles"
 import { cn } from "@/lib/utils"
 
 type PlainToolIndexPageProps = {
@@ -155,6 +156,17 @@ export function PlainToolIndexPage({ tools }: PlainToolIndexPageProps) {
                             rel="noreferrer"
                             className="plain-project-repo-link"
                           >
+                            {tool.repoTags?.map((repoTag) => (
+                              <span
+                                key={repoTag}
+                                className={cn(
+                                  "plain-index-tag-pill shrink-0 whitespace-nowrap rounded-full border px-2 py-0.5 text-[0.6875rem] font-semibold leading-none",
+                                  getSemanticTagClassName(repoTag),
+                                )}
+                              >
+                                {t(`repoTags.${repoTag}`)}
+                              </span>
+                            ))}
                             <span className="plain-project-repo-name min-w-0 truncate">{tool.repoName}</span>
                             <ArrowUpRight className="plain-project-repo-arrow h-4 w-4 shrink-0" />
                             <GitHubRepoStats
@@ -164,7 +176,20 @@ export function PlainToolIndexPage({ tools }: PlainToolIndexPageProps) {
                           </a>
                         ) : (
                           <span className="plain-project-repo-link">
-                            {tool.repoName ?? t("labels.privateTool")}
+                            {tool.repoTags?.map((repoTag) => (
+                              <span
+                                key={repoTag}
+                                className={cn(
+                                  "plain-index-tag-pill shrink-0 whitespace-nowrap rounded-full border px-2 py-0.5 text-[0.6875rem] font-semibold leading-none",
+                                  getSemanticTagClassName(repoTag),
+                                )}
+                              >
+                                {t(`repoTags.${repoTag}`)}
+                              </span>
+                            ))}
+                            <span className="plain-project-repo-name min-w-0 truncate">
+                              {tool.repoName ?? t("labels.privateTool")}
+                            </span>
                           </span>
                         )}
                       </div>
