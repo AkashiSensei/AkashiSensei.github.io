@@ -33,6 +33,8 @@ type ProfileCardStyle = CSSProperties & {
 }
 
 type ProfileCardProps = {
+  avatarHeight?: number
+  avatarWidth?: number
   avatarX?: string
   avatarY?: string
   avatarUrl?: string
@@ -46,8 +48,11 @@ type ProfileCardProps = {
   grainUrl?: string
   handle?: string
   iconUrl?: string
+  imageLoading?: "eager" | "lazy"
   innerGradient?: string
+  miniAvatarHeight?: number
   miniAvatarUrl?: string
+  miniAvatarWidth?: number
   mobileTiltSensitivity?: number
   name: string
   onContactClick?: () => void
@@ -79,6 +84,8 @@ function getOffsets(event: PointerEvent, element: HTMLElement) {
 }
 
 function ProfileCardComponent({
+  avatarHeight,
+  avatarWidth,
   avatarX,
   avatarY,
   avatarUrl,
@@ -92,8 +99,11 @@ function ProfileCardComponent({
   grainUrl,
   handle,
   iconUrl,
+  imageLoading = "lazy",
   innerGradient,
+  miniAvatarHeight,
   miniAvatarUrl,
+  miniAvatarWidth,
   mobileTiltSensitivity = 5,
   name,
   onContactClick,
@@ -217,6 +227,8 @@ function ProfileCardComponent({
       setImmediate(x: number, y: number) {
         currentX = x
         currentY = y
+        targetX = x
+        targetY = y
         setVarsFromXY(currentX, currentY)
       },
       setTarget(x: number, y: number) {
@@ -371,11 +383,19 @@ function ProfileCardComponent({
 
     shell.addEventListener("click", handleClick)
 
-    const initialX = (shell.clientWidth || 0) - ANIMATION_CONFIG.initialXOffset
-    const initialY = ANIMATION_CONFIG.initialYOffset
-    tiltEngine.setImmediate(initialX, initialY)
-    tiltEngine.toCenter()
-    tiltEngine.beginInitial(ANIMATION_CONFIG.initialDuration)
+    const shouldSkipInitialTilt =
+      window.matchMedia("(max-width: 767px)").matches ||
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+
+    if (shouldSkipInitialTilt) {
+      tiltEngine.setImmediate(shell.clientWidth / 2, shell.clientHeight / 2)
+    } else {
+      const initialX = (shell.clientWidth || 0) - ANIMATION_CONFIG.initialXOffset
+      const initialY = ANIMATION_CONFIG.initialYOffset
+      tiltEngine.setImmediate(initialX, initialY)
+      tiltEngine.toCenter()
+      tiltEngine.beginInitial(ANIMATION_CONFIG.initialDuration)
+    }
 
     return () => {
       shell.removeEventListener("pointerenter", handlePointerEnter)
@@ -435,7 +455,10 @@ function ProfileCardComponent({
                   src={avatarUrl}
                   alt=""
                   aria-hidden="true"
-                  loading="lazy"
+                  width={avatarWidth}
+                  height={avatarHeight}
+                  decoding={imageLoading === "eager" ? "sync" : "async"}
+                  loading={imageLoading}
                 />
               ) : null}
               {showUserInfo ? (
@@ -443,7 +466,15 @@ function ProfileCardComponent({
                   <div className="pc-user-details">
                     <div className="pc-mini-avatar">
                       {avatarUrl ? (
-                        <img src={miniAvatarUrl ?? avatarUrl} alt="" aria-hidden="true" loading="lazy" />
+                        <img
+                          src={miniAvatarUrl ?? avatarUrl}
+                          alt=""
+                          aria-hidden="true"
+                          width={miniAvatarWidth}
+                          height={miniAvatarHeight}
+                          decoding={imageLoading === "eager" ? "sync" : "async"}
+                          loading={imageLoading}
+                        />
                       ) : (
                         <span aria-hidden="true">{name.slice(0, 1)}</span>
                       )}

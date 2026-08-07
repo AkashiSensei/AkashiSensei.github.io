@@ -13,6 +13,7 @@
 
 ## History
 
+- 2026-08-07 | [Mobile user info card polish](archive/20260807_Mobile-user-info-card-polish.md) | Made the mobile contact dialog viewport-safe and flicker-free with fluid card sizing, a scrollable topic rail, compact social links including Instagram, larger shell corners, and stable mobile focus behavior.
 - 2026-07-28 | [Archived: TypeLift small tool](archive/20260728_TypeLift-small-tool.md) | Added TypeLift with bilingual copy, private-repository statistics and visibility labels, nine scenario-led WebP images, and localized gallery captions across full and plain views.
 - 2026-07-24 | [Archived: PromptSketch and small-tools content refresh](archive/20260724_PromptSketch-and-small-tools-content-refresh.md) | Added PromptSketch with bilingual copy and a WebP gallery, moved ToDoDAG into Small Tools, refined English-copy/context governance, and standardized height-balanced dynamic columns.
 - 2026-07-07 | [Archived: VR experiment Nsight profiling refresh](archive/20260707_VR-experiment-Nsight-profiling-refresh.md) | Reframed the VR experiment task around Nsight profiling, converted and reordered the local WebP gallery, added profiling tags, refreshed raytracer repo stats, and put the raytracer main repository before its fork.

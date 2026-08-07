@@ -53,3 +53,11 @@
 .lit-glass-card.card-spotlight:is(:hover, :focus-within)::after {
   opacity: 1;
 }
+
+@media (max-width: 767px) {
+  .contact-dialog-content.card-spotlight::before,
+  .contact-dialog-content.lit-glass-card.card-spotlight::after {
+    opacity: 0 !important;
+    transition: none !important;
+  }
+}
