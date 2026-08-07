@@ -4326,6 +4326,13 @@
     animation: workbench-preview-content-enter 180ms ease-out;
   }
 
+  @media (max-width: 767px) {
+    .contact-dialog-content,
+    .contact-dialog-content > * {
+      animation: none !important;
+    }
+  }
+
   .workbench-preview-glass-exit {
     opacity: 0;
     animation: workbench-preview-glass-exit 320ms cubic-bezier(0.55, 0, 0.2, 1) both;

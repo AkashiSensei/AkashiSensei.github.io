@@ -587,6 +587,24 @@
   }
 }
 
+@media (max-width: 767px) {
+  .contact-profile-card {
+    width: min(calc(100% - 0.75rem), 50.3svh);
+    max-width: 100%;
+  }
+
+  .contact-profile-card .pc-card {
+    width: 100%;
+    height: auto;
+    max-height: none;
+  }
+
+  .contact-profile-card .pc-role,
+  .contact-profile-card .pc-status-cycle {
+    animation: none;
+  }
+}
+
 @keyframes pc-status-in {
   from {
     opacity: 0;
