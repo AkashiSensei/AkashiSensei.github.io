@@ -17,8 +17,8 @@ type AnimationProviderState = {
 }
 
 const initialState: AnimationProviderState = {
-  animationMode: "full",
-  isAnimationEnabled: true,
+  animationMode: "static",
+  isAnimationEnabled: false,
   isPlainDisplayMode: false,
   setAnimationMode: () => null,
   toggleAnimationMode: () => null,
@@ -50,7 +50,7 @@ function getInitialAnimationMode(
 
 export function AnimationProvider({
   children,
-  defaultMode = "full",
+  defaultMode = "static",
   storageKey = "akashisensei-animation-mode",
 }: AnimationProviderProps) {
   const [animationMode, setAnimationModeState] = useState<AnimationMode>(() =>
