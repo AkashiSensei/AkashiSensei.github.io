@@ -1,3 +1,6 @@
+import { useRef } from "react"
+import { useTranslation } from "react-i18next"
+
 import { ContactDialog } from "@/components/ContactDialog"
 import { CourseProjectHighlights } from "@/components/CourseProjectHighlights"
 import { DirectionsSection } from "@/components/DirectionsSection"
@@ -11,7 +14,7 @@ import { SmallToolHighlights } from "@/components/SmallToolHighlights"
 import { Button } from "@/components/ui/button"
 import { WorkbenchHighlights } from "@/components/WorkbenchHighlights"
 import { useAnimationPreference } from "@/components/animation-provider"
-import { useTranslation } from "react-i18next"
+import { useResumeLandscapeSectionPaging } from "@/hooks/use-resume-landscape-section-paging"
 
 type ValueCard = {
   title: string
@@ -21,6 +24,9 @@ type ValueCard = {
 export function ResumePage() {
   const { i18n, t } = useTranslation("resume")
   const { isPlainDisplayMode } = useAnimationPreference()
+  const sectionStackRef = useRef<HTMLDivElement>(null)
+
+  useResumeLandscapeSectionPaging(sectionStackRef, !isPlainDisplayMode)
 
   if (isPlainDisplayMode) {
     return (
@@ -58,7 +64,7 @@ export function ResumePage() {
 
   return (
     <Layout mainClassName="resume-page-main">
-      <div className="resume-section-stack mt-8 flex flex-col sm:mt-16 md:mt-2">
+      <div ref={sectionStackRef} className="resume-section-stack mt-8 flex flex-col sm:mt-16 md:mt-2">
         <section className="resume-hero-section grid w-full items-center gap-9 pb-5 pt-2 sm:gap-10 sm:pb-6 sm:pt-4 md:gap-8 md:pb-6 md:pt-0 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,24rem)] lg:gap-8 xl:grid-cols-[minmax(0,1fr)_minmax(20rem,31rem)] xl:gap-12 xl:pb-8 min-[1800px]:!grid-cols-[minmax(0,1fr)_31rem] min-[1800px]:!gap-18">
           <div className="flex flex-col gap-5 sm:gap-6">
             <div className="flex flex-wrap gap-2">
