@@ -13,6 +13,7 @@
 
 ## History
 
+- 2026-09-19 | [Personal homepage gallery and copy](archive/20260919_Personal-homepage-gallery-and-copy.md) | Added a 14-image WebP gallery and four resume-facing bullets for the personal-homepage project entry, keeping presentation separate from content and leaving the entry out of resume featured.
 - 2026-09-18 | [Resume landscape section paging](archive/20260918_Resume-landscape-section-paging.md) | Made visual `/resume` PageUp/PageDown snap to the previous/next desktop-landscape full-screen section while keeping native paging in plain, portrait, and mobile.
 - 2026-09-15 | [Default low-animation mode](archive/20260915_Default-low-animation-mode.md) | Made static low-animation rendering the first-visit default while preserving valid saved full, static, and plain display preferences.
 - 2026-08-07 | [Mobile user info card polish](archive/20260807_Mobile-user-info-card-polish.md) | Made the mobile contact dialog viewport-safe and flicker-free with fluid card sizing, a scrollable topic rail, compact social links including Instagram, larger shell corners, and stable mobile focus behavior.
