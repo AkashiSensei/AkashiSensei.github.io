@@ -139,10 +139,28 @@
     "personal-homepage": {
       "title": "Personal Homepage and Content System",
       "summary": "This site is also a long-running frontend project for HR, interviewers, open-source peers, and students. It organizes job-search presentation, open-source activity, and related content into a maintainable static site.",
+      "images": {
+        "profileCard": "Public profile card",
+        "doorwayConcept": "Doorway concept",
+        "valleyConcept": "Valley concept",
+        "fpvHome": "Scroll homepage",
+        "mobile": "Mobile",
+        "projectsListing": "Projects listing",
+        "coffeeChat": "Coffee chat",
+        "courseHighlights": "Course highlights",
+        "workbench": "Workbench",
+        "plainHome": "Plain homepage",
+        "smallTools": "Small tools",
+        "courseDetail": "Course detail",
+        "knowledge": "Knowledge",
+        "siteFooter": "Site footer"
+      },
       "points": {
         "projectIntro": [
-          "Lets HR and interviewers understand my projects, direction, toolchain, and working style without searching across scattered repositories.",
-          "Supports multilingual content, responsive layout, and light/dark modes, while controlling maximum image brightness in dark mode to avoid glare."
+          "Designed layouts for phones and desktops of different sizes, with multiple languages, light/dark themes, and animation levels; dark mode also dims overly bright screenshots so reading stays comfortable.",
+          "Maintained AI prompts and project specs that capture purpose, design principles, and constraints, so long-term iteration stays coherent.",
+          "Used AI to generate line art, light/dark concepts, and video, then recovered the camera path for the homepage FPV fly-through. The footage carries the space; copy, language, and theme stay in the site, so they can change without remaking the video. Gained experience in the problems of getting generated media into a product.",
+          "Separated presentation from content: the same components can render different entries, and one entry can appear on multiple pages, making changes and extensions easier."
         ],
         "personalWork": []
       }
