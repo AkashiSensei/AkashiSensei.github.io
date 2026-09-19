@@ -3794,6 +3794,20 @@
     min-width: 0;
   }
 
+  .plain-project-copy > p,
+  .plain-project-copy > ul {
+    font-size: 0.875rem;
+    line-height: 1.625;
+  }
+
+  .plain-home-document strong {
+    font-weight: 600;
+  }
+
+  .plain-home-document .plain-point-highlight::marker {
+    color: inherit;
+  }
+
   .plain-project-copy h2 {
     margin-bottom: 0;
     padding-top: 0;

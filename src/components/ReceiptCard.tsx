@@ -17,6 +17,9 @@ export type ReceiptData = {
   brand: string
   receiptNumber: string
   issuedAt: string
+  ariaLabel: string
+  itemsAriaLabel: string
+  totalAriaLabel: string
   title: string
   description: string
   highlight?: string | string[]
@@ -143,7 +146,7 @@ export function ReceiptCard({ data, showPromo = true }: ReceiptCardProps) {
     <article
       ref={cardRef}
       className={showPromo ? "receipt-card" : "receipt-card receipt-card-compact"}
-      aria-label={`${data.brand} receipt`}
+      aria-label={data.ariaLabel}
     >
       <header className="receipt-header">
         <div className="receipt-brand">
@@ -163,7 +166,7 @@ export function ReceiptCard({ data, showPromo = true }: ReceiptCardProps) {
 
       <div ref={perforationRef} className="receipt-perforation" aria-hidden="true" />
 
-      <section className="receipt-items" aria-label="Receipt items">
+      <section className="receipt-items" aria-label={data.itemsAriaLabel}>
         {data.items.map((item, index) => (
           <div className="receipt-item" key={item.id}>
             <span className="receipt-item-index">{index + 1}</span>
@@ -176,7 +179,7 @@ export function ReceiptCard({ data, showPromo = true }: ReceiptCardProps) {
         ))}
       </section>
 
-      <section className="receipt-total-card" aria-label="Receipt total">
+      <section className="receipt-total-card" aria-label={data.totalAriaLabel}>
         <div>
           <h2>{data.totalLabel}</h2>
           {data.summary.map((line) => (

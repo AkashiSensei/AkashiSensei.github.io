@@ -16,6 +16,7 @@ import type {
   VirtualScreenAttachmentDefinition,
   VirtualScreenDefinition,
 } from "@/components/home-fpv/types"
+import { useTranslation } from "react-i18next"
 
 const CAMERA_TRACK_URL = "/assets/homepage-fpv/camera.json"
 const DAY_VIDEO_URL = "/assets/homepage-fpv/day-gop3.mp4"
@@ -32,6 +33,7 @@ const SCROLL_TIMELINE_DURATION = 8
 const KEYBOARD_SCREEN_SCROLL_DURATION = 2000
 const VIDEO_THEME_CROSSFADE_DURATION = 220
 const SCREEN_NAVIGATION_EPSILON = 0.035
+const FOOTER_SCROLL_EPSILON_PX = 8
 const SCREEN_ACTIVE_AFTER_ANCHOR_DELAY = 0.5
 const MOBILE_VIDEO_MAX_WIDTH = 767
 const MOBILE_LANDSCAPE_MAX_HEIGHT = 480
@@ -209,6 +211,45 @@ function getScrollYForScreenTime(section: HTMLElement, time: number) {
   const progress = clamp01(time / SCROLL_TIMELINE_DURATION)
 
   return sectionTop + progress * scrollDistance
+}
+
+function getMaxScrollY() {
+  return Math.max(document.documentElement.scrollHeight - window.innerHeight, 0)
+}
+
+function getKeyboardPagingTargetY(
+  section: HTMLElement,
+  currentY: number,
+  direction: 1 | -1,
+) {
+  const lastScreenTime = SCREEN_TIMES[SCREEN_TIMES.length - 1] ?? 0
+  const previousScreenTime =
+    SCREEN_TIMES[Math.max(SCREEN_TIMES.length - 2, 0)] ?? lastScreenTime
+  const lastScreenY = getScrollYForScreenTime(section, lastScreenTime)
+  const maxScrollY = getMaxScrollY()
+  const hasFooterTarget = maxScrollY > lastScreenY + FOOTER_SCROLL_EPSILON_PX
+  const isPastLastScreen = currentY > lastScreenY + FOOTER_SCROLL_EPSILON_PX
+  const { sectionTop, scrollDistance } = getSectionScrollMetrics(section)
+  const currentTime =
+    clamp01((currentY - sectionTop) / scrollDistance) * SCROLL_TIMELINE_DURATION
+  const isAtLastScreenTime =
+    Math.abs(currentTime - lastScreenTime) <= SCREEN_NAVIGATION_EPSILON
+
+  // Last FPV screen PageDown reaches the footer; PageUp from the footer skips
+  // that last screen and returns to the previous one. Screen-nav dots stay on
+  // the FPV screens only.
+  if (direction > 0 && hasFooterTarget && (isAtLastScreenTime || isPastLastScreen)) {
+    return maxScrollY
+  }
+
+  if (direction < 0 && isPastLastScreen) {
+    return getScrollYForScreenTime(section, previousScreenTime)
+  }
+
+  return getScrollYForScreenTime(
+    section,
+    getAdjacentScreenTime(currentTime, direction),
+  )
 }
 
 function getScreenIndexAtTime(time: number) {
@@ -1111,6 +1152,7 @@ async function primeVideoPaintFrame(
 }
 
 export function HomeFpvExperience() {
+  const { t } = useTranslation("home")
   const { isAnimationEnabled } = useAnimationPreference()
   const isDarkTheme = useIsDarkTheme()
   const reducedMotion = useReducedMotion()
@@ -1276,26 +1318,16 @@ export function HomeFpvExperience() {
     }
   }, [])
 
-  const animateScrollToScreenTime = useCallback(
-    (targetTime: number) => {
-      const section = sectionRef.current
-
-      if (!section) {
-        return
-      }
-
+  const animateScrollToY = useCallback(
+    (targetY: number) => {
       cancelKeyboardScreenScroll()
 
-      const maxScrollY = Math.max(
-        document.documentElement.scrollHeight - window.innerHeight,
-        0,
-      )
       const startY = window.scrollY
-      const targetY = clamp(getScrollYForScreenTime(section, targetTime), 0, maxScrollY)
-      const deltaY = targetY - startY
+      const nextY = clamp(targetY, 0, getMaxScrollY())
+      const deltaY = nextY - startY
 
       if (!isSceneMotionAllowed || Math.abs(deltaY) < 1) {
-        window.scrollTo(0, targetY)
+        window.scrollTo(0, nextY)
         return
       }
 
@@ -1318,6 +1350,19 @@ export function HomeFpvExperience() {
       keyboardScrollFrameRef.current = window.requestAnimationFrame(tick)
     },
     [cancelKeyboardScreenScroll, isSceneMotionAllowed],
+  )
+
+  const animateScrollToScreenTime = useCallback(
+    (targetTime: number) => {
+      const section = sectionRef.current
+
+      if (!section) {
+        return
+      }
+
+      animateScrollToY(getScrollYForScreenTime(section, targetTime))
+    },
+    [animateScrollToY],
   )
 
   const requestCss3DWake = useCallback(() => {
@@ -1485,20 +1530,15 @@ export function HomeFpvExperience() {
         event.key === "PageDown" ? 1
         : event.key === "PageUp" ? -1
         : null
+      const section = sectionRef.current
 
-      if (direction === null || SCREEN_TIMES.length === 0 || !sectionRef.current) {
+      if (direction === null || SCREEN_TIMES.length === 0 || !section) {
         return
       }
 
-      const { sectionTop, scrollDistance } = getSectionScrollMetrics(sectionRef.current)
-      const currentTime =
-        clamp01((window.scrollY - sectionTop) / scrollDistance) *
-        SCROLL_TIMELINE_DURATION
-      const targetTime = getAdjacentScreenTime(currentTime, direction)
-
       event.preventDefault()
       event.stopPropagation()
-      animateScrollToScreenTime(targetTime)
+      animateScrollToY(getKeyboardPagingTargetY(section, window.scrollY, direction))
     }
 
     window.addEventListener("keydown", handlePageKeyDown, { capture: true })
@@ -1506,7 +1546,7 @@ export function HomeFpvExperience() {
     return () => {
       window.removeEventListener("keydown", handlePageKeyDown, { capture: true })
     }
-  }, [animateScrollToScreenTime])
+  }, [animateScrollToY])
 
   useEffect(() => {
     window.addEventListener("wheel", cancelKeyboardScreenScroll, { passive: true })
@@ -1860,7 +1900,7 @@ export function HomeFpvExperience() {
         })}
         <div className="fpv-home-shade" aria-hidden="true" />
 
-        <nav className="fpv-screen-nav" aria-label="Homepage sections">
+        <nav className="fpv-screen-nav" aria-label={t("fpv.screenNavLabel")}>
           {SCREEN_TIMES.map((screenTime, screenIndex) => {
             const isActive = screenIndex === activeScreenIndex
 
@@ -1873,7 +1913,7 @@ export function HomeFpvExperience() {
                   isActive ? "fpv-screen-nav-button-active" : "",
                 ].filter(Boolean).join(" ")}
                 onClick={() => animateScrollToScreenTime(screenTime)}
-                aria-label={`Go to homepage section ${screenIndex + 1}`}
+                aria-label={t("fpv.screenNavItem", { n: screenIndex + 1 })}
                 aria-current={isActive ? "step" : undefined}
               >
                 {screenIndex + 1}

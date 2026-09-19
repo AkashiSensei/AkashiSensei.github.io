@@ -12,8 +12,12 @@ import { AppLink } from "@/components/AppLink"
 import { ContactDialog } from "@/components/ContactDialog"
 import { GitHubRepoStats } from "@/components/GitHubRepoStats"
 import { ProjectImageGallery } from "@/components/ProjectImageGallery"
-import { renderPlainRichText } from "@/components/PlainRichText"
+import { PlainPointList } from "@/components/PlainPointList"
 import { PlainWorkbenchSoftwareBar } from "@/components/PlainWorkbenchSoftwareBar"
+import {
+  getProjectPointSections,
+  sliceProjectPointSections,
+} from "@/lib/project-points"
 import {
   defaultTagClassName,
   getCourseProjectSemesterTagClassName,
@@ -221,9 +225,12 @@ function ResumePlainProjectList({
     projects.forEach((project) => {
       const title = t(`items.${project.id}.title`)
       const summary = t(`items.${project.id}.summary`)
-      const points = asStringArray(
-        t(`items.${project.id}.points`, { returnObjects: true }),
-      ).slice(0, 2)
+      const { points } = sliceProjectPointSections(
+        getProjectPointSections(
+          t(`items.${project.id}.points`, { returnObjects: true }),
+        ),
+        2,
+      )
       const repoLinks = getResumeProjectRepoLinks(project)
       const tagLabels = [
         t(`lifecycleStatus.${project.lifecycleStatus}`),
@@ -265,9 +272,12 @@ function ResumePlainProjectList({
         <div key={columnIndex} className="plain-resume-project-column">
           {columnProjects.map((project, projectIndex) => {
             const title = t(`items.${project.id}.title`)
-            const points = asStringArray(
-              t(`items.${project.id}.points`, { returnObjects: true }),
-            ).slice(0, 2)
+            const { points, highlightedIndexes } = sliceProjectPointSections(
+              getProjectPointSections(
+                t(`items.${project.id}.points`, { returnObjects: true }),
+              ),
+              2,
+            )
             const repoLinks = getResumeProjectRepoLinks(project)
             const originalProjectIndex = projects.findIndex(
               (candidate) => candidate.id === project.id,
@@ -362,13 +372,10 @@ function ResumePlainProjectList({
 
               <p>{t(`items.${project.id}.summary`)}</p>
 
-              {points.length ? (
-                <ul>
-                  {points.map((point) => (
-                    <li key={point}>{renderPlainRichText(point)}</li>
-                  ))}
-                </ul>
-              ) : null}
+              <PlainPointList
+                points={points}
+                highlightedIndexes={highlightedIndexes}
+              />
 
               <ul className="plain-index-tags" aria-label={title}>
                 <li

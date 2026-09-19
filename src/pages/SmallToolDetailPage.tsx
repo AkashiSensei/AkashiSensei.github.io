@@ -251,7 +251,7 @@ export function SmallToolDetailPage({ tools }: SmallToolDetailPageProps) {
         {tool.screenshots?.length ? (
           <section className={detailSectionClassName}>
             <div className="overflow-hidden rounded-2xl border border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.32)] shadow-sm backdrop-blur-md dark:border-white/10 dark:bg-white/[0.04] md:hidden">
-              <SmallToolImageGallery images={tool.screenshots} />
+              <SmallToolImageGallery cardScrollable images={tool.screenshots} />
             </div>
             <SmallToolImageWall images={tool.screenshots} />
           </section>

@@ -20,10 +20,11 @@ export const workbenchGroups: WorkbenchGroup[] = [
     id: "ai-assist",
     featured: true,
     featuredOrder: 1,
-    highlightPointIndexes: [0, 1, 2, 3, 4],
+    highlightPointIndexes: [0, 1, 2],
     software: [
-      { id: "cursor", name: "Cursor", icon: `${iconBase}/cursor-512.webp` },
       { id: "codex", name: "Codex", icon: `${iconBase}/codex-512.webp` },
+      { id: "cursor", name: "Cursor", icon: `${iconBase}/cursor-512.webp` },
+      { id: "grok-bot", name: "Grok Bot", icon: `${iconBase}/grok-bot-512.webp` },
       { id: "chatgpt", name: "ChatGPT", icon: `${iconBase}/chatgpt-512.webp` },
       { id: "qclaw", name: "Qclaw", icon: `${iconBase}/qclaw-512.webp` },
       { id: "trae-cn", name: "Trae CN", icon: `${iconBase}/trae-cn-512.webp` },

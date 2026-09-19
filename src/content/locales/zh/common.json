@@ -12,7 +12,9 @@
     "animationFullSr": "背景动画已开启",
     "animationStaticSr": "背景已切换为静态模式",
     "viewContact": "查看个人信息",
-    "viewOnPhone": "在手机上查看当前页面"
+    "viewOnPhone": "在手机上查看当前页面",
+    "goBack": "返回上一页",
+    "close": "关闭"
   },
   "themeMode": {
     "menuLabel": "切换深浅色模式",
@@ -117,6 +119,7 @@
     "copyEmail": "复制邮箱地址",
     "copyEmailShort": "复制邮箱",
     "resumeLink": "在线简历",
+    "githubLink": "GitHub",
     "zhihuLink": "知乎",
     "casualTitle": "Friend Links Growing",
     "casualDescription": "如果你也在折腾有趣的东西，或者觉得我们可能聊得来，或者单纯就是想认识新朋友，都欢迎来打个招呼。",

@@ -11,6 +11,8 @@
     "friendAvatarAlt": "{{name}}'s avatar"
   },
   "fpv": {
+    "screenNavLabel": "Homepage sections",
+    "screenNavItem": "Go to homepage section {{n}}",
     "page01": {
       "tags": {
         "student": "Student",
@@ -162,13 +164,19 @@
       },
       "endline": "",
       "whisper": "I miss Overwatch.",
-      "receipt": {
+        "receipt": {
         "title": "Thanks for the conversation!",
         "description": "Feel free to reach out for Coffee Chat, or simply an online conversation.",
         "highlights": {
           "coffee": "Coffee Chat",
           "online": "online conversation"
         },
+        "brand": "Akashi Exchange",
+        "number": "Exchange No. 001",
+        "issuedAt": "When schedules align",
+        "cardAria": "Akashi Exchange receipt",
+        "itemsAria": "Receipt items",
+        "totalAria": "Receipt total",
         "items": {
           "meal": {
             "name": "Coffee, snacks, or even a proper meal if the timing feels right",
@@ -192,10 +200,17 @@
           }
         },
         "total": "Time for a Meal",
+        "totalLabel": "Total",
         "summary": {
           "mode": "Offline / Online",
           "respect": "Mutual respect"
         },
+        "summaryLabels": {
+          "mode": "Meetup mode",
+          "respect": "Service fee"
+        },
+        "footerLeft": ["Akashi Exchange", "Online or offline"],
+        "footerRight": ["Say hello", "akashisensei.github.io"],
         "promoTitle": "Bring your story, your questions, or anything you think is worth sharing",
         "promoCaption": "Meet a fuller version of me by QR code"
       }

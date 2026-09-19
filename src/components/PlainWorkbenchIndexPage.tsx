@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next"
 
 import { BackButton } from "@/components/BackButton"
 import { Layout } from "@/components/Layout"
-import { renderPlainRichText } from "@/components/PlainRichText"
+import { PlainPointList } from "@/components/PlainPointList"
 import { PlainWorkbenchSoftwareBar } from "@/components/PlainWorkbenchSoftwareBar"
 import { type WorkbenchGroup } from "@/data/workbench"
 
@@ -61,7 +61,7 @@ export function PlainWorkbenchIndexPage({
       const summary = t(`items.${group.id}.summary`)
       const points = getPoints(
         t(`items.${group.id}.points`, { returnObjects: true }),
-      ).slice(0, 4)
+      )
       const estimatedHeight = estimateWorkbenchHeight(
         group,
         title,
@@ -104,7 +104,7 @@ export function PlainWorkbenchIndexPage({
                 const title = t(`items.${group.id}.title`)
                 const points = getPoints(
                   t(`items.${group.id}.points`, { returnObjects: true }),
-                ).slice(0, 4)
+                )
 
                 return (
                   <article key={group.id} className="plain-project-item">
@@ -122,13 +122,10 @@ export function PlainWorkbenchIndexPage({
 
                       <p>{t(`items.${group.id}.summary`)}</p>
 
-                      {points.length ? (
-                        <ul>
-                          {points.map((point) => (
-                            <li key={point}>{renderPlainRichText(point)}</li>
-                          ))}
-                        </ul>
-                      ) : null}
+                      <PlainPointList
+                        points={points}
+                        highlightedIndexes={group.highlightPointIndexes}
+                      />
                     </div>
                   </article>
                 )

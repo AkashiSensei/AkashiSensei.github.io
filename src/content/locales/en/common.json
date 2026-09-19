@@ -12,7 +12,9 @@
     "animationFullSr": "Background animation is enabled",
     "animationStaticSr": "Background is in static mode",
     "viewContact": "View personal information",
-    "viewOnPhone": "View current page on phone"
+    "viewOnPhone": "View current page on phone",
+    "goBack": "Go back",
+    "close": "Close"
   },
   "themeMode": {
     "menuLabel": "Switch color theme",
@@ -117,6 +119,7 @@
     "copyEmail": "Copy email address",
     "copyEmailShort": "Copy email",
     "resumeLink": "Online resume",
+    "githubLink": "GitHub",
     "zhihuLink": "Zhihu",
     "casualTitle": "Friend Links Growing",
     "casualDescription": "If you are building something fun, think we might get along, or simply want to make a new friend, feel free to say hi.",

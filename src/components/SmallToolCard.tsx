@@ -13,6 +13,7 @@ import { cn } from "@/lib/utils"
 type SmallToolCardProps = {
   tool: SmallTool
   className?: string
+  imageAutoCycleStaggerIndex?: number
   variant?: "compact" | "full"
 }
 
@@ -26,6 +27,7 @@ const roleClassName = {
 export function SmallToolCard({
   tool,
   className,
+  imageAutoCycleStaggerIndex = 0,
   variant = "full",
 }: SmallToolCardProps) {
   const { t } = useTranslation(["tools", "common"])
@@ -41,7 +43,12 @@ export function SmallToolCard({
       )}
     >
       {tool.screenshots?.length ? (
-        <SmallToolImageGallery images={tool.screenshots} />
+        <SmallToolImageGallery
+          cardAutoCycle
+          cardAutoCycleStaggerIndex={imageAutoCycleStaggerIndex}
+          cardScrollable={false}
+          images={tool.screenshots}
+        />
       ) : tool.screenshot ? (
         <LazyImage
           src={tool.screenshot.src}

@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next"
 const page01TagKeys = ["student", "infj", "anime"] as const
 
 function Page01ActionRow() {
-  const { t } = useTranslation("home")
+  const { t } = useTranslation(["home", "nav"])
 
   return (
     <div className="fpv-action-row fpv-page-01-action-row">
@@ -17,14 +17,14 @@ function Page01ActionRow() {
         </button>
       </ContactDialog>
       <a href="/resume" className="fpv-action-pill fpv-action-pill-outline">
-        简历
+        {t("nav:resume")}
       </a>
     </div>
   )
 }
 
 function Page01({ isMobileViewport }: VirtualScreenProps) {
-  const { t } = useTranslation("home")
+  const { t } = useTranslation(["home", "nav"])
 
   return (
     <div className="fpv-virtual-page">
@@ -59,7 +59,7 @@ function Page01({ isMobileViewport }: VirtualScreenProps) {
               {t("fpv.page01.cta")}
             </button>
             <a href="/resume" className="fpv-action-pill fpv-action-pill-outline">
-              简历
+              {t("nav:resume")}
             </a>
           </div>
         }

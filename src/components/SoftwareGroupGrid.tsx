@@ -74,7 +74,7 @@ export function SoftwareGroupGrid({ groups }: SoftwareGroupGridProps) {
             <SoftwareGroupCard
               key={group.id}
               group={group}
-              className="h-auto max-h-[36rem]"
+              className="h-auto max-h-none"
             />
           ))}
         </div>

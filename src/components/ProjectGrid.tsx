@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next"
 
 import { ProjectCard } from "@/components/ProjectCard"
 import { type Project } from "@/data/projects"
-import { getProjectPointSections } from "@/lib/project-points"
+import { getListingPointSections } from "@/lib/project-points"
 
 type ProjectGridProps = {
   projects: Project[]
@@ -46,7 +46,7 @@ export function ProjectGrid({
       estimatedHeight += Math.ceil((summary?.length || 0) / 24) * 24
 
       const points = t(`items.${project.id}.points`, { returnObjects: true })
-      estimatedHeight += getProjectPointSections(points).points.reduce(
+      estimatedHeight += getListingPointSections(points).points.reduce(
         (total, point) => total + Math.ceil(point.length / 30) * 22 + 10,
         0,
       )
@@ -75,10 +75,11 @@ export function ProjectGrid({
     <div className="flex items-start gap-3">
       {columnsData.map((colProjects, colIdx) => (
         <div key={colIdx} className="flex min-w-0 flex-1 flex-col gap-3">
-          {colProjects.map((project) => (
+          {colProjects.map((project, projectIndex) => (
             <ProjectCard
               key={project.id}
               project={project}
+              imageAutoCycleStaggerIndex={colIdx * 3 + projectIndex}
               variant="full"
               translationNamespace={translationNamespace}
               className="h-auto"
