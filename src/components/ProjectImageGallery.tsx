@@ -99,7 +99,7 @@ export function ProjectImageGallery({
   cardAutoCycleStaggerIndex = 0,
   cardInteractive = true,
   cardImageFit = "contain",
-  cardScrollable = true,
+  cardScrollable = false,
   images,
   className,
   translationNamespace = "projects",

@@ -289,7 +289,7 @@ export function ContactDialog({ children }: { children: ReactNode }) {
                   className={socialLinkClassName}
                 >
                   <GitHubMark className="h-3.5 w-3.5 md:h-4 md:w-4" />
-                  GitHub
+                  {t("contactDialog.githubLink")}
                 </a>
                 <a
                   href="https://www.zhihu.com/people/heal-me-please"

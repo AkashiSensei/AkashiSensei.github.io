@@ -6,11 +6,13 @@
   "contact": "联系方式",
   "github": "GitHub",
   "plain": {
-    "kicker": "plain text / low distraction",
+    "kicker": "朴素文本 / 低干扰",
     "actionsLabel": "主页快捷操作",
     "friendAvatarAlt": "{{name}} 的头像"
   },
   "fpv": {
+    "screenNavLabel": "首页章节",
+    "screenNavItem": "前往第 {{n}} 屏",
     "page01": {
       "tags": {
         "student": "学生",
@@ -162,13 +164,19 @@
       },
       "endline": "",
       "whisper": "想 O（玩守望先锋）了",
-      "receipt": {
+        "receipt": {
         "title": "感谢交流",
         "description": "欢迎找我约 Coffee Chat，或者只是线上交流都可以",
         "highlights": {
           "coffee": "Coffee Chat",
           "online": "线上交流"
         },
+        "brand": "Akashi 交流",
+        "number": "交流编号 001",
+        "issuedAt": "时间合适的时候",
+        "cardAria": "Akashi 交流回执",
+        "itemsAria": "回执项目",
+        "totalAria": "回执合计",
         "items": {
           "meal": {
             "name": "Coffee、小吃，甚至时间合适的话也可以是一顿正餐",
@@ -192,10 +200,17 @@
           }
         },
         "total": "一顿饭的时间",
+        "totalLabel": "合计",
         "summary": {
           "mode": "线下 / 线上",
           "respect": "彼此尊重"
         },
+        "summaryLabels": {
+          "mode": "见面方式",
+          "respect": "服务费"
+        },
+        "footerLeft": ["Akashi 交流", "线上或线下"],
+        "footerRight": ["打个招呼", "akashisensei.github.io"],
         "promoTitle": "带上你的故事、问题，或者任何你觉得值得分享的东西",
         "promoCaption": "通过 QR code 了解更完整的我"
       }

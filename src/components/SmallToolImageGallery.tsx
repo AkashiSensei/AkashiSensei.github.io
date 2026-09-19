@@ -68,7 +68,7 @@ function positionThumbnailIndicator(
 export function SmallToolImageGallery({
   cardAutoCycle = false,
   cardAutoCycleStaggerIndex = 0,
-  cardScrollable = true,
+  cardScrollable = false,
   images,
   className,
 }: SmallToolImageGalleryProps) {

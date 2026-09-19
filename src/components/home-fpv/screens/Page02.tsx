@@ -95,7 +95,7 @@ function Page02(_props: VirtualScreenProps) {
                         target="_blank"
                         rel="noreferrer"
                       >
-                        GitHub
+                        {t("github")}
                       </a>
                     </div>
                   ) : null}

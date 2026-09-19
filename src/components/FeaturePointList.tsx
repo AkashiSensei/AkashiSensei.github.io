@@ -1,25 +1,10 @@
-import { type ReactNode } from "react"
-
+import { renderEmphasizedText, personalWorkHighlightClassName } from "@/lib/emphasized-text"
 import { cn } from "@/lib/utils"
 
 type FeaturePointListProps = {
   points: string[]
   highlightedIndexes?: readonly number[]
   className?: string
-}
-
-function renderEmphasis(text: string): ReactNode[] {
-  return text.split(/(\*\*[^*]+\*\*)/g).map((part, index) => {
-    if (part.startsWith("**") && part.endsWith("**")) {
-      return (
-        <strong key={index} className="font-semibold text-foreground">
-          {part.slice(2, -2)}
-        </strong>
-      )
-    }
-
-    return part
-  })
 }
 
 export function FeaturePointList({
@@ -44,7 +29,7 @@ export function FeaturePointList({
             key={`${index}-${point}`}
             className={cn(
               "flex gap-2",
-              highlighted && "text-amber-700 dark:text-violet-300",
+              highlighted && personalWorkHighlightClassName,
             )}
           >
             <span
@@ -55,7 +40,7 @@ export function FeaturePointList({
                   : "bg-foreground/40 dark:bg-foreground/50",
               )}
             />
-            <span>{renderEmphasis(point)}</span>
+            <span>{renderEmphasizedText(point, "font-semibold text-foreground")}</span>
           </li>
         )
       })}

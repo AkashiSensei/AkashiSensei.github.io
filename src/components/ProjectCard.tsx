@@ -8,7 +8,7 @@ import { GlassPanel } from "@/components/GlassPanel"
 import { LazyImage } from "@/components/LazyImage"
 import { ProjectImageGallery } from "@/components/ProjectImageGallery"
 import { type Project } from "@/data/projects"
-import { getProjectPointSections } from "@/lib/project-points"
+import { getListingPointSections } from "@/lib/project-points"
 import {
   defaultTagClassName,
   getCourseProjectSemesterTagClassName,
@@ -19,6 +19,7 @@ import { cn } from "@/lib/utils"
 type ProjectCardProps = {
   project: Project
   className?: string
+  imageAutoCycleStaggerIndex?: number
   variant?: "compact" | "full"
   translationNamespace?: "projects" | "courseProjects"
 }
@@ -35,12 +36,13 @@ const lifecycleStatusClassName = {
 export function ProjectCard({
   project,
   className,
+  imageAutoCycleStaggerIndex = 0,
   variant = "full",
   translationNamespace = "projects",
 }: ProjectCardProps) {
   const { t } = useTranslation([translationNamespace, "common"])
   const pointsValue = t(`items.${project.id}.points`, { returnObjects: true })
-  const { points, highlightedIndexes } = getProjectPointSections(pointsValue)
+  const { points, highlightedIndexes } = getListingPointSections(pointsValue)
   const detailPath =
     translationNamespace === "courseProjects"
       ? `/course-projects/${project.id}`
@@ -68,6 +70,9 @@ export function ProjectCard({
       {project.images?.length ? (
         <ProjectImageGallery
           cardAspectRatioMode={variant === "full" ? "natural" : "bounded"}
+          cardAutoCycle
+          cardAutoCycleStaggerIndex={imageAutoCycleStaggerIndex}
+          cardScrollable={false}
           images={project.images}
           translationNamespace={translationNamespace}
         />

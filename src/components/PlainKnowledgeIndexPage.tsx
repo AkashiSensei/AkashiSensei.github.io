@@ -9,6 +9,7 @@ import { Layout } from "@/components/Layout"
 import { ProjectImageGallery } from "@/components/ProjectImageGallery"
 import { renderPlainRichText } from "@/components/PlainRichText"
 import { type KnowledgeEntry } from "@/data/knowledge"
+import { getListingPointSections } from "@/lib/project-points"
 import { getGitHubRepoUpdatedDate } from "@/lib/github-repo-stats"
 import { defaultTagClassName, getSemanticTagClassName } from "@/lib/tag-styles"
 import { cn } from "@/lib/utils"
@@ -26,10 +27,6 @@ const kindClassName: Record<KnowledgeEntry["kind"], string> = {
     "border-amber-300/55 bg-amber-100/75 text-amber-850 dark:border-amber-300/25 dark:bg-amber-300/12 dark:text-amber-200",
   insights:
     "border-violet-300/50 bg-violet-100/70 text-violet-800 dark:border-violet-300/25 dark:bg-violet-300/12 dark:text-violet-200",
-}
-
-function getPoints(value: unknown) {
-  return Array.isArray(value) ? value.filter((point): point is string => typeof point === "string") : []
 }
 
 function estimateKnowledgeHeight(
@@ -76,7 +73,9 @@ export function PlainKnowledgeIndexPage({ entries }: PlainKnowledgeIndexPageProp
     entries.forEach((entry) => {
       const title = t(`items.${entry.id}.title`)
       const summary = t(`items.${entry.id}.summary`)
-      const points = getPoints(t(`items.${entry.id}.points`, { returnObjects: true })).slice(0, 3)
+      const { points } = getListingPointSections(
+        t(`items.${entry.id}.points`, { returnObjects: true }),
+      )
       const estimatedHeight = estimateKnowledgeHeight(entry, title, summary, points)
       let minColIdx = 0
       let minHeight = colHeights[0]
@@ -116,7 +115,9 @@ export function PlainKnowledgeIndexPage({ entries }: PlainKnowledgeIndexPageProp
                       year: "numeric",
                     }).format(updatedDate)
                   : entry.updatedAt
-                const points = getPoints(t(`items.${entry.id}.points`, { returnObjects: true })).slice(0, 3)
+                const { points } = getListingPointSections(
+                  t(`items.${entry.id}.points`, { returnObjects: true }),
+                )
 
                 return (
                   <article key={entry.id} className="plain-project-item">

@@ -57,10 +57,11 @@ export function SmallToolGrid({ tools }: SmallToolGridProps) {
     <div className="flex items-start gap-3">
       {columnsData.map((colTools, colIdx) => (
         <div key={colIdx} className="flex min-w-0 flex-1 flex-col gap-3">
-          {colTools.map((tool) => (
+          {colTools.map((tool, toolIndex) => (
             <SmallToolCard
               key={tool.id}
               tool={tool}
+              imageAutoCycleStaggerIndex={colIdx * 3 + toolIndex}
               className={
                 (tool.screenshots?.length ?? (tool.screenshot ? 1 : 0)) > 0
                   ? "h-auto max-h-[52rem]"

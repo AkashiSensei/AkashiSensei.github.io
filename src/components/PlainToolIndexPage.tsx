@@ -9,6 +9,7 @@ import { Layout } from "@/components/Layout"
 import { SmallToolImageGallery } from "@/components/SmallToolImageGallery"
 import { renderPlainRichText } from "@/components/PlainRichText"
 import { type SmallTool } from "@/data/tools"
+import { getListingPointSections } from "@/lib/project-points"
 import { getSemanticTagClassName } from "@/lib/tag-styles"
 import { cn } from "@/lib/utils"
 
@@ -28,10 +29,6 @@ const statusClassName =
 
 const archivedClassName =
   "border-zinc-300/70 bg-zinc-100/80 text-zinc-700 dark:border-zinc-300/25 dark:bg-zinc-300/10 dark:text-zinc-200"
-
-function getPoints(value: unknown) {
-  return Array.isArray(value) ? value.filter((point): point is string => typeof point === "string") : []
-}
 
 function estimateToolHeight(
   tool: SmallTool,
@@ -78,7 +75,9 @@ export function PlainToolIndexPage({ tools }: PlainToolIndexPageProps) {
     tools.forEach((tool) => {
       const title = t(`items.${tool.id}.title`)
       const summary = t(`items.${tool.id}.summary`)
-      const points = getPoints(t(`items.${tool.id}.points`, { returnObjects: true })).slice(0, 3)
+      const { points } = getListingPointSections(
+        t(`items.${tool.id}.points`, { returnObjects: true }),
+      )
       const estimatedHeight = estimateToolHeight(tool, title, summary, points)
       let minColIdx = 0
       let minHeight = colHeights[0]
@@ -111,7 +110,9 @@ export function PlainToolIndexPage({ tools }: PlainToolIndexPageProps) {
             <div key={columnIndex} className="plain-project-column">
               {columnTools.map((tool, toolIndex) => {
                 const title = t(`items.${tool.id}.title`)
-                const points = getPoints(t(`items.${tool.id}.points`, { returnObjects: true })).slice(0, 3)
+                const { points } = getListingPointSections(
+                  t(`items.${tool.id}.points`, { returnObjects: true }),
+                )
 
                 return (
                   <article key={tool.id} className="plain-project-item">

@@ -46,3 +46,70 @@ export function getProjectPointSections(value: unknown): ProjectPointSections {
     ),
   }
 }
+
+export function sliceProjectPointSections(
+  sections: ProjectPointSections,
+  limit: number,
+): Pick<ProjectPointSections, "points" | "highlightedIndexes"> {
+  const points = sections.points.slice(0, limit)
+
+  return {
+    points,
+    highlightedIndexes: sections.highlightedIndexes.filter(
+      (index) => index < points.length,
+    ),
+  }
+}
+
+export const listingUnsectionedPointLimit = 3
+export const listingSectionPointLimit = 2
+
+export function sliceListingPointSections(
+  sections: ProjectPointSections,
+): ProjectPointSections {
+  const hasSectionSplit =
+    sections.projectIntroPoints.length > 0 &&
+    sections.personalWorkPoints.length > 0
+
+  if (hasSectionSplit) {
+    const projectIntroPoints = sections.projectIntroPoints.slice(
+      0,
+      listingSectionPointLimit,
+    )
+    const personalWorkPoints = sections.personalWorkPoints.slice(
+      0,
+      listingSectionPointLimit,
+    )
+    const points = [...projectIntroPoints, ...personalWorkPoints]
+
+    return {
+      projectIntroPoints,
+      personalWorkPoints,
+      points,
+      highlightedIndexes: personalWorkPoints.map(
+        (_, index) => projectIntroPoints.length + index,
+      ),
+    }
+  }
+
+  const points = sections.points.slice(0, listingUnsectionedPointLimit)
+
+  return {
+    projectIntroPoints: sections.projectIntroPoints.slice(
+      0,
+      listingUnsectionedPointLimit,
+    ),
+    personalWorkPoints: sections.personalWorkPoints.slice(
+      0,
+      listingUnsectionedPointLimit,
+    ),
+    points,
+    highlightedIndexes: sections.highlightedIndexes.filter(
+      (index) => index < points.length,
+    ),
+  }
+}
+
+export function getListingPointSections(value: unknown) {
+  return sliceListingPointSections(getProjectPointSections(value))
+}

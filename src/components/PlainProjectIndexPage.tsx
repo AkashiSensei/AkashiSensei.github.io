@@ -7,9 +7,9 @@ import { BackButton } from "@/components/BackButton"
 import { GitHubRepoStats } from "@/components/GitHubRepoStats"
 import { Layout } from "@/components/Layout"
 import { ProjectImageGallery } from "@/components/ProjectImageGallery"
-import { renderPlainRichText } from "@/components/PlainRichText"
+import { PlainPointList } from "@/components/PlainPointList"
 import { type Project } from "@/data/projects"
-import { getProjectPointSections } from "@/lib/project-points"
+import { getListingPointSections } from "@/lib/project-points"
 import {
   defaultTagClassName,
   getCourseProjectSemesterTagClassName,
@@ -184,9 +184,9 @@ export function PlainProjectIndexPage({
     projects.forEach((project) => {
       const title = t(`items.${project.id}.title`)
       const summary = t(`items.${project.id}.summary`)
-      const points = getProjectPointSections(
+      const { points } = getListingPointSections(
         t(`items.${project.id}.points`, { returnObjects: true }),
-      ).points.slice(0, 3)
+      )
       const repoLinks = getPlainProjectRepoLinks(project)
       const hasCourseProjectTimeTags =
         translationNamespace === "courseProjects"
@@ -242,9 +242,9 @@ export function PlainProjectIndexPage({
             <div key={columnIndex} className="plain-project-column">
               {columnProjects.map((project, projectIndex) => {
                 const title = t(`items.${project.id}.title`)
-                const points = getProjectPointSections(
+                const { points, highlightedIndexes } = getListingPointSections(
                   t(`items.${project.id}.points`, { returnObjects: true }),
-                ).points.slice(0, 3)
+                )
                 const hasCourseProjectTimeTags =
                   translationNamespace === "courseProjects"
                 const repoLinks = getPlainProjectRepoLinks(project)
@@ -340,13 +340,10 @@ export function PlainProjectIndexPage({
 
                       <p>{t(`items.${project.id}.summary`)}</p>
 
-                      {points.length ? (
-                        <ul>
-                          {points.map((point) => (
-                            <li key={point}>{renderPlainRichText(point)}</li>
-                          ))}
-                        </ul>
-                      ) : null}
+                      <PlainPointList
+                        points={points}
+                        highlightedIndexes={highlightedIndexes}
+                      />
 
                       <ul className="plain-index-tags" aria-label={title}>
                         <li

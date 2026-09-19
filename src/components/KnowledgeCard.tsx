@@ -97,10 +97,10 @@ export function KnowledgeCard({
                 : "16 / 12.5"
               : undefined
           }
-          cardAutoCycle={imageAutoCycleStaggerIndex !== undefined}
+          cardAutoCycle
           cardAutoCycleStaggerIndex={imageAutoCycleStaggerIndex}
           cardImageFit={variant === "compact" ? "cover" : "contain"}
-          cardScrollable={variant === "full"}
+          cardScrollable={false}
           images={entry.images}
           translationNamespace="knowledge"
         />

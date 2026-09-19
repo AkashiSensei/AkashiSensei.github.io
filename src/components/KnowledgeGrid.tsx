@@ -61,8 +61,13 @@ export function KnowledgeGrid({ entries }: KnowledgeGridProps) {
     <div className="flex items-start gap-3">
       {columnsData.map((colEntries, colIdx) => (
         <div key={colIdx} className="flex min-w-0 flex-1 flex-col gap-3">
-          {colEntries.map((entry) => (
-            <KnowledgeCard key={entry.id} entry={entry} className="h-auto" />
+          {colEntries.map((entry, entryIndex) => (
+            <KnowledgeCard
+              key={entry.id}
+              entry={entry}
+              imageAutoCycleStaggerIndex={colIdx * 3 + entryIndex}
+              className="h-auto"
+            />
           ))}
         </div>
       ))}

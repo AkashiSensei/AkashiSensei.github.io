@@ -1,4 +1,5 @@
 import { ArrowLeft } from "lucide-react"
+import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
 
 import { cn } from "@/lib/utils"
@@ -20,6 +21,7 @@ function hasBrowserHistoryEntry() {
 
 export function BackButton({ className, fallback = "/resume" }: BackButtonProps) {
   const navigate = useNavigate()
+  const { t } = useTranslation("common")
 
   return (
     <button
@@ -28,7 +30,7 @@ export function BackButton({ className, fallback = "/resume" }: BackButtonProps)
         "group mb-4 inline-flex w-fit items-center justify-center transition-all",
         className,
       )}
-      aria-label="Go back"
+      aria-label={t("a11y.goBack")}
       onClick={() => {
         if (hasBrowserHistoryEntry()) {
           navigate(-1)
