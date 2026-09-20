@@ -13,6 +13,7 @@
 
 ## History
 
+- 2026-09-20 | [Contact WhatsApp and social hover ids](archive/20260920_Contact-WhatsApp-and-social-hover-ids.md) | Added a WhatsApp social pill to the contact card, made the mobile social rail horizontally scrollable, and showed platform ids in friend-pill-style hover bubbles.
 - 2026-09-20 | [Workbench knowledge Evernote removal](archive/20260920_Workbench-knowledge-Evernote-removal.md) | Dropped Evernote from knowledge-tools data, icons, and copy; kept Typora + FlowUS as the group's last bullet.
 - 2026-09-19 | [Display and copy polish](archive/20260919_Display-and-copy-polish.md) | Kept listing personal-work emphasis and type consistent across display modes, stopped listing-card swipe from capturing page scroll, and updated homepage FPV paging plus workbench AI tools.
 - 2026-09-19 | [Personal homepage gallery and copy](archive/20260919_Personal-homepage-gallery-and-copy.md) | Added a 14-image WebP gallery and four resume-facing bullets for the personal-homepage project entry, keeping presentation separate from content and leaving the entry out of resume featured.

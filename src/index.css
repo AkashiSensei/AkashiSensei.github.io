@@ -4345,6 +4345,72 @@
     .contact-dialog-content > * {
       animation: none !important;
     }
+
+    .contact-social-pill::before,
+    .contact-social-pill::after {
+      display: none;
+    }
+  }
+
+  .contact-social-pill {
+    --contact-social-speech-background: rgb(22 25 31 / 0.72);
+    position: relative;
+  }
+
+  .contact-social-pill::before {
+    content: attr(data-hover-label);
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% + 0.72rem);
+    z-index: 2;
+    border: 0;
+    border-radius: 0.62rem;
+    background: var(--contact-social-speech-background);
+    padding: 0.44rem 0.78rem;
+    color: rgb(255 255 255 / 0.94);
+    font-size: 0.78rem;
+    font-weight: 500;
+    line-height: 1;
+    text-shadow: none;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, 0.32rem);
+    transition:
+      opacity 160ms ease,
+      transform 160ms ease;
+    box-shadow:
+      inset 0 0 0 1px rgb(255 255 255 / 0.12),
+      0 10px 24px rgb(0 0 0 / 0.18);
+  }
+
+  .contact-social-pill::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% + 0.32rem);
+    z-index: 2;
+    width: 0.74rem;
+    height: 0.52rem;
+    border: 0;
+    background: var(--contact-social-speech-background);
+    clip-path: polygon(50% 100%, 0 0, 100% 0);
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, 0.32rem);
+    transition:
+      opacity 160ms ease,
+      transform 160ms ease;
+  }
+
+  .contact-social-pill:is(:hover, :focus-visible) {
+    transform: translateY(-0.08rem);
+  }
+
+  .contact-social-pill:is(:hover, :focus-visible)::before,
+  .contact-social-pill:is(:hover, :focus-visible)::after {
+    opacity: 1;
+    transform: translate(-50%, 0);
   }
 
   .workbench-preview-glass-exit {

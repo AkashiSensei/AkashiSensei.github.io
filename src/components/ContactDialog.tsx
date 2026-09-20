@@ -7,7 +7,12 @@ import {
   DialogContent,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { InstagramMark, XMark, ZhihuMark } from "@/components/BrandMarks"
+import {
+  InstagramMark,
+  WhatsAppMark,
+  XMark,
+  ZhihuMark,
+} from "@/components/BrandMarks"
 import { GitHubMark } from "@/components/GitHubMark"
 import { ProfileCard } from "@/components/ProfileCard"
 import { SpotlightCard } from "@/components/SpotlightCard"
@@ -66,7 +71,19 @@ function ensureProfileAssetsReady() {
 }
 
 const socialLinkClassName =
-  "inline-flex h-8 items-center gap-1 rounded-full border border-foreground bg-foreground px-2 text-xs font-medium text-background shadow-sm transition-colors hover:bg-foreground/85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/45 md:h-9 md:gap-1.5 md:px-3 md:text-sm"
+  "contact-social-pill inline-flex h-8 shrink-0 items-center gap-1 rounded-full border border-foreground bg-foreground px-2 text-xs font-medium text-background shadow-sm transition-[background-color,transform] hover:bg-foreground/85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/45 md:h-9 md:snap-align-none md:gap-1.5 md:px-3 md:text-sm"
+
+const whatsappDisplayNumber = "+44 7434 099408"
+const whatsappLinkHref = "https://wa.me/447434099408"
+
+type ContactSocialLink = {
+  id: string
+  href: string
+  hoverId: string
+  label: string
+  visibleLabel: string
+  mark: ReactNode
+}
 
 export function ContactDialog({ children }: { children: ReactNode }) {
   const { t } = useTranslation("common")
@@ -78,6 +95,7 @@ export function ContactDialog({ children }: { children: ReactNode }) {
   const openRequestRef = useRef(0)
   const resetCopyStateTimeoutRef = useRef<number | null>(null)
   const emailAddress = "fengzhiyuyi2013@gmail.com"
+  const whatsappLabel = t("contactDialog.whatsappLink")
   const currentRoleTag = profileRoleTags[roleTagIndex]
   const currentStatusTag = profileStatusTags[statusTagIndex]
   const casualTopicsValue = t("contactDialog.casualTopics", {
@@ -86,6 +104,48 @@ export function ContactDialog({ children }: { children: ReactNode }) {
   const casualTopics = Array.isArray(casualTopicsValue)
     ? casualTopicsValue.filter((topic): topic is string => typeof topic === "string")
     : []
+  const socialLinks: ContactSocialLink[] = [
+    {
+      id: "github",
+      href: "https://github.com/AkashiSensei",
+      hoverId: "AkashiSensei",
+      label: t("contactDialog.githubLink"),
+      visibleLabel: t("contactDialog.githubLink"),
+      mark: <GitHubMark className="h-3.5 w-3.5 md:h-4 md:w-4" />,
+    },
+    {
+      id: "zhihu",
+      href: "https://www.zhihu.com/people/heal-me-please",
+      hoverId: "毕之",
+      label: t("contactDialog.zhihuLink"),
+      visibleLabel: t("contactDialog.zhihuLink"),
+      mark: <ZhihuMark className="h-3.5 w-3.5 md:h-4 md:w-4" />,
+    },
+    {
+      id: "whatsapp",
+      href: whatsappLinkHref,
+      hoverId: whatsappDisplayNumber,
+      label: whatsappLabel,
+      visibleLabel: "WA",
+      mark: <WhatsAppMark className="h-3.5 w-3.5 md:h-4 md:w-4" />,
+    },
+    {
+      id: "instagram",
+      href: "https://www.instagram.com/akashisensei223/",
+      hoverId: "@akashisensei223",
+      label: "Instagram",
+      visibleLabel: "IG",
+      mark: <InstagramMark className="h-3.5 w-3.5 md:h-4 md:w-4" />,
+    },
+    {
+      id: "x",
+      href: "https://x.com/akashisensei223",
+      hoverId: "@akashisensei223",
+      label: "X",
+      visibleLabel: "X",
+      mark: <XMark className="h-3.5 w-3.5 md:h-4 md:w-4" />,
+    },
+  ]
 
   useEffect(() => {
     if (!open) {
@@ -281,45 +341,24 @@ export function ContactDialog({ children }: { children: ReactNode }) {
                 </a>
               </div>
 
-              <div className="mt-1.5 flex flex-nowrap justify-start gap-1.5 md:mt-0 md:flex-wrap md:gap-2">
-                <a
-                  href="https://github.com/AkashiSensei"
-                  target="_blank"
-                  rel="noreferrer"
-                  className={socialLinkClassName}
-                >
-                  <GitHubMark className="h-3.5 w-3.5 md:h-4 md:w-4" />
-                  {t("contactDialog.githubLink")}
-                </a>
-                <a
-                  href="https://www.zhihu.com/people/heal-me-please"
-                  target="_blank"
-                  rel="noreferrer"
-                  className={socialLinkClassName}
-                >
-                  <ZhihuMark className="h-3.5 w-3.5 md:h-4 md:w-4" />
-                  {t("contactDialog.zhihuLink")}
-                </a>
-                <a
-                  href="https://www.instagram.com/akashisensei223/"
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label="Instagram"
-                  title="Instagram"
-                  className={socialLinkClassName}
-                >
-                  <InstagramMark className="h-3.5 w-3.5 md:h-4 md:w-4" />
-                  IG
-                </a>
-                <a
-                  href="https://x.com/akashisensei223"
-                  target="_blank"
-                  rel="noreferrer"
-                  className={socialLinkClassName}
-                >
-                  <XMark className="h-3.5 w-3.5 md:h-4 md:w-4" />
-                  X
-                </a>
+              <div
+                aria-label={t("contactDialog.socialLinksLabel")}
+                className="contact-social-pill-rail mt-1.5 flex w-full max-w-full snap-x snap-proximity justify-start gap-1.5 overflow-x-auto overscroll-x-contain py-0.5 pr-2 [mask-image:linear-gradient(to_right,black_0,black_calc(100%_-_0.75rem),transparent_100%)] [-webkit-mask-image:linear-gradient(to_right,black_0,black_calc(100%_-_0.75rem),transparent_100%)] [scrollbar-width:none] md:mt-0 md:flex-wrap md:gap-2 md:overflow-visible md:overscroll-auto md:p-0 md:[mask-image:none] md:[-webkit-mask-image:none] [&::-webkit-scrollbar]:hidden"
+              >
+                {socialLinks.map((link) => (
+                  <a
+                    key={link.id}
+                    href={link.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label={`${link.label} ${link.hoverId}`}
+                    data-hover-label={link.hoverId}
+                    className={`${socialLinkClassName} snap-start`}
+                  >
+                    {link.mark}
+                    {link.visibleLabel}
+                  </a>
+                ))}
               </div>
             </div>
           </div>
