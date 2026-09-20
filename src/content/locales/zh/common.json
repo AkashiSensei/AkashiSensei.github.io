@@ -97,7 +97,7 @@
   },
   "contactDialog": {
     "title": "个人信息",
-    "description": "我是 Akashi，一名软件工程方向的学生与开发者。这里放一些适合公开展示的信息，以及可以联系到我的邮箱。",
+    "description": "我是 Akashi，一名软件工程方向的学生与开发者。这里放一些适合公开展示的信息，以及公开邮箱和 WhatsApp。",
     "profileRole": "软件工程师",
     "profileStatus": "开放交流",
     "profileDetails": [
@@ -114,13 +114,15 @@
         "value": "公开站点只保留必要信息；更多求职材料通过私下渠道沟通。"
       }
     ],
-    "privacyNote": "这里先只放公开邮箱，可以通过它联系我。",
+    "privacyNote": "这里放公开邮箱和 WhatsApp，方便联系我。",
     "email": "邮箱",
     "copyEmail": "复制邮箱地址",
     "copyEmailShort": "复制邮箱",
     "resumeLink": "在线简历",
     "githubLink": "GitHub",
     "zhihuLink": "知乎",
+    "whatsappLink": "WhatsApp",
+    "socialLinksLabel": "社交与联系渠道",
     "casualTitle": "Friend Links Growing",
     "casualDescription": "如果你也在折腾有趣的东西，或者觉得我们可能聊得来，或者单纯就是想认识新朋友，都欢迎来打个招呼。",
     "casualTopics": [

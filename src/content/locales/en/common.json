@@ -97,7 +97,7 @@
   },
   "contactDialog": {
     "title": "Personal Information",
-    "description": "I'm Akashi, a software engineering student and developer. This card keeps the public-safe details in one place, together with the email address you can use to reach me.",
+    "description": "I'm Akashi, a software engineering student and developer. This card keeps the public-safe details in one place, together with a public email and WhatsApp.",
     "profileRole": "Software Engineer",
     "profileStatus": "Open to connect",
     "profileDetails": [
@@ -114,13 +114,15 @@
         "value": "This public site only keeps necessary details; job materials can be shared privately when needed."
       }
     ],
-    "privacyNote": "For now, I only list a public email here. You can reach me through it.",
+    "privacyNote": "I list a public email and WhatsApp here so you can reach me.",
     "email": "Email",
     "copyEmail": "Copy email address",
     "copyEmailShort": "Copy email",
     "resumeLink": "Online resume",
     "githubLink": "GitHub",
     "zhihuLink": "Zhihu",
+    "whatsappLink": "WhatsApp",
+    "socialLinksLabel": "Social and contact links",
     "casualTitle": "Friend Links Growing",
     "casualDescription": "If you are building something fun, think we might get along, or simply want to make a new friend, feel free to say hi.",
     "casualTopics": [
