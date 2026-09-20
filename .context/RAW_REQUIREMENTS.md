@@ -19,7 +19,7 @@
 为了更加全面地展示我，这个网站需要有这些静态的内容模块：
 - 项目：课程之外的代码项目。
 - 课设：课程设计项目，不仅面向面试官，还面向学弟学妹，提供可以参考的开源仓库。
-- 工作台：日常学习与工作中**我使用**的第三方软件、在线服务与工作流平台（非自研，亦非编程语言/框架能力本身）。包括多个类别，比如 AI 辅助工具类（Cursor、Codex、Qclaw、Grok Bot、Trae CN），创意软件（Adobe 全家桶），办公软件（Microsoft 365 全家桶、飞书、Acrobat、WPS），三维软件（Blender、C4D），分析软件（Nsight Compute、Nsight Systems、Wireshark），传统开发工具（VS Code、IDEA、Pycharm、Apifox），知识沉淀工具（Evernote、FlowUS、Obsidian、Zotero、MindNow）、虚拟与远程（Docker、Parallel Desktop、Termora、Windows APP）。与 **「方向」** 区分：工作台展示的是长期稳定的工具配置；兴趣与正在探索的领域主题由 **方向** 等数据模块承载，而非工具清单本身。
+- 工作台：日常学习与工作中**我使用**的第三方软件、在线服务与工作流平台（非自研，亦非编程语言/框架能力本身）。包括多个类别，比如 AI 辅助工具类（Cursor、Codex、Qclaw、Grok Bot、Trae CN），创意软件（Adobe 全家桶），办公软件（Microsoft 365 全家桶、飞书、Acrobat、WPS），三维软件（Blender、C4D），分析软件（Nsight Compute、Nsight Systems、Wireshark），传统开发工具（VS Code、IDEA、Pycharm、Apifox），知识沉淀工具（Typora、FlowUS、Obsidian、Zotero、MindNow）、虚拟与远程（Docker、Parallel Desktop、Termora、Windows APP）。与 **「方向」** 区分：工作台展示的是长期稳定的工具配置；兴趣与正在探索的领域主题由 **方向** 等数据模块承载，而非工具清单本身。
 - 小工具：我为支撑个人其它工作流而**自己编写或作为 Contributor 参与**的开源仓库、脚本或小型程序（含对我自己 fork 的仓库的贡献；条目可优先填写我的 fork 链接）；体量较小，与「项目」区分，通常不作为求职代表作单独主推。
 - 知识沉淀：各类文本性质的产物，可能有不同层级，比如外部博客仓库、或者具体文章的链接。我有多个这种性质的仓库，包括技术博客、工程调研、论文阅读等多个仓库。
 - 工作经历：实习和工作经历。

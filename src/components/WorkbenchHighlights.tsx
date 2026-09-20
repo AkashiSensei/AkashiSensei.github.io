@@ -72,10 +72,6 @@ function getWorkbenchSoftwareIcons() {
 
   workbenchGroups.forEach((group) => {
     group.software.forEach((software) => {
-      if (software.id === "evernote") {
-        return
-      }
-
       softwareById.set(software.id, {
         ...software,
         group,
@@ -128,17 +124,6 @@ function buildIconWallRows(software: WorkbenchIcon[]): WallSoftware[][] {
       },
     ]
   })
-}
-
-function getPreviewGroup(group: WorkbenchGroup): WorkbenchGroup {
-  if (group.id !== "knowledge-tools") {
-    return group
-  }
-
-  return {
-    ...group,
-    software: group.software.filter((software) => software.id !== "evernote"),
-  }
 }
 
 function isSameWallIcon(left: HoveredWallIcon, right: HoveredWallIcon) {
@@ -201,7 +186,7 @@ function getPreviewCandidateFromIconRect({
         )
 
   return {
-    group: getPreviewGroup(software.group),
+    group: software.group,
     icon: { itemIndex, rowIndex },
     key: `${rowIndex}-${itemIndex}-${software.group.id}`,
     position: {
