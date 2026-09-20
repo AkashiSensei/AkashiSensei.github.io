@@ -70,12 +70,11 @@ export const workbenchGroups: WorkbenchGroup[] = [
     featured: true,
     featuredOrder: 2,
     software: [
-      { id: "evernote", name: "Evernote", icon: `${iconBase}/evernote-512.webp` },
+      { id: "typora", name: "Typora", icon: `${iconBase}/typora-512.webp` },
       { id: "flowus", name: "FlowUS", icon: `${iconBase}/flowus-512.webp` },
       { id: "obsidian", name: "Obsidian", icon: `${iconBase}/obsidian-512.webp` },
       { id: "zotero", name: "Zotero", icon: `${iconBase}/zotero-512.webp` },
       { id: "mindnow", name: "MindNow", icon: `${iconBase}/mindnow-512.webp` },
-      { id: "typora", name: "Typora", icon: `${iconBase}/typora-512.webp` },
     ],
   },
   {

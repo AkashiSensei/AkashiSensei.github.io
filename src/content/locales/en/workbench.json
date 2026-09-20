@@ -69,9 +69,9 @@
       "title": "Knowledge Tools",
       "summary": "Note-taking and knowledge bases for capture, organization, references, and thinking.",
       "points": [
-        "Evernote and FlowUS for quick capture and structured notes.",
         "Obsidian and Zotero for local knowledge graphs and references.",
-        "MindNow for mind maps and idea expansion; Typora for Markdown writing and layout."
+        "MindNow for mind maps and idea expansion, helping organize course knowledge.",
+        "Typora and FlowUS for quick capture and structured notes."
       ]
     },
     "virtual-remote": {

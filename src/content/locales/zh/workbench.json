@@ -71,9 +71,9 @@
       "title": "知识沉淀",
       "summary": "用于记录、整理、引用与思维梳理的笔记与知识库",
       "points": [
-        "Evernote、FlowUS 承担快速采集与结构化笔记",
         "Obsidian、Zotero 主要用于梳理文献和搭建知识库",
-        "MindNow 用于思维导图与思路展开，帮助我梳理课程知识点"
+        "MindNow 用于思维导图与思路展开，帮助我梳理课程知识点",
+        "Typora、FlowUS 承担快速采集与结构化笔记"
       ]
     },
     "virtual-remote": {
