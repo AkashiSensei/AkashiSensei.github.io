@@ -130,7 +130,7 @@ Use a centralized five-level text contrast scale for ordinary page typography in
 
 ### 4.1 English copy for content entities
 
-- For concrete content entities—projects, course projects, small tools, knowledge entries, work experience, and future modules—English copy should be a native-facing rewrite, not a literal or structurally mirrored translation of the Chinese source.
+- For concrete content entities—projects, course projects, small tools, knowledge entries, education, work experience, and future modules—English copy should be a native-facing rewrite, not a literal or structurally mirrored translation of the Chinese source.
 - Preserve the facts and intended positioning, but allow the English summary and points to be shorter, reordered, combined, or reframed when that produces clearer English.
 - Lead with what the entry helps a visitor do or understand. Prefer concise, idiomatic, benefit-led language, active voice, and short sentences that scan naturally.
 - Emphasize practical value, ease of use, personal contribution, and memorable differentiators. Omit low-level implementation details unless they materially explain the value or distinguish the work.
@@ -149,6 +149,7 @@ Each module may have a listing page with **list** or **gallery** view modes.
 | 工作台 | Third-party software, services, and platforms **I use**—stable toolchain; distinct from **方向** (thematic interests / focus), not a narrative “status” page |
 | 小工具 | Small tools/repos I **authored or contributed to** (see §6) |
 | 知识沉淀 | Blogs, article links, engineering notes, paper reading repos, etc. |
+| 教育经历 | Bachelor's and master's education on `/resume`; not a listing/detail module |
 | 工作经历 | Internships and employment |
 | 能力 | Cross-cutting strengths (not tool/product entries) |
 | 方向 | Thematic **interests** and **active focus areas**—what I explore and prioritize now; structured topics that may link to 项目, 知识沉淀, etc. **Not** the same as 工作台 (stable third-party tools) |
@@ -162,6 +163,7 @@ Each module may have a listing page with **list** or **gallery** view modes.
 - Root homepage should also support a user-selectable plain display mode that keeps the same friend-facing purpose and core CTAs while avoiding the expensive FPV video / Three.js / CSS3D scroll scene. This is a homepage experience mode, not a revived global design-style switch; it must remain compatible with theme, locale, navigation, contact dialog, reduced-motion preference, and GitHub Pages static deployment.
 - Root homepage may include public friend links as part of its community-connection purpose. Friend-link entries should be data-driven, public-safe, and maintainable as the roster grows; short quotes may appear directly in compact cards, while longer messages should use a layout treatment such as summary text plus expansion/detail affordance so FPV and plain homepage modes remain readable on mobile and desktop.
 - Resume route (`/resume`): interviewer-facing electronic resume / career showcase. It may reuse the existing homepage highlight sections and richer self-presentation flow: directions, projects, course projects, workbench, small tools, and other content modules as they mature.
+- **教育经历 on `/resume`**: Show bachelor's and master's records as one dedicated resume section (visual full-screen rhythm on landscape, ordinary document flow in plain/portrait/mobile). Entries are structured data with stable ids. Public fields are school, years, major, and a small set of core honors the author chooses to publish. Do not show GPA, rank, course grades, or other academic metrics that belong on the privately submitted resume. This is a resume-surface section like GitHub activity, not a module listing page, detail route, or homepage block. Distinct from **工作经历** (internships/employment) and **学术成果** (papers/patents/soft copyrights). Visual treatment should stay inside the current frosted-glass resume system and feel designed rather than a plain two-row list, without introducing a new style family.
 - Existing module routes stay stable unless explicitly redesigned: `/projects`, `/course-projects`, `/workbench`, `/tools`.
 - **Per-module Highlights on `/resume`**: For each active content module (§5 table), show a curated subset of entries—entries marked in data (e.g. `highlight: true` or `featured` ordering). Typical cap: 1–3 items per module; module title + “view all” link to the module listing page.
 - **Entry detail pages**: Content entries that need fuller explanation (especially 项目, 课设, 小工具) should support stable detail routes keyed by entity `id`. Detail pages are the place for full bullet lists, screenshots/galleries, richer narrative, metadata, outbound links, and future relations. Summary cards should navigate to details when a detail page exists.
