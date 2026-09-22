@@ -27,6 +27,43 @@
   },
   "contact": "Contact",
   "github": "Profile",
+  "education": {
+    "title": "Education",
+    "subtitle": "School, field of study, and public honors.",
+    "colleges": {
+      "software": "School of Software",
+      "reliability": "School of Reliability and Systems Engineering"
+    },
+    "items": {
+      "se-master": {
+        "school": "Beihang University",
+        "headline": "Master's in Software Engineering",
+        "period": "2025 – Present",
+        "honors": [
+          "ACT RAIDS-Lab",
+          "Cloud computing | AI Infra",
+          "Graduate Outstanding Student",
+          "Third prize, 2nd China Graduate OS Open-Source Innovation Contest",
+          "Head of Culture and Sports, School of Software Student Union"
+        ]
+      },
+      "se-bachelor": {
+        "school": "Beihang University",
+        "headline": "Bachelor's in Software Engineering",
+        "period": "2020 – 2025",
+        "honors": [
+          "Average score rank 1/181",
+          "National Scholarship in two academic years",
+          "Graduate recommendation (outstanding student, two years)",
+          "Beijing Municipal Outstanding Graduate",
+          "Changed major by repeating a year",
+          "Teaching assistant for six course offerings",
+          "Video team staff, Reliability School New Media Studio",
+          "Class life officer; three-term student representative, School of Software"
+        ]
+      }
+    }
+  },
   "githubActivity": {
     "title": "Activity",
     "subtitle": "A past-year overview of GitHub contributions, including commits, reviews, pull requests, and issues.",

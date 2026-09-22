@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next"
 import { ContactDialog } from "@/components/ContactDialog"
 import { CourseProjectHighlights } from "@/components/CourseProjectHighlights"
 import { DirectionsSection } from "@/components/DirectionsSection"
+import { EducationHighlights } from "@/components/EducationHighlights"
 import { GitHubActivityHighlights } from "@/components/GitHubActivityHighlights"
 import { GitHubMark } from "@/components/GitHubMark"
 import { KnowledgeHighlights } from "@/components/KnowledgeHighlights"
@@ -138,6 +139,7 @@ export function ResumePage() {
           </div>
         </section>
         <ProjectHighlights />
+        <EducationHighlights />
         <GitHubActivityHighlights />
         <DirectionsSection />
         <CourseProjectHighlights />

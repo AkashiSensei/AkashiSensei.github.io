@@ -27,6 +27,43 @@
   },
   "contact": "联系方式",
   "github": "动态",
+  "education": {
+    "title": "教育经历",
+    "subtitle": "学校、专业与公开荣誉。",
+    "colleges": {
+      "software": "软件学院",
+      "reliability": "可靠性与系统工程学院"
+    },
+    "items": {
+      "se-master": {
+        "school": "北京航空航天大学",
+        "headline": "硕士 · 软件工程 · 在读",
+        "period": "2025 — 至今",
+        "honors": [
+          "ACT RAIDS-Lab",
+          "云计算｜AI Infra",
+          "研究生校级三好生",
+          "第二届中国研究生操作系统开源创新大赛三等奖",
+          "软件学院学生会文体部部长"
+        ]
+      },
+      "se-bachelor": {
+        "school": "北京航空航天大学",
+        "headline": "学士 · 软件工程",
+        "period": "2020 — 2025",
+        "honors": [
+          "均分排名 1/181",
+          "两年度国家奖学金",
+          "两年度校级优秀生通道推免",
+          "北京市市级优秀毕业生",
+          "降级转专业",
+          "6门次课程助教",
+          "可靠新媒体工作室视频组干事",
+          "生活委员、三届软件学院学生代表"
+        ]
+      }
+    }
+  },
   "githubActivity": {
     "title": "活跃度",
     "subtitle": "GitHub 过去一年的贡献概览，包含提交、评审、PR 和 Issue 等活动。",

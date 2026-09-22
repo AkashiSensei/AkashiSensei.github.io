@@ -4,6 +4,7 @@ import { ArrowUpRight } from "lucide-react"
 
 import directions from "@/data/directions.json"
 import { featuredCourseProjects } from "@/data/course-projects"
+import { educationEntries } from "@/data/education"
 import { featuredKnowledgeEntries } from "@/data/knowledge"
 import { featuredProjects, type Project } from "@/data/projects"
 import { featuredSmallTools } from "@/data/tools"
@@ -472,6 +473,32 @@ export function ResumePlainExperience() {
           sectionIndex={0}
           translationNamespace="projects"
         />
+      </section>
+
+      <section>
+        <h2>{t("education.title")}</h2>
+        <p>{t("education.subtitle")}</p>
+        <div className="plain-resume-mini-list">
+          {educationEntries.map((entry) => {
+            const honors = asStringArray(
+              t(`education.items.${entry.id}.honors`, { returnObjects: true }),
+            )
+
+            return (
+              <section key={entry.id} className="plain-resume-mini-item">
+                <h3>{t(`education.items.${entry.id}.headline`)}</h3>
+                <p className="plain-index-meta">
+                  {[
+                    t(`education.items.${entry.id}.school`),
+                    ...entry.colleges.map((college) => t(`education.colleges.${college.id}`)),
+                    t(`education.items.${entry.id}.period`),
+                  ].join(" / ")}
+                </p>
+                {honors.length > 0 ? <PlainPointList points={honors} /> : null}
+              </section>
+            )
+          })}
+        </div>
       </section>
 
       <section>

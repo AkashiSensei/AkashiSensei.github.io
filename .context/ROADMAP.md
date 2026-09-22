@@ -13,6 +13,7 @@
 
 ## History
 
+- 2026-09-22 | [Resume education timeline](archive/20260922_Resume-education-timeline.md) | Added a bachelor and master's education screen on `/resume` with a year timeline, college emblems, and public honors.
 - 2026-09-20 | [Contact WhatsApp and social hover ids](archive/20260920_Contact-WhatsApp-and-social-hover-ids.md) | Added a WhatsApp social pill to the contact card, made the mobile social rail horizontally scrollable, and showed platform ids in friend-pill-style hover bubbles.
 - 2026-09-20 | [Workbench knowledge Evernote removal](archive/20260920_Workbench-knowledge-Evernote-removal.md) | Dropped Evernote from knowledge-tools data, icons, and copy; kept Typora + FlowUS as the group's last bullet.
 - 2026-09-19 | [Display and copy polish](archive/20260919_Display-and-copy-polish.md) | Kept listing personal-work emphasis and type consistent across display modes, stopped listing-card swipe from capturing page scroll, and updated homepage FPV paging plus workbench AI tools.
