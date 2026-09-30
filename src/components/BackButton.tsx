@@ -27,7 +27,7 @@ export function BackButton({ className, fallback = "/resume" }: BackButtonProps)
     <button
       type="button"
       className={cn(
-        "group mb-4 inline-flex w-fit items-center justify-center transition-all",
+        "group relative -ml-6 -mt-4 mb-0 inline-flex w-fit shrink-0 cursor-pointer items-center justify-center rounded-2xl px-6 py-4 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
         className,
       )}
       aria-label={t("a11y.goBack")}
@@ -40,7 +40,7 @@ export function BackButton({ className, fallback = "/resume" }: BackButtonProps)
         navigate(fallback, { replace: true })
       }}
     >
-      <ArrowLeft className="h-10 w-10 text-foreground/40 transition-all duration-300 group-hover:-translate-x-1 group-hover:text-foreground/80" />
+      <ArrowLeft aria-hidden="true" className="pointer-events-none h-10 w-10 shrink-0 text-foreground/40 transition-all duration-300 group-hover:-translate-x-1 group-hover:text-foreground/80 group-focus-visible:text-foreground/80" />
     </button>
   )
 }

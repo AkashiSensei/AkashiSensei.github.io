@@ -1,8 +1,11 @@
+import { type CSSProperties } from "react"
 import { useTranslation } from "react-i18next"
 
 import { FeaturePointList } from "@/components/FeaturePointList"
 import { educationTimelineEntries } from "@/data/education"
 import { cn } from "@/lib/utils"
+
+const educationEntriesNewestFirst = [...educationTimelineEntries].reverse()
 
 function asStringArray(value: unknown) {
   return Array.isArray(value)
@@ -28,14 +31,18 @@ export function EducationHighlights() {
       </div>
 
       <ol className="education-timeline mx-2 sm:mx-3 md:mx-4">
-        {educationTimelineEntries.map((entry) => {
+        {educationEntriesNewestFirst.map((entry, index) => {
           const honors = asStringArray(
             t(`education.items.${entry.id}.honors`, { returnObjects: true }),
           )
           const ongoing = entry.endYear === undefined
 
           return (
-            <li key={entry.id} className="education-stop">
+            <li
+              key={entry.id}
+              className="education-stop"
+              style={{ "--education-timeline-order": -index } as CSSProperties}
+            >
               <span
                 className={cn(
                   "education-dot",

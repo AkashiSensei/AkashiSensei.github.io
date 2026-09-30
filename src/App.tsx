@@ -1,5 +1,5 @@
 import { Suspense, lazy, useEffect, useLayoutEffect, useRef, useState } from "react"
-import { Route, Routes, useLocation } from "react-router-dom"
+import { Navigate, Route, Routes, useLocation } from "react-router-dom"
 import { useTranslation } from "react-i18next"
 
 import { AppLink } from "@/components/AppLink"
@@ -520,6 +520,10 @@ function App() {
             element={<ProjectDetailPage projects={projects} />}
           />
           <Route path="/course-projects" element={<CourseProjectsPage />} />
+          <Route
+            path="/course-projects/kernel-analysis-thesis"
+            element={<Navigate to="/projects/kernel-analysis-thesis" replace />}
+          />
           <Route
             path="/course-projects/:projectId"
             element={

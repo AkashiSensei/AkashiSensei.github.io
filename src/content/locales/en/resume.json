@@ -5,7 +5,8 @@
   "titleAccent": "明石の出番ですね。",
   "description": [
     "Software engineering master's student, passionate about open source and technical sharing.",
-    "Aiming to become an engineer who solves real problems and delivers excellent experiences.",
+    "I hope to do research rooted in real problems and focused on practical value.",
+    "I also aim to become an engineer who solves real problems and delivers excellent experiences.",
     "Not satisfied with merely finishing tasks, but turning experience into understanding through inquiry."
   ],
   "values": [
@@ -15,7 +16,7 @@
     },
     {
       "title": "Refine relentlessly",
-      "description": "I try to think through problems broadly, so function, edge cases, and details add up to a more reliable and comfortable experience."
+      "description": "I try to think through problems thoroughly and refine functionality, edge cases, and details to build reliable, well-crafted products that are easy to use."
     },
     {
       "title": "Keep asking",
@@ -38,10 +39,10 @@
       "se-master": {
         "school": "Beihang University",
         "headline": "Master's in Software Engineering",
-        "period": "2025 – Present",
+        "period": "2025 – 2028",
         "honors": [
           "ACT RAIDS-Lab",
-          "Cloud computing | AI Infra",
+          "Cloud computing / Distributed systems / AI Infra: cluster management, resource scheduling, and hardware resource prediction",
           "Graduate Outstanding Student",
           "Third prize, 2nd China Graduate OS Open-Source Innovation Contest",
           "Head of Culture and Sports, School of Software Student Union"
@@ -55,7 +56,7 @@
           "Average score rank 1/181",
           "National Scholarship in two academic years",
           "Graduate recommendation (outstanding student, two years)",
-          "Beijing Municipal Outstanding Graduate",
+          "Beijing Outstanding Graduate",
           "Changed major by repeating a year",
           "Teaching assistant for six course offerings",
           "Video team staff, Reliability School New Media Studio",

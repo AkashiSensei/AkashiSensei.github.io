@@ -3043,6 +3043,18 @@
     opacity: 1;
   }
 
+  /* Only visible navbar surfaces capture clicks; gaps must not block page controls. */
+  .site-navbar-shell {
+    pointer-events: none;
+  }
+
+  .site-navbar-shell > .card-spotlight,
+  .site-navbar-shell > .display-mode-menu,
+  .navbar-compact-row > .card-spotlight,
+  .navbar-desktop-row > .card-spotlight {
+    pointer-events: auto;
+  }
+
   @media (min-width: 768px) {
     .site-navbar-shell {
       top: 2.25rem !important;
@@ -3306,6 +3318,7 @@
     }
 
     .education-stop {
+      order: var(--education-timeline-order);
       padding-left: 0;
       padding-top: 1.7rem;
     }

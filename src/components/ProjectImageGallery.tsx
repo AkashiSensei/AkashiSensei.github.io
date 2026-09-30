@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react"
 import { useTranslation } from "react-i18next"
 
 import {
@@ -8,11 +8,13 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { ImageBrightnessOverlay } from "@/components/ImageBrightnessOverlay"
+import { DetailImageMasonry } from "@/components/DetailImageMasonry"
 import { LazyImage } from "@/components/LazyImage"
 import { type ProjectImage } from "@/data/projects"
 import { cn } from "@/lib/utils"
 
 type ProjectImageGalleryProps = {
+  layout?: "card" | "wall"
   cardAspectRatio?: string
   cardAspectRatioMode?: "bounded" | "natural"
   cardAutoCycle?: boolean
@@ -93,6 +95,7 @@ function positionThumbnailIndicator(
 }
 
 export function ProjectImageGallery({
+  layout = "card",
   cardAspectRatio,
   cardAspectRatioMode = "bounded",
   cardAutoCycle = false,
@@ -161,8 +164,10 @@ export function ProjectImageGallery({
     scrollGalleryToIndex(galleryRef.current, imageIndex, behavior)
   }
 
-  useLayoutEffect(() => {
-    if (!previewOpen || initialPreviewImageIndexRef.current === null) {
+  const attachPreviewGallery = useCallback((gallery: HTMLDivElement | null) => {
+    previewGalleryRef.current = gallery
+
+    if (!gallery || initialPreviewImageIndexRef.current === null) {
       return
     }
 
@@ -171,14 +176,12 @@ export function ProjectImageGallery({
       programmaticPreviewTimeoutRef.current = null
     }
 
+    // The dialog portal can mount after the gallery owner's layout effects.
+    // Consume the requested index only once the actual preview rail exists.
     programmaticPreviewTargetRef.current = null
-    scrollGalleryToIndex(
-      previewGalleryRef.current,
-      initialPreviewImageIndexRef.current,
-      "auto",
-    )
+    scrollGalleryToIndex(gallery, initialPreviewImageIndexRef.current, "auto")
     initialPreviewImageIndexRef.current = null
-  }, [previewOpen])
+  }, [])
 
   useLayoutEffect(() => {
     if (!previewOpen) {
@@ -504,42 +507,74 @@ export function ProjectImageGallery({
 
   return (
     <>
-      <div
-        ref={galleryRef}
-        className={cn(
-          "w-full min-w-0 max-w-full shrink-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
-          shouldUseTransformCardRail ? "relative" : "flex",
-          cardScrollable
-            ? "max-h-[72svh] snap-x snap-mandatory overflow-x-auto overscroll-y-none md:max-h-none"
-            : shouldRenderCardRail
-              ? "max-h-full overflow-hidden overflow-x-clip"
-              : "max-h-full overflow-hidden overflow-x-clip",
-          className,
-        )}
-        style={{
-          aspectRatio: resolvedCardAspectRatio,
-          maxHeight:
-            cardAspectRatio || cardAspectRatioMode === "natural"
-              ? undefined
-              : CARD_IMAGE_GALLERY_MAX_HEIGHT,
-          touchAction: cardInteractive
-            ? cardScrollable ? "pan-x" : "pan-y"
-            : "auto",
-        }}
-        onScroll={cardScrollable ? handleCardGalleryScroll : undefined}
-      >
-        {shouldUseTransformCardRail ? (
-          <div
-            className="flex h-full w-full transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none"
-            style={{
-              transform: `translate3d(${-selectedImageIndex * 100}%, 0, 0)`,
-              willChange: "transform",
-            }}
-          >
-            {cardSlideNodes}
-          </div>
-        ) : cardSlideNodes}
-      </div>
+      {layout === "wall" ? (
+        <DetailImageMasonry
+          images={images}
+          renderImage={(image) => {
+            const imageAlt = t(image.altKey)
+
+            return (
+              <button
+                key={image.src}
+                type="button"
+                className="group/wall-image block w-full overflow-hidden rounded-2xl border border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.32)] p-0 text-left shadow-sm backdrop-blur-md transition-colors hover:bg-[rgb(var(--site-surface-rgb)_/_0.48)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/45 dark:border-white/10 dark:bg-white/[0.04] dark:hover:bg-white/[0.08]"
+                onClick={() => openPreview(images.indexOf(image))}
+                aria-label={t("imagePreview.open", { image: imageAlt })}
+              >
+                <LazyImage
+                  src={image.src}
+                  alt={imageAlt}
+                  width={image.width}
+                  height={image.height}
+                  placeholderTitle={imageAlt}
+                  loadingLabel={t("common:imageLoading")}
+                  brightness={image.brightness}
+                  containerClassName="w-full"
+                  imageClassName="h-auto w-full object-contain transition-transform duration-300 group-hover/wall-image:scale-[1.015]"
+                  style={{ aspectRatio: `${image.width} / ${image.height}` }}
+                />
+              </button>
+            )
+          }}
+        />
+      ) : (
+        <div
+          ref={galleryRef}
+          className={cn(
+            "w-full min-w-0 max-w-full shrink-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
+            shouldUseTransformCardRail ? "relative" : "flex",
+            cardScrollable
+              ? "max-h-[72svh] snap-x snap-mandatory overflow-x-auto overscroll-y-none md:max-h-none"
+              : shouldRenderCardRail
+                ? "max-h-full overflow-hidden overflow-x-clip"
+                : "max-h-full overflow-hidden overflow-x-clip",
+            className,
+          )}
+          style={{
+            aspectRatio: resolvedCardAspectRatio,
+            maxHeight:
+              cardAspectRatio || cardAspectRatioMode === "natural"
+                ? undefined
+                : CARD_IMAGE_GALLERY_MAX_HEIGHT,
+            touchAction: cardInteractive
+              ? cardScrollable ? "pan-x" : "pan-y"
+              : "auto",
+          }}
+          onScroll={cardScrollable ? handleCardGalleryScroll : undefined}
+        >
+          {shouldUseTransformCardRail ? (
+            <div
+              className="flex h-full w-full transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none"
+              style={{
+                transform: `translate3d(${-selectedImageIndex * 100}%, 0, 0)`,
+                willChange: "transform",
+              }}
+            >
+              {cardSlideNodes}
+            </div>
+          ) : cardSlideNodes}
+        </div>
+      )}
 
       <Dialog
         open={previewOpen}
@@ -561,7 +596,7 @@ export function ProjectImageGallery({
             {selectedImageIndex + 1} / {images.length}
           </DialogDescription>
           <div
-            ref={previewGalleryRef}
+            ref={attachPreviewGallery}
             className="flex min-h-0 flex-1 snap-x snap-mandatory overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
             onScroll={handlePreviewScroll}
           >

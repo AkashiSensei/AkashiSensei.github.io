@@ -297,7 +297,7 @@ export function ContactDialog({ children }: { children: ReactNode }) {
                 <button
                   type="button"
                   onClick={copyEmailAddress}
-                  className="group hidden w-full items-center gap-4 rounded-2xl bg-transparent p-2 text-left transition-colors hover:bg-foreground/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/35 md:flex"
+                  className="group hidden w-full cursor-pointer items-center gap-4 rounded-2xl bg-foreground/5 p-2 text-left transition-colors hover:bg-foreground/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/35 md:flex"
                   title={t("contactDialog.copyEmail")}
                 >
                   <div className="flex h-10 w-10 items-center justify-center rounded-full bg-foreground/5 transition-colors group-hover:bg-foreground/10">
@@ -308,7 +308,7 @@ export function ContactDialog({ children }: { children: ReactNode }) {
                     <span className="truncate text-sm text-tone-4">{emailAddress}</span>
                   </div>
                   <span
-                    className="flex shrink-0 items-center gap-1.5 rounded-full bg-foreground/5 px-2.5 py-1 text-xs font-medium text-tone-1 transition-colors group-hover:bg-foreground/10"
+                    className="flex shrink-0 items-center gap-1.5 px-2.5 py-1 text-xs font-medium text-tone-3"
                     aria-live="polite"
                   >
                     {copyState === "copied" ? (
@@ -327,9 +327,11 @@ export function ContactDialog({ children }: { children: ReactNode }) {
                   </span>
                 </button>
 
-                <a
-                  href={`mailto:${emailAddress}`}
-                  className="group flex min-h-12 w-full items-center gap-2.5 rounded-xl bg-foreground/5 p-1.5 text-left transition-colors hover:bg-foreground/8 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/35 md:hidden"
+                <button
+                  type="button"
+                  onClick={copyEmailAddress}
+                  aria-label={`${t("contactDialog.copyEmail")}: ${emailAddress}`}
+                  className="group flex min-h-12 w-full cursor-pointer items-center gap-2.5 rounded-xl bg-foreground/5 p-1.5 text-left transition-colors hover:bg-foreground/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/35 md:hidden"
                 >
                   <div className="flex h-9 w-9 items-center justify-center rounded-full bg-foreground/5 transition-colors group-hover:bg-foreground/10">
                     <Mail className="h-4.5 w-4.5" />
@@ -338,7 +340,17 @@ export function ContactDialog({ children }: { children: ReactNode }) {
                     <span className="font-medium text-tone-1">{t("contactDialog.email")}</span>
                     <span className="truncate text-sm text-tone-4">{emailAddress}</span>
                   </div>
-                </a>
+                  <span className="shrink-0 px-1 text-tone-3" aria-hidden="true">
+                    {copyState === "copied" ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+                  </span>
+                  <span className="sr-only" aria-live="polite">
+                    {copyState === "copied"
+                      ? t("contactDialog.copied")
+                      : copyState === "failed"
+                        ? t("contactDialog.copyFailed")
+                        : ""}
+                  </span>
+                </button>
               </div>
 
               <div

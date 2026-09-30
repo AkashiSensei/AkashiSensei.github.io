@@ -72,7 +72,8 @@
         "projectIntro": [
           "Uses C, Makefile, Shell, and Python to organize experiment code and helper scripts for reproducible workflows.",
           "Addresses typical parallel programming course problems using classic models such as OpenMP, pthread, and MPI, implements various parallel algorithms, and analyzes their performance.",
-          "Implemented naive and shared-memory optimized CUDA matrix multiplication, and used Nsight Systems and Nsight Compute to analyze performance across memory access, warp state, and pipeline utilization, building a clearer understanding of GPU execution."
+          "Implemented naive and shared-memory optimized CUDA matrix multiplication, and used Nsight Systems and Nsight Compute to analyze performance across memory access, warp state, and pipeline utilization, building a clearer understanding of GPU execution.",
+          "Cross-checked CUDA source, SASS, and Nsight Compute instructions to study memory access, FMA, synchronization, predication, and parameter/thread-index access, explaining shared-memory and synchronization bottlenecks."
         ],
         "personalWork": []
       }
@@ -147,7 +148,7 @@
     },
     "os2023": {
       "title": "MOS Operating System Labs",
-      "summary": "BUAA Operating System labs, divided into six major labs with take-home code completion and in-class implementation exams.",
+      "summary": "Six BUAA Operating System labs covering paged memory, processes, IPC, exceptions, a file system, and a shell, with take-home coding and in-class implementation exams.",
       "images": {
         "labGrades": "Lab grades",
         "lab2MainContent": "Lab 2 main content",
@@ -160,11 +161,12 @@
       },
       "points": {
         "projectIntro": [
-          "Read a large amount of OS code and developed a deeper understanding of how operating systems work.",
+          "For extra credit, implemented fast TLB refill in MIPS assembly using CPU documentation, $k0/$k1, and coprocessor registers, without AI assistance. Reduced context-saving overhead, found and fixed an ASID reuse bug through self-testing, and cut total runtime to about a quarter in tests with frequent TLB misses.",
+          "As a teaching assistant, traced unexpected MALTA device writes through syscall_write_dev to a memcpy defect and fixed it, supporting migration to QEMU and MIPS 4Kc.",
+          "As a teaching assistant, fixed a block-counting error that left disk blocks allocated after file deletion, and simplified redundant deletion logic.",
+          "Read nearly the entire OS codebase, including headers, C, assembly, Makefiles, and linker scripts; revisited core logic to understand call flows across modules.",
           "Kept asking and answering my own questions, leaving behind a large set of lab notes.",
-          "Used GXemul to emulate the MIPS R3000 processor, with implementation in C and MIPS assembly.",
-          "Includes paged memory, processes, IPC, exceptions, file system, and Shell.",
-          "As extra credit, studied page tables, $k0/$k1, and the coprocessor, then implemented full page-table fast refill with about 4x speedup in specific cases."
+          "Used GXemul to emulate the MIPS R3000 processor, with implementation in C and MIPS assembly."
         ],
         "personalWork": []
       }
@@ -206,35 +208,6 @@
           "Used Python for data preprocessing and analysis to guide feature engineering.",
           "Combined key risk factors and created cross features and basic risk features from domain knowledge.",
           "Built a risk prediction model with XGBoost and used Optuna for hyperparameter search."
-        ],
-        "personalWork": []
-      }
-    },
-    "kernel-analysis-thesis": {
-      "title": "Undergraduate thesis",
-      "summary": "Research and Implementation of Fine-Grained Performance Analysis Techniques for Intelligent Computing Tasks, my BUAA Software Engineering undergraduate thesis project.",
-      "images": {
-        "architectureWorkflow": "System architecture and workflow",
-        "backgroundSignificance": "Research background and significance",
-        "researchStatus": "Domestic and international research status analysis",
-        "modelingTaxonomy": "Performance modeling taxonomy",
-        "dataFlow": "Fine-grained performance prediction model data flow",
-        "kernelLevelComputationGraph": "Kernel-level computation graph",
-        "operatorKernelMapping": "Operator-to-GPU-kernel mapping analysis flow",
-        "analysisTool": "Automated fine-grained performance analysis tool",
-        "nsysTimelineNvtx": "Nsys timeline analysis with NVTX",
-        "ncuKernelMetrics": "NCU kernel metric analysis",
-        "ncuKernelResources": "NCU kernel resource usage",
-        "ruleBasedPredictorFlow": "Core rule-base construction flow",
-        "yolov8GridPrediction": "YOLOv8 Grid size prediction capability",
-        "yolov8ThroughputPrediction": "YOLOv8 GPU compute throughput utilization prediction capability",
-        "yolov8nRuntimeVariance": "YOLOv8n kernel runtime performance variance"
-      },
-      "points": {
-        "projectIntro": [
-          "Decomposed model computation graphs, mapped operators to GPU kernels, generated kernel-level computation graphs, and studied operator-to-kernel mapping patterns.",
-          "Built feature prediction models for compute and memory-access behavior, verified experimentally for later interference analysis and scheduling.",
-          "Developed automated tools to improve performance analysis and modeling efficiency."
         ],
         "personalWork": []
       }

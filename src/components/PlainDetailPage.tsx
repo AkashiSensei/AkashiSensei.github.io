@@ -90,7 +90,7 @@ export function PlainDetailPage({
             <div className="plain-detail-body">
               {visibleSections.map((section) => (
                 <section key={section.title} className="plain-home-subsection">
-                  <h2>{section.title}</h2>
+                  {visibleSections.length > 1 ? <h2>{section.title}</h2> : null}
                   <ul>
                     {section.bullets.map((bullet) => (
                       <li key={bullet}>{renderPlainRichText(bullet)}</li>
