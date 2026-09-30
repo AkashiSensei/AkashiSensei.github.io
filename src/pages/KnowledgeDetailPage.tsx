@@ -1,24 +1,15 @@
-import { useState } from "react"
 import { ArrowUpRight } from "lucide-react"
 import { useTranslation } from "react-i18next"
 import { useParams } from "react-router-dom"
 
 import { BackButton } from "@/components/BackButton"
 import { useAnimationPreference } from "@/components/animation-provider"
-import { DetailImageMasonry } from "@/components/DetailImageMasonry"
 import { FeaturePointList } from "@/components/FeaturePointList"
 import { GitHubRepoStats } from "@/components/GitHubRepoStats"
 import { GlassPanel } from "@/components/GlassPanel"
 import { Layout } from "@/components/Layout"
-import { LazyImage } from "@/components/LazyImage"
 import { PlainDetailPage } from "@/components/PlainDetailPage"
 import { ProjectImageGallery } from "@/components/ProjectImageGallery"
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogTitle,
-} from "@/components/ui/dialog"
 import { type KnowledgeEntry } from "@/data/knowledge"
 import { getGitHubRepoUpdatedDate } from "@/lib/github-repo-stats"
 import { getSemanticTagClassName } from "@/lib/tag-styles"
@@ -46,78 +37,6 @@ const defaultTagClassName =
 
 function getPoints(value: unknown) {
   return Array.isArray(value) ? value.filter((point): point is string => typeof point === "string") : []
-}
-
-function KnowledgeImageWall({
-  images,
-}: {
-  images: NonNullable<KnowledgeEntry["images"]>
-}) {
-  const { t } = useTranslation(["knowledge", "common"])
-  const [previewImage, setPreviewImage] = useState<
-    NonNullable<KnowledgeEntry["images"]>[number] | null
-  >(null)
-
-  return (
-    <>
-      <DetailImageMasonry
-        images={images}
-        renderImage={(image) => {
-          const imageAlt = t(image.altKey)
-
-          return (
-            <button
-              key={image.src}
-              type="button"
-              className="group/wall-image block w-full overflow-hidden rounded-2xl border border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.32)] p-0 text-left shadow-sm backdrop-blur-md transition-colors hover:bg-[rgb(var(--site-surface-rgb)_/_0.48)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/45 dark:border-white/10 dark:bg-white/[0.04] dark:hover:bg-white/[0.08]"
-              onClick={() => setPreviewImage(image)}
-              aria-label={t("imagePreview.open", { image: imageAlt })}
-            >
-              <LazyImage
-                src={image.src}
-                alt={imageAlt}
-                width={image.width}
-                height={image.height}
-                placeholderTitle={imageAlt}
-                loadingLabel={t("common:imageLoading")}
-                brightness={image.brightness}
-                containerClassName="w-full"
-                imageClassName="h-auto w-full object-contain transition-transform duration-300 group-hover/wall-image:scale-[1.015]"
-                style={{ aspectRatio: `${image.width} / ${image.height}` }}
-              />
-            </button>
-          )
-        }}
-      />
-
-      <Dialog
-        open={Boolean(previewImage)}
-        onOpenChange={(open) => {
-          if (!open) {
-            setPreviewImage(null)
-          }
-        }}
-      >
-        <DialogContent className="image-preview-dialog flex items-center justify-center overflow-hidden border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.66)] p-2 shadow-lg backdrop-blur-xl dark:border-white/10 dark:bg-black/45 md:p-4 [&_[data-slot=dialog-close]]:right-3 [&_[data-slot=dialog-close]]:top-3 md:[&_[data-slot=dialog-close]]:right-4 md:[&_[data-slot=dialog-close]]:top-4">
-          <DialogTitle className="sr-only">
-            {previewImage ? t(previewImage.altKey) : t("imagePreview.title")}
-          </DialogTitle>
-          <DialogDescription className="sr-only">
-            {previewImage ? t(previewImage.altKey) : t("imagePreview.title")}
-          </DialogDescription>
-          {previewImage ? (
-            <div className="relative flex h-full min-h-0 w-full min-w-0 items-center justify-center overflow-hidden">
-              <img
-                src={previewImage.src}
-                alt={t(previewImage.altKey)}
-                className="h-full w-full object-contain"
-              />
-            </div>
-          ) : null}
-        </DialogContent>
-      </Dialog>
-    </>
-  )
 }
 
 export function KnowledgeDetailPage({ entries }: KnowledgeDetailPageProps) {
@@ -263,7 +182,11 @@ export function KnowledgeDetailPage({ entries }: KnowledgeDetailPageProps) {
                 translationNamespace="knowledge"
               />
             </div>
-            <KnowledgeImageWall images={entry.images} />
+            <ProjectImageGallery
+              layout="wall"
+              images={entry.images}
+              translationNamespace="knowledge"
+            />
           </section>
         ) : null}
 

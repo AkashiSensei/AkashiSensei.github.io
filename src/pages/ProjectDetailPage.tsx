@@ -1,11 +1,9 @@
-import { useState } from "react"
 import { ArrowUpRight } from "lucide-react"
 import { useTranslation } from "react-i18next"
 import { useParams } from "react-router-dom"
 
 import { BackButton } from "@/components/BackButton"
 import { useAnimationPreference } from "@/components/animation-provider"
-import { DetailImageMasonry } from "@/components/DetailImageMasonry"
 import { FeaturePointList } from "@/components/FeaturePointList"
 import { GitHubRepoStats } from "@/components/GitHubRepoStats"
 import { GlassPanel } from "@/components/GlassPanel"
@@ -13,12 +11,6 @@ import { Layout } from "@/components/Layout"
 import { LazyImage } from "@/components/LazyImage"
 import { PlainDetailPage } from "@/components/PlainDetailPage"
 import { ProjectImageGallery } from "@/components/ProjectImageGallery"
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogTitle,
-} from "@/components/ui/dialog"
 import { type Project } from "@/data/projects"
 import { getProjectPointSections } from "@/lib/project-points"
 import {
@@ -46,84 +38,6 @@ const detailTagClassName =
   "border-[rgb(var(--site-surface-rgb)_/_0.56)] bg-[rgb(var(--site-surface-rgb)_/_0.56)] text-foreground/75 shadow-sm shadow-black/5 backdrop-blur-md dark:border-white/20 dark:bg-white/12 dark:text-foreground/85 dark:shadow-black/20"
 
 const detailSectionClassName = "px-2 sm:px-4"
-
-function ProjectImageWall({
-  images,
-  translationNamespace,
-}: {
-  images: Project["images"]
-  translationNamespace: "projects" | "courseProjects"
-}) {
-  const { t } = useTranslation([translationNamespace, "common"])
-  const [previewImage, setPreviewImage] = useState<
-    NonNullable<Project["images"]>[number] | null
-  >(null)
-
-  if (!images?.length) {
-    return null
-  }
-
-  return (
-    <>
-      <DetailImageMasonry
-        images={images}
-        renderImage={(image) => {
-          const imageAlt = t(image.altKey)
-
-          return (
-            <button
-              key={image.src}
-              type="button"
-              className="group/wall-image block w-full overflow-hidden rounded-2xl border border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.32)] p-0 text-left shadow-sm backdrop-blur-md transition-colors hover:bg-[rgb(var(--site-surface-rgb)_/_0.48)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/45 dark:border-white/10 dark:bg-white/[0.04] dark:hover:bg-white/[0.08]"
-              onClick={() => setPreviewImage(image)}
-              aria-label={t("imagePreview.open", { image: imageAlt })}
-            >
-              <LazyImage
-                src={image.src}
-                alt={imageAlt}
-                width={image.width}
-                height={image.height}
-                placeholderTitle={imageAlt}
-                loadingLabel={t("common:imageLoading")}
-                brightness={image.brightness}
-                containerClassName="w-full"
-                imageClassName="h-auto w-full object-contain transition-transform duration-300 group-hover/wall-image:scale-[1.015]"
-                style={{ aspectRatio: `${image.width} / ${image.height}` }}
-              />
-            </button>
-          )
-        }}
-      />
-
-      <Dialog
-        open={Boolean(previewImage)}
-        onOpenChange={(open) => {
-          if (!open) {
-            setPreviewImage(null)
-          }
-        }}
-      >
-        <DialogContent className="image-preview-dialog flex items-center justify-center overflow-hidden border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.66)] p-2 shadow-lg backdrop-blur-xl dark:border-white/10 dark:bg-black/45 md:p-4 [&_[data-slot=dialog-close]]:right-3 [&_[data-slot=dialog-close]]:top-3 md:[&_[data-slot=dialog-close]]:right-4 md:[&_[data-slot=dialog-close]]:top-4">
-          <DialogTitle className="sr-only">
-            {previewImage ? t(previewImage.altKey) : t("imagePreview.title")}
-          </DialogTitle>
-          <DialogDescription className="sr-only">
-            {previewImage ? t(previewImage.altKey) : t("imagePreview.title")}
-          </DialogDescription>
-          {previewImage ? (
-            <div className="relative flex h-full min-h-0 w-full min-w-0 items-center justify-center overflow-hidden">
-              <img
-                src={previewImage.src}
-                alt={t(previewImage.altKey)}
-                className="h-full w-full object-contain"
-              />
-            </div>
-          ) : null}
-        </DialogContent>
-      </Dialog>
-    </>
-  )
-}
 
 export function ProjectDetailPage({
   projects,
@@ -171,6 +85,7 @@ export function ProjectDetailPage({
   const { projectIntroPoints, personalWorkPoints } = getProjectPointSections(
     t(`items.${project.id}.points`, { returnObjects: true }),
   )
+  const hasSectionSplit = projectIntroPoints.length > 0 && personalWorkPoints.length > 0
   const repoLinks =
     project.links ??
     (project.externalUrl || project.repoName
@@ -296,7 +211,8 @@ export function ProjectDetailPage({
                 translationNamespace={translationNamespace}
               />
             </div>
-            <ProjectImageWall
+            <ProjectImageGallery
+              layout="wall"
               images={project.images}
               translationNamespace={translationNamespace}
             />
@@ -321,9 +237,11 @@ export function ProjectDetailPage({
           <section className="order-2 flex min-w-0 flex-col gap-8 lg:order-1 lg:-mt-1">
             {projectIntroPoints.length ? (
               <div className="flex flex-col gap-3">
-                <h2 className="text-xl font-semibold leading-tight text-foreground/90 dark:text-foreground">
-                  {t("common:details.projectIntro")}
-                </h2>
+                {hasSectionSplit ? (
+                  <h2 className="text-xl font-semibold leading-tight text-foreground/90 dark:text-foreground">
+                    {t("common:details.projectIntro")}
+                  </h2>
+                ) : null}
                 <FeaturePointList
                   points={projectIntroPoints}
                   className="gap-3 text-base"
@@ -333,9 +251,11 @@ export function ProjectDetailPage({
 
             {personalWorkPoints.length ? (
               <div className="flex flex-col gap-3">
-                <h2 className="text-xl font-semibold leading-tight text-foreground/90 dark:text-foreground">
-                  {t("common:details.personalWork")}
-                </h2>
+                {hasSectionSplit ? (
+                  <h2 className="text-xl font-semibold leading-tight text-foreground/90 dark:text-foreground">
+                    {t("common:details.personalWork")}
+                  </h2>
+                ) : null}
                 <FeaturePointList
                   points={personalWorkPoints}
                   className="gap-3 text-base"

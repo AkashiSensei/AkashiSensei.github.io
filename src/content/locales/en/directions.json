@@ -1,35 +1,39 @@
 {
   "title": "Interests",
-  "subtitle": "Directions I am building, exploring, or simply curious about.",
+  "subtitle": "What I work on, explore, or find interesting.",
   "viewAll": "View All",
   "items": {
     "full-stack": {
       "title": "AI Full Stack Engineer",
-      "summary": "An AI-era full stack engineer integrating requirements analysis, architecture design, development, review, and testing."
+      "summary": "Building with AI across requirements, architecture, development, review, and testing."
+    },
+    "system-diagnostics": {
+      "title": "Systems Diagnostics & Optimization",
+      "summary": "Diagnosing and tuning operating systems and cloud-native platforms using source code, logs, debuggers, and profiling. I reproduce issues and test hypotheses through experiments to guide fixes and improve cluster operations."
     },
     "cloud-computing": {
       "title": "Cloud Computing",
-      "summary": "Applying traditional technologies such as Kubernetes to AI-era computing infrastructure, with the goal of providing high-quality user experiences."
+      "summary": "Applying Kubernetes and related technologies to AI infrastructure for a better user experience."
     },
     "ai-infra": {
       "title": "AI Infra",
-      "summary": "A new direction for our project team in the AI era, mainly focused on the layers between accelerator kernels and training/inference frameworks, while also staying interested in lower-level operators, kernels, and hardware."
+      "summary": "Our team's new focus spans accelerator kernels to training and inference frameworks. I'm also interested in lower-level operators and hardware."
     },
     "fde": {
       "title": "Forward Deployed Engineer",
-      "summary": "Bringing frontier technologies into real production work and reshaping problem-solving approaches from an AI-native perspective."
+      "summary": "Bringing frontier technologies into production and rethinking solutions with AI at the core."
     },
     "startup": {
       "title": "Startup",
-      "summary": "Discovering new needs, or finding ways to move large things with small leverage. I hope to step out of my comfort zone and work on more challenging things. It has not started yet, and I look forward to meeting like-minded friends."
+      "summary": "Finding unmet needs and making a big impact with small resources. I hope to take on new challenges with like-minded people—still an ambition for now."
     },
     "finance-quant": {
       "title": "Investment & Trading",
-      "summary": "I do not yet have much spare time or capital beyond a student's modest savings, so I am only doing simple personal finance for now, but I am interested in stocks and quantitative trading."
+      "summary": "With limited time and a student budget, I keep personal finance simple for now, while staying curious about stocks and quantitative trading."
     },
     "creative-design": {
       "title": "Creative Design",
-      "summary": "Since high school, I have enjoyed tinkering with software such as PS, AE, and C4D to make posters and videos, and I still return to these tools from time to time."
+      "summary": "I've enjoyed making posters and videos with PS, AE, and C4D since high school, and still tinker with them occasionally."
     }
   }
 }

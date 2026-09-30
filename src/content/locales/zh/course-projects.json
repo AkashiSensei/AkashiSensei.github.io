@@ -72,7 +72,8 @@
         "projectIntro": [
           "以 C、Makefile、Shell 和 Python 组织实验代码与辅助脚本，便于复现实验流程。",
           "面向并行程序设计课程中的典型问题，使用 OpenMP、pthread、MPI 等经典并行编程模型，实现各种并行算法，并分析其性能表现。",
-          "实现朴素版本与共享内存优化版本的 CUDA 矩阵乘法，并结合 Nsight Systems、Nsight Compute 分析性能表现，从内存访问、Warp 状态和流水线利用率等维度理解 GPU 执行机制。"
+          "实现朴素版本与共享内存优化版本的 CUDA 矩阵乘法，并结合 Nsight Systems、Nsight Compute 分析性能表现，从内存访问、Warp 状态和流水线利用率等维度理解 GPU 执行机制。",
+          "对照 CUDA 源码、SASS 与 Nsight Compute 实测指令，分析访存、乘加、同步及谓词执行，梳理 kernel 参数与线程索引的获取方式，并结合指令序列解释共享内存访问与同步瓶颈。"
         ],
         "personalWork": []
       }
@@ -147,7 +148,7 @@
     },
     "os2023": {
       "title": "MOS 操作系统实验",
-      "summary": "北航《操作系统》实验，分为 6 个大实验，每次实验包括课下代码补全和课上代码补全/新功能实现考试。",
+      "summary": "北航《操作系统》实验，涵盖页式内存管理、进程管理、进程间通信、异常处理、文件系统和 Shell 等基本操作系统功能。分为 6 个大实验，每次包括课下代码补全和课上代码补全/新功能实现考试。",
       "images": {
         "labGrades": "实验成绩",
         "lab2MainContent": "Lab2 主要内容",
@@ -160,11 +161,12 @@
       },
       "points": {
         "projectIntro": [
-          "大量阅读操作系统代码，深入理解操作系统工作过程。",
+          "作为加分项，在无 AI 辅助下查阅 CPU 文档、研究页表结构，使用 MIPS 汇编、$k0/$k1 寄存器与协处理器实现 TLB 快重填，减少 TLB miss 时的上下文保存开销；通过自测发现并修复 ASID 复用错误，在频繁 TLB miss 的测试场景下将总耗时降至约 1/4。",
+          "担任助教期间，发现 syscall_write_dev 写入 MALTA 外设时系统行为异常，追溯至 memcpy 的实现缺陷并修复，支持系统向 QEMU 和 MIPS 4Kc 迁移。",
+          "担任助教期间，通过阅读源码定位并修复文件系统盘块数计算错误，解决删除文件后盘块未完全释放的问题，同时精简冗余的删除逻辑。",
+          "几乎完整阅读整个操作系统的源码与构建文件，包括头文件、C 代码、汇编代码、Makefile 和链接器脚本；反复阅读核心逻辑，梳理并理解各模块的调用流程。",
           "不断给自己提出问题、回答问题，记录下大量实验笔记。",
-          "通过 GXemul 模拟 MIPS R3000 处理器，C 和 MIPS 汇编语言实现。",
-          "包含页式内存管理、进程管理、进程间通信、异常处理、文件系统和 Shell 等基本操作系统功能。",
-          "作为加分项，我研究页表结构，操作 $k0 $k1 寄存器和协处理器，提供了页表快重填的完整实现，减少了 TLB miss 时的进程上下文保存，特定情况下能获得约 4 倍的执行效率提升。"
+          "通过 GXemul 模拟 MIPS R3000 处理器，C 和 MIPS 汇编语言实现。"
         ],
         "personalWork": []
       }
@@ -206,35 +208,6 @@
           "使用 Python 进行数据预处理与分析，指导特征工程。",
           "基于领域知识，综合了多个关键风险因素，创建了交叉特征和基本风险特征。",
           "使用 XGBoost 构建风险预测模型，并使用 Optuna 进行超参数搜索。"
-        ],
-        "personalWork": []
-      }
-    },
-    "kernel-analysis-thesis": {
-      "title": "本科毕业设计",
-      "summary": "《面向智能计算任务的细粒度性能分析技术研究与实现》，北航软件工程本科毕业设计项目。",
-      "images": {
-        "architectureWorkflow": "系统架构与流程图",
-        "backgroundSignificance": "课题背景与意义",
-        "researchStatus": "国内外研究现状分析",
-        "modelingTaxonomy": "性能建模分类方法",
-        "dataFlow": "细粒度性能预测模型数据流动",
-        "kernelLevelComputationGraph": "Kernel 级计算图",
-        "operatorKernelMapping": "算子到 GPU Kernel 映射分析流程",
-        "analysisTool": "自动化细粒度性能分析工具",
-        "nsysTimelineNvtx": "Nsys 时间线分析 with NVTX",
-        "ncuKernelMetrics": "NCU Kernel 指标分析",
-        "ncuKernelResources": "NCU Kernel 资源占用",
-        "ruleBasedPredictorFlow": "规则库核心构建流程",
-        "yolov8GridPrediction": "YOLOv8 Grid 大小预测能力",
-        "yolov8ThroughputPrediction": "YOLOv8 GPU 计算吞吐利用率预测能力",
-        "yolov8nRuntimeVariance": "YOLOv8n Kernel 运行时性能数据波动"
-      },
-      "points": {
-        "projectIntro": [
-          "对深度模型计算图进行拆解，将其中算子映射到 GPU kernel 执行序列中的具体 kernel，生成细粒度算子负载图，或称内核级计算图，并研究探索算子到kernel映射关系的规律和影响因素，为建模提供指导与依据。",
-          "构建任务多维度特征预测模型，捕获智能计算任务在精细粒度上的计算与访存特征，并通过实验验证其效果，为后续干扰分析和任务调度提供支持。",
-          "开发自动化工具，尽可能的提高性能分析以及建模流程的自动化程度，提高分析与建模效率。"
         ],
         "personalWork": []
       }

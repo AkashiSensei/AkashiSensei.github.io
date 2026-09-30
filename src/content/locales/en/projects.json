@@ -33,32 +33,36 @@
   },
   "items": {
     "npu-computing-forecast": {
-      "title": "Compute Forecasting for Hybrid Training and Inference Deployment",
-      "summary": "A Huawei collaboration project that predicts Ascend NPU resource usage for recommendation-model and large-model training/inference, supporting co-location and higher utilization.",
+      "title": "Ascend NPU Resource Prediction",
+      "summary": "A Huawei collaboration on reproducible experiments, monitoring, and resource prediction for recommendation and language models on Ascend NPUs, supporting workload co-location and better cluster utilization.",
       "images": {
         "cpuMetricsComparison": "CPU metrics comparison chart",
         "predictorInterface": "Predictor interface",
-        "qwenInferenceResourceUsage": "Qwen inference resource usage chart"
+        "qwenInferenceResourceUsage": "Qwen inference resource usage chart",
+        "microbatchThroughputMemory": "Microbatch throughput and memory trade-offs",
+        "dataOrderAllocatorComparison": "Memory comparison across data orders and allocator settings",
+        "llmFinetuningPredictor": "LLM fine-tuning resource predictor",
+        "recommendationPredictorArchitecture": "Recommendation workload predictor architecture"
       },
       "points": {
         "projectIntro": [
-          "Uses XGBoost to estimate NPU AI Core, Vector Core, HBM, and other resource usage from recommendation-model workload features.",
-          "Uses LightGBM to predict large-model inference performance, including TTFT, TPOT, KV Cache, and the hardware resource usage above.",
-          "Explores GNNs for ONNX/PyTorch recommendation-model structures, aiming to generalize to unseen models.",
-          "Continuing to push forward work related to large models..."
+          "Explores resource prediction methods using task configuration, model structure, and data features to estimate hardware usage, TTFT/TPOT, and KV cache. Investigates GNNs to improve generalization through model structure.",
+          "Studies real training and inference workloads to understand Ascend hardware and its software ecosystem, reporting firsthand resource and performance issues to Huawei."
         ],
         "personalWork": [
-          "Led a data collection framework covering TorchRec, DeepCTR, Torch-RecHub, RecSDK, and other recommendation stacks.",
-          "Implemented configuration parsing, validation, and version management for safe large-scale experiments.",
-          "Implemented multiple NPU-side monitoring tools based on npu-smi, npu-exporter, DCMI programming interfaces, and related components.",
-          "Implemented CPU-side monitoring with vmstat, sar, cgroup, and lxcfs, using cross-validation for accurate container data.",
-          "Built hands-on understanding of Ascend NPU architecture, workload behavior, and hardware debugging."
+          "Independently built a configuration-driven data collection framework for TorchRec, DeepCTR, Torch-RecHub, and RecSDK, extending it to LLaMA Factory, vLLM, and multiple NPUs.",
+          "Isolated data-order-driven memory peaks through controlled experiments, distinguished active from reserved memory, and validated expandable segments across models and tuning methods.",
+          "Built NPU monitoring with npu-smi, npu-exporter, and DCMI; cross-checked container CPU/memory with vmstat, sar, cgroup, and lxcfs, preserving raw traces.",
+          "Aligned per-rank training events with monitoring and separated initialization from training. Found and fixed ineffective gradient-checkpointing settings to protect data validity.",
+          "Built XGBoost predictors for recommendation workloads and LLM fine-tuning, estimating HBM, compute, and bandwidth usage from configuration, structure, and data features.",
+          "Compared features and evaluation splits, exploring direct memory prediction and corrections to static estimates. Some metrics reached R² 0.96+ for new configurations of known models; unseen models were evaluated separately.",
+          "Reported long-term observations to Huawei, including slow DLRM first epochs and fluctuating memory high-water marks."
         ]
       }
     },
     "crater": {
-      "title": "Crater Cloud-Native AI Platform",
-      "summary": "RAIDS Lab's Kubernetes AI training and inference platform for teams sharing GPU clusters. It integrates resource requests, dev environments, training jobs, inference services, monitoring, and related workflows.",
+      "title": "Crater Heterogeneous AI Platform",
+      "summary": "RAIDS Lab's Kubernetes platform for shared AI clusters, unifying scheduling, development environments, training and serving, images, data, and resource governance.",
       "images": {
         "acceleratorManagement": "Accelerator management interface",
         "architectureDiagram": "System architecture diagram",
@@ -66,24 +70,28 @@
         "firstStableRelease": "First stable release interface",
         "imageList": "Image list interface",
         "jobManagement": "Job management interface",
-        "nodeManagement": "Node management interface"
+        "nodeManagement": "Node management interface",
+        "gpuHoardingDetection": "GPU hoarding detection and analysis",
+        "cephTroubleshooting": "Ceph storage troubleshooting",
+        "backendLogDiagnostics": "Backend logs and slow SQL diagnostics",
+        "teamDebugging": "Team debugging session"
       },
       "points": {
         "projectIntro": [
-          "Our deployment manages 280+ accelerators and 5,600+ CPU cores, with 200+ jobs created per day for 600+ users.",
-          "Replaces the lab's previous Slurm tooling with a polished GUI for teachers and students.",
-          "Also serves as a systems research platform for scheduling algorithms, distributed storage, and related experiments.",
-          "Implemented Crater's own admission controller, working with Kubernetes, the Volcano scheduler, and self-developed algorithms to schedule user workloads fairly and efficiently.",
-          "Supports snapshots and multiple image-building workflows with Buildx, Envd, and related tools.",
-          "Supports NFS, Ceph, and large user/shared datasets for reuse across images.",
-          "Provides model and dataset download/management to reduce waiting time and storage pressure.",
+          "Our deployment serves 600+ users with 280+ accelerators, 5,600+ CPU cores, and 200+ daily jobs. Enterprise adoption has brought collaboration invitations; some components are deliverables under China's National Key R&D Program.",
+          "Combines a custom admission controller with Volcano scheduling, quotas, backfilling, CephFS limits, and bandwidth controls. Plans to migrate admission control to a Volcano extender integration.",
+          "Detects GPU-hoarding scripts that hold resources for long periods without doing meaningful work, helping curb misuse.",
+          "Replaces the lab's Slurm tooling with a web console and supports systems research in scheduling and distributed storage.",
+          "Supports snapshots, Buildx/Envd image builds, NFS/Ceph storage, and shared model and dataset management for reusable environments and assets.",
           "Mostly completed an embedded Q&A agent to help users query and locate problems faster."
         ],
         "personalWork": [
-          "As a **core project maintainer**, actively shaped product direction, requirements analysis and specifications, implementation reviews, and led project interns through hands-on delivery.",
-          "Developed new features with AI, reported and fixed bugs, improved UX, and reviewed PRs to deliver a better experience for platform users.",
-          "Built a complete set of development Skills for the project, capturing constraints and experience to help AI developers write code, author documentation, and manage releases more effectively.",
-          "Faced real **user needs** directly and built practical engineering problem-solving experience."
+          "As a **core maintainer**, helped shape requirements and designs, reviewed 40+ PRs, distinguished blockers from follow-ups, and mentored new contributors.",
+          "Diagnosed production issues involving RDMA devices, CephFS, slow jobs, container startup, and cluster egress, and helped drive fixes.",
+          "Early on, built and refined Jupyter, CUDA, and PyTorch images for the platform, simplifying setup and improving out-of-the-box usability.",
+          "Designed and built the Crater CLI framework and Agent Skills from scratch for users, scripts, and AI agents.",
+          "Turned user feedback into features and fixes, improving workflows, error messages, and usability.",
+          "Created development Skills for code, documentation, and releases, capturing engineering constraints, review lessons, and verification requirements."
         ]
       }
     },
@@ -161,6 +169,35 @@
           "Maintained AI prompts and project specs that capture purpose, design principles, and constraints, so long-term iteration stays coherent.",
           "Used AI to generate line art, light/dark concepts, and video, then recovered the camera path for the homepage FPV fly-through. The footage carries the space; copy, language, and theme stay in the site, so they can change without remaking the video. Gained experience in the problems of getting generated media into a product.",
           "Separated presentation from content: the same components can render different entries, and one entry can appear on multiple pages, making changes and extensions easier."
+        ],
+        "personalWork": []
+      }
+    },
+    "kernel-analysis-thesis": {
+      "title": "GPU Operator Mapping and Fine-Grained Resource Prediction",
+      "summary": "Studies how deep learning workloads use GPUs to understand resource needs and inform more efficient sharing. My BUAA Software Engineering undergraduate thesis, Research and Implementation of Fine-Grained Performance Analysis Techniques for Intelligent Computing Tasks.",
+      "images": {
+        "architectureWorkflow": "System architecture and workflow",
+        "backgroundSignificance": "Research background and significance",
+        "researchStatus": "Domestic and international research status analysis",
+        "modelingTaxonomy": "Performance modeling taxonomy",
+        "dataFlow": "Fine-grained performance prediction model data flow",
+        "kernelLevelComputationGraph": "Kernel-level computation graph",
+        "operatorKernelMapping": "Operator-to-GPU-kernel mapping analysis flow",
+        "analysisTool": "Automated fine-grained performance analysis tool",
+        "nsysTimelineNvtx": "Nsys timeline analysis with NVTX",
+        "ncuKernelMetrics": "NCU kernel metric analysis",
+        "ncuKernelResources": "NCU kernel resource usage",
+        "ruleBasedPredictorFlow": "Core rule-base construction flow",
+        "yolov8GridPrediction": "YOLOv8 Grid size prediction capability",
+        "yolov8ThroughputPrediction": "YOLOv8 GPU compute throughput utilization prediction capability",
+        "yolov8nRuntimeVariance": "YOLOv8n kernel runtime performance variance"
+      },
+      "points": {
+        "projectIntro": [
+          "Mapped ONNX operators to GPU kernel sequences, built kernel-level computation graphs, and studied mapping patterns to inform resource prediction.",
+          "Built a rule-based model to predict kernels and estimate compute and memory usage at low cost. Evaluated predictions to support future interference analysis and scheduling.",
+          "Automated batch profiling, trace parsing, and Nsight Compute data integration, with tools for mapping analysis, rule-model construction, and visualization."
         ],
         "personalWork": []
       }

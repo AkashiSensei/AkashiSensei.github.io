@@ -33,32 +33,36 @@
   },
   "items": {
     "npu-computing-forecast": {
-      "title": "训推混合部署场景下的算力预测",
-      "summary": "与华为的合作项目。面向在昇腾 NPU 上运行的推荐模型和大模型的训练和推理任务，预测其硬件资源占用情况，为任务共置、提高资源利用率提供支持。",
+      "title": "Ascend NPU 训推算力预测",
+      "summary": "与华为合作，面向昇腾 NPU 上的推荐模型与大模型训推任务，构建可复现实验、资源观测与预测方法，为任务共置和集群资源利用率提升提供参考。",
       "images": {
         "cpuMetricsComparison": "CPU 指标对比图",
         "predictorInterface": "预测器界面截图",
-        "qwenInferenceResourceUsage": "Qwen 推理资源占用图"
+        "qwenInferenceResourceUsage": "Qwen 推理资源占用图",
+        "microbatchThroughputMemory": "Microbatch 扩展的吞吐收益与显存代价",
+        "dataOrderAllocatorComparison": "数据顺序与分配器策略的显存对照实验",
+        "llmFinetuningPredictor": "大模型微调资源预测界面",
+        "recommendationPredictorArchitecture": "推荐任务资源预测器架构"
       },
       "points": {
         "projectIntro": [
-          "使用 XGBoost 构建预测模型，通过推荐模型训推任务配置和特征，预测训推任务的 NPU AI Core、Vector Core、HBM 等资源占用情况。",
-          "使用 LightGBM 预测大模型推理任务性能表现，目标包括 TTFT、TPOT、KV Cache 以及上述硬件资源占用情况。",
-          "探索使用 GNN 分析 ONNX 或 PyTorch 表示的推荐模型结构，以提供在未见过的推荐模型上的泛化能力。",
-          "正在继续推进对于大模型方面的工作……"
+          "探索多种资源预测方法。以任务配置、模型结构与数据特征为输入，预测硬件资源占用及 TTFT、TPOT、KV Cache 等指标。尝试利用 GNN 建模模型结构以改善泛化能力。",
+          "持续观察和研究真实训推任务中的资源与性能表现，深入了解昇腾 NPU 设备及其软件生态，将实践中发现的一手问题反馈给华为。"
         ],
         "personalWork": [
-          "主导实现推荐模型数据采集框架，适配基于 TorchRec、DeepCTR、Torch-RecHub、RecSDK 等不同推荐栈的训推 workload。",
-          "实现配置解析、校验、版本管理功能，通过配置安全快速地驱动大规模实验。",
-          "实现依赖 npu-smi、npu-exporter、DCMI 编程接口等的多套 NPU 侧监控工具。",
-          "实现依赖 vmstat、sar、cgroup 并结合 lxcfs 等的多套 CPU 侧资源监控工具，交叉验证确保容器内数据采集的准确性。",
-          "理解昇腾 NPU 的结构以及与 NVIDIA GPU 的不同，建立对 NPU 在各种任务中性能表现的认识，积累调试昇腾硬件的经验。"
+          "独立实现配置驱动的训推数据采集框架，适配 TorchRec、DeepCTR、Torch-RecHub、RecSDK，并扩展至 LLaMA Factory 微调、vLLM 推理与多卡实验。",
+          "设计数据顺序与分配器配置的对照实验，区分活跃张量与缓存预留显存，定位动态长度输入引起的显存高水位波动，并在多种模型和微调方式下验证可扩展分配段的改善效果。",
+          "通过 npu-smi、npu-exporter、DCMI 观测 NPU，结合 vmstat、sar、cgroup 与 lxcfs 交叉校验容器 CPU 和内存指标，保留原始 trace 供分析与特征重提取。",
+          "校验配置是否真实控制执行，对齐各 rank 训练事件与监控时序，区分初始化和训练阶段；发现并修复梯度检查点配置未生效等问题，避免错误实验条件进入建模数据。",
+          "使用 XGBoost 预测推荐模型任务与大模型微调的 HBM、AI Core、Vector Core、带宽利用率等资源指标，结合任务配置、模型结构与数据分布设计特征。",
+          "对比不同特征组合与数据划分，探索直接预测显存及基于静态估算的误差修正方案；在已覆盖模型的新配置预测中，部分指标 R² 达到 0.96 以上，并单独评估未见模型的泛化误差。",
+          "向华为反馈 DLRM 首 epoch 耗时异常、显存高水位波动等长期观察。"
         ]
       }
     },
     "crater": {
-      "title": "Crater 云原生 AI 平台",
-      "summary": "RAIDS Lab 的 Kubernetes AI 训练与推理平台，服务需要共享 GPU 集群的实验室与团队，把算力申请、开发环境、训练任务、推理服务和监控等整合到统一平台体验中。",
+      "title": "Crater 异构云原生 AI 平台",
+      "summary": "RAIDS Lab 基于 Kubernetes 的异构 AI 算力平台，面向共享集群的科研与企业团队，统一作业调度、开发环境、训推服务、镜像与数据管理，以及资源治理和监控。",
       "images": {
         "acceleratorManagement": "加速卡管理界面截图",
         "architectureDiagram": "系统架构图",
@@ -66,24 +70,28 @@
         "firstStableRelease": "第一个正式版界面截图",
         "imageList": "镜像列表界面截图",
         "jobManagement": "作业管理界面截图",
-        "nodeManagement": "节点管理界面截图"
+        "nodeManagement": "节点管理界面截图",
+        "gpuHoardingDetection": "恶意占卡脚本检测与分析",
+        "cephTroubleshooting": "Ceph 存储故障排查",
+        "backendLogDiagnostics": "后端日志与慢 SQL 排查",
+        "teamDebugging": "团队协作调试现场"
       },
       "points": {
         "projectIntro": [
-          "我们部署的 Crater 纳管共 280+ 各厂商加速卡，5600+ CPU 核，日均创建 200+ 作业。已成为 600+ 同学老师的主力甚至唯一算力平台。",
-          "替代之前在实验室中使用的 Slurm 工具，为老师同学提供便捷美观的 GUI，助力实验室的科研和工程工作。",
-          "其本身也已成为系统方向的研究平台。支持如调度算法的开发、优化和实验；分布式存储系统的优化和实验等等。",
-          "实现 Crater 自己的接纳控制器，配合 Kubernetes 的 Volcano 调度器以及自研算法，公平高效的调度用户的任务。",
-          "支持快照保存，并使用 Buildx、Envd 等为用户提供多种镜像构建方式，方便用户直接在平台上快速创建所需的任务镜像。",
-          "支持 NFS、Ceph 等各种存储系统，管理并保存大量用户数据或共享数据，方便用户在不同镜像中快速保存数据。",
-          "提供模型、数据集下载和管理功能，方便不同用户共享使用相同的模型和数据，减少用户等待的同时减轻存储压力。",
+          "内部部署纳管 280+ 各厂商加速卡、5600+ CPU 核，日均创建 200+ 作业，服务 600+ 师生；已在多家企业落地并收到合作邀约，部分组件为国家重点研发计划交付物。",
+          "通过自研接纳控制器与 Volcano 协同调度，结合账户配额、排队与补位机制，以及 CephFS 空间限额和带宽控制，改善共享集群中的资源分配；后续计划将接纳控制迁移至 Volcano extender 集成方式。",
+          "支持恶意占卡检测，识别长时间占用 GPU 却未执行实际任务的脚本，减少算力资源滥用。",
+          "替代实验室原有 Slurm 工具，提供统一的 Web 操作入口；平台同时支持调度算法、分布式存储等系统研究与实验。",
+          "支持环境快照与 Buildx、Envd 等镜像构建方式，结合 NFS、Ceph 存储和模型、数据集下载管理，让用户复用开发环境与数据资产。",
           "已基本完成内嵌问答智能体的开发，帮助用户快速查询、定位问题，减少用户在平台上的学习成本。"
         ],
         "personalWork": [
-          "作为项目**核心管理者**，积极参与项目发展方向决策，需求分析与规约，实现方案评定，并带领项目实习生完成具体工作。",
-          "使用 AI 开发新功能，汇报并修复 bug、优化体验、审查 PR，为平台用户交付更优秀的使用体验。",
-          "为项目搭建了完整的全套开发 Skills，沉淀开发约束、经验，帮助 AI 开发者更好的开发项目代码、撰写项目文档、管理项目分发。",
-          "直面真实**用户需求**，锻炼和积累解决实际工程问题的能力和经验。"
+          "作为项目**核心维护者**，参与规划、需求分析与方案评审；累计审查 40+ PR，区分阻塞问题与后续改进项，指导新成员完成开发与交付。",
+          "参与生产集群运维，定位并推动修复 RDMA 设备识别、CephFS 故障、作业变慢、容器创建失败及集群出网异常等问题。",
+          "在项目早期制作并持续打磨 Jupyter、CUDA、PyTorch 等开发与训练环境镜像，完成平台适配，改善用户开箱使用与环境配置体验。",
+          "从零设计并实现 Crater CLI 框架与配套 Agent Skills，为用户、脚本和 AI Agent 提供平台操作接口。",
+          "从一线用户反馈出发分析需求、开发功能与修复缺陷，持续改进操作流程、错误提示和平台体验。",
+          "搭建覆盖代码、文档与发布的开发 Skills，将工程约束、评审经验和验证要求沉淀为可复用的 AI 协作规范。"
         ]
       }
     },
@@ -161,6 +169,35 @@
           "同步维护面向 AI 的提示与项目规格，沉淀目标、设计原则与约束，保证长期迭代的连贯性和一致性。",
           "使用 AI 生成线稿、深浅色概念图与视频，再对视频做摄像机分析，用轨迹制作首页穿越机飞跃效果；影像只负责空间，文案、语言和主题仍由网站渲染，换内容不必重做视频，积累了将生成影像用于产品时处理各类问题的经验。",
           "将展示系统与内容分离：同一套组件可复用到不同内容，同一条内容也可在多个页面引用，便于修改和扩展。"
+        ],
+        "personalWork": []
+      }
+    },
+    "kernel-analysis-thesis": {
+      "title": "GPU 算子映射与细粒度资源预测",
+      "summary": "研究深度学习模型运行时如何使用 GPU，帮助理解不同计算任务的资源需求，为更高效地共享算力提供参考。北航软件工程本科毕业设计，论文题目为《面向智能计算任务的细粒度性能分析技术研究与实现》。",
+      "images": {
+        "architectureWorkflow": "系统架构与流程图",
+        "backgroundSignificance": "课题背景与意义",
+        "researchStatus": "国内外研究现状分析",
+        "modelingTaxonomy": "性能建模分类方法",
+        "dataFlow": "细粒度性能预测模型数据流动",
+        "kernelLevelComputationGraph": "Kernel 级计算图",
+        "operatorKernelMapping": "算子到 GPU Kernel 映射分析流程",
+        "analysisTool": "自动化细粒度性能分析工具",
+        "nsysTimelineNvtx": "Nsys 时间线分析 with NVTX",
+        "ncuKernelMetrics": "NCU Kernel 指标分析",
+        "ncuKernelResources": "NCU Kernel 资源占用",
+        "ruleBasedPredictorFlow": "规则库核心构建流程",
+        "yolov8GridPrediction": "YOLOv8 Grid 大小预测能力",
+        "yolov8ThroughputPrediction": "YOLOv8 GPU 计算吞吐利用率预测能力",
+        "yolov8nRuntimeVariance": "YOLOv8n Kernel 运行时性能数据波动"
+      },
+      "points": {
+        "projectIntro": [
+          "分析 ONNX 算子与 GPU kernel 执行序列的对应关系，构建内核级计算图，研究映射规律及其影响因素，为资源预测提供依据。",
+          "基于算子到 kernel 的映射规律构建规则模型，低成本预测 ONNX 算子所用的 kernel，并估计其计算与访存资源占用；通过实验评估预测效果，为后续干扰分析和任务调度提供参考。",
+          "开发配套自动化工具，批量采集性能数据、解析执行 trace 并整合 Nsight Compute 指标，支持算子与 kernel 映射分析、规则模型构建及结果可视化，提高实验与分析效率。"
         ],
         "personalWork": []
       }

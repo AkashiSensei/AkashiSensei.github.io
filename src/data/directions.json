@@ -5,9 +5,9 @@
     "summaryKey": "directions.items.full-stack.summary"
   },
   {
-    "id": "fde",
-    "titleKey": "directions.items.fde.title",
-    "summaryKey": "directions.items.fde.summary"
+    "id": "system-diagnostics",
+    "titleKey": "directions.items.system-diagnostics.title",
+    "summaryKey": "directions.items.system-diagnostics.summary"
   },
   {
     "id": "cloud-computing",
@@ -18,6 +18,11 @@
     "id": "ai-infra",
     "titleKey": "directions.items.ai-infra.title",
     "summaryKey": "directions.items.ai-infra.summary"
+  },
+  {
+    "id": "fde",
+    "titleKey": "directions.items.fde.title",
+    "summaryKey": "directions.items.fde.summary"
   },
   {
     "id": "creative-design",

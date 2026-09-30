@@ -1,11 +1,9 @@
-import { useState } from "react"
 import { ArrowUpRight } from "lucide-react"
 import { useTranslation } from "react-i18next"
 import { useParams } from "react-router-dom"
 
 import { BackButton } from "@/components/BackButton"
 import { useAnimationPreference } from "@/components/animation-provider"
-import { DetailImageMasonry } from "@/components/DetailImageMasonry"
 import { FeaturePointList } from "@/components/FeaturePointList"
 import { GitHubRepoStats } from "@/components/GitHubRepoStats"
 import { GlassPanel } from "@/components/GlassPanel"
@@ -13,12 +11,6 @@ import { Layout } from "@/components/Layout"
 import { LazyImage } from "@/components/LazyImage"
 import { PlainDetailPage } from "@/components/PlainDetailPage"
 import { SmallToolImageGallery } from "@/components/SmallToolImageGallery"
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogTitle,
-} from "@/components/ui/dialog"
 import { type SmallTool } from "@/data/tools"
 import { getSemanticTagClassName } from "@/lib/tag-styles"
 import { cn } from "@/lib/utils"
@@ -38,82 +30,6 @@ const detailSectionClassName = "px-2 sm:px-4"
 
 function getPoints(value: unknown) {
   return Array.isArray(value) ? value.filter((point): point is string => typeof point === "string") : []
-}
-
-function SmallToolImageWall({
-  images,
-}: {
-  images: NonNullable<SmallTool["screenshots"]>
-}) {
-  const { t } = useTranslation(["tools", "common"])
-  const [previewImage, setPreviewImage] = useState<
-    NonNullable<SmallTool["screenshots"]>[number] | null
-  >(null)
-  const getImageTitle = (
-    image: NonNullable<SmallTool["screenshots"]>[number],
-  ) => image.titleKey ? t(image.titleKey) : image.alt
-
-  return (
-    <>
-      <DetailImageMasonry
-        images={images}
-        renderImage={(image) => (
-          <button
-            key={image.src}
-            type="button"
-            className="group/wall-image block w-full overflow-hidden rounded-2xl border border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.32)] p-0 text-left shadow-sm backdrop-blur-md transition-colors hover:bg-[rgb(var(--site-surface-rgb)_/_0.48)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/45 dark:border-white/10 dark:bg-white/[0.04] dark:hover:bg-white/[0.08]"
-            onClick={() => setPreviewImage(image)}
-            aria-label={getImageTitle(image)}
-          >
-            <LazyImage
-              src={image.src}
-              alt={image.alt}
-              width={image.width}
-              height={image.height}
-              placeholderTitle={image.alt}
-              loadingLabel={t("common:imageLoading")}
-              brightness={image.brightness}
-              containerClassName="w-full"
-              imageClassName="h-auto w-full object-contain transition-transform duration-300 group-hover/wall-image:scale-[1.015]"
-              style={{ aspectRatio: `${image.width} / ${image.height}` }}
-            />
-          </button>
-        )}
-      />
-
-      <Dialog
-        open={Boolean(previewImage)}
-        onOpenChange={(open) => {
-          if (!open) {
-            setPreviewImage(null)
-          }
-        }}
-      >
-        <DialogContent className="image-preview-dialog flex flex-col gap-2 overflow-hidden border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.66)] p-2 shadow-lg backdrop-blur-xl dark:border-white/10 dark:bg-black/45 md:p-4 [&_[data-slot=dialog-close]]:right-3 [&_[data-slot=dialog-close]]:top-3 md:[&_[data-slot=dialog-close]]:right-4 md:[&_[data-slot=dialog-close]]:top-4">
-          <DialogTitle className="sr-only">
-            {previewImage ? getImageTitle(previewImage) : t("common:imageLoading")}
-          </DialogTitle>
-          <DialogDescription className="sr-only">
-            {previewImage ? getImageTitle(previewImage) : t("common:imageLoading")}
-          </DialogDescription>
-          {previewImage ? (
-            <>
-              <div className="relative flex min-h-0 w-full min-w-0 flex-1 items-center justify-center overflow-hidden">
-                <img
-                  src={previewImage.src}
-                  alt={previewImage.alt}
-                  className="h-full w-full object-contain"
-                />
-              </div>
-              <p className="h-8 shrink-0 truncate px-8 text-center text-lg font-medium leading-8 text-foreground/65 dark:text-white/90">
-                {getImageTitle(previewImage)}
-              </p>
-            </>
-          ) : null}
-        </DialogContent>
-      </Dialog>
-    </>
-  )
 }
 
 export function SmallToolDetailPage({ tools }: SmallToolDetailPageProps) {
@@ -253,7 +169,7 @@ export function SmallToolDetailPage({ tools }: SmallToolDetailPageProps) {
             <div className="overflow-hidden rounded-2xl border border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.32)] shadow-sm backdrop-blur-md dark:border-white/10 dark:bg-white/[0.04] md:hidden">
               <SmallToolImageGallery cardScrollable images={tool.screenshots} />
             </div>
-            <SmallToolImageWall images={tool.screenshots} />
+            <SmallToolImageGallery layout="wall" images={tool.screenshots} />
           </section>
         ) : tool.screenshot ? (
           <section className={detailSectionClassName}>
