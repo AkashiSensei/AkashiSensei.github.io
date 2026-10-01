@@ -1,3 +1,4 @@
+import { RelatedQuestions } from "@/components/RelatedQuestions"
 import { ArrowUpRight } from "lucide-react"
 import { useTranslation } from "react-i18next"
 import { useParams } from "react-router-dom"
@@ -13,6 +14,7 @@ import { PlainDetailPage } from "@/components/PlainDetailPage"
 import { ProjectImageGallery } from "@/components/ProjectImageGallery"
 import { type Project } from "@/data/projects"
 import { getProjectPointSections } from "@/lib/project-points"
+import { projectDetailHeadingClassName } from "@/lib/project-detail-styles"
 import {
   getCourseProjectSemesterTagClassName,
   getSemanticTagClassName,
@@ -149,16 +151,19 @@ export function ProjectDetailPage({
         }))}
         sections={[
           {
-            title: t("common:details.projectIntro"),
+            title: t(hasSectionSplit ? "common:details.projectIntro" : "common:details.overviewAndWork"),
             bullets: projectIntroPoints,
           },
           {
-            title: t("common:details.personalWork"),
+            title: t(hasSectionSplit ? "common:details.personalWork" : "common:details.overviewAndWork"),
             bullets: personalWorkPoints,
           },
         ]}
         linksTitle={t("common:details.links")}
+        showSingleSectionTitle
+        sectionHeadingClassName={projectDetailHeadingClassName}
         tagsTitle={t("common:details.tags")}
+        asideContent={<RelatedQuestions project={{ module: translationNamespace === "projects" ? "projects" : "course-projects", id: project.id }} />}
       />
     )
   }
@@ -237,11 +242,9 @@ export function ProjectDetailPage({
           <section className="order-2 flex min-w-0 flex-col gap-8 lg:order-1 lg:-mt-1">
             {projectIntroPoints.length ? (
               <div className="flex flex-col gap-3">
-                {hasSectionSplit ? (
-                  <h2 className="text-xl font-semibold leading-tight text-foreground/90 dark:text-foreground">
-                    {t("common:details.projectIntro")}
-                  </h2>
-                ) : null}
+                <h2 className={projectDetailHeadingClassName}>
+                  {t(hasSectionSplit ? "common:details.projectIntro" : "common:details.overviewAndWork")}
+                </h2>
                 <FeaturePointList
                   points={projectIntroPoints}
                   className="gap-3 text-base"
@@ -251,11 +254,9 @@ export function ProjectDetailPage({
 
             {personalWorkPoints.length ? (
               <div className="flex flex-col gap-3">
-                {hasSectionSplit ? (
-                  <h2 className="text-xl font-semibold leading-tight text-foreground/90 dark:text-foreground">
-                    {t("common:details.personalWork")}
-                  </h2>
-                ) : null}
+                <h2 className={projectDetailHeadingClassName}>
+                  {t(hasSectionSplit ? "common:details.personalWork" : "common:details.overviewAndWork")}
+                </h2>
                 <FeaturePointList
                   points={personalWorkPoints}
                   className="gap-3 text-base"
@@ -329,6 +330,7 @@ export function ProjectDetailPage({
                 )
               })}
             </div>
+            <RelatedQuestions project={{ module: translationNamespace === "projects" ? "projects" : "course-projects", id: project.id }} />
           </aside>
         </div>
       </article>

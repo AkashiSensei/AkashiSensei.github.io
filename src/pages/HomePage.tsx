@@ -21,7 +21,7 @@ export function HomePage() {
 
   if (isPlainDisplayMode) {
     return (
-      <Layout mainClassName="plain-home-main">
+      <Layout mainClassName="plain-home-main plain-home-landing-main">
         <HomePlainExperience />
       </Layout>
     )

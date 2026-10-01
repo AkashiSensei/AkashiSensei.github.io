@@ -1,3 +1,5 @@
+import { SectionNote } from "@/components/SectionHeader"
+import { QuestionWall } from "@/components/QuestionWall"
 import { useEffect, useMemo, useRef, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { ArrowUpRight } from "lucide-react"
@@ -59,6 +61,8 @@ const lifecycleStatusClassName = {
 
 const defaultProjectColumnWidth = 520
 const defaultProjectColumnGap = 42
+
+const plainResumeProjects = featuredProjects.filter((project) => project.id !== "crater-cli")
 
 const resumeWorkbenchGroups = [
   ...featuredWorkbenchGroups,
@@ -469,7 +473,7 @@ export function ResumePlainExperience() {
         <p>{t("projects:subtitle")}</p>
         <ResumePlainProjectList
           detailBasePath="/projects"
-          projects={featuredProjects}
+          projects={plainResumeProjects}
           sectionIndex={0}
           translationNamespace="projects"
         />
@@ -525,6 +529,7 @@ export function ResumePlainExperience() {
           sectionIndex={1}
           translationNamespace="courseProjects"
         />
+        <SectionNote><p>{t("courseProjects:reflection")}</p></SectionNote>
       </section>
 
       <section>
@@ -556,6 +561,8 @@ export function ResumePlainExperience() {
           })}
         </div>
       </section>
+
+      <QuestionWall />
 
       <section>
         <h2>
@@ -600,6 +607,7 @@ export function ResumePlainExperience() {
             </section>
           ))}
         </div>
+        <SectionNote><p>{t("tools:description")}</p></SectionNote>
       </section>
     </article>
   )

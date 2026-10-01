@@ -1,0 +1,904 @@
+{
+  "tags": {
+    "cuda": "CUDA",
+    "parallel-computing": "Parallel Computing",
+    "sparse-computing": "Sparse Computing",
+    "tensor-cores": "Tensor Cores",
+    "gpu-architecture": "GPU Architecture",
+    "mixed-precision": "Mixed Precision",
+    "performance-analysis": "Performance Analysis",
+    "roofline": "Roofline",
+    "nsight-compute": "Nsight Compute",
+    "memory-management": "Memory Management",
+    "nsight-systems": "Nsight Systems",
+    "gpu-monitoring": "GPU Monitoring",
+    "ai-infrastructure": "AI Infrastructure",
+    "instruction-scheduling": "Instruction Scheduling",
+    "ascend-npu": "Ascend NPU",
+    "resource-sharing": "Resource Sharing",
+    "occupancy": "Occupancy",
+    "shared-memory": "Shared Memory",
+    "sass": "SASS",
+    "simt": "SIMT",
+    "control-flow": "Control Flow",
+    "graph-execution": "Graph Execution",
+    "engineering": "Engineering",
+    "ai-assisted-development": "AI-Assisted Development",
+    "code-review": "Code Review",
+    "developer-tooling": "Developer Tooling",
+    "cli": "CLI",
+    "testing": "Testing",
+    "ai-agents": "AI Agents",
+    "developer-experience": "Developer Experience",
+    "computer-graphics": "Computer Graphics",
+    "path-tracing": "Path Tracing",
+    "monte-carlo": "Monte Carlo",
+    "kubernetes": "Kubernetes",
+    "networking": "Networking",
+    "cephfs": "CephFS",
+    "troubleshooting": "Troubleshooting",
+    "distributed-storage": "Distributed Storage",
+    "operating-systems": "Operating Systems",
+    "llm": "LLM",
+    "reasoning": "Reasoning",
+    "attention": "Attention",
+    "model-architecture": "Model Architecture",
+    "evaluation": "Evaluation",
+    "llm-inference": "LLM Inference",
+    "pagedattention": "PagedAttention",
+    "kv-cache": "KV Cache",
+    "scheduling": "Scheduling",
+    "computer-architecture": "Computer Architecture",
+    "x86": "x86"
+  },
+  "threads": [
+    {
+      "id": "gpu-sparsity",
+      "tagIds": [
+        "cuda",
+        "parallel-computing",
+        "sparse-computing",
+        "tensor-cores"
+      ],
+      "relatedProjects": [
+        {
+          "module": "projects",
+          "id": "kernel-analysis-thesis"
+        },
+        {
+          "module": "course-projects",
+          "id": "parallel-programming-2026"
+        }
+      ],
+      "rounds": [
+        "opening"
+      ]
+    },
+    {
+      "id": "packed-low-precision",
+      "tagIds": [
+        "cuda",
+        "gpu-architecture",
+        "mixed-precision",
+        "tensor-cores"
+      ],
+      "relatedProjects": [
+        {
+          "module": "course-projects",
+          "id": "parallel-programming-2026"
+        }
+      ],
+      "rounds": [
+        "opening"
+      ]
+    },
+    {
+      "id": "roofline-kernel-quality",
+      "tagIds": [
+        "cuda",
+        "parallel-computing",
+        "performance-analysis",
+        "roofline"
+      ],
+      "relatedProjects": [
+        {
+          "module": "course-projects",
+          "id": "parallel-programming-2026"
+        },
+        {
+          "module": "projects",
+          "id": "kernel-analysis-thesis",
+          "note": "推断"
+        },
+        {
+          "module": "course-projects",
+          "id": "vr-experiments-2026",
+          "note": "推断"
+        },
+        {
+          "module": "course-projects",
+          "id": "vr-raytracer-2026",
+          "note": "推断"
+        }
+      ],
+      "rounds": [
+        "opening"
+      ]
+    },
+    {
+      "id": "roofline-compute-peaks",
+      "tagIds": [
+        "cuda",
+        "performance-analysis",
+        "roofline",
+        "nsight-compute"
+      ],
+      "relatedProjects": [
+        {
+          "module": "projects",
+          "id": "kernel-analysis-thesis"
+        },
+        {
+          "module": "course-projects",
+          "id": "parallel-programming-2026"
+        },
+        {
+          "module": "course-projects",
+          "id": "vr-experiments-2026",
+          "note": "推断"
+        }
+      ],
+      "rounds": [
+        "opening"
+      ]
+    },
+    {
+      "id": "sm-throughput",
+      "tagIds": [
+        "cuda",
+        "gpu-architecture",
+        "performance-analysis",
+        "nsight-compute"
+      ],
+      "relatedProjects": [
+        {
+          "module": "projects",
+          "id": "kernel-analysis-thesis"
+        },
+        {
+          "module": "course-projects",
+          "id": "parallel-programming-2026"
+        },
+        {
+          "module": "course-projects",
+          "id": "vr-experiments-2026",
+          "note": "推断"
+        }
+      ],
+      "rounds": [
+        "opening"
+      ]
+    },
+    {
+      "id": "local-memory-metrics",
+      "tagIds": [
+        "cuda",
+        "memory-management",
+        "performance-analysis",
+        "nsight-systems"
+      ],
+      "relatedProjects": [
+        {
+          "module": "projects",
+          "id": "kernel-analysis-thesis"
+        },
+        {
+          "module": "course-projects",
+          "id": "parallel-programming-2026"
+        },
+        {
+          "module": "course-projects",
+          "id": "vr-raytracer-2026",
+          "note": "推断"
+        }
+      ],
+      "rounds": [
+        "opening"
+      ]
+    },
+    {
+      "id": "gpu-utilization",
+      "tagIds": [
+        "cuda",
+        "gpu-monitoring",
+        "performance-analysis",
+        "ai-infrastructure"
+      ],
+      "relatedProjects": [
+        {
+          "module": "projects",
+          "id": "kernel-analysis-thesis"
+        },
+        {
+          "module": "course-projects",
+          "id": "parallel-programming-2026"
+        },
+        {
+          "module": "projects",
+          "id": "crater",
+          "note": "推断"
+        },
+        {
+          "module": "course-projects",
+          "id": "vr-experiments-2026",
+          "note": "推断"
+        }
+      ],
+      "rounds": [
+        "opening"
+      ]
+    },
+    {
+      "id": "active-cycles",
+      "tagIds": [
+        "cuda",
+        "gpu-architecture",
+        "performance-analysis",
+        "nsight-compute"
+      ],
+      "relatedProjects": [
+        {
+          "module": "course-projects",
+          "id": "parallel-programming-2026"
+        },
+        {
+          "module": "course-projects",
+          "id": "vr-experiments-2026",
+          "note": "推断"
+        }
+      ],
+      "rounds": [
+        "opening"
+      ]
+    },
+    {
+      "id": "alu-issue-slots",
+      "tagIds": [
+        "cuda",
+        "gpu-architecture",
+        "instruction-scheduling",
+        "nsight-compute"
+      ],
+      "relatedProjects": [
+        {
+          "module": "course-projects",
+          "id": "parallel-programming-2026"
+        },
+        {
+          "module": "course-projects",
+          "id": "vr-experiments-2026",
+          "note": "推断"
+        }
+      ],
+      "rounds": [
+        "opening"
+      ]
+    },
+    {
+      "id": "warp-scheduler",
+      "tagIds": [
+        "cuda",
+        "gpu-architecture",
+        "instruction-scheduling"
+      ],
+      "relatedProjects": [
+        {
+          "module": "course-projects",
+          "id": "parallel-programming-2026"
+        }
+      ],
+      "rounds": [
+        "opening"
+      ]
+    },
+    {
+      "id": "ascend-core-sharing",
+      "tagIds": [
+        "ascend-npu",
+        "parallel-computing",
+        "ai-infrastructure",
+        "resource-sharing"
+      ],
+      "relatedProjects": [
+        {
+          "module": "projects",
+          "id": "npu-computing-forecast"
+        }
+      ],
+      "rounds": [
+        "opening"
+      ]
+    },
+    {
+      "id": "occupancy-steps",
+      "tagIds": [
+        "cuda",
+        "parallel-computing",
+        "occupancy",
+        "memory-management"
+      ],
+      "relatedProjects": [
+        {
+          "module": "course-projects",
+          "id": "parallel-programming-2026"
+        },
+        {
+          "module": "course-projects",
+          "id": "vr-experiments-2026",
+          "note": "推断"
+        },
+        {
+          "module": "course-projects",
+          "id": "vr-raytracer-2026",
+          "note": "推断"
+        }
+      ],
+      "rounds": [
+        "opening"
+      ]
+    },
+    {
+      "id": "shared-wavefronts",
+      "tagIds": [
+        "cuda",
+        "shared-memory",
+        "performance-analysis",
+        "nsight-compute"
+      ],
+      "relatedProjects": [
+        {
+          "module": "course-projects",
+          "id": "parallel-programming-2026"
+        },
+        {
+          "module": "course-projects",
+          "id": "vr-experiments-2026",
+          "note": "推断"
+        }
+      ],
+      "rounds": [
+        "opening"
+      ]
+    },
+    {
+      "id": "thread-index-registers",
+      "tagIds": [
+        "cuda",
+        "gpu-architecture",
+        "sass"
+      ],
+      "relatedProjects": [
+        {
+          "module": "course-projects",
+          "id": "parallel-programming-2026"
+        }
+      ],
+      "rounds": [
+        "opening"
+      ]
+    },
+    {
+      "id": "kernel-parameters",
+      "tagIds": [
+        "cuda",
+        "memory-management",
+        "sass"
+      ],
+      "relatedProjects": [
+        {
+          "module": "course-projects",
+          "id": "parallel-programming-2026"
+        }
+      ],
+      "rounds": [
+        "opening"
+      ]
+    },
+    {
+      "id": "local-stack-base",
+      "tagIds": [
+        "cuda",
+        "memory-management",
+        "sass"
+      ],
+      "relatedProjects": [
+        {
+          "module": "course-projects",
+          "id": "parallel-programming-2026"
+        }
+      ],
+      "rounds": [
+        "opening"
+      ]
+    },
+    {
+      "id": "simt-branches",
+      "tagIds": [
+        "cuda",
+        "gpu-architecture",
+        "simt",
+        "control-flow"
+      ],
+      "relatedProjects": [
+        {
+          "module": "course-projects",
+          "id": "parallel-programming-2026"
+        },
+        {
+          "module": "course-projects",
+          "id": "vr-experiments-2026",
+          "note": "推断"
+        }
+      ],
+      "rounds": [
+        "opening"
+      ]
+    },
+    {
+      "id": "aclgraph-replay",
+      "tagIds": [
+        "ascend-npu",
+        "ai-infrastructure",
+        "graph-execution",
+        "performance-analysis"
+      ],
+      "relatedProjects": [
+        {
+          "module": "projects",
+          "id": "npu-computing-forecast",
+          "note": "推断"
+        }
+      ],
+      "rounds": [
+        "opening"
+      ]
+    },
+    {
+      "id": "sass-integer-instructions",
+      "tagIds": [
+        "cuda",
+        "gpu-architecture",
+        "sass"
+      ],
+      "relatedProjects": [
+        {
+          "module": "course-projects",
+          "id": "parallel-programming-2026",
+          "note": "推断"
+        }
+      ],
+      "rounds": [
+        "opening"
+      ]
+    },
+    {
+      "id": "shared-review-guidelines",
+      "tagIds": [
+        "engineering",
+        "ai-assisted-development",
+        "code-review",
+        "developer-tooling"
+      ],
+      "relatedProjects": [
+        {
+          "module": "projects",
+          "id": "crater"
+        },
+        {
+          "module": "projects",
+          "id": "crater-cli",
+          "note": "推断"
+        }
+      ],
+      "rounds": [
+        "opening"
+      ]
+    },
+    {
+      "id": "ai-code-quality",
+      "tagIds": [
+        "engineering",
+        "ai-assisted-development",
+        "code-review",
+        "developer-tooling"
+      ],
+      "relatedProjects": [
+        {
+          "module": "projects",
+          "id": "crater"
+        },
+        {
+          "module": "projects",
+          "id": "crater-cli",
+          "note": "推断"
+        }
+      ],
+      "rounds": [
+        "opening"
+      ]
+    },
+    {
+      "id": "cli-golden-tests",
+      "tagIds": [
+        "engineering",
+        "cli",
+        "testing",
+        "ai-assisted-development"
+      ],
+      "relatedProjects": [
+        {
+          "module": "projects",
+          "id": "crater-cli"
+        }
+      ],
+      "rounds": [
+        "opening"
+      ]
+    },
+    {
+      "id": "cli-agent-experience",
+      "tagIds": [
+        "engineering",
+        "cli",
+        "ai-agents",
+        "developer-experience"
+      ],
+      "relatedProjects": [
+        {
+          "module": "projects",
+          "id": "crater-cli"
+        }
+      ],
+      "rounds": [
+        "opening"
+      ]
+    },
+    {
+      "id": "diffuse-path-tracing",
+      "tagIds": [
+        "computer-graphics",
+        "path-tracing",
+        "monte-carlo"
+      ],
+      "relatedProjects": [
+        {
+          "module": "course-projects",
+          "id": "vr-raytracer-2026"
+        }
+      ],
+      "rounds": [
+        "opening"
+      ]
+    },
+    {
+      "id": "pod-bandwidth-ceph",
+      "tagIds": [
+        "engineering",
+        "kubernetes",
+        "networking",
+        "cephfs"
+      ],
+      "relatedProjects": [
+        {
+          "module": "projects",
+          "id": "crater"
+        }
+      ],
+      "rounds": [
+        "opening"
+      ]
+    },
+    {
+      "id": "csi-existing-mounts",
+      "tagIds": [
+        "engineering",
+        "kubernetes",
+        "cephfs",
+        "troubleshooting"
+      ],
+      "relatedProjects": [
+        {
+          "module": "projects",
+          "id": "crater"
+        }
+      ],
+      "rounds": [
+        "opening"
+      ]
+    },
+    {
+      "id": "cephfs-client-cache",
+      "tagIds": [
+        "kubernetes",
+        "cephfs",
+        "distributed-storage",
+        "operating-systems"
+      ],
+      "relatedProjects": [
+        {
+          "module": "projects",
+          "id": "crater"
+        }
+      ],
+      "rounds": [
+        "opening"
+      ]
+    },
+    {
+      "id": "cephfs-metadata-coordination",
+      "tagIds": [
+        "cephfs",
+        "distributed-storage",
+        "operating-systems"
+      ],
+      "relatedProjects": [
+        {
+          "module": "projects",
+          "id": "crater"
+        }
+      ],
+      "rounds": [
+        "opening"
+      ]
+    },
+    {
+      "id": "deep-thinking",
+      "tagIds": [
+        "llm",
+        "ai-agents",
+        "reasoning"
+      ],
+      "relatedProjects": [],
+      "rounds": [
+        "opening"
+      ]
+    },
+    {
+      "id": "qkv-dimensions",
+      "tagIds": [
+        "llm",
+        "attention",
+        "model-architecture"
+      ],
+      "relatedProjects": [
+        {
+          "module": "projects",
+          "id": "npu-computing-forecast"
+        },
+        {
+          "module": "projects",
+          "id": "model-requirements-evaluator"
+        }
+      ],
+      "rounds": [
+        "opening"
+      ]
+    },
+    {
+      "id": "attention-head-width",
+      "tagIds": [
+        "llm",
+        "attention",
+        "model-architecture"
+      ],
+      "relatedProjects": [
+        {
+          "module": "projects",
+          "id": "npu-computing-forecast",
+          "note": "推断"
+        },
+        {
+          "module": "projects",
+          "id": "model-requirements-evaluator",
+          "note": "推断"
+        }
+      ],
+      "rounds": [
+        "opening"
+      ]
+    },
+    {
+      "id": "agent-evaluation",
+      "tagIds": [
+        "llm",
+        "ai-agents",
+        "evaluation",
+        "engineering"
+      ],
+      "relatedProjects": [
+        {
+          "module": "projects",
+          "id": "crater",
+          "note": "推断，关联内嵌 Agent 的评测方法"
+        },
+        {
+          "module": "projects",
+          "id": "crater-cli",
+          "note": "推断，关联 Agent 使用 CLI 的任务完成评测"
+        }
+      ],
+      "rounds": [
+        "opening"
+      ]
+    },
+    {
+      "id": "paged-attention-vs-paging",
+      "tagIds": [
+        "llm-inference",
+        "pagedattention",
+        "kv-cache",
+        "operating-systems"
+      ],
+      "relatedProjects": [
+        {
+          "module": "projects",
+          "id": "npu-computing-forecast",
+          "note": "推断"
+        },
+        {
+          "module": "projects",
+          "id": "model-requirements-evaluator",
+          "note": "推断"
+        },
+        {
+          "module": "course-projects",
+          "id": "os2023",
+          "note": "推断，仅页式内存管理原理对照"
+        }
+      ],
+      "rounds": [
+        "opening"
+      ]
+    },
+    {
+      "id": "paged-attention-block-size",
+      "tagIds": [
+        "llm-inference",
+        "pagedattention",
+        "kv-cache",
+        "performance-analysis"
+      ],
+      "relatedProjects": [
+        {
+          "module": "projects",
+          "id": "npu-computing-forecast",
+          "note": "推断"
+        }
+      ],
+      "rounds": [
+        "opening"
+      ]
+    },
+    {
+      "id": "paged-attention-preemption",
+      "tagIds": [
+        "llm-inference",
+        "pagedattention",
+        "kv-cache",
+        "scheduling"
+      ],
+      "relatedProjects": [
+        {
+          "module": "projects",
+          "id": "npu-computing-forecast",
+          "note": "推断"
+        }
+      ],
+      "rounds": [
+        "opening"
+      ]
+    },
+    {
+      "id": "virtual-memory-mechanisms",
+      "tagIds": [
+        "operating-systems",
+        "computer-architecture",
+        "memory-management"
+      ],
+      "relatedProjects": [
+        {
+          "module": "course-projects",
+          "id": "os2023"
+        }
+      ],
+      "rounds": [
+        "opening"
+      ]
+    },
+    {
+      "id": "x86-segment-cache",
+      "tagIds": [
+        "operating-systems",
+        "computer-architecture",
+        "memory-management",
+        "x86"
+      ],
+      "relatedProjects": [
+        {
+          "module": "course-projects",
+          "id": "os2023"
+        }
+      ],
+      "rounds": [
+        "opening",
+        "follow-up-one",
+        "follow-up-two"
+      ]
+    },
+    {
+      "id": "gpu-memory-hierarchy",
+      "tagIds": [
+        "cuda",
+        "gpu-architecture",
+        "memory-management",
+        "performance-analysis"
+      ],
+      "relatedProjects": [
+        {
+          "module": "course-projects",
+          "id": "parallel-programming-2026"
+        },
+        {
+          "module": "course-projects",
+          "id": "vr-experiments-2026"
+        }
+      ],
+      "rounds": [
+        "opening",
+        "follow-up-one"
+      ],
+      "questionImages": {
+        "opening": [
+          {
+            "module": "course-projects",
+            "id": "parallel-programming-2026",
+            "imageKey": "ncuSharedMemory8192"
+          }
+        ]
+      }
+    },
+    {
+      "id": "gpu-register-allocation",
+      "tagIds": [
+        "cuda",
+        "gpu-architecture",
+        "sass",
+        "occupancy"
+      ],
+      "relatedProjects": [
+        {
+          "module": "course-projects",
+          "id": "parallel-programming-2026"
+        },
+        {
+          "module": "course-projects",
+          "id": "vr-experiments-2026"
+        }
+      ],
+      "rounds": [
+        "opening",
+        "follow-up-one",
+        "follow-up-two"
+      ],
+      "questionImages": {
+        "follow-up-one": [
+          {
+            "module": "course-projects",
+            "id": "vr-experiments-2026",
+            "imageKey": "clothDerivativeOccupancy"
+          }
+        ]
+      }
+    }
+  ]
+}

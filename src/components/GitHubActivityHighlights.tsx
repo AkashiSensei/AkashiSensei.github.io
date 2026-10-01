@@ -1,3 +1,4 @@
+import { SectionHeader, SectionNote } from "@/components/SectionHeader"
 import {
   ArrowUpRight,
   BookMarked,
@@ -212,28 +213,14 @@ export function GitHubActivityHighlights() {
       id="github-activity"
       className="resume-rhythm-section flex w-full flex-col justify-center gap-5"
     >
-      <div className="flex flex-col gap-2 px-2 sm:px-3 md:px-4">
-        <div className="flex items-end justify-between gap-4">
-          <h2 className="text-3xl font-normal leading-none tracking-tight text-tone-1 md:text-4xl">
-            {t("githubActivity.title")}
-          </h2>
-
-          <a
-            href={`https://github.com/${activity?.login ?? "AkashiSensei"}`}
-            target="_blank"
-            rel="noreferrer"
-            className="group/repo inline-flex w-fit shrink-0 items-center justify-end gap-1.5 text-right text-[0.9375rem] font-normal leading-none text-tone-2 transition-colors hover:text-tone-1 sm:text-[1.0625rem]"
-          >
-            <GitHubMark className="h-4 w-4 sm:h-[1.125rem] sm:w-[1.125rem]" />
-            <span>{activity?.login ?? "AkashiSensei"}</span>
-            <ArrowUpRight className="h-4 w-4 shrink-0 transition-transform group-hover/repo:-translate-y-0.5 group-hover/repo:translate-x-0.5" />
-          </a>
-        </div>
-
-        <p className="max-w-3xl text-sm leading-relaxed text-tone-4 sm:text-base">
-          {t("githubActivity.subtitle")}
-        </p>
-      </div>
+      <SectionHeader title={t("githubActivity.title")} subtitle={t("githubActivity.subtitle")} action={
+        <a href={`https://github.com/${activity?.login ?? "AkashiSensei"}`} target="_blank" rel="noreferrer"
+          className="section-action section-action-external">
+          <GitHubMark className="h-4 w-4 sm:h-[1.125rem] sm:w-[1.125rem]" />
+          <span>{activity?.login ?? "AkashiSensei"}</span>
+          <ArrowUpRight aria-hidden="true" />
+        </a>
+      } />
 
       <div
         className="grid grid-cols-3 gap-x-5 gap-y-5 px-2 sm:px-3 md:grid-cols-[minmax(0,1.28fr)_minmax(0,0.88fr)_minmax(0,0.88fr)] md:gap-x-6 md:gap-y-3 md:px-4 xl:grid-cols-[minmax(0,1.34fr)_minmax(0,0.88fr)_minmax(0,0.88fr)_minmax(0,0.88fr)] xl:gap-x-8 xl:gap-y-5"
@@ -373,11 +360,11 @@ export function GitHubActivityHighlights() {
         </div>
       ) : null}
 
-      <div className="flex flex-col gap-1 px-2 text-sm leading-relaxed text-tone-2 sm:px-3 sm:text-[0.9375rem] md:px-4">
+      <SectionNote>
         {descriptionLines.map((line) => (
           <p key={line}>{line}</p>
         ))}
-      </div>
+      </SectionNote>
     </section>
   )
 }

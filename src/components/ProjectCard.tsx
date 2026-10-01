@@ -11,6 +11,7 @@ import { type Project } from "@/data/projects"
 import { getListingPointSections } from "@/lib/project-points"
 import {
   defaultTagClassName,
+  tagPillClassName,
   getCourseProjectSemesterTagClassName,
   getSemanticTagClassName,
 } from "@/lib/tag-styles"
@@ -202,7 +203,7 @@ export function ProjectCard({
             <span
               key={tag}
               className={cn(
-                "rounded-full border px-2.5 py-1 text-xs font-semibold",
+                tagPillClassName,
                 isCourseProjectTimeTag
                   ? semesterTagClassName
                   : defaultTagClassName,

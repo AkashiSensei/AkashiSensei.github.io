@@ -16,7 +16,7 @@
     },
     {
       "title": "精益求精",
-      "description": "我希望尽量把问题想得更全面，让功能、边界和细节共同构成更可靠、更完善、也更好用的产品。"
+      "description": "我希望尽量把问题想得更全面，让功能、边界和细节共同构成更可靠、更完善、也更好用的产品"
     },
     {
       "title": "追问",
@@ -30,7 +30,7 @@
   "github": "动态",
   "education": {
     "title": "教育经历",
-    "subtitle": "学校、专业与公开荣誉。",
+    "subtitle": "学校、专业与公开荣誉",
     "colleges": {
       "software": "软件学院",
       "reliability": "可靠性与系统工程学院"
@@ -67,7 +67,7 @@
   },
   "githubActivity": {
     "title": "活跃度",
-    "subtitle": "GitHub 过去一年的贡献概览，包含提交、评审、PR 和 Issue 等活动。",
+    "subtitle": "GitHub 过去一年的贡献概览，包含提交、评审、PR 和 Issue 等活动",
     "eyebrow": "过去一年",
     "totalLabel": "总贡献",
     "distributionLabel": "GitHub 贡献类型占比分布",
@@ -76,7 +76,7 @@
       "这里仅展示 GitHub 过去一年的贡献数据。我的主要学习与工作痕迹大多保存在 GitHub，包括项目、课设与知识沉淀等。",
       "但也有一些工作没有公开到互联网，或分散在其他代码托管站点与组织仓库中，这些不纳入统计。"
     ],
-    "publicScope": "统计基于 GitHub API 在构建期可获取的数据；私有贡献是否计入取决于构建 token 权限。",
+    "publicScope": "统计基于 GitHub API 在构建期可获取的数据；私有贡献是否计入取决于构建 token 权限",
     "unavailable": "N/A",
     "stats": {
       "commits": "Commit",

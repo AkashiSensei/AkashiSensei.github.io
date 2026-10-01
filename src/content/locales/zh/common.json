@@ -77,7 +77,7 @@
       "en": "English"
     },
     "github": "GitHub",
-    "contact": "联系",
+    "contact": "联系方式",
     "copyright": "© {{year}} Akashi. Built for GitHub Pages."
   },
   "imageLoading": "图片加载中",
@@ -88,11 +88,12 @@
     "personalWork": "个人工作",
     "projectIntro": "项目简介",
     "tags": "标签",
-    "viewDetails": "查看详情"
+    "viewDetails": "查看详情",
+    "overviewAndWork": "简介与工作"
   },
   "notFound": {
     "title": "这个页面不存在",
-    "description": "可能是链接写错了，或者这个页面还没有公开。",
+    "description": "可能是链接写错了，或者这个页面还没有公开",
     "homeCta": "返回主页"
   },
   "contactDialog": {
@@ -103,18 +104,18 @@
     "profileDetails": [
       {
         "label": "身份",
-        "value": "软件工程在读硕士，关注工程实践、开源协作与产品体验。"
+        "value": "软件工程在读硕士，关注工程实践、开源协作与产品体验"
       },
       {
         "label": "方向",
-        "value": "偏好把真实需求拆成可交付的系统、工具和清晰文档。"
+        "value": "偏好把真实需求拆成可交付的系统、工具和清晰文档"
       },
       {
         "label": "位置",
-        "value": "公开站点只保留必要信息；更多求职材料通过私下渠道沟通。"
+        "value": "公开站点只保留必要信息；更多求职材料通过私下渠道沟通"
       }
     ],
-    "privacyNote": "这里放公开邮箱和 WhatsApp，方便联系我。",
+    "privacyNote": "这里放公开邮箱和 WhatsApp，方便联系我",
     "email": "邮箱",
     "copyEmail": "复制邮箱地址",
     "copyEmailShort": "复制邮箱",
@@ -124,7 +125,7 @@
     "whatsappLink": "WhatsApp",
     "socialLinksLabel": "社交与联系渠道",
     "casualTitle": "Friend Links Growing",
-    "casualDescription": "如果你也在折腾有趣的东西，或者觉得我们可能聊得来，或者单纯就是想认识新朋友，都欢迎来打个招呼。",
+    "casualDescription": "如果你也在折腾有趣的东西，或者觉得我们可能聊得来，或者单纯就是想认识新朋友，都欢迎来打个招呼",
     "casualTopics": [
       "AI Infra",
       "云计算",
