@@ -1,3 +1,4 @@
+import { ArchiveSectionHeader } from "@/components/SectionHeader"
 import { ArrowRight, ArrowUpRight } from "lucide-react"
 import {
   type CSSProperties,
@@ -43,39 +44,6 @@ const PROJECT_HIGHLIGHT_IDS = [
   "npu-computing-forecast",
   "model-requirements-evaluator",
 ]
-
-export function ArchiveSectionHeader({
-  detailPath,
-  subtitle,
-  title,
-  viewAllLabel,
-}: {
-  detailPath: string
-  subtitle: string
-  title: string
-  viewAllLabel: string
-}) {
-  return (
-    <div className="flex flex-col gap-4 px-2 sm:px-3 md:flex-row md:items-end md:justify-between md:gap-8 md:px-4">
-      <div className="flex max-w-3xl flex-col gap-2">
-        <h2 className="text-3xl font-normal leading-none tracking-tight text-tone-1 md:text-4xl">
-          {title}
-        </h2>
-        <p className="text-sm leading-relaxed text-tone-4 sm:text-base">
-          {subtitle}
-        </p>
-      </div>
-
-      <AppLink
-        to={detailPath}
-        className="group inline-flex w-fit shrink-0 items-center gap-1.5 text-[0.9375rem] font-normal leading-none text-tone-2 transition-colors hover:text-tone-1 sm:text-[1.0625rem] md:-translate-y-2"
-      >
-        <span>{viewAllLabel}</span>
-        <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 sm:h-[1.125rem] sm:w-[1.125rem]" />
-      </AppLink>
-    </div>
-  )
-}
 
 export function ProjectHighlights() {
   const { t } = useTranslation(["projects", "common"])

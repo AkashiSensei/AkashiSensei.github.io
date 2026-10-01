@@ -1,3 +1,4 @@
+import { SectionHeader } from "@/components/SectionHeader"
 import { type CSSProperties } from "react"
 import { useTranslation } from "react-i18next"
 
@@ -19,16 +20,9 @@ export function EducationHighlights() {
   return (
     <section
       id="education"
-      className="resume-rhythm-section flex w-full flex-col justify-center gap-8 sm:gap-10"
+      className="resume-rhythm-section education-rhythm-section flex w-full flex-col justify-center gap-5"
     >
-      <div className="flex flex-col gap-2 px-2 sm:px-3 md:px-4">
-        <h2 className="text-3xl font-normal leading-none tracking-tight text-tone-1 md:text-4xl">
-          {t("education.title")}
-        </h2>
-        <p className="max-w-3xl text-sm leading-relaxed text-tone-4 sm:text-base">
-          {t("education.subtitle")}
-        </p>
-      </div>
+      <SectionHeader title={t("education.title")} subtitle={t("education.subtitle")} />
 
       <ol className="education-timeline mx-2 sm:mx-3 md:mx-4">
         {educationEntriesNewestFirst.map((entry, index) => {
@@ -67,7 +61,7 @@ export function EducationHighlights() {
               <p className="mt-1 text-[0.9375rem] font-normal leading-snug text-tone-3 sm:text-[1.0625rem]">
                 {t(`education.items.${entry.id}.school`)}
               </p>
-              <h3 className="mt-2 text-[1.35rem] font-normal leading-tight tracking-tight text-tone-1 sm:text-[1.65rem] md:text-[1.85rem]">
+              <h3 className="mt-2 text-[1.35rem] font-normal leading-tight tracking-tight text-tone-1 sm:text-[1.65rem] md:text-[clamp(1.4rem,2.6vw,1.85rem)]">
                 {t(`education.items.${entry.id}.headline`)}
               </h3>
               <ul className="mt-2.5 flex list-none flex-col gap-1.5 p-0">

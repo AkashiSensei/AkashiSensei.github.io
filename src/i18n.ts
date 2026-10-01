@@ -1,6 +1,9 @@
 import i18n from "i18next"
 import { initReactI18next } from "react-i18next"
 
+import enQuestions from "./content/locales/en/questions.json"
+import zhQuestions from "./content/locales/zh/questions.json"
+
 import enCommon from "./content/locales/en/common.json"
 import enCourseProjects from "./content/locales/en/course-projects.json"
 import enDirections from "./content/locales/en/directions.json"
@@ -24,6 +27,7 @@ import zhWorkbench from "./content/locales/zh/workbench.json"
 
 const resources = {
   zh: {
+    questions: zhQuestions,
     common: zhCommon,
     nav: zhNav,
     home: zhHome,
@@ -36,6 +40,7 @@ const resources = {
     tools: zhTools,
   },
   en: {
+    questions: enQuestions,
     common: enCommon,
     nav: enNav,
     home: enHome,
@@ -84,7 +89,7 @@ void i18n.init({
   fallbackLng: "en",
   defaultNS: "common",
   fallbackNS: "common",
-  ns: ["common", "nav", "home", "resume", "knowledge", "directions", "projects", "courseProjects", "workbench", "tools"],
+  ns: ["questions", "common", "nav", "home", "resume", "knowledge", "directions", "projects", "courseProjects", "workbench", "tools"],
   interpolation: {
     escapeValue: false,
   },

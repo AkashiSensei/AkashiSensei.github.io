@@ -1,3 +1,4 @@
+import type { ReactNode } from "react"
 import { BackButton } from "@/components/BackButton"
 import { Layout } from "@/components/Layout"
 import { type PlainIndexImage, type PlainTag } from "@/components/PlainIndexPage"
@@ -16,6 +17,8 @@ export type PlainDetailSection = {
 }
 
 type PlainDetailPageProps = {
+  children?: ReactNode
+  asideContent?: ReactNode
   title: string
   summary: string
   kicker?: string
@@ -25,6 +28,8 @@ type PlainDetailPageProps = {
   tags?: PlainTag[]
   links?: PlainDetailLink[]
   sections?: PlainDetailSection[]
+  showSingleSectionTitle?: boolean
+  sectionHeadingClassName?: string
   linksTitle?: string
   tagsTitle?: string
 }
@@ -47,11 +52,15 @@ export function PlainDetailPage({
   tags,
   links,
   sections,
+  showSingleSectionTitle = false,
+  sectionHeadingClassName,
   linksTitle,
   tagsTitle,
+  children,
+  asideContent,
 }: PlainDetailPageProps) {
   const visibleSections = sections?.filter((section) => section.bullets.length) ?? []
-  const hasDetailContent = visibleSections.length > 0 || Boolean(links?.length) || Boolean(tags?.length)
+  const hasDetailContent = visibleSections.length > 0 || Boolean(links?.length) || Boolean(tags?.length) || Boolean(asideContent)
 
   return (
     <Layout mainClassName="plain-home-main">
@@ -90,7 +99,7 @@ export function PlainDetailPage({
             <div className="plain-detail-body">
               {visibleSections.map((section) => (
                 <section key={section.title} className="plain-home-subsection">
-                  {visibleSections.length > 1 ? <h2>{section.title}</h2> : null}
+                  {showSingleSectionTitle || visibleSections.length > 1 ? <h2 className={sectionHeadingClassName}>{section.title}</h2> : null}
                   <ul>
                     {section.bullets.map((bullet) => (
                       <li key={bullet}>{renderPlainRichText(bullet)}</li>
@@ -155,9 +164,11 @@ export function PlainDetailPage({
                 </ul>
                 </section>
               ) : null}
+              {asideContent}
             </aside>
           </section>
         ) : null}
+        {children}
       </article>
     </Layout>
   )

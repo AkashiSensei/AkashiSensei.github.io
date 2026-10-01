@@ -233,7 +233,7 @@ export function ContactDialog({ children }: { children: ReactNode }) {
       <SpotlightCard asChild>
         <DialogContent
           ref={dialogContentRef}
-          className="contact-dialog-content lit-glass-card workbench-preview-glass workbench-preview-glass-enter max-h-[calc(100svh-1rem)] w-[calc(100%-2rem)] max-w-none overflow-y-auto rounded-[2rem] border-[rgb(var(--site-surface-rgb)_/_0.62)] bg-[rgb(var(--site-surface-rgb)_/_0.66)] p-3 shadow-lg backdrop-blur-xl dark:border-white/10 dark:bg-white/10 sm:max-w-none sm:p-4 md:max-h-[calc(100svh-2rem)] md:w-full md:max-w-4xl md:rounded-3xl md:p-5"
+          className="contact-dialog-content lit-glass-card workbench-preview-glass workbench-preview-glass-enter max-h-[calc(100svh-1rem)] w-[calc(100%-2rem)] max-w-none overflow-y-auto rounded-xl border-[rgb(var(--site-surface-rgb)_/_0.62)] bg-[rgb(var(--site-surface-rgb)_/_0.66)] p-3 shadow-lg backdrop-blur-xl dark:border-white/10 dark:bg-white/10 sm:max-w-none sm:p-4 md:max-h-[calc(100svh-2rem)] md:w-full md:max-w-4xl md:p-5"
           onOpenAutoFocus={(event) => {
             if (window.matchMedia("(max-width: 767px)").matches) {
               event.preventDefault()

@@ -561,6 +561,7 @@ export function Navbar() {
     { href: "/projects", label: t("nav:projects") },
     { href: "/course-projects", label: t("nav:coursework") },
     { href: "/workbench", label: t("nav:workspace") },
+    { href: "/questions", label: t("nav:questions") },
     { href: "/knowledge", label: t("nav:knowledge") },
     { href: "/tools", label: t("nav:tools") },
   ];

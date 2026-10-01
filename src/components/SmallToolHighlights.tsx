@@ -1,3 +1,4 @@
+import { ArchiveSectionHeader, SectionNote } from "@/components/SectionHeader"
 import { ArrowRight } from "lucide-react"
 import { useTranslation } from "react-i18next"
 
@@ -26,42 +27,19 @@ export function SmallToolHighlights() {
   return (
     <section
       id="tools"
-      className="resume-rhythm-section small-tools-rhythm-section flex w-full items-center"
+      className="resume-rhythm-section small-tools-rhythm-section flex w-full flex-col justify-center gap-5"
     >
       <div className="small-tools-layout grid w-full content-start items-start gap-5 sm:gap-6 xl:grid-cols-[minmax(14rem,0.72fr)_minmax(0,1.28fr)] xl:gap-12">
-        <div className="resume-feature-offset flex max-w-xl flex-col gap-4 px-2 sm:px-3 md:px-4 xl:self-start">
-          <div className="flex flex-col gap-2">
-            <p className="text-[0.6875rem] font-normal uppercase tracking-[0.22em] text-tone-5">
-              Utility
-            </p>
-            <h2 className="text-3xl font-normal leading-none tracking-tight text-tone-1 md:text-4xl">
-              {t("title")}
-            </h2>
-            <p className="max-w-md text-sm leading-relaxed text-tone-3 sm:text-base">
-              {t("subtitle")}
-            </p>
-            <p className="max-w-md text-sm leading-relaxed text-tone-4 sm:text-base">
-              {t("description")}
-            </p>
-            <div className="flex max-w-md flex-wrap gap-2 pt-1">
-              {tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="rounded-full border border-tone-4/35 bg-surface/35 px-2.5 py-1 text-[0.75rem] font-normal leading-none text-tone-3 backdrop-blur-sm dark:bg-surface/20"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
+        <div className="resume-feature-offset flex max-w-xl flex-col gap-4 xl:self-start">
+          <ArchiveSectionHeader detailPath="/tools" title={t("title")} subtitle={t("subtitle")}
+            viewAllLabel={t("viewAllWithCount", { count: smallTools.length })} />
+          <div className="flex max-w-md flex-wrap gap-2 px-2 sm:px-3 md:px-4">
+            {tags.map((tag) => (
+              <span key={tag} className="rounded-full border border-tone-4/35 bg-surface/35 px-2.5 py-1 text-[0.75rem] font-normal leading-none text-tone-3 backdrop-blur-sm dark:bg-surface/20">
+                {tag}
+              </span>
+            ))}
           </div>
-
-          <AppLink
-            to="/tools"
-            className="group inline-flex w-fit items-center gap-1.5 text-[0.9375rem] font-normal leading-none text-tone-2 transition-colors hover:text-tone-1 sm:text-[1.0625rem]"
-          >
-            <span>{t("viewAllWithCount", { count: smallTools.length })}</span>
-            <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 sm:h-[1.125rem] sm:w-[1.125rem]" />
-          </AppLink>
         </div>
 
         <div className="grid items-start gap-y-7 px-2 sm:px-3 md:hidden">
@@ -80,6 +58,7 @@ export function SmallToolHighlights() {
           ))}
         </div>
       </div>
+      <SectionNote><p>{t("description")}</p></SectionNote>
     </section>
   )
 }

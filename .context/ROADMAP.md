@@ -13,6 +13,8 @@
 
 ## History
 
+- 2026-10-01 | [Question wall and conversation threads](archive/20261001_Question-wall-and-conversation-threads.md) | Added 39 question chains with animated resume bubbles, tag-filtered masonry, image-aware conversations and project links; unified typography, plain layouts and rotation timing.
+
 - 2026-09-30 | [Resume and project content refresh](archive/20260930_Resume-project-refresh.md) | Updated bilingual resume/project copy and galleries, moved the thesis to Projects with a legacy redirect, and improved contact, back-button, and detail-preview interactions.
 
 - 2026-09-22 | [Resume education timeline](archive/20260922_Resume-education-timeline.md) | Added a bachelor and master's education screen on `/resume` with a year timeline, college emblems, and public honors.

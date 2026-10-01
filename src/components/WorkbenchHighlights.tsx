@@ -6,10 +6,9 @@ import {
   useRef,
   useState,
 } from "react"
-import { ArrowRight } from "lucide-react"
 import { useTranslation } from "react-i18next"
 
-import { AppLink } from "@/components/AppLink"
+import { ArchiveSectionHeader } from "@/components/SectionHeader"
 import { SoftwareGroupCard } from "@/components/SoftwareGroupCard"
 import {
   workbenchGroups,
@@ -420,25 +419,9 @@ export function WorkbenchHighlights() {
     lockedPreview === null && activePreview === null && retiringPreview !== null
 
   return (
-    <section id="workbench" className="resume-rhythm-section workbench-rhythm-section flex w-full flex-col justify-center gap-1 sm:gap-2">
-      <div className="flex flex-col gap-4 px-2 sm:px-3 md:flex-row md:items-end md:justify-between md:gap-8 md:px-4">
-        <div className="flex max-w-3xl flex-col gap-2">
-          <h2 className="text-3xl font-normal leading-none tracking-tight text-tone-1 md:text-4xl">
-            {t("title")}
-          </h2>
-          <p className="text-sm leading-relaxed text-tone-4 sm:text-base">
-            {t("subtitle")}
-          </p>
-        </div>
-
-        <AppLink
-          to="/workbench"
-          className="group inline-flex w-fit shrink-0 items-center gap-1.5 text-[0.9375rem] font-normal leading-none text-tone-2 transition-colors hover:text-tone-1 sm:text-[1.0625rem] md:-translate-y-2"
-        >
-          <span>{t("viewAllWithCount", { count: workbenchGroups.length })}</span>
-          <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 sm:h-[1.125rem] sm:w-[1.125rem]" />
-        </AppLink>
-      </div>
+    <section id="workbench" className="resume-rhythm-section workbench-rhythm-section flex w-full flex-col justify-center gap-5">
+      <ArchiveSectionHeader detailPath="/workbench" title={t("title")} subtitle={t("subtitle")}
+        viewAllLabel={t("viewAllWithCount", { count: workbenchGroups.length })} />
 
       <div
         ref={wallRef}

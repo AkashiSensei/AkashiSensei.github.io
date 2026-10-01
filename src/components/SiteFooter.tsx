@@ -14,6 +14,7 @@ const primaryLinks = [
   { to: "/projects", labelKey: "nav:projects" },
   { to: "/course-projects", labelKey: "nav:coursework" },
   { to: "/workbench", labelKey: "nav:workspace" },
+  { to: "/questions", labelKey: "nav:questions" },
   { to: "/knowledge", labelKey: "nav:knowledge" },
   { to: "/tools", labelKey: "nav:tools" },
 ] as const
@@ -123,6 +124,8 @@ export function SiteFooter() {
     breadcrumbs.push({ label: t("nav:coursework"), to: detailId ? "/course-projects" : undefined })
   } else if (section === "workbench") {
     breadcrumbs.push({ label: t("nav:workspace") })
+  } else if (section === "questions") {
+    breadcrumbs.push({ label: t("nav:questions") })
   } else if (section === "knowledge") {
     breadcrumbs.push({ label: t("nav:knowledge"), to: detailId ? "/knowledge" : undefined })
   } else if (section === "tools") {

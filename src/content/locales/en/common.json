@@ -88,7 +88,8 @@
     "personalWork": "Personal Work",
     "projectIntro": "Project Overview",
     "tags": "Tags",
-    "viewDetails": "View details"
+    "viewDetails": "View details",
+    "overviewAndWork": "Overview & Work"
   },
   "notFound": {
     "title": "This page does not exist",

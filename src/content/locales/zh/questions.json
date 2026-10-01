@@ -1,0 +1,378 @@
+{
+  "title": "问题墙",
+  "subtitle": "记录我的疑问，以及由此展开的思考",
+  "viewAll": "查看全部 {{count}} 个问题",
+  "open": "阅读问答链",
+  "rounds": "{{count}} 轮问答",
+  "pause": "暂停轮换",
+  "resume": "继续轮换",
+  "wallHint": "未必有确定的答案，但有我如何追问、尝试理解的过程",
+  "tags": "按标签筛选",
+  "topicTags": "主题标签",
+  "tagHint": "多选时匹配任一标签",
+  "allProjects": "全部项目",
+  "project": "关联项目",
+  "relatedProjectCount": "关联 {{count}} 个项目",
+  "results": "{{count}} 个问题",
+  "clear": "清除筛选",
+  "resetSelection": "取消选择",
+  "browseAll": "查看全部问题",
+  "more": "继续查看",
+  "empty": "没有符合这些条件的问题",
+  "emptyHint": "试试其他标签，或清除筛选查看全部问题",
+  "related": "相关问题与思考",
+  "relatedAll": "查看该项目的全部问题",
+  "answer": "思考与回答",
+  "question": "疑问",
+  "followUp": "追问",
+  "threadTitle": "疑问与思考",
+  "unanswered": "这个问题还在探索中",
+  "round": "第 {{count}} 轮",
+  "contents": "追问脉络",
+  "permalink": "分享链接",
+  "copied": "链接已复制",
+  "copyFailed": "可复制下方链接",
+  "notFound": "没有找到这个问题",
+  "notFoundDescription": "问题可能已移除，你可以关闭弹窗继续浏览",
+  "sourceLanguage": "问答原文为中文",
+  "close": "关闭问答",
+  "filterSummary": "标签 · {{count}} 项已选",
+  "previousPage": "上一页",
+  "nextPage": "下一页",
+  "relatedPagination": "相关问题翻页",
+  "pageStatus": "第 {{current}} 页，共 {{total}} 页",
+  "items": {
+    "gpu-sparsity": {
+      "rounds": {
+        "opening": {
+          "question": "NVIDIA GPU 是如何在稀疏矩阵上取得更高的计算速度的？",
+          "answer": "一方面，软件层面提供比较通用的稀疏矩阵表示和计算 kernel，减少 0 的搬运和计算，提高效率。另一方面 Ampere 之后的 Tensor Core 支持类似 `2:4` structured sparsity 的固定模式，也就是每 4 个元素中有 2 个为零；因为模式规则，硬件可以跳过这些零对应的乘加，在合适矩阵乘法场景下把有效吞吐推到接近稠密的 2 倍。"
+        }
+      }
+    },
+    "packed-low-precision": {
+      "rounds": {
+        "opening": {
+          "question": "对于单个 FP32 这样的 CUDA Core，是否可以并行执行多个更低精度的运算？如果可以，是如何实现的？",
+          "answer": "从白皮书中标注的理论吞吐来看，确实会有这样的问题，但是实际情况要更复杂。将 CUDA Core 理解为 SM 中某类标量执行管线/吞吐资源的抽象，某些执行管线支持 packed SIMD / sub-word parallelism，提供专门指令在一个较宽的数据路径或寄存器表示中同时处理多个较低精度元素，例如 CUDA 中的 `half2`。这样的 packed 指令可以让一条指令完成两个 FP16 操作，从而提高按 FLOP/s 统计的吞吐。另外 Tensor Core 是另一类专门面向矩阵乘加的执行资源，不只是普通 FP32/FP16 CUDA Core 的 packed SIMD，而是针对小矩阵块运算提供专门的高吞吐路径。"
+        }
+      }
+    },
+    "roofline-kernel-quality": {
+      "rounds": {
+        "opening": {
+          "question": "如果一个 GPU kernel 实现的很差，其在 Roofline 分析图中的点是更靠近 roof，还是离它更远？",
+          "answer": "通常来说是离的更远的，表明这个 kernel 既没有接近内存带宽上限，也没有接近计算吞吐上限，而是由于访存不合并、cache 利用差、同步开销、warp stall、指令调度差等原因，没有把硬件资源用满。但是也存在极端情况，比如 kernel 的实现做了非常多的无用计算，也可能接近计算的 roof。总的来说，Roofline 分析主要对比展示对内存和计算资源的利用程度，但是除此之外还有很多评价 kernel 实现优劣的维度。"
+        }
+      }
+    },
+    "roofline-compute-peaks": {
+      "rounds": {
+        "opening": {
+          "question": "为什么 Roofline 分析图中有上下两根表示计算峰值的线？",
+          "answer": "Roofline 工具会根据设备和配置展示若干可能的峰值线，比如对于我的矩阵相乘 kernel，展示的是 FP32 单精度和 FP64 双精度计算峰值，重点参考 FP64 roof。"
+        }
+      }
+    },
+    "sm-throughput": {
+      "rounds": {
+        "opening": {
+          "question": "假如我的一个 GPU kernel 基本上只用了 FP64、ALU 这样的核心，那么在衡量 `Compute (SM) Throughput` 时，理论最大吞吐是根据我使用的管线计算，还是计算任何情况下的 SM 最大计算吞吐？",
+          "answer": "不是拿所有类型运算里最高的那个理论峰值来统一比较，比如不会把 FP64 kernel 直接拿去和 FP32/Tensor Core 峰值比，而是计算各个 SM 子单元、pipe 的实际吞吐，分别相对于它们自己的 peak sustained rate 归一化，然后综合成一个 SM throughput 指标。它是一个更加综合的指标，反映的是 SM 内部执行资源的整体压力。"
+        }
+      }
+    },
+    "local-memory-metrics": {
+      "rounds": {
+        "opening": {
+          "question": "我在 Nsight Systems 中看到 kernel 的 `Local Memory Per Thread` 为零，但是 `Local Memory Total` 比较大，这是什么，这正常吗？",
+          "answer": "不同于 CPU 侧的那种本地内存，local memory 指的是每个线程私有的、位于 global memory 地址空间中的内存，物理上通常在显存 DRAM / cache 层级后面。通常一个线程的临时变量会放进寄存器，但是如果寄存器不够、线程私有数组太大、编译器无法完全展开数组下标、复杂流程控制等情况，编译器就会把线程临时数据放在 local memory 中。可想而知，这往往会带来性能风险。`Local Memory Per Thread` 为 0 bytes，说明该 kernel 没有明显的每线程 local memory 分配，也没有从该统计项中观察到寄存器溢出到 local memory 的情况。`Local Memory Total` 虽然非零，但它是整个 kernel launch 级别的聚合统计，可能包含运行时为线程私有地址空间预留或管理的总量，不能直接理解为实际发生了这么多 local memory 访问。因此判断 local memory 是否影响性能时，应该进一步查看 NCU 中的 local load/store 事务或相关指令统计。"
+        }
+      }
+    },
+    "gpu-utilization": {
+      "rounds": {
+        "opening": {
+          "question": "常常在 DCGM、PC 资源监控中看到 GPU 利用率，它具体是什么含义，是如何计算的？",
+          "answer": "在过去一个采样周期内，GPU 上是否有一个或多个 kernel 驻留的时间比例。这里不要求 kernel 在执行，也可以在等待数据。"
+        }
+      }
+    },
+    "active-cycles": {
+      "rounds": {
+        "opening": {
+          "question": "`Active Cycles` 是什么，是如何计算的？",
+          "answer": "可以理解为硬件单元在“参与执行当前 kernel”的周期。即使 kernel 的所有 warp 都不在执行，只要对应 kernel 有 warp 驻留在硬件上，即还处于该 kernel 的生命周期中，就记入 active cycles。"
+        }
+      }
+    },
+    "alu-issue-slots": {
+      "rounds": {
+        "opening": {
+          "question": "我的 `ALU Pipe Utilization (% of active cycles)` 是 50%多，说明在 50% 以上 active cycles 中 ALU 是活跃的，为什么 `Issue Slots Busy` 只有 37%？有多个发射槽吗？",
+          "answer": "这并不冲突。在 `SM active cycles` 中，有 50% 多的周期里，ALU 这类执行管线处于活跃状态。但是一方面，一条指令在某个周期中被发射后，可能导致相应的执行管线在之后的多个周期内活跃；另一方面，确实有多个发射槽。"
+        }
+      }
+    },
+    "warp-scheduler": {
+      "rounds": {
+        "opening": {
+          "question": "一个 warp scheduler 对应一个发射槽吗？在更新的架构中也是如此吗？",
+          "answer": "一个 warp scheduler 基本可以理解为每周期最多发射一条 warp 指令。该指令会进入某类执行管线，例如 ALU、FP64、LSU、Tensor 等。直到 Blackwell，公开资料仍不支持把单个 warp scheduler 理解成 CPU 式超标量，也就是一个周期内向多个无关执行管线同时发射多条普通指令。"
+        }
+      }
+    },
+    "ascend-core-sharing": {
+      "rounds": {
+        "opening": {
+          "question": "Ascend NPU 中的 AI Core 是否支持空分复用，即某一时刻，多个 kernel 被分到不同的 AI Core 上执行？",
+          "answer": "实际上应该是可以的，通过多流并行（multi-stream）结合控核（core virtualization）技术实现。多流并行用于把一个计算图里彼此没有依赖、或者可以重叠执行的任务，分配到不同的 stream 上，让它们同时驱动不同硬件执行，而不是全部排成一条队串行跑。但是，通常一个 kernel 就直接占满 NPU 上的所有 AI Core，即使它用不了那么多 AI Core，这就会导致即使有就绪的 kernel，也无法调度上去运行。控核技术就是解决这个问题的，它允许在编译阶段动态指定 kernel 使用的资源比如 AI Core 的上限，这样就能把其它的 AI Core 空出来，能够把其它的 kernel 调度上去。但是之前有一个写 Ascend 算子的活动，我现在现场问了华为方的专家，当时说是空分复用的实现方式更接近于静态多发射，而不是动态的调度，这似乎和我现在了解到的资料不太一致。"
+        }
+      }
+    },
+    "occupancy-steps": {
+      "rounds": {
+        "opening": {
+          "question": "为什么 `Register Per Thread` 和 `Shared Memory` 对 `Warp Occupancy` 的限制不是线性而是阶梯状的，因为相应的资源无法连续分配吗，比如按块或者页分配，超出一组的范围就要分配两组？",
+          "answer": "并不是这种按页或者按块的，内部应该有更复杂的寄存器映射机制。导致阶梯状的主要原因是，block 必须在同一个 SM 上，因此需要考虑 SM 上能驻留多少 block，然后根据 block 中的 warp 数量计算理论最大驻留。"
+        }
+      }
+    },
+    "shared-wavefronts": {
+      "rounds": {
+        "opening": {
+          "question": "`derived__memory_l1_wavefronts_shared_excessive`  表示由于 shared memory bank conflict 导致的额外 wavefront 数量，这里的 excessive 或者说额外如何理解？",
+          "answer": "wavefront 可以理解为一次 memory instruction 被送入存储管线后，需要被硬件处理的一批访问工作。这是一个比较运行时的概念，是指令发出之后硬件根据情况实际生成的访问工作。在理想情况下，一个 wavefront 里可以并行从多个 bank 取数据。额外指的就是因为有害 bank conflict 等原因而导致的相较于理想情况的 wavefront 增加。"
+        }
+      }
+    },
+    "thread-index-registers": {
+      "rounds": {
+        "opening": {
+          "question": "thread 的 `threadIdx` 和 `blockIdx` 等信息实际上保存在哪？",
+          "answer": "首先肯定不是程序员显示指定的。也不是编译器直接硬编码进指令的，否则在这个 SIMD 的架构下，所有线程将会共享硬编码的  `threadIdx` 和 `blockIdx` 等信息。实际上它是由硬件写入特殊寄存器，并暴露给线程的。SASS 代码印证了这个观点，通过 `S2R` 指令把相应的值从特殊寄存器中读入寄存器。"
+        }
+      }
+    },
+    "kernel-parameters": {
+      "rounds": {
+        "opening": {
+          "question": "kernel 的参数保存在哪，如何获取，如果类似于 CPU 函数保存在一些寄存器里面，那么要给每个线程复制相应的值？这似乎不太合理。",
+          "answer": "保存在 constant memory 中，由线程自己读到寄存器中使用。除了 kernel 参数，还保存一些 launch 配置或 ABI 常量等。"
+        }
+      }
+    },
+    "local-stack-base": {
+      "rounds": {
+        "opening": {
+          "question": "看起来在我的实验代码中 `c[0x0][0x28]` 指向了每个线程自己的 local stack / local frame 基址，那么它指向的是什么存储，为什么所有线程是共享的？",
+          "answer": "所有线程从同一个 kernel parameter / constant slot 读到一个 local-memory frame 相关的基准值；随后每个线程在自己的执行上下文中使用这个值。真正形成 local memory 地址时，硬件/编译器约定会结合线程身份、warp/lane、local address 编码或 per-thread local memory 映射，使不同线程访问彼此隔离的 local memory 区域。"
+        }
+      }
+    },
+    "simt-branches": {
+      "rounds": {
+        "opening": {
+          "question": "对于 NVIDIA GPU 这种 SIMT 的硬件，我们显然不能让同一个 warp 中不同的线程执行不同的指令，那么如何做分支？",
+          "answer": "通过谓词执行，效果类似 mask。每个线程运行在 lane 中，lane 是 warp 中的线程槽位，可以通过 `@P0` 这样的谓词来只让满足条件的 lane 激活，不激活的 lane 不执行对应的指令。对于细小的 `if`，可以简单的为不同的分支生成各自的谓词指令；但是对于 `BRA` 这样的跳转，如果部分 lane 跳转而另一部分没有，那么硬件会保存当前 active mask 和汇合点，分别用对应的 lane active 执行两条路径，最后在汇合点汇合，恢复 active mask。编译器负责生成控制流结构和汇合信息。在 Volta 之后又增强了 warp 内线程的调度/汇合模型，更有 Independent Thread Scheduling，允许不同 thread PC 处在不同的位置，执行时硬件调度器会把当前处在同一 PC 的 active threads 重新组合成 SIMT 执行单元。"
+        }
+      }
+    },
+    "aclgraph-replay": {
+      "rounds": {
+        "opening": {
+          "question": "Ascend NPU 设备的 ACLGraph 记录和重放的是什么，相比于普通的重复执行，它节省的是什么？",
+          "answer": "ACLGraph 捕获一串设备任务及其执行依赖，之后通过一次 replay 触发。其中的 kernel 仍会分别调度和执行，并不会自动融合成一个大 kernel。相比普通执行，它主要减少 host 侧逐个向 NPU 提交任务的开销，也可能缩短任务之间的等待空隙；但不会省去 kernel 本身的计算。算子融合是另一项独立的优化。"
+        }
+      }
+    },
+    "sass-integer-instructions": {
+      "rounds": {
+        "opening": {
+          "question": "诸如 `IADD3`、`IMAD`、`ISETP` 等 SASS 的指令助记符中的 `I` 表示什么，立即数吗？",
+          "answer": "不，表示整数。"
+        }
+      }
+    },
+    "shared-review-guidelines": {
+      "rounds": {
+        "opening": {
+          "question": "我打算使用 AI code review 来提升我开源 GitHub 仓库的 PR 质量，但是不同的工具比如 GitHub Copilot code review 和 Cursor Bugbot 支持的自定义指令路径都不同，我该怎么做？",
+          "answer": "对于这同一个仓库，为每个工具都维护一套自定义指令显然是不合理的，可以把开发的约束沉淀到 `CONTRIBUTING` 之类的文档中，或者一并提供专供 review 的 check list，然后在不同的工具中引用它们。更进一步的，也可以创建专门用于 review 的开发 skills，让开发者在提交 PR 之前，就让自己的 agent 对仓库代码进行专业、定制化的 review。"
+        }
+      }
+    },
+    "ai-code-quality": {
+      "rounds": {
+        "opening": {
+          "question": "截至目前我们的开源项目有约 2700 提交，开源开发者很难对项目有比较完整的理解和认识，甚至项目组内部大家也基本上就只懂自己的那一部分，在这样的背景下，如何尽量提高大家用 AI 生成的项目代码质量？",
+          "answer": "把文档、代码约束写在诸如 `CONTRIBUTING` 等 agent 会参考的文档中，把容易犯的错误，需要重点检查的事项写在 `REVIEW` 之类的文档中，把开发流程的经验沉淀到开发 skills 中，让开发者安装这些 skills 进行开发。skills 会在合适的时候执行检查脚本来检查、直接 review 代码、或者要求开发者实际进行一些操作来检查页面和功能。在提交 PR 后，让 GitHub Copilot 提供一些审查意见和建议，再由维护者做简单的人工浏览和检查。"
+        }
+      }
+    },
+    "cli-golden-tests": {
+      "rounds": {
+        "opening": {
+          "question": "我需要为我们的平台维护一个 CLI 工具，但是开发者们普遍用 AI 完成代码，在开发约束、审查规则的基础上，我希望能够直接方便的审查他们写的命令的具体功能，我该怎么做？",
+          "answer": "实现一个 snapshot 快照 / golden file 机制，通过代码生成大量命令参数组合的运行结果，包括标准输出、标准错误输出、进程退出码等等，尽量保证覆盖面全，并纳入版本管理，方便在 PR 中直接 review。这要求这些快照输出必须是稳定的，但显然很多命令的成功输出和登陆状态、平台/集群状态是相关的，因此我提供了一套沙箱机制，通过统一的本地存储、网络 gateway，模拟了虚假的 keyring、存储访问和网络请求，保证快照输出的稳定。不过这仅仅能够对错误路径覆盖的比较全面，成功输出千奇百怪，无法稳定，故要求 agent 根据开发者实际环境真实使用命令，检查输出是否符合预期，但不纳入版本管理。"
+        }
+      }
+    },
+    "cli-agent-experience": {
+      "rounds": {
+        "opening": {
+          "question": "我需要为我们的平台维护一个 CLI 工具，主要面向用户的 AI agent，也面向习惯于 CLI 操作的人类用户，如何提供尽可能好的使用体验？",
+          "answer": "对于 AI 工具，提供全套的使用 skills，并提供更符合 AI 习惯的非交互时、JSON 格式化输出等选项。对于人类用户，提供多语言，并为常用 shell 提供 Tab 补全，并让命令解析尽可能一次性扫描并给出所有的错误，而不是遇到错误的参数就直接报错退出等。这其中其实有很多的小细节，需要一点一点打磨。"
+        }
+      }
+    },
+    "diffuse-path-tracing": {
+      "rounds": {
+        "opening": {
+          "question": "在光线追踪中，我们是如何处理漫反射表面的？如果只是随机的反射，那我觉得很可能会带来严重的噪点。",
+          "answer": "对于每个像素，路径追踪通常会进行多次采样并取平均，以降低随机噪声。每次采样中，光照估计主要分为随机反射/折射采样和直接光照采样：前者根据材质的 BRDF/BSDF 随机选择新的反射或折射方向，并递归追踪后续光照；由于这是随机采样，贡献需要除以该方向被采到的概率密度 PDF，因此单次样本权重通常与采样概率呈反比。另一方面，如果只靠随机方向“碰巧”打到光源，尤其是小光源或远距离光源，噪点会很严重，所以渲染器还会在当前表面点主动采样光源，并发出阴影光线判断是否遮挡，从而计算直接光照贡献。若随机采样和光源采样可能估计同一部分光照，则通常使用 MIS 为它们分配权重，在保持结果正确的同时降低噪点。"
+        }
+      }
+    },
+    "pod-bandwidth-ceph": {
+      "rounds": {
+        "opening": {
+          "question": "我们的平台借助 `bandwidth` 插件通过 `tc` 限制用户 Pod 的网络带宽。但是 Pod 对于分布式存储比如 Ceph 的访问也是通过网络的，是否会受到这个限制？",
+          "answer": "`tc` 限制的是经过特定网络接口或其关联队列的网络包，这里对应 Pod 中容器共享的 `eth0` 和节点侧的对应的 veth/IFB，Pod 通过它访问网络。而 Pod 内对于 Ceph 的访问是通过是文件系统接口访问的，由内核转发给节点上的分布式存储客户端，再由这个客户端通过节点网络接口访问分布式存储服务，理论上不受到 Pod 网络带宽的限制。"
+        }
+      }
+    },
+    "csi-existing-mounts": {
+      "rounds": {
+        "opening": {
+          "question": "由于 Rook 没有正确配置污点容忍，我们集群控制平面所在节点的 CephFS CSI 组件没有正常运行，进而导致新 Pod 无法完成 CephFS 挂载，但是旧的 Pod 依旧能够正常运行，这是为什么？",
+          "answer": "Ceph CSI 是帮助 Kubernetes 创建、挂载和卸载 CephFS 的存储驱动，这里实际上会先创建 CephFS 挂载实例，再将其 bind mount 到指定的 path。完成挂载后，CSI 不再参与正常的数据读写，之后的实际存储访问通过 VFS 进入 CephFS 内核或 FUSE 客户端处理，因此 CSI 组件消失通常不会导致已经完成挂载的 Pod 对 Ceph 的访问异常（只要对应的内核客户端或 `ceph-fuse` 仍然健康），但是新的 Pod 因为无法正常挂载而卡在 `ContainerCreating`。"
+        }
+      }
+    },
+    "cephfs-client-cache": {
+      "rounds": {
+        "opening": {
+          "question": "多个 Pod 使用同一个 CephFS 时，它们是否共享节点上的同一个挂载实例和缓存？",
+          "answer": "如果多个 Pod 位于同一节点并引用同一个 PVC，CSI 通常只为该 volume 建立一个 staging mount，再分别 bind mount 给各个 Pod，因此它们一般共享同一个 CephFS superblock、节点客户端状态和底层缓存；即使使用不同 `subPath`，也可以只是同一挂载中不同子树的 bind mount。如果 Pod 位于不同节点，每个节点会建立自己的客户端挂载和缓存，由 CephFS MDS 协调一致性。staging mount 是将远端 CephFS 真正接入节点 VFS、创建或取得 superblock 的过程；bind mount 则只是把这个已有 superblock中的整体或子树暴露到另一个 path，不会创建新的 CephFS 文件系统实例。"
+        }
+      }
+    },
+    "cephfs-metadata-coordination": {
+      "rounds": {
+        "opening": {
+          "question": "为什么 Ceph 中 metadata pool 的访问需要经过 MDS，但是 data pool 的访问不需要？",
+          "answer": "元数据是共享的文件系统关系图，一次操作往往涉及多个对象，因此必须保证锁、顺序、缓存一致性和崩溃恢复。RADOS 只提供对象级能力，所以需要 MDS 充当权威协调者。文件数据可以按 inode + layout + offset 独立定位，并发写入最多导致结果不确定，例如某次写覆盖另一次写，但文件系统结构仍然合法。元数据如果缺少协调，不同更新可能相互交错或只完成一部分，从而产生悬空目录项、错误链接数等非法状态。"
+        }
+      }
+    },
+    "deep-thinking": {
+      "rounds": {
+        "opening": {
+          "question": "AI 工具的深度思考本质上是什么，主要是什么层提供的这个能力？",
+          "answer": "AI 工具里的“深度思考”，本质上是产品层把模型的推理能力编排成一套更慢、更结构化的思考流程：通过系统提示词、任务分解、反思检查、多轮生成、工具调用和更长计算预算，引导模型先分析、比较、校验，再给出答案。它需要模型层具备基础推理能力和相关训练语料支撑，但用户感知到的“深度思考模式”，主要是工具/产品层提供的编排能力在起作用。"
+        }
+      }
+    },
+    "qkv-dimensions": {
+      "rounds": {
+        "opening": {
+          "question": "QKV 的维度有什么约束？",
+          "answer": "QK 需要维度上对齐，这样才能点乘；KV 数量上需要一致，这样才能对应起来。"
+        }
+      }
+    },
+    "attention-head-width": {
+      "rounds": {
+        "opening": {
+          "question": "多头注意力中每个头的输出维数有何约束？",
+          "answer": "从模型结构和数学上来说，需求是能够给出一个从所有头的输出到模型隐藏空间的映射，不硬性要求每个注意力头的特征宽度相同，或者总和与模型隐藏空间维数相同。"
+        }
+      }
+    },
+    "agent-evaluation": {
+      "rounds": {
+        "opening": {
+          "question": "在基于 LLM 的 agent 评测中，许多任务目标具有较强的语义性和主观性，难以被精确地转化为可自动执行、可重复判定的评价规则。那么，对于这类难以形式化和自动验证的目标，应当如何进行可靠的评测？",
+          "answer": "相比于“测什么？在什么范围测？”，这个问题更偏向于实现细节，也就是“具体到底怎么判？”。具体实现通常依托于 benchmark 的整体设计，包括数据构建、任务环境、交互接口、评测指标，以及安全性与稳健性等方面；在判定粒度上，又可以采用终局评估、逐步评估或轨迹评估。其核心仍是把任务期望转化为评测器可观测、可判定的条件，例如检查最终环境状态、关键步骤是否正确，或整条执行轨迹是否满足约束，并据此判断 agent 是否完成任务。但这套目标表达、环境观测和验证机制往往与具体任务和环境高度绑定；一些通过 GUI 操作完整计算机系统的通用 benchmark 虽然覆盖范围更广，却可能牺牲交互效率和任务针对性，因此通用性、覆盖范围与执行效率之间可能存在 trade-off。基于 LLM 的评测或者多个 agent 交互来 refining 评估也是常见的做法，但是提问时我好奇的主要是前面那种基于代码或者规则的。"
+        }
+      }
+    },
+    "paged-attention-vs-paging": {
+      "rounds": {
+        "opening": {
+          "question": "PagedAttention 和操作系统中的页式内存管理有什么不同？",
+          "answer": "PagedAttention 借鉴了 OS 页式内存管理中逻辑地址与物理地址分离的思想，但将逻辑 KV block 到物理 KV block 的映射实现为应用层软件机制。OS 虚拟内存需要高效透明支持任意程序的大量内存访问，因此依靠 MMU、页表寄存器和 TLB 等通用硬件完成地址转换。PagedAttention 的映射仅由受控的 attention kernels 使用，为这一专用场景要求 GPU 厂商增加硬件支持并不现实，软件实现也更便于调整分配、共享和 copy-on-write 策略。block table 可以驻留在 GPU 可访问的内存中，其访问能够利用缓存并与 attention 计算融合，因此映射虽有额外成本，但通常可以控制。KV cache 的最终长度未知，而每轮新增状态的需求可以提前确定，所以 vLLM 能在 kernel 执行前主动分配所需 blocks，不必依靠缺页异常。一次解码需要完整的历史 KV，因此系统以 block 为粒度完成分配、共享和回收，却以序列或序列组为粒度实施抢占，而不像 OS 在内存不足时可以只驱逐进程的某一个单页。KV cache 又能由模型参数和 token 序列重新生成，所以被抢占时可以选择丢弃并在恢复时重计算。分布式执行中，各 GPU 共享逻辑 block 编号和生命周期，而每个 worker 上相应 block 的实际字节量可以随其持有的 KV 分片而不同。"
+        }
+      }
+    },
+    "paged-attention-block-size": {
+      "rounds": {
+        "opening": {
+          "question": "为什么 PagedAttention 的 swap/recomputation 的端到端延迟在 block size 过小和过大时较大？",
+          "answer": "PagedAttention 的端到端延迟同时受到正常推理效率、请求排队、抢占频率和状态恢复成本的影响。从前面对 block size 的独立消融结果中可以看出，block 过小时，每个 block 包含的工作量不足以充分利用 GPU 并行能力，地址映射和管理成本也更难摊薄。block 过大时，每条序列最后一个 block 中的空闲位置又会造成严重的内部碎片，减少显存能够同时容纳的序列数量。从恢复操作的微基准中可以看出，小 block 会把 swap 拆成大量无法充分利用 PCIe 带宽的小型传输，而 recomputation 的单次恢复耗时基本不随 block size 变化。因此，recomputation 在小 block 下的端到端延迟增长主要来自基础推理效率下降、请求排队增加，以及可能增多的抢占次数，而 swap 还要承担额外的传输开销。中等 block size 能够在 GPU 执行效率和 KV cache 内存利用率之间取得平衡，使系统处理速度稳定高于请求到达速度，因此端到端延迟最低。"
+        }
+      }
+    },
+    "paged-attention-preemption": {
+      "rounds": {
+        "opening": {
+          "question": "为什么 PagedAttention 论文直接对比 swap 和 recomputation 的表现，而不是考虑让新请求等待？",
+          "answer": "并非不让新请求等待，而是让新请求等待与 swap 或 recomputation 处理的是不同阶段的问题。从论文的调度设计可以看出，当显存不足时，新到达的请求本来就会留在等待队列中，但 KV cache 的最终长度无法预知，已经进入运行状态的序列仍会随着生成过程继续增长，并可能在没有请求完成释放空间之前耗尽物理 blocks。此时仅让新请求等待不会释放任何显存，暂停运行请求但保留其 KV cache 也同样无济于事，系统必须抢占部分已运行序列并释放它们占用的 blocks。如果想要完全避免这种情况，那么就需要按最大长度预留显存，那么将会导致严重的浪费。"
+        }
+      }
+    },
+    "virtual-memory-mechanisms": {
+      "rounds": {
+        "opening": {
+          "question": "CSAPP 在介绍虚拟内存时，主要借助分页机制来解释 caching、memory management 和 memory protection。这里我想进一步理清虚拟内存与分页、分段、段页式等机制之间的关系，以及这些概念分别处于什么层次、解决什么问题？",
+          "answer": "虚拟内存、分页、分段和段页式其实是在回答不同层次的问题：虚拟内存更偏向一种抽象，它把程序使用的地址空间与实际物理内存解耦，从而可以提供独立地址空间、统一的内存视图、保护与共享等能力；而分页、分段、段页式则更偏向实现这种抽象的具体地址组织与转换机制。分页把地址空间切成固定大小的页，便于离散分配、换入换出和页级保护；分段则按照代码、数据、栈等逻辑结构划分可变长区域，更强调程序结构和段级保护；段页式则先用分段表达逻辑结构，再用分页解决物理内存分配问题。CSAPP 之所以主要借助分页来讲 caching、memory management 和 memory protection，是因为现代通用操作系统大多以分页为主要机制，所以 page table、page fault、TLB 等最适合用来具体展示这些能力；但这些能力本身并不等同于分页，分页只是它们在现代系统中的主要实现方式之一。"
+        }
+      }
+    },
+    "x86-segment-cache": {
+      "rounds": {
+        "opening": {
+          "question": "在较老的 x86 处理器中，通过 GDT/LDT 表来实现段式内存管理，段寄存器中记录对应的索引来定位相应的表项。但这显然不够，如果只有这些信息，那么每次访存都需要先去内存中读取段描述符，再进行地址计算和权限检查，代价显然很高，有什么我还不知道的机制？",
+          "answer": "处理器不会在每次内存访问时都重新去 GDT/LDT 中读取 segment descriptor。段寄存器实际上分为两部分：软件可见的 visible part 中保存 segment selector，用于定位 GDT/LDT 中对应的描述符；处理器内部还有一个不可见的 hidden part / descriptor cache。当新的 selector 被装入段寄存器时，CPU 才会查一次 GDT/LDT，并把该 descriptor 中的 `base`、`limit`、`access rights` 等信息缓存到 hidden part。之后的访存直接使用这些缓存的信息完成地址计算和权限检查，因此不需要每次都重新查表。"
+        },
+        "follow-up-one": {
+          "question": "那么 selector 更新或者 descriptor 更新时候的查表和更新，是 CPU 的自动机制吗，还是需要操作系统或者编译器参与？",
+          "answer": "当软件装载一个新的 segment selector 到段寄存器时，CPU 会自动根据 selector 查找 GDT/LDT 中对应的 segment descriptor，完成合法性和权限检查，并把 descriptor 中的 `base`、`limit`、`access rights` 等信息自动装入 hidden part / descriptor cache；这些查表和缓存更新不需要编译器显式实现。不过，修改 GDT/LDT 中的 descriptor 本身通常是操作系统的职责，而且如果 descriptor 已经被缓存到某个段寄存器的 hidden part 中，仅仅修改内存中的表项并不会自动刷新已有缓存，操作系统还需要重新装载相应的段寄存器，触发 CPU 再次查表并更新 hidden part。"
+        },
+        "follow-up-two": {
+          "question": "这是一套独立的机制吗，为什么不会和 CPU 正在执行的其他指令冲突，CPU 会阻塞现有程序来执行这个更新吗？",
+          "answer": "不是独立后台机制，而是 CPU 对“装载段寄存器”这类指令的硬件实现过程；查表、检查和 hidden cache 更新都属于该指令的执行，处理器用正常的流水线和依赖控制机制保证它不会与其他指令产生架构上的冲突。"
+        }
+      }
+    },
+    "gpu-memory-hierarchy": {
+      "rounds": {
+        "opening": {
+          "question": "GPU 中各级存储到底是怎么连的？global、local、texture、surface 都会经过 L1/L2，而 shared memory 是另一条路吗？寄存器和 constant memory 又在哪里？",
+          "answer": "可以先区分地址空间和实际的硬件路径：global、local、texture、surface 等访问通常通过 L1/TEX 子系统，未命中再往 L2、显存请求，具体缓存策略可能跳过 L1。shared memory 是 SM 内由程序员显式管理的片上存储，访问它不需要依次查询 L1、L2；它和 L1 在一些架构中共享物理 SRAM，但用途和访问机制不同。寄存器也在 SM 内，保存线程的执行状态；constant memory 则有专门的缓存路径，未命中时再向下层取数据。因此，这些名称不能简单排成一条从快到慢的串联关系。"
+        },
+        "follow-up-one": {
+          "question": "我在 Nsight Compute 中看到过 long scoreboard stall，想知道 L1、L2、shared memory、constant memory 和显存的访问通常各要多少周期。L1、L2 竟然比 shared memory 还慢这么多？",
+          "answer": "先建立数量级直觉：shared memory 通常是十几到几十个周期，L1 命中通常是几十个周期，L2 是上百个周期，访问显存则可能需要数百个周期，具体数值随架构和访问条件变化。shared memory 的访问更直接，不承担通用缓存的命中判断等职责，但 bank conflict 会使访问串行化，所以不能认为它总比 L1 快固定倍数。constant cache 命中时开销较低，同一 warp 读取同一地址可以广播，读取不同地址则可能串行化，未命中还要承担下层访问延迟。寄存器无需经过这些缓存，但也不能把相关指令的数据依赖延迟理解成零。"
+        }
+      }
+    },
+    "gpu-register-allocation": {
+      "rounds": {
+        "opening": {
+          "question": "SASS 中看到的 `R1`、`R2` 这些寄存器是怎么分配和管理的？从 CUDA 代码中的变量到这些寄存器，中间还有什么映射机制？",
+          "answer": "可以按“高级语言变量 → PTX 虚拟寄存器 → SASS 寄存器”理解。源代码中的变量经过优化，可能被消除，也可能需要寄存器保存；PTX 用虚拟寄存器表达这些中间值，再由 `ptxas` 或驱动的 JIT 编译器完成寄存器分配，生成使用 `R0`、`R1` 等编号的 SASS。生命周期不重叠的值可以复用同一个寄存器，放不下的值可能溢出到 local memory，因此变量数、PTX 寄存器数与实际寄存器用量并不一一对应。"
+        },
+        "follow-up-one": {
+          "question": "那么 SASS 的寄存器到实际物理寄存器上，是否还有一层硬件映射？我印象中 SM 能驻留的 block 数量受到寄存器数量制约，这是否意味着寄存器上下文不会被保存和切换，而是一直把值保存在那里？",
+          "answer": "对于正常的驻留 warp 调度，这个理解基本正确。可以把寄存器组织抽象成“线程 × 寄存器编号”的二维表：不同线程都有自己的 `R0`、`R1`，硬件结合线程所属的驻留上下文与指令中的编号，访问对应的物理存储位置。切换执行另一个驻留 warp 时，各自的寄存器值已经在片上，无需逐次保存和恢复，所以每线程用量越大，能同时容纳的线程和 block 就可能越少。“二维”是帮助理解的逻辑模型，实际布局还涉及分区、bank 和分配粒度，也不能由此推断 GPU 在抢占等情况下永远不保存上下文。"
+        },
+        "follow-up-two": {
+          "question": "按照这种说法，好像还不太能够解释寄存器数量变化对于驻留的制约，因为这看起来每个线程绑定到了一行寄存器上，不能一个线程用两行寄存器，也不能两个线程用一行寄存器，这样的话一个线程用的寄存器数量多少就没意义了。",
+          "answer": "是的，二维表只描述数据属于哪个线程，并不意味着每个线程固定占用一整行、容量不变的物理寄存器。编译器确定每线程的寄存器需求，block 驻留时，硬件据此按一定粒度分配资源；执行时，再结合驻留线程的上下文与 SASS 寄存器编号定位对应的存储位置。因此，每线程分配得越多，相同容量下能容纳的线程和 block 就可能越少。这里的“映射”描述的是对应关系，不一定通过查表实现，也不等同于 CPU 为乱序执行所做的动态寄存器重命名。"
+        }
+      }
+    }
+  }
+}

@@ -1,7 +1,7 @@
+import { ArchiveSectionHeader, SectionNote } from "@/components/SectionHeader"
 import { useTranslation } from "react-i18next"
 
 import {
-  ArchiveSectionHeader,
   ProjectArchiveCard,
 } from "@/components/ProjectHighlights"
 import { courseProjects, featuredCourseProjects } from "@/data/course-projects"
@@ -38,9 +38,7 @@ export function CourseProjectHighlights() {
         })}
       </div>
 
-      <p className="w-full whitespace-pre-line px-2 text-sm font-normal leading-relaxed text-tone-2 sm:px-3 md:px-4 lg:text-[0.9375rem] xl:text-base">
-        {t("reflection")}
-      </p>
+      <SectionNote><p>{t("reflection")}</p></SectionNote>
     </section>
   )
 }

@@ -9,6 +9,7 @@
     "prebuild": "npm run fetch:github-repo-stats",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
+    "test:questions": "node --test tests/questions.test.mjs",
     "preview": "vite preview"
   },
   "dependencies": {

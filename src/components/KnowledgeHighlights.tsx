@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
 
 import { KnowledgeCard } from "@/components/KnowledgeCard"
-import { ArchiveSectionHeader } from "@/components/ProjectHighlights"
+import { ArchiveSectionHeader } from "@/components/SectionHeader"
 import { featuredKnowledgeEntries, knowledgeEntries } from "@/data/knowledge"
 
 export function KnowledgeHighlights() {

@@ -55,6 +55,7 @@
 
 :root {
     --background: oklch(1 0 0);
+    --site-page-base-background: #fbfaf7;
     --foreground: oklch(0.145 0 0);
     --text-tone-1: color-mix(in oklab, var(--foreground) 96%, transparent);
     --text-tone-2: color-mix(in oklab, var(--foreground) 82%, transparent);
@@ -109,6 +110,7 @@
 
 .dark {
     --background: oklch(0.15 0.03 260); /* 宇宙深蓝 */
+    --site-page-base-background: #120f17;
     --foreground: oklch(0.985 0 0);
     --text-tone-1: color-mix(in oklab, var(--foreground) 96%, transparent);
     --text-tone-2: color-mix(in oklab, var(--foreground) 84%, transparent);
@@ -193,7 +195,7 @@
   .site-background::before {
     inset: 0;
     z-index: 0;
-    background: #fbfaf7;
+    background: var(--site-page-base-background);
   }
   .site-background::after {
     bottom: 0;
@@ -202,7 +204,7 @@
     background: linear-gradient(to bottom, rgb(251 250 247 / 0), var(--background));
   }
   .dark .site-background::before {
-    background: #120f17;
+    background: var(--site-page-base-background);
   }
   .dark .site-background::after {
     background: linear-gradient(to bottom, rgb(18 15 23 / 0), var(--background));
@@ -261,6 +263,60 @@
 }
 
 @layer components {
+  /* Shared heading and supporting-copy roles, based on the resume activity section. */
+  .section-heading {
+    @apply flex min-w-0 flex-col gap-2 px-2 sm:px-3 md:px-4;
+  }
+
+  .section-heading-row {
+    @apply flex flex-wrap items-baseline justify-between gap-x-4 gap-y-3;
+  }
+
+  .section-title {
+    @apply text-3xl font-normal leading-none tracking-tight text-tone-1 md:text-4xl;
+  }
+
+  .section-subtitle {
+    @apply max-w-3xl text-[0.9375rem] font-normal leading-relaxed text-tone-4 sm:text-[1.0625rem];
+  }
+
+  .section-note {
+    @apply flex w-full flex-col gap-1 px-2 text-sm font-normal leading-normal text-tone-2 sm:px-3 sm:text-[0.9375rem] md:px-4;
+  }
+
+  .section-note p {
+    white-space: pre-line;
+  }
+
+  .section-action {
+    @apply inline-flex w-fit shrink-0 items-center gap-1.5 text-[0.9375rem] font-normal leading-none text-tone-2 transition-colors hover:text-tone-1 sm:text-[1.0625rem];
+  }
+
+  .section-action svg {
+    @apply size-4 shrink-0 sm:size-[1.125rem];
+  }
+
+  .section-action > svg:last-child {
+    transition: transform 200ms ease;
+  }
+
+  .section-action:hover > svg:last-child {
+    transform: translateX(2px);
+  }
+
+  .section-action-external:hover > svg:last-child {
+    transform: translate(2px, -2px);
+  }
+
+  .section-action:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 4px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .section-action > svg:last-child { transition: none; }
+  }
+
   .receipt-preview-page {
     min-height: 100svh;
     display: grid;
@@ -658,7 +714,7 @@
   }
 
   .site-footer-breadcrumbs li + li::before {
-    content: "›";
+    content: "/";
     color: var(--text-tone-5);
   }
 
@@ -3302,10 +3358,15 @@
     background: color-mix(in oklab, var(--background) 72%, transparent);
   }
 
-  @media (min-width: 768px) and (orientation: landscape) and (min-height: 32rem) {
+  @media (min-width: 768px) {
+    .education-rhythm-section {
+      /* Keep the full-screen minimum, but let long copy expand instead of overlapping the next section. */
+      height: auto;
+    }
+
     .education-timeline {
       grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-      gap: clamp(2rem, 6vw, 4.5rem);
+      gap: clamp(1.5rem, 4vw, 4.5rem);
     }
 
     .education-timeline::before {
@@ -3551,8 +3612,19 @@
 
   .plain-index-document,
   .plain-detail-document {
+    --plain-measure: var(--container-7xl);
     --plain-body-measure: 100%;
     --plain-list-measure: 100%;
+  }
+
+  .plain-resume-document {
+    --plain-measure: 100%;
+  }
+
+  .plain-not-found-document {
+    --plain-measure: var(--container-xl);
+    max-width: var(--plain-measure);
+    margin-inline: 0;
   }
 
   .plain-home-document * {
@@ -3566,6 +3638,11 @@
   .plain-home-document > section {
     padding-top: var(--plain-section-padding);
     border-top: 1px solid var(--plain-divider);
+  }
+
+  .plain-resume-document .section-note {
+    margin-top: 1.25rem;
+    padding-inline: 0;
   }
 
   .plain-home-header {
@@ -4158,9 +4235,12 @@
 
   @media (max-width: 767px) {
     .plain-home-main {
-      padding-inline: clamp(1.05rem, 5vw, 1.45rem) !important;
       padding-top: calc(env(safe-area-inset-top, 0px) + 6.75rem) !important;
       padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 8rem) !important;
+    }
+
+    .plain-home-landing-main {
+      padding-inline: clamp(1.05rem, 5vw, 1.45rem) !important;
     }
 
     .plain-home-document {

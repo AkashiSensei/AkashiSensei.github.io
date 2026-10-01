@@ -7,6 +7,7 @@ import { DirectionsSection } from "@/components/DirectionsSection"
 import { EducationHighlights } from "@/components/EducationHighlights"
 import { GitHubActivityHighlights } from "@/components/GitHubActivityHighlights"
 import { GitHubMark } from "@/components/GitHubMark"
+import { QuestionWall } from "@/components/QuestionWall"
 import { KnowledgeHighlights } from "@/components/KnowledgeHighlights"
 import { Layout } from "@/components/Layout"
 import { ProjectHighlights } from "@/components/ProjectHighlights"
@@ -16,6 +17,8 @@ import { Button } from "@/components/ui/button"
 import { WorkbenchHighlights } from "@/components/WorkbenchHighlights"
 import { useAnimationPreference } from "@/components/animation-provider"
 import { useResumeLandscapeSectionPaging } from "@/hooks/use-resume-landscape-section-paging"
+import { filledPillActionClassName, ghostPillActionClassName } from "@/lib/action-button-styles"
+import { cn } from "@/lib/utils"
 
 type ValueCard = {
   title: string
@@ -97,7 +100,7 @@ export function ResumePage() {
               <ContactDialog>
                 <Button
                   variant="outline"
-                  className="h-12 rounded-full border-foreground bg-foreground px-7 text-sm font-bold text-background shadow-sm backdrop-blur-md transition-colors hover:bg-foreground/85 dark:border-[rgb(var(--site-surface-rgb)_/_0.18)] dark:bg-[rgb(var(--site-surface-rgb))] dark:text-black dark:hover:bg-[rgb(255_255_252)]"
+                  className={cn(filledPillActionClassName, "h-12 px-7")}
                 >
                   {t("contact")}
                 </Button>
@@ -105,7 +108,7 @@ export function ResumePage() {
               <Button
                 variant="ghost"
                 asChild
-                className="h-12 rounded-full px-4 text-sm font-bold text-tone-2 transition-colors hover:bg-[rgb(var(--site-surface-rgb)_/_0.30)] hover:text-tone-1 dark:hover:bg-white/10"
+                className={ghostPillActionClassName}
               >
                 <a
                   href="https://github.com/AkashiSensei"
@@ -144,6 +147,7 @@ export function ResumePage() {
         <DirectionsSection />
         <CourseProjectHighlights />
         <WorkbenchHighlights />
+        <QuestionWall />
         <KnowledgeHighlights />
         <SmallToolHighlights />
       </div>

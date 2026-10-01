@@ -1,3 +1,4 @@
+import { SectionHeader } from "@/components/SectionHeader"
 import { useTranslation } from "react-i18next"
 
 import { BackButton } from "@/components/BackButton"
@@ -26,14 +27,7 @@ export function CourseProjectsPage() {
         <div className="flex flex-col px-2 sm:px-4">
           <BackButton />
 
-          <header className="flex flex-col gap-3 sm:gap-4">
-            <h1 className="text-3xl font-bold tracking-tight md:text-4xl">
-              {t("title")}
-            </h1>
-            <p className="text-base leading-relaxed text-foreground/80 dark:text-foreground/90 sm:text-lg">
-              {t("subtitle")}
-            </p>
-          </header>
+          <SectionHeader level={1} title={t("title")} subtitle={t("subtitle")} className="px-0 sm:px-0 md:px-0" />
         </div>
 
         <ProjectGrid

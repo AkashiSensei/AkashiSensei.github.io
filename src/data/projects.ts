@@ -1,4 +1,4 @@
-import { type ImageBrightness } from "@/lib/image-brightness"
+import type { ImageBrightness } from "@/lib/image-brightness"
 
 export type ProjectStatus = "active" | "early" | "private" | "public"
 export type ProjectLifecycleStatus = "starting" | "ongoing" | "completed"

@@ -7,6 +7,8 @@ import { useAnimationPreference } from "@/components/animation-provider"
 import { Layout } from "@/components/Layout"
 import LightRays from "@/components/LightRays.jsx"
 import { Button } from "@/components/ui/button"
+import { QuestionDialogProvider } from "@/components/QuestionThreadDialog"
+import { QuestionsPage } from "@/pages/QuestionsPage"
 import { HomePage } from "@/pages/HomePage"
 import { CourseProjectsPage } from "@/pages/CourseProjectsPage"
 import { KnowledgeDetailPage } from "@/pages/KnowledgeDetailPage"
@@ -30,6 +32,7 @@ const pageTitles: Record<string, string> = {
   "/course-projects": "Akashi - Course Projects",
   "/workbench": "Akashi - Workspace",
   "/tools": "Akashi - Tools",
+  "/questions": "Akashi - Questions",
   "/knowledge": "Akashi - Knowledge",
   "/receipt-preview": "Akashi - Receipt Preview",
 }
@@ -246,7 +249,7 @@ function NotFoundPage() {
   if (isPlainDisplayMode) {
     return (
       <Layout mainClassName="plain-home-main">
-        <article className="plain-home-document plain-detail-document" aria-labelledby="plain-not-found-title">
+        <article className="plain-home-document plain-detail-document plain-not-found-document" aria-labelledby="plain-not-found-title">
           <header className="plain-home-header plain-detail-header">
             <p className="plain-home-kicker">404</p>
             <h1 id="plain-not-found-title">{t("notFound.title")}</h1>
@@ -509,45 +512,48 @@ function App() {
           isAnimationEnabled={isAnimationEnabled}
         />
       ) : null}
-      <div className="site-content">
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/resume" element={<ResumePage />} />
-          <Route path="/receipt-preview" element={<ReceiptPreviewPage />} />
-          <Route path="/projects" element={<ProjectsPage />} />
-          <Route
-            path="/projects/:projectId"
-            element={<ProjectDetailPage projects={projects} />}
-          />
-          <Route path="/course-projects" element={<CourseProjectsPage />} />
-          <Route
-            path="/course-projects/kernel-analysis-thesis"
-            element={<Navigate to="/projects/kernel-analysis-thesis" replace />}
-          />
-          <Route
-            path="/course-projects/:projectId"
-            element={
-              <ProjectDetailPage
-                projects={courseProjects}
-                translationNamespace="courseProjects"
-                fallbackPath="/course-projects"
-              />
-            }
-          />
-          <Route path="/workbench" element={<WorkbenchPage />} />
-          <Route path="/tools" element={<ToolsPage />} />
-          <Route path="/knowledge" element={<KnowledgePage />} />
-          <Route
-            path="/knowledge/:entryId"
-            element={<KnowledgeDetailPage entries={knowledgeEntries} />}
-          />
-          <Route
-            path="/tools/:toolId"
-            element={<SmallToolDetailPage tools={smallTools} />}
-          />
-          <Route path="*" element={<NotFoundPage />} />
-        </Routes>
-      </div>
+      <QuestionDialogProvider>
+        <div className="site-content">
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/resume" element={<ResumePage />} />
+            <Route path="/receipt-preview" element={<ReceiptPreviewPage />} />
+            <Route path="/projects" element={<ProjectsPage />} />
+            <Route
+              path="/projects/:projectId"
+              element={<ProjectDetailPage projects={projects} />}
+            />
+            <Route path="/course-projects" element={<CourseProjectsPage />} />
+            <Route
+              path="/course-projects/kernel-analysis-thesis"
+              element={<Navigate to="/projects/kernel-analysis-thesis" replace />}
+            />
+            <Route
+              path="/course-projects/:projectId"
+              element={
+                <ProjectDetailPage
+                  projects={courseProjects}
+                  translationNamespace="courseProjects"
+                  fallbackPath="/course-projects"
+                />
+              }
+            />
+            <Route path="/workbench" element={<WorkbenchPage />} />
+            <Route path="/tools" element={<ToolsPage />} />
+            <Route path="/questions" element={<QuestionsPage />} />
+            <Route path="/knowledge" element={<KnowledgePage />} />
+            <Route
+              path="/knowledge/:entryId"
+              element={<KnowledgeDetailPage entries={knowledgeEntries} />}
+            />
+            <Route
+              path="/tools/:toolId"
+              element={<SmallToolDetailPage tools={smallTools} />}
+            />
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
+        </div>
+      </QuestionDialogProvider>
     </>
   )
 }
