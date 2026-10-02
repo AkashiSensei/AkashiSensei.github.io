@@ -949,7 +949,7 @@ export function Navbar() {
           top: `${phoneQrPanelPosition.top}px`,
         }}
       >
-        <p className="text-xs font-medium text-tone-2">{t("viewOnPhone.title")}</p>
+        <p className="text-xs font-normal text-tone-2">{t("viewOnPhone.title")}</p>
         <div className="mt-3 rounded-xl border border-black/10 bg-white p-2 shadow-sm dark:border-white/10">
           {phoneQrSvgUrl ? (
             <img
@@ -963,7 +963,7 @@ export function Navbar() {
             </div>
           )}
         </div>
-        <p className="mt-3 truncate text-[0.68rem] leading-4 text-tone-4" title={currentPageUrl}>
+        <p className="mt-3 truncate text-xs leading-4 text-tone-4" title={currentPageUrl}>
           {currentPageUrl}
         </p>
       </SpotlightCard>
@@ -987,12 +987,12 @@ export function Navbar() {
             />
             <AppLink
               to="/"
-              className="truncate font-semibold text-lg tracking-tight transition-opacity hover:opacity-80"
+              className="truncate font-medium text-lg tracking-tight transition-opacity hover:opacity-80"
             >
               {t("site.displayName")}
             </AppLink>
           </div>
-          <div className="mobile-navbar-actions flex items-center gap-0.5 text-sm font-medium text-foreground/80">
+          <div className="mobile-navbar-actions flex items-center gap-0.5 text-sm font-normal text-foreground/80">
             <ContactDialog>
               <button
                 className="flex h-8 w-8 items-center justify-center rounded-full transition-colors hover:bg-muted/50"
@@ -1004,7 +1004,7 @@ export function Navbar() {
             </ContactDialog>
             <button 
               onClick={toggleLanguage}
-              className="flex h-8 w-8 items-center justify-center rounded-full text-sm font-medium transition-colors hover:bg-muted/50"
+              className="flex h-8 w-8 items-center justify-center rounded-full text-sm font-normal transition-colors hover:bg-muted/50"
               title={t("a11y.toggleLanguage")}
             >
               {(i18n.resolvedLanguage ?? i18n.language).startsWith("zh") ? t("ui.langSwitchToEn") : t("ui.langSwitchToZh")}
@@ -1033,13 +1033,13 @@ export function Navbar() {
           />
           <AppLink
             to="/"
-            className="font-semibold text-lg tracking-tight transition-opacity hover:opacity-80"
+            className="font-medium text-lg tracking-tight transition-opacity hover:opacity-80"
           >
             {t("site.displayName")}
           </AppLink>
         </SpotlightCard>
 
-        <SpotlightCard className="desktop-menu-cluster lit-glass-card flex h-12 shrink-0 items-center gap-1.5 rounded-full border border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.42)] px-3.5 text-sm font-medium text-foreground/80 shadow-sm backdrop-blur-md transition-all duration-300 dark:border-white/10 dark:bg-white/10">
+        <SpotlightCard className="desktop-menu-cluster lit-glass-card flex h-12 shrink-0 items-center gap-1.5 rounded-full border border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.42)] px-3.5 text-sm font-normal text-foreground/80 shadow-sm backdrop-blur-md transition-all duration-300 dark:border-white/10 dark:bg-white/10">
           <ContactDialog>
             <button
               className="desktop-menu-item flex h-8 w-8 items-center justify-center rounded-full hover:bg-muted/50"
@@ -1051,7 +1051,7 @@ export function Navbar() {
           </ContactDialog>
           <button
             onClick={toggleLanguage}
-            className="desktop-menu-item flex h-8 w-8 items-center justify-center rounded-full text-sm font-medium hover:bg-muted/50"
+            className="desktop-menu-item flex h-8 w-8 items-center justify-center rounded-full text-sm font-normal hover:bg-muted/50"
             title={t("a11y.toggleLanguage")}
           >
             {(i18n.resolvedLanguage ?? i18n.language).startsWith("zh") ? t("ui.langSwitchToEn") : t("ui.langSwitchToZh")}
@@ -1079,13 +1079,13 @@ export function Navbar() {
           />
           <AppLink
             to="/"
-            className="font-semibold text-lg tracking-tight transition-opacity hover:opacity-80"
+            className="font-medium text-lg tracking-tight transition-opacity hover:opacity-80"
           >
             {t("site.displayName")}
           </AppLink>
         </SpotlightCard>
 
-        <SpotlightCard asChild className="desktop-menu-cluster lit-glass-card flex h-12 min-w-0 items-center justify-center gap-3.5 rounded-full border border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.42)] px-5 text-sm font-medium text-foreground/80 shadow-sm backdrop-blur-md transition-all duration-300 dark:border-white/10 dark:bg-white/10 xl:gap-5 xl:px-6">
+        <SpotlightCard asChild className="desktop-menu-cluster lit-glass-card flex h-12 min-w-0 items-center justify-center gap-3.5 rounded-full border border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.42)] px-5 text-sm font-normal text-foreground/80 shadow-sm backdrop-blur-md transition-all duration-300 dark:border-white/10 dark:bg-white/10 xl:gap-5 xl:px-6">
           <nav>
             {navLinks.map((link) => {
               const isActive = isNavLinkActive(link.href);
@@ -1108,7 +1108,7 @@ export function Navbar() {
           </nav>
         </SpotlightCard>
 
-        <SpotlightCard className="desktop-menu-cluster lit-glass-card flex h-12 shrink-0 items-center gap-1 rounded-full border border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.42)] px-3 text-sm font-medium text-foreground/80 shadow-sm backdrop-blur-md transition-all duration-300 dark:border-white/10 dark:bg-white/10 xl:gap-1.5 xl:px-3.5">
+        <SpotlightCard className="desktop-menu-cluster lit-glass-card flex h-12 shrink-0 items-center gap-1 rounded-full border border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.42)] px-3 text-sm font-normal text-foreground/80 shadow-sm backdrop-blur-md transition-all duration-300 dark:border-white/10 dark:bg-white/10 xl:gap-1.5 xl:px-3.5">
           <ContactDialog>
             <button
               className="desktop-menu-item flex h-8 w-8 items-center justify-center rounded-full hover:bg-muted/50"
@@ -1120,7 +1120,7 @@ export function Navbar() {
           </ContactDialog>
           <button
             onClick={toggleLanguage}
-            className="desktop-menu-item flex h-8 w-8 items-center justify-center rounded-full text-sm font-medium hover:bg-muted/50"
+            className="desktop-menu-item flex h-8 w-8 items-center justify-center rounded-full text-sm font-normal hover:bg-muted/50"
             title={t("a11y.toggleLanguage")}
           >
             {(i18n.resolvedLanguage ?? i18n.language).startsWith("zh") ? t("ui.langSwitchToEn") : t("ui.langSwitchToZh")}
@@ -1137,7 +1137,7 @@ export function Navbar() {
 
       {mobileMenuOpen && (
         <SpotlightCard className="navbar-dropdown-panel lit-glass-card absolute bottom-full left-0 right-0 mb-2 origin-bottom rounded-3xl border border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.42)] p-3 shadow-sm backdrop-blur-md transition-all duration-300 dark:border-white/10 dark:bg-white/10 md:bottom-auto md:left-auto md:right-0 md:top-full md:mt-2 md:w-[22rem] md:origin-top">
-          <div className="flex flex-col gap-1 text-sm font-medium">
+          <div className="flex flex-col gap-1 text-sm font-normal">
             {navLinks.map((link, idx) => (
               <span key={idx} className="block">
                 {(() => {

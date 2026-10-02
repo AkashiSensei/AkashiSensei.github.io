@@ -1,0 +1,40 @@
+.site-dialog-overlay {
+  background: color-mix(in srgb, var(--site-dialog-overlay-color) var(--site-dialog-overlay-opacity), transparent);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+.site-dialog-overlay[data-state="open"] {
+  animation: site-dialog-backdrop-in var(--dialog-backdrop-enter-duration) ease-out both;
+}
+
+.site-dialog-overlay[data-state="closed"] {
+  animation: site-dialog-backdrop-out var(--dialog-exit-duration) ease-in both;
+}
+
+.site-dialog-content[data-state="open"] {
+  animation: site-dialog-enter var(--dialog-enter-duration) var(--dialog-enter-easing) both;
+}
+
+.site-dialog-content[data-state="closed"] {
+  pointer-events: none;
+  animation: site-dialog-exit var(--dialog-exit-duration) var(--dialog-exit-easing) both;
+}
+
+/* The centered position uses the separate translate property; this travels past the viewport edge. */
+@keyframes site-dialog-enter {
+  from { opacity: 0; transform: translateY(calc(50dvh + 50% + 24px)); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes site-dialog-exit {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(calc(-50dvh - 50% - 24px)); }
+}
+
+@keyframes site-dialog-backdrop-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes site-dialog-backdrop-out { from { opacity: 1; } to { opacity: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .site-dialog-overlay, .site-dialog-content { animation: none !important; }
+}

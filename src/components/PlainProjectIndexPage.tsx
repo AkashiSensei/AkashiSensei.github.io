@@ -1,5 +1,7 @@
+import { PlainImageGallery } from "@/components/PlainImageGallery"
+import { ExternalLinkIcon } from "@/components/ExternalLinkIcon"
+import { DocumentTag } from "@/components/DocumentTag"
 import { useEffect, useMemo, useRef, useState } from "react"
-import { ArrowUpRight } from "lucide-react"
 import { useTranslation } from "react-i18next"
 
 import { AppLink } from "@/components/AppLink"
@@ -10,12 +12,6 @@ import { ProjectImageGallery } from "@/components/ProjectImageGallery"
 import { PlainPointList } from "@/components/PlainPointList"
 import { type Project } from "@/data/projects"
 import { getListingPointSections } from "@/lib/project-points"
-import {
-  defaultTagClassName,
-  getCourseProjectSemesterTagClassName,
-  getSemanticTagClassName,
-} from "@/lib/tag-styles"
-import { cn } from "@/lib/utils"
 
 type PlainProjectIndexPageProps = {
   projects: Project[]
@@ -28,15 +24,6 @@ type PlainProjectRepoLink = {
   githubRepo?: string
   repoTags?: Project["repoTags"]
 }
-
-const lifecycleStatusClassName = {
-  starting:
-    "border-sky-300/60 bg-sky-100/70 text-sky-800 dark:border-sky-300/30 dark:bg-sky-300/15 dark:text-sky-200",
-  ongoing:
-    "border-emerald-300/60 bg-emerald-100/70 text-emerald-800 dark:border-emerald-300/30 dark:bg-emerald-300/15 dark:text-emerald-200",
-  completed:
-    "border-zinc-300/70 bg-zinc-100/80 text-zinc-700 dark:border-zinc-300/25 dark:bg-zinc-300/10 dark:text-zinc-200",
-} satisfies Record<Project["lifecycleStatus"], string>
 
 const defaultColumnWidth = 640
 const defaultColumnGap = 32
@@ -262,12 +249,7 @@ export function PlainProjectIndexPage({
                         className="plain-project-gallery"
                       />
                     ) : project.screenshot ? (
-                      <img
-                        src={project.screenshot.src}
-                        alt={t(project.screenshot.altKey)}
-                        className="plain-project-fallback-image"
-                        loading="lazy"
-                      />
+                      <PlainImageGallery single images={[{ src: project.screenshot.src, alt: t(project.screenshot.altKey) }]} imageClassName="plain-project-fallback-image" />
                     ) : null}
 
                     <div className="plain-project-copy">
@@ -292,21 +274,13 @@ export function PlainProjectIndexPage({
                             const repoContent = (
                               <>
                                 {link.repoTags?.map((repoTag) => (
-                                  <span
-                                    key={repoTag}
-                                    className={cn(
-                                      "plain-index-tag-pill shrink-0 whitespace-nowrap rounded-full border px-2 py-0.5 text-[0.6875rem] font-semibold leading-none",
-                                      getSemanticTagClassName(repoTag),
-                                    )}
-                                  >
-                                    {t(`repoTags.${repoTag}`)}
-                                  </span>
+                                  <DocumentTag key={repoTag} label={t(`repoTags.${repoTag}`)} />
                                 ))}
                                 <span className="plain-project-repo-name min-w-0 truncate">
                                   {repoLabel}
                                 </span>
                                 {link.url ? (
-                                  <ArrowUpRight className="plain-project-repo-arrow h-4 w-4 shrink-0" />
+                                  <ExternalLinkIcon className="plain-project-repo-arrow h-4 w-4 shrink-0" />
                                 ) : null}
                                 <GitHubRepoStats
                                   repo={link.githubRepo}
@@ -346,32 +320,15 @@ export function PlainProjectIndexPage({
                       />
 
                       <ul className="plain-index-tags" aria-label={title}>
-                        <li
-                          className={cn(
-                            "plain-index-tag-pill rounded-full border px-2.5 py-1 text-xs font-semibold",
-                            lifecycleStatusClassName[project.lifecycleStatus],
-                          )}
-                        >
-                          {t(`lifecycleStatus.${project.lifecycleStatus}`)}
-                        </li>
+                        <DocumentTag as="li"  label={t(`lifecycleStatus.${project.lifecycleStatus}`)} />
                         {project.tags.map((tag, tagIndex) => {
                           const isCourseProjectTimeTag =
                             hasCourseProjectTimeTags && tagIndex < 2
 
                           return (
-                            <li
-                              key={tag}
-                              className={cn(
-                                "plain-index-tag-pill rounded-full border px-2.5 py-1 text-xs font-semibold",
-                                isCourseProjectTimeTag
-                                  ? getCourseProjectSemesterTagClassName(project.tags[1])
-                                  : defaultTagClassName,
-                              )}
-                            >
-                              {isCourseProjectTimeTag
+                            <DocumentTag as="li" key={tag} label={isCourseProjectTimeTag
                                 ? t(`semesterTags.${tag}`, { defaultValue: tag })
-                                : tag}
-                            </li>
+                                : tag} />
                           )
                         })}
                       </ul>

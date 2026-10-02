@@ -45,5 +45,339 @@
   "previousPage": "Previous page",
   "nextPage": "Next page",
   "relatedPagination": "Related question pages",
-  "pageStatus": "Page {{current}} of {{total}}"
+  "pageStatus": "Page {{current}} of {{total}}",
+  "items": {
+    "gpu-sparsity": {
+      "rounds": {
+        "opening": {
+          "question": "How do NVIDIA GPUs speed up sparse matrix computation?",
+          "answer": "Software uses sparse formats and kernels to avoid moving and computing zeros. From Ampere onward, Tensor Cores also support structured patterns such as `2:4` sparsity: two zeros in every four elements. This regularity lets hardware skip their multiply-adds, approaching twice the effective throughput of dense computation in suitable matrix workloads."
+        }
+      }
+    },
+    "packed-low-precision": {
+      "rounds": {
+        "opening": {
+          "question": "Can one FP32 CUDA Core run several lower-precision operations at once? How?",
+          "answer": "Theoretical throughput can suggest this, but a CUDA Core is better understood as an abstraction of scalar execution resources within an SM. Some pipelines support packed SIMD, processing several small values through a wider data path. For example, `half2` lets one instruction perform two FP16 operations. Tensor Cores are separate matrix multiply-add resources with dedicated paths for small matrix tiles, rather than just packed versions of ordinary CUDA Core operations."
+        }
+      }
+    },
+    "roofline-kernel-quality": {
+      "rounds": {
+        "opening": {
+          "question": "Would a poorly implemented GPU kernel sit closer to the Roofline ceiling or farther away?",
+          "answer": "Usually farther away: uncoalesced accesses, poor caching, synchronization, warp stalls, or scheduling can prevent it from reaching either bandwidth or compute limits. But a kernel doing lots of useless arithmetic may still approach the compute ceiling. Roofline shows hardware resource use; it does not capture every aspect of implementation quality."
+        }
+      }
+    },
+    "roofline-compute-peaks": {
+      "rounds": {
+        "opening": {
+          "question": "Why does my Roofline chart have two compute ceilings?",
+          "answer": "The tool can show several peaks for the device and configuration. For my matrix multiplication kernel, the two lines represent FP32 and FP64 throughput; the FP64 ceiling is the relevant one."
+        }
+      }
+    },
+    "sm-throughput": {
+      "rounds": {
+        "opening": {
+          "question": "For a kernel mostly using FP64 and ALU pipelines, is `Compute (SM) Throughput` relative to those pipelines or the SM's highest possible throughput?",
+          "answer": "It does not compare every kernel with the highest FP32 or Tensor Core peak. Individual SM subunits and pipelines are normalized against their own peak sustained rates, then combined into an SM throughput metric. This gives a broader view of pressure on the SM's execution resources."
+        }
+      }
+    },
+    "local-memory-metrics": {
+      "rounds": {
+        "opening": {
+          "question": "Nsight Systems shows zero `Local Memory Per Thread` but a large `Local Memory Total`. Is that normal?",
+          "answer": "GPU local memory is thread-private storage backed by device DRAM and caches. The compiler may use it for register spills, large private arrays, or values it cannot keep in registers. Zero per-thread allocation means this metric shows no obvious allocation or spilling. A nonzero launch-level total may reflect runtime reservation or management, rather than actual traffic. To assess the performance impact, check local load/store transactions and instructions in Nsight Compute."
+        }
+      }
+    },
+    "gpu-utilization": {
+      "rounds": {
+        "opening": {
+          "question": "What does GPU utilization in DCGM or desktop monitors actually measure?",
+          "answer": "The fraction of the sampling interval with at least one kernel resident on the GPU. A resident kernel may be waiting for data rather than actively executing."
+        }
+      }
+    },
+    "active-cycles": {
+      "rounds": {
+        "opening": {
+          "question": "What are `Active Cycles`, and how are they counted?",
+          "answer": "Think of them as cycles when a hardware unit is participating in the kernel's lifetime. They can count even when no warp is executing, as long as the kernel still has resident warps on that hardware."
+        }
+      }
+    },
+    "alu-issue-slots": {
+      "rounds": {
+        "opening": {
+          "question": "My `ALU Pipe Utilization (% of active cycles)` exceeds 50%, but `Issue Slots Busy` is only 37%. Why? Are there multiple issue slots?",
+          "answer": "These measure different things. The ALU can remain active for several cycles after an instruction is issued, so activity in over half of `SM active cycles` does not require the same issue rate. There are also multiple issue slots."
+        }
+      }
+    },
+    "warp-scheduler": {
+      "rounds": {
+        "opening": {
+          "question": "Does each warp scheduler have one issue slot, even on newer architectures?",
+          "answer": "A useful model is that each scheduler issues at most one warp instruction per cycle to an ALU, FP64, LSU, Tensor, or other pipeline. Through Blackwell, public documentation still does not support treating it as a CPU-style superscalar scheduler that issues several ordinary instructions to unrelated pipelines in one cycle."
+        }
+      }
+    },
+    "ascend-core-sharing": {
+      "rounds": {
+        "opening": {
+          "question": "Can an Ascend NPU run different kernels on separate AI Cores at the same time?",
+          "answer": "It appears possible through multiple streams and core virtualization. Streams expose independent or overlapping tasks, while core limits keep one kernel from reserving every AI Core, even when it cannot use them all. Setting those limits during compilation leaves cores available for other kernels. However, a Huawei expert I asked at an Ascend workshop described the mechanism as closer to static multiple issue than dynamic scheduling. That seems inconsistent with the material I have since read."
+        }
+      }
+    },
+    "occupancy-steps": {
+      "rounds": {
+        "opening": {
+          "question": "Why do `Register Per Thread` and `Shared Memory` limit `Warp Occupancy` in steps? Is it because resources are allocated in fixed chunks?",
+          "answer": "The main reason is that each block must reside entirely on one SM. Resource limits determine how many whole blocks fit, and their warp counts determine occupancy. Register mapping is more complex than the simple page-like allocation model in the question."
+        }
+      }
+    },
+    "shared-wavefronts": {
+      "rounds": {
+        "opening": {
+          "question": "What counts as an extra wavefront in `derived__memory_l1_wavefronts_shared_excessive`?",
+          "answer": "A wavefront is a batch of memory work generated by hardware after a memory instruction is issued. Ideally, it accesses multiple banks in parallel. Bank conflicts can require additional batches; 'excessive' means the wavefronts beyond that ideal count."
+        }
+      }
+    },
+    "thread-index-registers": {
+      "rounds": {
+        "opening": {
+          "question": "Where are a thread's `threadIdx` and `blockIdx` actually stored?",
+          "answer": "Hardware supplies them through special registers. They are neither explicitly assigned by the programmer nor hardcoded into shared instructions, which could not give each thread its own indices. In SASS, `S2R` reads these values into ordinary registers."
+        }
+      }
+    },
+    "kernel-parameters": {
+      "rounds": {
+        "opening": {
+          "question": "Where do kernel arguments live? Putting a copy in every thread's registers, like CPU function arguments, seems wasteful.",
+          "answer": "They live in constant memory, and threads load them into registers as needed. This area can also hold launch configuration and ABI constants."
+        }
+      }
+    },
+    "local-stack-base": {
+      "rounds": {
+        "opening": {
+          "question": "In my experiment, `c[0x0][0x28]` seems to hold each thread's local stack base. Why do all threads read the same value?",
+          "answer": "They read a common frame-related base from the same constant slot, then use it within their own execution contexts. When forming a local-memory address, hardware and compiler conventions incorporate thread identity, warp/lane information, or a per-thread mapping. The shared base therefore leads to separate private regions."
+        }
+      }
+    },
+    "simt-branches": {
+      "rounds": {
+        "opening": {
+          "question": "If threads in one NVIDIA SIMT warp cannot execute different instructions together, how do branches work?",
+          "answer": "Predicates such as `@P0` act like per-lane masks. Small `if` branches can use predicated instructions; divergent `BRA` paths execute with different active masks and later reconverge. The compiler supplies control-flow and reconvergence information. Since Volta, Independent Thread Scheduling also permits distinct thread program counters; hardware groups active threads at the same instruction into SIMT execution units."
+        }
+      }
+    },
+    "aclgraph-replay": {
+      "rounds": {
+        "opening": {
+          "question": "What does Ascend ACLGraph capture and replay? What does it save over ordinary repeated execution?",
+          "answer": "It captures device tasks and their dependencies, then triggers them with one replay. Kernels still execute separately; replay does not fuse them. The main saving is host-side task submission overhead, potentially with shorter gaps between tasks. The kernels' computation remains, and operator fusion is a separate optimization."
+        }
+      }
+    },
+    "sass-integer-instructions": {
+      "rounds": {
+        "opening": {
+          "question": "Does the `I` in SASS instructions like `IADD3`, `IMAD`, and `ISETP` mean 'immediate'?",
+          "answer": "No. It means 'integer'."
+        }
+      }
+    },
+    "shared-review-guidelines": {
+      "rounds": {
+        "opening": {
+          "question": "How can I share review guidelines when GitHub Copilot code review and Cursor Bugbot use different instruction files?",
+          "answer": "Keep the actual rules in shared documents such as `CONTRIBUTING` and a review checklist, then reference them from each tool's instruction file. Dedicated review skills can also let developers run a tailored agent review before opening a PR."
+        }
+      }
+    },
+    "ai-code-quality": {
+      "rounds": {
+        "opening": {
+          "question": "Our open-source project has about 2,700 commits, and even team members mostly know only their own area. How can we improve AI-generated code quality?",
+          "answer": "Put development rules in agent-readable documents such as `CONTRIBUTING`, common pitfalls in `REVIEW`, and workflow experience in installable development skills. Those skills can run checks, review code, or prompt developers to verify behavior themselves. After a PR opens, Copilot can add review feedback, followed by a maintainer's manual check."
+        }
+      }
+    },
+    "cli-golden-tests": {
+      "rounds": {
+        "opening": {
+          "question": "Most contributors use AI to write our CLI. Beyond guidelines and reviews, how can I easily inspect what their commands actually do?",
+          "answer": "Generate versioned golden snapshots across command and argument combinations, recording stdout, stderr, and exit codes for direct PR review. Stable snapshots require a sandbox with simulated keyring, storage, and network responses. This covers error paths well, but successful output often depends on login and cluster state. For those paths, agents should run real commands in the developer's environment and check the results without committing unstable snapshots."
+        }
+      }
+    },
+    "cli-agent-experience": {
+      "rounds": {
+        "opening": {
+          "question": "How can our CLI serve both AI agents and people who prefer the command line?",
+          "answer": "For agents, provide complete usage skills, non-interactive options, and JSON output. For people, add localization, shell completion, and argument validation that reports multiple errors together. A good experience depends on gradually refining many such details."
+        }
+      }
+    },
+    "diffuse-path-tracing": {
+      "rounds": {
+        "opening": {
+          "question": "How does ray tracing handle diffuse surfaces? Wouldn't random reflection create a lot of noise?",
+          "answer": "Path tracing averages multiple samples per pixel. Each sample chooses reflection or refraction directions from the material's BRDF/BSDF and weights their contribution by the inverse sampling PDF. Random paths can easily miss small or distant lights, so the renderer also samples lights directly and tests visibility with shadow rays. MIS combines overlapping estimates to reduce noise while keeping the result correct."
+        }
+      }
+    },
+    "pod-bandwidth-ceph": {
+      "rounds": {
+        "opening": {
+          "question": "We use the `bandwidth` plugin and `tc` to cap Pod network traffic. Does that also limit access to distributed storage such as Ceph?",
+          "answer": "The cap applies to packets crossing the Pod's `eth0` and associated node-side veth/IFB interfaces. Filesystem access to mounted Ceph storage instead goes through the kernel and a node-side storage client, which uses the node's network interface. That path should therefore fall outside the Pod's bandwidth cap."
+        }
+      }
+    },
+    "csi-existing-mounts": {
+      "rounds": {
+        "opening": {
+          "question": "Missing Rook tolerations stopped CephFS CSI from running on our control-plane nodes. Why did new Pods fail to mount storage while existing Pods kept working?",
+          "answer": "CSI sets up the CephFS mount and bind-mounts it into the Pod. Once mounted, normal I/O goes through VFS and the kernel or FUSE client, without CSI in the data path. Existing Pods can keep working while that client or `ceph-fuse` remains healthy; new Pods cannot mount and get stuck in `ContainerCreating`."
+        }
+      }
+    },
+    "cephfs-client-cache": {
+      "rounds": {
+        "opening": {
+          "question": "Do Pods using the same CephFS share a node's mount and cache?",
+          "answer": "On one node, Pods using the same PVC usually share a CSI staging mount, exposed through separate bind mounts. They therefore share the CephFS superblock, client state, and underlying caches, even when using different `subPath` values. Different nodes have separate clients and caches, coordinated by the MDS. Staging connects CephFS to the node's VFS; a bind mount only exposes an existing filesystem or subtree at another path."
+        }
+      }
+    },
+    "cephfs-metadata-coordination": {
+      "rounds": {
+        "opening": {
+          "question": "Why does Ceph metadata access go through the MDS while file data access does not?",
+          "answer": "Metadata forms a shared filesystem graph, and one operation can change several objects. The MDS coordinates locks, ordering, cache consistency, and recovery beyond RADOS's object-level guarantees. File data can be located independently by inode, layout, and offset; competing writes may overwrite each other without invalidating filesystem structure. Uncoordinated metadata updates could instead create dangling entries or incorrect link counts."
+        }
+      }
+    },
+    "deep-thinking": {
+      "rounds": {
+        "opening": {
+          "question": "What is 'deep thinking' in AI tools, and which layer mainly provides it?",
+          "answer": "It is largely product-level orchestration of a model's reasoning: prompts, task decomposition, reflection, repeated generation, tools, and a larger compute budget encourage analysis before answering. The model still needs underlying reasoning ability and training, but the mode users experience mainly comes from how the tool organizes that ability."
+        }
+      }
+    },
+    "qkv-dimensions": {
+      "rounds": {
+        "opening": {
+          "question": "What dimensional constraints apply to Q, K, and V?",
+          "answer": "Q and K need matching feature dimensions for dot products. K and V need the same number of entries so each key has a corresponding value."
+        }
+      }
+    },
+    "attention-head-width": {
+      "rounds": {
+        "opening": {
+          "question": "What constrains each attention head's output dimension?",
+          "answer": "The combined head outputs must be mappable into the model's hidden space. Mathematically, the heads do not have to share one width, nor must their widths sum to the hidden dimension."
+        }
+      }
+    },
+    "agent-evaluation": {
+      "rounds": {
+        "opening": {
+          "question": "How can we reliably evaluate LLM agents when task goals are subjective or hard to turn into repeatable, automated rules?",
+          "answer": "My focus here is how code- or rule-based evaluators decide success. A benchmark's data, environment, interfaces, metrics, and safety constraints make goals observable through final state, key steps, or the full execution trace. These checks are often tightly tied to the task and environment. General GUI benchmarks broaden coverage but may sacrifice efficiency and specificity. LLM judges and iterative evaluation by multiple agents are also common, though they are not the main approach I was asking about."
+        }
+      }
+    },
+    "paged-attention-vs-paging": {
+      "rounds": {
+        "opening": {
+          "question": "How does PagedAttention differ from OS paging?",
+          "answer": "Both separate logical from physical storage, but PagedAttention maps KV blocks in application software, while OS paging uses MMUs, page tables, and TLBs for arbitrary memory access. A software block table suits controlled attention kernels and flexible sharing and copy-on-write; GPU-accessible tables can use caches and be read within the kernels. vLLM allocates blocks before each step because the next step's growth is known, even though the final length is not. Allocation and sharing happen per block, but preemption operates on sequences or sequence groups because decoding needs their full history. Evicted KV state can be recomputed from model weights and tokens. Distributed workers share logical block IDs and lifetimes, though each GPU's KV shard can give those blocks different byte sizes."
+        }
+      }
+    },
+    "paged-attention-block-size": {
+      "rounds": {
+        "opening": {
+          "question": "Why does PagedAttention's end-to-end swap or recomputation latency rise when blocks are too small or too large?",
+          "answer": "Small blocks offer too little work to use GPU parallelism well or amortize mapping overhead. They also split swaps into small transfers that underuse PCIe bandwidth. Large blocks waste space in each sequence's final block, reducing how many sequences fit. A single recomputation's cost changes little with block size; its higher end-to-end latency at small sizes mainly reflects slower inference, more queueing, and potentially more preemptions. Medium sizes balance execution efficiency and memory use, helping processing keep ahead of incoming requests."
+        }
+      }
+    },
+    "paged-attention-preemption": {
+      "rounds": {
+        "opening": {
+          "question": "Why does the PagedAttention paper compare swapping and recomputation instead of just making new requests wait?",
+          "answer": "New requests already wait when memory is full. The problem is that running sequences keep growing and can exhaust KV blocks before another request finishes. Waiting new requests, or pausing running ones without freeing their caches, releases no memory. Some running sequences must be preempted and their blocks reclaimed. Reserving every sequence's maximum length would avoid this but waste substantial memory."
+        }
+      }
+    },
+    "virtual-memory-mechanisms": {
+      "rounds": {
+        "opening": {
+          "question": "CSAPP explains virtual memory through paging. How do virtual memory, paging, segmentation, and segmented paging relate, and what does each solve?",
+          "answer": "Virtual memory is the abstraction that separates a program's addresses from physical storage, enabling private address spaces, protection, and sharing. Paging, segmentation, and segmented paging are address-organization and translation mechanisms. Paging uses fixed-size pages for scattered allocation and page-level swapping and protection. Segmentation uses variable-size logical regions such as code, data, and stack; segmented paging combines that structure with paged allocation. CSAPP emphasizes paging because it dominates modern general-purpose systems, but virtual memory's capabilities are not synonymous with paging."
+        }
+      }
+    },
+    "x86-segment-cache": {
+      "rounds": {
+        "opening": {
+          "question": "Older x86 CPUs use segment selectors to index GDT/LDT descriptors. Wouldn't reading a descriptor for every memory access be expensive? What am I missing?",
+          "answer": "Each segment register has a visible selector and a hidden descriptor cache. Loading a new selector makes the CPU read the GDT/LDT once and cache the descriptor's `base`, `limit`, and `access rights`. Later accesses use those cached values for address calculation and permission checks."
+        },
+        "follow-up-one": {
+          "question": "When a selector or descriptor changes, does the CPU refresh this automatically, or must the OS or compiler do it?",
+          "answer": "Loading a selector automatically makes the CPU look up and validate the descriptor, then cache its `base`, `limit`, and `access rights`; the compiler need not implement those steps. But updating the GDT/LDT in memory is normally the OS's job and does not refresh an already cached descriptor. Software must reload the segment register to trigger that refresh."
+        },
+        "follow-up-two": {
+          "question": "Is this a separate mechanism? How does it avoid conflicts with other instructions? Does the CPU pause the program to update it?",
+          "answer": "It is part of executing the segment-register load instruction, rather than an independent background process. Lookup, checks, and cache updates use the CPU's normal pipeline and dependency controls to preserve correct execution."
+        }
+      }
+    },
+    "gpu-memory-hierarchy": {
+      "rounds": {
+        "opening": {
+          "question": "How are GPU memory levels connected? Do global, local, texture, and surface accesses pass through L1/L2, with shared memory on another path? Where do registers and constant memory fit?",
+          "answer": "Separate address spaces from hardware paths. Global, local, texture, and surface accesses generally use the L1/TEX subsystem, then L2 and DRAM on misses, though policies can bypass L1. Shared memory is explicitly managed on-chip SM storage, accessed without searching L1/L2; some architectures share its physical SRAM with L1. Registers also live in the SM, while constant memory has a dedicated cache path. These names do not form one serial chain from fastest to slowest."
+        },
+        "follow-up-one": {
+          "question": "After seeing long scoreboard stalls in Nsight Compute, I wondered: how many cycles do L1, L2, shared, constant, and device memory accesses take? Are L1 and L2 really that much slower than shared memory?",
+          "answer": "As rough orders of magnitude, shared memory takes tens of cycles, L1 hits tens, L2 hundreds, and DRAM several hundred; architecture and access conditions matter. Shared memory has a more direct path, but bank conflicts can serialize it. Constant-cache hits are cheap when a warp reads one broadcast address; distinct addresses may serialize, and misses incur lower-level latency. Registers bypass these caches, but dependent instructions still have nonzero latency."
+        }
+      }
+    },
+    "gpu-register-allocation": {
+      "rounds": {
+        "opening": {
+          "question": "How are SASS registers like `R1` and `R2` allocated? What maps CUDA variables to them?",
+          "answer": "Think of the path as source variables → PTX virtual registers → SASS registers. Optimization may eliminate variables; `ptxas` or the driver's JIT allocates surviving values to registers such as `R0` and `R1`. Values with nonoverlapping lifetimes can reuse a register, and excess values may spill to local memory. Variable counts, PTX register counts, and actual register use therefore need not match."
+        },
+        "follow-up-one": {
+          "question": "Is there another hardware mapping from SASS to physical registers? Since register capacity limits resident blocks, do their values stay on-chip rather than being saved and restored for every warp switch?",
+          "answer": "For normal resident-warp scheduling, that is broadly right. A logical 'thread × register number' table gives each thread its own `R0`, `R1`, and so on. Hardware combines the resident thread's context with the instruction's register number to locate storage. Values stay on-chip across warp switches, so higher per-thread use can reduce resident threads and blocks. The real layout includes partitions, banks, and allocation granularity; preemption may still require saving context."
+        },
+        "follow-up-two": {
+          "question": "But that table doesn't seem to explain the residency limit. If each thread owns one fixed row, and threads can neither share a row nor use two, why would its register count matter?",
+          "answer": "The table describes ownership, not a fixed physical row per thread. The compiler determines per-thread register demand, and hardware allocates resources at its supported granularity when a block becomes resident. During execution, thread context and the SASS register number locate each value. Larger allocations leave room for fewer threads and blocks. This mapping need not use a lookup table and is not the same as CPU register renaming for out-of-order execution."
+        }
+      }
+    }
+  }
 }

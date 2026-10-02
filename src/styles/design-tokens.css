@@ -1,0 +1,70 @@
+/* Shared roles for every route and display mode. FPV may keep its display scale. */
+@theme {
+  --font-sans: "Geist Variable", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+  --text-4xl: 2.25rem;
+  --text-page: clamp(2.25rem, 3.6vw, 2.75rem);
+  --text-section: clamp(1.875rem, 3vw, 2.25rem);
+  --text-card: clamp(1.5rem, 2vw, 1.75rem);
+  --text-hero: clamp(3.5rem, 8vw, 6rem);
+}
+
+:root {
+  --site-body-weight: 400;
+  --site-dialog-overlay-color: #120f17;
+  --site-dialog-overlay-opacity: 25%;
+  --site-accent: #dbeafe;
+  --site-bullet-accent: #17365b;
+  --site-accent-surface: var(--site-accent);
+  --site-accent-border: #bfdbfe;
+  --site-accent-on-surface: #1e40af;
+  --site-link-offset: 0.2em;
+  --site-link-thickness: 1px;
+}
+
+.dark {
+  --site-body-weight: 300;
+  --site-dialog-overlay-color: #fbfaf7;
+  --site-dialog-overlay-opacity: 10%;
+  --site-accent: #17365b;
+  --site-bullet-accent: #dbeafe;
+  --site-accent-surface: var(--site-accent);
+  --site-accent-border: #315579;
+  --site-accent-on-surface: #bfdbfe;
+}
+
+@theme inline {
+  --font-weight-body: var(--site-body-weight);
+  --color-site-accent: var(--site-accent);
+  --color-site-bullet-accent: var(--site-bullet-accent);
+  --color-site-accent-surface: var(--site-accent-surface);
+  --color-site-accent-border: var(--site-accent-border);
+}
+
+@layer components {
+  /* Resume copy has a slightly larger reading scale; titles and metadata keep their roles. */
+  .resume-section-stack,
+  .plain-resume-document {
+    --text-sm: 0.9375rem;
+    --text-base: 1.0625rem;
+  }
+
+  .site-page-title { font-size: var(--text-page); font-weight: var(--font-weight-light); line-height: 1.15; letter-spacing: -0.025em; color: var(--text-tone-1); }
+  .site-card-title { font-size: var(--text-card); font-weight: var(--font-weight-normal); line-height: 1.35; letter-spacing: -0.015em; color: var(--text-tone-1); }
+  .site-detail-heading { font-size: var(--text-lg); font-weight: var(--font-weight-medium); line-height: 1.4; color: var(--text-tone-1); }
+  .site-lede { font-size: var(--text-base); font-weight: var(--site-body-weight); line-height: 1.65; color: var(--text-tone-2); }
+  .document-tag { display: inline; max-width: 100%; padding: 0; border: 0; border-radius: 0; background: transparent; color: var(--text-tone-3); font-size: var(--text-xs); font-weight: var(--font-weight-normal); line-height: 1.6; overflow-wrap: anywhere; text-decoration: none; }
+  .document-tag[data-highlighted="true"] { background: var(--site-accent-surface); color: var(--text-tone-1); box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+  .site-text-link { color: inherit; text-decoration-line: underline; text-decoration-thickness: var(--site-link-thickness); text-underline-offset: var(--site-link-offset); }
+  .site-text-link:hover { text-decoration-thickness: 2px; }
+}

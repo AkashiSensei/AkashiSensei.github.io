@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react"
+import { type ReactNode, useCallback, useEffect, useLayoutEffect, useRef, useState } from "react"
 import { useTranslation } from "react-i18next"
 
 import {
@@ -14,6 +14,8 @@ import { type ProjectImage } from "@/data/projects"
 import { cn } from "@/lib/utils"
 
 type ProjectImageGalleryProps = {
+  renderTrigger?: (openImage: (index: number, trigger?: HTMLElement) => void) => ReactNode
+  labelsAreLocalized?: boolean
   layout?: "card" | "wall"
   cardAspectRatio?: string
   cardAspectRatioMode?: "bounded" | "natural"
@@ -32,6 +34,13 @@ const CARD_AUTO_CYCLE_STAGGER_MS = 1300
 const MIN_CARD_IMAGE_ASPECT_RATIO = 4 / 5
 const MAX_CARD_IMAGE_ASPECT_RATIO = 16 / 9
 const CARD_IMAGE_GALLERY_MAX_HEIGHT = "min(72vh, 32rem)"
+
+function GalleryTrigger({ render, onOpen }: {
+  render: NonNullable<ProjectImageGalleryProps["renderTrigger"]>
+  onOpen: (index: number, trigger?: HTMLElement) => void
+}) {
+  return render(onOpen)
+}
 
 function getImageAspectRatio(image: ProjectImage) {
   const rawRatio = image.width / image.height
@@ -95,6 +104,8 @@ function positionThumbnailIndicator(
 }
 
 export function ProjectImageGallery({
+  renderTrigger,
+  labelsAreLocalized = false,
   layout = "card",
   cardAspectRatio,
   cardAspectRatioMode = "bounded",
@@ -108,6 +119,8 @@ export function ProjectImageGallery({
   translationNamespace = "projects",
 }: ProjectImageGalleryProps) {
   const { t } = useTranslation([translationNamespace, "common"])
+  const previewTriggerRef = useRef<HTMLElement | null>(null)
+  const imageLabel = (image: ProjectImage) => labelsAreLocalized ? image.altKey : t(image.altKey)
   const galleryRef = useRef<HTMLDivElement>(null)
   const previewGalleryRef = useRef<HTMLDivElement>(null)
   const initialPreviewImageIndexRef = useRef<number | null>(null)
@@ -363,7 +376,8 @@ export function ProjectImageGallery({
       ? getImageAspectRatio(firstImage)
       : getBoundedImageAspectRatio(firstImage))
 
-  const openPreview = (imageIndex: number) => {
+  const openPreview = (imageIndex: number, trigger?: HTMLElement) => {
+    previewTriggerRef.current = trigger ?? (document.activeElement instanceof HTMLElement ? document.activeElement : null)
     initialPreviewImageIndexRef.current = imageIndex
     thumbnailScrollBehaviorRef.current = "auto"
     setSelectedIndex(imageIndex)
@@ -479,14 +493,14 @@ export function ProjectImageGallery({
         }
         aria-label={
           cardInteractive
-            ? t("imagePreview.open", { image: t(image.altKey) })
+            ? t("imagePreview.open", { image: imageLabel(image) })
             : undefined
         }
       >
         <LazyImage
           src={image.src}
-          alt={t(image.altKey)}
-          placeholderTitle={t(image.altKey)}
+          alt={imageLabel(image)}
+          placeholderTitle={imageLabel(image)}
           loadingLabel={t("common:imageLoading")}
           brightness={image.brightness}
           containerClassName="relative z-10 h-full w-full min-w-0 max-w-full"
@@ -507,11 +521,11 @@ export function ProjectImageGallery({
 
   return (
     <>
-      {layout === "wall" ? (
+      {renderTrigger ? <GalleryTrigger render={renderTrigger} onOpen={openPreview} /> : layout === "wall" ? (
         <DetailImageMasonry
           images={images}
           renderImage={(image) => {
-            const imageAlt = t(image.altKey)
+            const imageAlt = imageLabel(image)
 
             return (
               <button
@@ -587,10 +601,16 @@ export function ProjectImageGallery({
         }}
       >
         <DialogContent
+          onCloseAutoFocus={(event) => {
+            if (previewTriggerRef.current?.isConnected) {
+              event.preventDefault()
+              previewTriggerRef.current.focus({ preventScroll: true })
+            }
+          }}
           className="image-preview-dialog flex flex-col gap-2 overflow-hidden border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.66)] p-2 shadow-lg backdrop-blur-xl dark:border-white/10 dark:bg-black/45 md:p-3 [&_[data-slot=dialog-close]]:right-3 [&_[data-slot=dialog-close]]:top-3 md:[&_[data-slot=dialog-close]]:right-4 md:[&_[data-slot=dialog-close]]:top-4"
         >
           <DialogTitle className="sr-only">
-            {selectedImage ? t(selectedImage.altKey) : t("imagePreview.title")}
+            {selectedImage ? imageLabel(selectedImage) : t("imagePreview.title")}
           </DialogTitle>
           <DialogDescription className="sr-only">
             {selectedImageIndex + 1} / {images.length}
@@ -608,7 +628,7 @@ export function ProjectImageGallery({
                 <div className="relative flex h-full min-h-0 w-full min-w-0 items-center justify-center overflow-hidden">
                   <img
                     src={image.src}
-                    alt={t(image.altKey)}
+                    alt={imageLabel(image)}
                     className="h-full w-full object-contain"
                   />
                 </div>
@@ -616,7 +636,7 @@ export function ProjectImageGallery({
             ))}
           </div>
           <p
-            className="flex h-6 shrink-0 items-center justify-center px-8 text-center text-sm font-medium leading-6 text-foreground/65 dark:text-white/90 md:h-8 md:text-lg md:leading-8"
+            className="flex h-6 shrink-0 items-center justify-center px-8 text-center text-sm font-normal leading-6 text-foreground/65 dark:text-white/90 md:h-8 md:text-lg md:leading-8"
             aria-live="polite"
           >
             <span
@@ -625,7 +645,7 @@ export function ProjectImageGallery({
                 captionVisible ? "opacity-100" : "opacity-0",
               )}
             >
-              {t(captionImage.altKey)}
+              {imageLabel(captionImage)}
             </span>
           </p>
           {hasMultipleImages ? (
@@ -639,7 +659,7 @@ export function ProjectImageGallery({
                 aria-hidden="true"
               />
               {images.map((image, imageIndex) => {
-                const imageAlt = t(image.altKey)
+                const imageAlt = imageLabel(image)
                 const isSelected = selectedImageIndex === imageIndex
 
                 return (

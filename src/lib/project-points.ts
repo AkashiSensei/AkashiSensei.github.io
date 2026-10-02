@@ -51,12 +51,24 @@ export function sliceProjectPointSections(
   sections: ProjectPointSections,
   limit: number,
 ): Pick<ProjectPointSections, "points" | "highlightedIndexes"> {
-  const points = sections.points.slice(0, limit)
+  const count = Math.max(0, Math.floor(limit))
+  const highlightedSet = new Set(sections.highlightedIndexes)
+  const indexes = sections.points.map((_, index) => index)
+  const highlighted = indexes.filter((index) => highlightedSet.has(index))
+  const ordinary = indexes.filter((index) => !highlightedSet.has(index))
+  // Reserve at least half the preview for contributions, retaining source order.
+  const reserved = Math.min(highlighted.length, Math.ceil(count / 2))
+  const selectedOrdinary = ordinary.slice(0, count - reserved)
+  const selected = new Set([
+    ...selectedOrdinary,
+    ...highlighted.slice(0, count - selectedOrdinary.length),
+  ])
+  const selectedIndexes = indexes.filter((index) => selected.has(index))
 
   return {
-    points,
-    highlightedIndexes: sections.highlightedIndexes.filter(
-      (index) => index < points.length,
+    points: selectedIndexes.map((index) => sections.points[index]),
+    highlightedIndexes: selectedIndexes.flatMap((index, visibleIndex) =>
+      highlightedSet.has(index) ? [visibleIndex] : [],
     ),
   }
 }

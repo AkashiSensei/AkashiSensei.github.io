@@ -20,7 +20,7 @@ export const workbenchGroups: WorkbenchGroup[] = [
     id: "ai-assist",
     featured: true,
     featuredOrder: 1,
-    highlightPointIndexes: [0, 1, 2],
+    highlightPointIndexes: [0, 1, 2, 3],
     software: [
       { id: "codex", name: "Codex", icon: `${iconBase}/codex-512.webp` },
       { id: "cursor", name: "Cursor", icon: `${iconBase}/cursor-512.webp` },

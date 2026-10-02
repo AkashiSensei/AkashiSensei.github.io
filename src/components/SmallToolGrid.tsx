@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
+import { getListingPointSections } from "@/lib/project-points"
 
 import { SmallToolCard } from "@/components/SmallToolCard"
 import { type SmallTool } from "@/data/tools"
@@ -36,6 +37,12 @@ export function SmallToolGrid({ tools }: SmallToolGridProps) {
 
       const summary = t(`items.${tool.id}.summary`) as string
       estimatedHeight += Math.ceil((summary?.length || 0) / 22) * 24
+
+      const { points } = getListingPointSections(t(`items.${tool.id}.points`, { returnObjects: true }))
+      estimatedHeight += points.reduce(
+        (height, point) => height + Math.ceil(point.length / 22) * 24 + 8,
+        0,
+      )
 
       let minColIdx = 0
       let minHeight = colHeights[0]

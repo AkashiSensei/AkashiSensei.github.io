@@ -1,5 +1,5 @@
+import { ExternalLinkIcon } from "@/components/ExternalLinkIcon"
 import { RelatedQuestions } from "@/components/RelatedQuestions"
-import { ArrowUpRight } from "lucide-react"
 import { useTranslation } from "react-i18next"
 import { useParams } from "react-router-dom"
 
@@ -67,14 +67,14 @@ export function ProjectDetailPage({
       <Layout>
         <section className="flex min-h-[calc(100svh-11rem)] max-w-xl flex-col justify-center gap-5 py-12">
           <BackButton fallback={fallbackPath} />
-          <p className="text-sm font-medium uppercase tracking-[0.18em] text-foreground/45">
+          <p className="text-sm font-normal uppercase tracking-[0.18em] text-foreground/45">
             404
           </p>
           <div className="flex flex-col gap-3">
-            <h1 className="text-3xl font-bold tracking-tight md:text-4xl">
+            <h1 className="site-page-title">
               {t("common:notFound.title")}
             </h1>
-            <p className="text-base leading-relaxed text-foreground/70 sm:text-lg">
+            <p className="site-lede">
               {t("common:notFound.description")}
             </p>
           </div>
@@ -175,21 +175,21 @@ export function ProjectDetailPage({
           <BackButton fallback={fallbackPath} />
 
           <header className="flex max-w-5xl flex-col gap-5">
-            <p className="text-sm font-semibold text-foreground/55 dark:text-foreground/65">
+            <p className="text-sm font-normal text-foreground/55 dark:text-foreground/65">
               {t("title")}
             </p>
             <div className="flex flex-col gap-3">
-              <h1 className="text-3xl font-bold tracking-tight md:text-5xl">
+              <h1 className="site-page-title">
                 {title}
               </h1>
-              <p className="text-base leading-relaxed text-foreground/80 dark:text-foreground/90 sm:text-lg">
+              <p className="site-lede">
                 {t(`items.${project.id}.summary`)}
               </p>
             </div>
             <div className="flex flex-wrap items-center gap-2">
               <span
                 className={cn(
-                  "rounded-full border px-2.5 py-1 text-xs font-semibold leading-none",
+                  "rounded-full border px-2.5 py-1 text-xs font-normal",
                   lifecycleStatusClassName[project.lifecycleStatus],
                 )}
               >
@@ -198,7 +198,7 @@ export function ProjectDetailPage({
               {project.status?.map((status) => (
                 <span
                   key={status}
-                  className="rounded-full border border-[rgb(var(--site-surface-rgb)_/_0.45)] bg-[rgb(var(--site-surface-rgb)_/_0.28)] px-2.5 py-1 text-xs font-semibold text-foreground/60 dark:border-white/10 dark:bg-white/[0.04] dark:text-foreground/70"
+                  className="rounded-full border border-[rgb(var(--site-surface-rgb)_/_0.45)] bg-[rgb(var(--site-surface-rgb)_/_0.28)] px-2.5 py-1 text-xs font-normal text-foreground/60 dark:border-white/10 dark:bg-white/[0.04] dark:text-foreground/70"
                 >
                   {t(`status.${status}`)}
                 </span>
@@ -276,7 +276,7 @@ export function ProjectDetailPage({
                       target={link.url ? "_blank" : undefined}
                       rel={link.url ? "noreferrer" : undefined}
                       className={cn(
-                        "group/repo flex min-w-0 flex-nowrap items-center gap-1.5 text-sm font-semibold text-foreground/70 transition-colors dark:text-foreground/80",
+                        "group/repo flex min-w-0 flex-nowrap items-center gap-1.5 text-sm font-normal text-foreground/70 transition-colors dark:text-foreground/80",
                         link.url && "hover:text-foreground",
                       )}
                     >
@@ -284,7 +284,7 @@ export function ProjectDetailPage({
                         <span
                           key={repoTag}
                           className={cn(
-                            "shrink-0 whitespace-nowrap rounded-full border px-2 py-0.5 text-[0.6875rem] font-semibold leading-none",
+                            "shrink-0 whitespace-nowrap rounded-full border px-2 py-0.5 text-[0.6875rem] font-normal leading-none",
                             getSemanticTagClassName(repoTag),
                           )}
                         >
@@ -295,7 +295,7 @@ export function ProjectDetailPage({
                         {link.label}
                       </span>
                       {link.url ? (
-                        <ArrowUpRight className="h-4 w-4 shrink-0 transition-transform group-hover/repo:-translate-y-0.5 group-hover/repo:translate-x-0.5" />
+                        <ExternalLinkIcon className="h-4 w-4 shrink-0 transition-transform group-hover/repo:-translate-y-0.5 group-hover/repo:translate-x-0.5" />
                       ) : null}
                       <GitHubRepoStats repo={link.githubRepo} />
                     </a>
@@ -319,7 +319,7 @@ export function ProjectDetailPage({
                   <span
                     key={tag}
                     className={cn(
-                      "rounded-full border px-2.5 py-1 text-xs font-semibold",
+                      "rounded-full border px-2.5 py-1 text-xs font-normal",
                       isCourseProjectTimeTag
                         ? semesterTagClassName
                         : detailTagClassName,

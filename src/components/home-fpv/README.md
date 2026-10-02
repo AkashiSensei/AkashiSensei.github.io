@@ -164,6 +164,8 @@ In development, attachment positions are live-synced so CSS variable edits can t
 
 ## Interactive Attachments
 
+The viewport-sized virtual screen is pointer-transparent so it cannot block attachments behind its plane. Actual screen controls opt into pointer events in CSS. The runtime marks inactive objects as `inert`, preventing hidden controls from capturing clicks or keyboard focus.
+
 Do not clone interactive content. Cloning loses React event handlers.
 
 For buttons, dialogs, links, or other interactive UI, render the attachment with its own component:

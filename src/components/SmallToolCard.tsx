@@ -1,9 +1,12 @@
-import { ArrowRight, ArrowUpRight } from "lucide-react"
+import { ExternalLinkIcon } from "@/components/ExternalLinkIcon"
+import { ArrowRight } from "lucide-react"
 import { useTranslation } from "react-i18next"
 
 import { AppLink } from "@/components/AppLink"
 import { GitHubRepoStats } from "@/components/GitHubRepoStats"
 import { GlassPanel } from "@/components/GlassPanel"
+import { FeaturePointList } from "@/components/FeaturePointList"
+import { getListingPointSections } from "@/lib/project-points"
 import { LazyImage } from "@/components/LazyImage"
 import { SmallToolImageGallery } from "@/components/SmallToolImageGallery"
 import { type SmallTool } from "@/data/tools"
@@ -33,6 +36,7 @@ export function SmallToolCard({
   const { t } = useTranslation(["tools", "common"])
   const hasImages = Boolean(tool.screenshots?.length || tool.screenshot)
   const detailPath = `/tools/${tool.id}`
+  const { points } = getListingPointSections(t(`items.${tool.id}.points`, { returnObjects: true }))
 
   return (
     <GlassPanel
@@ -66,13 +70,13 @@ export function SmallToolCard({
           <div className="flex items-center gap-2">
             <AppLink
               to={detailPath}
-              className="detail-link-trigger detail-link-emphasis min-w-0 text-xl font-bold leading-tight text-foreground/90 transition-colors hover:text-foreground"
+              className="detail-link-trigger detail-link-emphasis min-w-0 site-card-title transition-colors hover:text-foreground"
             >
               {t(`items.${tool.id}.title`)}
             </AppLink>
             <span
               className={cn(
-                "shrink-0 rounded-full border px-2.5 py-1 text-xs font-semibold leading-none",
+                "shrink-0 rounded-full border px-2.5 py-1 text-xs font-normal leading-none",
                 roleClassName[tool.role],
               )}
             >
@@ -85,13 +89,13 @@ export function SmallToolCard({
               href={tool.repoUrl}
               target="_blank"
               rel="noreferrer"
-              className="group/repo inline-flex min-w-0 w-fit max-w-full items-center gap-1.5 text-sm font-semibold text-foreground/60 transition-colors hover:text-foreground/90 dark:text-foreground/75 dark:hover:text-foreground"
+              className="group/repo inline-flex min-w-0 w-fit max-w-full items-center gap-1.5 text-sm font-normal text-foreground/60 transition-colors hover:text-foreground/90 dark:text-foreground/75 dark:hover:text-foreground"
             >
               {tool.repoTags?.map((repoTag) => (
                 <span
                   key={repoTag}
                   className={cn(
-                    "shrink-0 whitespace-nowrap rounded-full border px-2 py-0.5 text-[0.6875rem] font-semibold leading-none",
+                    "shrink-0 whitespace-nowrap rounded-full border px-2 py-0.5 text-[0.6875rem] font-normal leading-none",
                     getSemanticTagClassName(repoTag),
                   )}
                 >
@@ -99,16 +103,16 @@ export function SmallToolCard({
                 </span>
               ))}
               <span className="min-w-0 truncate">{tool.repoName}</span>
-              <ArrowUpRight className="h-4 w-4 shrink-0 transition-transform group-hover/repo:-translate-y-0.5 group-hover/repo:translate-x-0.5" />
+              <ExternalLinkIcon className="h-4 w-4 shrink-0 transition-transform group-hover/repo:-translate-y-0.5 group-hover/repo:translate-x-0.5" />
               <GitHubRepoStats repo={tool.githubRepo} />
             </a>
           ) : (
-            <span className="inline-flex min-w-0 w-fit max-w-full items-center gap-1.5 text-sm font-semibold text-foreground/60 dark:text-foreground/75">
+            <span className="inline-flex min-w-0 w-fit max-w-full items-center gap-1.5 text-sm font-normal text-foreground/60 dark:text-foreground/75">
               {tool.repoTags?.map((repoTag) => (
                 <span
                   key={repoTag}
                   className={cn(
-                    "shrink-0 whitespace-nowrap rounded-full border px-2 py-0.5 text-[0.6875rem] font-semibold leading-none",
+                    "shrink-0 whitespace-nowrap rounded-full border px-2 py-0.5 text-[0.6875rem] font-normal leading-none",
                     getSemanticTagClassName(repoTag),
                   )}
                 >
@@ -133,9 +137,16 @@ export function SmallToolCard({
             {t(`items.${tool.id}.summary`)}
           </p>
 
+          {points.length > 0 ? (
+            <FeaturePointList
+              points={points}
+              highlightedIndexes={tool.highlightPointIndexes}
+            />
+          ) : null}
+
           <AppLink
             to={detailPath}
-            className="detail-link-trigger detail-link-emphasis group/detail inline-flex w-fit items-center gap-1.5 text-sm font-semibold text-foreground/65 transition-colors hover:text-foreground dark:text-foreground/75 dark:hover:text-foreground"
+            className="detail-link-trigger detail-link-emphasis group/detail inline-flex w-fit items-center gap-1.5 text-sm font-normal text-foreground/65 transition-colors hover:text-foreground dark:text-foreground/75 dark:hover:text-foreground"
           >
             {t("common:details.viewDetails")}
             <ArrowRight className="detail-link-arrow h-4 w-4 transition-transform group-hover/detail:translate-x-0.5" />

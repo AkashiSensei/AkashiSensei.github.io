@@ -1,5 +1,6 @@
+import { ExternalLinkIcon } from "@/components/ExternalLinkIcon"
 import { ArchiveSectionHeader } from "@/components/SectionHeader"
-import { ArrowRight, ArrowUpRight } from "lucide-react"
+import { ArrowRight } from "lucide-react"
 import {
   type CSSProperties,
   type KeyboardEvent,
@@ -19,7 +20,8 @@ import { ImageBrightnessOverlay } from "@/components/ImageBrightnessOverlay"
 import { ProjectImageGallery } from "@/components/ProjectImageGallery"
 import { projects, type Project } from "@/data/projects"
 import { type ImageBrightness } from "@/lib/image-brightness"
-import { getProjectPointSections } from "@/lib/project-points"
+import { getProjectPointSections, sliceProjectPointSections } from "@/lib/project-points"
+import { renderEmphasizedText } from "@/lib/emphasized-text"
 import {
   getCourseProjectSemesterTagClassName,
   getSemanticTagClassName,
@@ -39,6 +41,7 @@ const COVER_CAROUSEL_STAGGER_MS = 1300
 const PROJECT_CARD_IMAGE_ASPECT_RATIO = "1280 / 780"
 const PROJECT_CARD_HEIGHT_RATIO = 780 / 1280
 const PROJECT_HIGHLIGHT_ROTATION_INTERVAL_MS = 6000
+const PROJECT_FEATURE_COPY_LAYOUT = "detail-link-pair flex min-w-0 flex-col gap-4 pr-1 [--detail-link-active-color:var(--text-tone-1)] md:gap-3.5 md:pr-2 md:pt-[var(--project-card-copy-top)]"
 const PROJECT_HIGHLIGHT_IDS = [
   "crater",
   "npu-computing-forecast",
@@ -204,7 +207,7 @@ function ProjectRepoLinks({
               {link.label}
             </span>
             {link.url ? (
-              <ArrowUpRight className="h-3.5 w-3.5 shrink-0" />
+              <ExternalLinkIcon className="h-4 w-4 shrink-0" />
             ) : null}
             <GitHubRepoStats repo={link.githubRepo} />
           </>
@@ -275,18 +278,18 @@ function ProjectFeatureCopyContent({
   projectViewportMode: ProjectViewportMode
 }) {
   const { i18n, t } = useTranslation(["projects", "common"])
-  const { points, highlightedIndexes } = getProjectPointSections(
+  const pointSections = getProjectPointSections(
     t(`items.${project.id}.points`, { returnObjects: true }),
   )
   const isEnglish = (i18n.resolvedLanguage ?? i18n.language).startsWith("en")
   const visiblePointCount = projectViewportMode.isCompactDesktop
-    ? 0
+    ? 1
     : projectViewportMode.isMobile
-      ? 3
-      : isEnglish || projectViewportMode.isNarrowSplitDesktop
-        ? 1
-        : 3
-  const visiblePoints = points.slice(0, visiblePointCount)
+      ? 4
+      : projectViewportMode.isNarrowSplitDesktop
+        ? 2
+        : isEnglish ? 3 : 5
+  const { points: visiblePoints, highlightedIndexes } = sliceProjectPointSections(pointSections, visiblePointCount)
   const highlightedPointSet = new Set(highlightedIndexes)
   const shouldShowProjectTags = !projectViewportMode.isCompactDesktop
   const title = t(`items.${project.id}.title`)
@@ -296,7 +299,7 @@ function ProjectFeatureCopyContent({
     <>
       <div className="flex flex-col gap-2.5">
         <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
-          <h3 className="min-w-0 text-2xl font-normal leading-tight tracking-tight text-tone-1 md:text-[1.7rem] lg:text-3xl">
+          <h3 className="min-w-0 text-card font-normal leading-tight tracking-tight text-tone-1">
             {interactive ? (
               <AppLink
                 to={detailPath}
@@ -321,12 +324,12 @@ function ProjectFeatureCopyContent({
         <ProjectTagList project={project} translationNamespace="projects" />
       ) : null}
 
-      <p className="max-w-2xl text-sm leading-relaxed text-tone-2 sm:text-base md:text-[0.9375rem] lg:text-base">
+      <p className="max-w-2xl text-sm leading-relaxed text-tone-2 sm:text-base md:text-sm lg:text-base">
         {t(`items.${project.id}.summary`)}
       </p>
 
       {visiblePoints.length ? (
-        <ul className="grid gap-1.5 text-[0.8125rem] leading-snug text-tone-3 sm:text-[0.875rem] md:gap-1">
+        <ul className="grid gap-1.5 text-sm leading-snug text-tone-3 sm:text-sm md:gap-1">
           {visiblePoints.map((point, pointIndex) => {
             const highlighted = highlightedPointSet.has(pointIndex)
 
@@ -335,18 +338,18 @@ function ProjectFeatureCopyContent({
                 key={point}
                 className={cn(
                   "flex gap-2",
-                  highlighted && "text-amber-700 dark:text-violet-300",
+                  highlighted && "text-site-bullet-accent",
                 )}
               >
                 <span
                   className={cn(
                     "mt-[0.55em] h-1 w-1 shrink-0 rounded-full",
                     highlighted
-                      ? "bg-amber-700 dark:bg-violet-300"
+                      ? "bg-site-bullet-accent"
                       : "bg-tone-5",
                   )}
                 />
-                <span>{point}</span>
+                <span>{renderEmphasizedText(point)}</span>
               </li>
             )
           })}
@@ -422,7 +425,7 @@ function ProjectFeatureRow({
     getProjectViewportMode,
   )
   const projectCopyMeasureRefs = useRef<Record<string, HTMLDivElement | null>>({})
-  const [mobileProjectCopyHeight, setMobileProjectCopyHeight] = useState<
+  const [projectCopyHeight, setProjectCopyHeight] = useState<
     number | null
   >(null)
   const project = projects[activeProjectIndex] ?? projects[0]
@@ -452,10 +455,10 @@ function ProjectFeatureRow({
     string
   >
   const projectCopyHeightStyle = {
-    "--project-mobile-copy-height": mobileProjectCopyHeight
-      ? `${mobileProjectCopyHeight}px`
+    "--project-copy-height": projectCopyHeight
+      ? `${projectCopyHeight}px`
       : "26rem",
-  } as CSSProperties & Record<"--project-mobile-copy-height", string>
+  } as CSSProperties & Record<"--project-copy-height", string>
 
   useEffect(() => {
     const updateProjectViewportMode = () => {
@@ -482,10 +485,6 @@ function ProjectFeatureRow({
   }, [])
 
   useLayoutEffect(() => {
-    if (!projectViewportMode.isMobile) {
-      return
-    }
-
     const measureElements = projects
       .map((measureProject) => projectCopyMeasureRefs.current[measureProject.id])
       .filter((element): element is HTMLDivElement => Boolean(element))
@@ -507,7 +506,7 @@ function ProjectFeatureRow({
       )
 
       if (nextHeight > 0) {
-        setMobileProjectCopyHeight((currentHeight) =>
+        setProjectCopyHeight((currentHeight) =>
           currentHeight === nextHeight ? currentHeight : nextHeight,
         )
       }
@@ -609,7 +608,10 @@ function ProjectFeatureRow({
       <div className="relative min-w-0 md:self-start">
         <div
           key={project.id}
-          className="project-feature-copy-swap detail-link-pair flex h-[var(--project-mobile-copy-height)] min-w-0 flex-col gap-4 overflow-visible pr-1 [--detail-link-active-color:var(--text-tone-1)] md:h-[22.5rem] md:justify-start md:gap-3.5 md:overflow-hidden md:pr-2 md:pt-[var(--project-card-copy-top)] lg:h-[24rem] xl:h-[25rem] min-[1440px]:h-[26.5rem] min-[1800px]:!h-[29rem]"
+          className={cn(
+            PROJECT_FEATURE_COPY_LAYOUT,
+            "project-feature-copy-swap h-[var(--project-copy-height)] overflow-visible md:min-h-[22.5rem] lg:min-h-[24rem] xl:min-h-[25rem] min-[1440px]:min-h-[26.5rem] min-[1800px]:!min-h-[29rem]",
+          )}
           style={projectCopyHeightStyle}
         >
           <ProjectFeatureCopyContent
@@ -620,7 +622,7 @@ function ProjectFeatureRow({
 
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 top-0 -z-10 flex min-w-0 flex-col gap-4 overflow-hidden pr-1 opacity-0 md:hidden"
+          className="pointer-events-none absolute inset-x-0 top-0 -z-10 flex min-w-0 flex-col overflow-hidden opacity-0"
           inert
         >
           {projects.map((measureProject) => (
@@ -629,7 +631,7 @@ function ProjectFeatureRow({
               ref={(element) => {
                 projectCopyMeasureRefs.current[measureProject.id] = element
               }}
-              className="detail-link-pair flex min-w-0 flex-col gap-4 [--detail-link-active-color:var(--text-tone-1)]"
+              className={PROJECT_FEATURE_COPY_LAYOUT}
             >
               <ProjectFeatureCopyContent
                 interactive={false}
@@ -785,7 +787,7 @@ export function ProjectArchiveCard({
           )}
         >
           <h3 className={cn(
-            "max-w-full text-left text-xl font-bold leading-tight tracking-tight sm:text-2xl md:text-xl xl:text-2xl",
+            "max-w-full text-left text-card font-normal leading-tight tracking-tight",
             isCourseProject ? "text-tone-1 dark:text-white" : "text-white",
           )} ref={collapsedHeadingRef}>
             {title}
@@ -820,7 +822,7 @@ export function ProjectArchiveCard({
                         {link.label}
                       </span>
                       {link.url ? (
-                        <ArrowUpRight className="h-3.5 w-3.5 shrink-0" />
+                        <ExternalLinkIcon className="h-4 w-4 shrink-0" />
                       ) : null}
                       <GitHubRepoStats repo={link.githubRepo} />
                     </>
@@ -869,7 +871,7 @@ export function ProjectArchiveCard({
                   <span
                     key={tag}
                     className={cn(
-                      "rounded-full border px-2.5 py-1 text-[0.6875rem] font-medium leading-none backdrop-blur-sm",
+                      "rounded-full border px-2.5 py-1 text-[0.6875rem] font-normal leading-none backdrop-blur-sm",
                       tagIndex >= 4 && "hidden min-[1800px]:inline-flex",
                       isCourseProjectTimeTag
                         ? semesterTagClassName
@@ -888,7 +890,7 @@ export function ProjectArchiveCard({
               className={cn(
                 "max-w-2xl leading-relaxed",
                 isCourseProject
-                  ? "text-[0.9375rem] text-tone-1 dark:text-white/94"
+                  ? "text-sm text-tone-1 dark:text-white/94"
                   : "text-sm text-white/82",
               )}
             >
@@ -900,8 +902,8 @@ export function ProjectArchiveCard({
                 className={cn(
                   "grid gap-1.5 leading-snug",
                   isCourseProject
-                    ? "text-[0.875rem] text-tone-2 dark:text-white/88"
-                    : "text-[0.8125rem] text-white/76",
+                    ? "text-sm text-tone-2 dark:text-white/88"
+                    : "text-sm text-white/76",
                 )}
               >
                 {visiblePoints.map((point, pointIndex) => {
@@ -913,25 +915,20 @@ export function ProjectArchiveCard({
                       className={cn(
                         "flex gap-2",
                         pointIndex >= 2 && "hidden min-[1800px]:flex",
-                        highlighted &&
-                          (isCourseProject
-                            ? "text-amber-700 dark:text-violet-200"
-                            : "text-amber-200 dark:text-violet-200"),
+                        highlighted && "text-site-bullet-accent",
                       )}
                     >
                       <span
                         className={cn(
                           "mt-[0.55em] h-1 w-1 shrink-0 rounded-full",
                           highlighted
-                            ? isCourseProject
-                              ? "bg-amber-700 dark:bg-violet-200"
-                              : "bg-amber-200 dark:bg-violet-200"
+                            ? "bg-site-bullet-accent"
                             : isCourseProject
                               ? "bg-tone-3 dark:bg-white/72"
                               : "bg-white/58",
                         )}
                       />
-                      <span>{point}</span>
+                      <span>{renderEmphasizedText(point)}</span>
                     </li>
                   )
                 })}

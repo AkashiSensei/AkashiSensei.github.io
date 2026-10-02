@@ -1007,8 +1007,12 @@ function renderCss3DScene(
       ) ?? 1
       object.element.style.opacity = opacity.toFixed(3)
       object.element.style.filter = ""
+      const canInteract = interactive && opacity * attachmentOpacity > 0.08
+      // The viewport-sized screen must not cover attachments behind its plane.
+      // Its actual controls opt into pointer events; inactive objects stay inert.
       object.element.style.pointerEvents =
-        interactive && opacity * attachmentOpacity > 0.08 ? "auto" : "none"
+        canInteract && object.element !== screen.element ? "auto" : "none"
+      object.element.inert = !canInteract
       object.element.classList.toggle(
         "fpv-css3d-attachment-driven",
         attachmentDriven ?? false,

@@ -1,6 +1,8 @@
 import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
 import test from 'node:test'
+import { createInstance } from 'i18next'
+import { formatDocumentTag } from '../src/lib/tag-label.ts'
 import { createWall, advanceWall, resizeWall } from '../src/lib/question-wall.ts'
 import { filterQuestions, questionProjectKey, normalizeQuestionTags, toggleQuestionTag, shuffleQuestions, relatedQuestionPage } from '../src/lib/questions.ts'
 import { fitQuestionText } from '../src/lib/question-text-layout.ts'
@@ -41,6 +43,63 @@ test('conversation parts enter below the viewport and fully leave above it, incl
 const readJson = (path) => JSON.parse(readFileSync(new URL(path, import.meta.url), 'utf8'))
 const { threads, tags } = readJson('../src/data/questions.json')
 const { items } = readJson('../src/content/locales/zh/questions.json')
+const english = readJson('../src/content/locales/en/questions.json')
+
+test('document hashtags normalize whitespace without changing topic identities or technical names', () => {
+  for (const [label, expected] of [
+    ['CUDA', '#CUDA'], ['resource sharing', '#resource_sharing'],
+    ['  GPU   Architecture  ', '#GPU_Architecture'], ['#CUDA', '#CUDA'],
+    ['C++', '#C++'], ['C#', '#C#'], ['内存 管理', '#内存_管理'], ['  ', ''],
+  ]) assert.equal(formatDocumentTag(label), expected)
+  const original = structuredClone(tags)
+  for (const label of Object.values(tags)) {
+    const formatted = formatDocumentTag(label)
+    assert.ok(formatted.startsWith('#'))
+    assert.doesNotMatch(formatted, /\s/)
+    assert.equal(formatDocumentTag(formatted), formatted)
+  }
+  assert.deepEqual(tags, original)
+})
+
+test('English copy covers every published question and answer without losing rounds or inline code', () => {
+  assert.deepEqual(Object.keys(english.items).sort(), threads.map((thread) => thread.id).sort())
+  for (const thread of threads) {
+    const translated = english.items[thread.id].rounds
+    assert.deepEqual(Object.keys(translated), thread.rounds)
+    for (const id of thread.rounds) {
+      const original = items[thread.id].rounds[id]
+      for (const field of ['question', 'answer']) {
+        if (!original[field]) continue
+        const text = translated[id][field]
+        assert.equal(typeof text, 'string', `${thread.id}.${id}.${field}`)
+        assert.ok(text.trim(), `${thread.id}.${id}.${field} must not be empty`)
+        assert.doesNotMatch(text, /\p{Script=Han}/u)
+      }
+      const text = `${translated[id].question} ${translated[id].answer ?? ''}`
+      const source = `${original.question} ${original.answer ?? ''}`
+      for (const [code] of source.matchAll(/`[^`]+`/g)) assert.ok(text.includes(code), `${thread.id}.${id} lost ${code}`)
+    }
+  }
+})
+
+test('language switching selects complete English and Chinese question resources', async () => {
+  const i18n = createInstance()
+  await i18n.init({
+    resources: { en: { questions: english }, zh: { questions: readJson('../src/content/locales/zh/questions.json') } },
+    lng: 'zh', fallbackLng: 'en', defaultNS: 'questions',
+  })
+  for (const language of ['en', 'zh', 'en']) {
+    await i18n.changeLanguage(language)
+    for (const thread of threads) {
+      const copy = i18n.getResource(i18n.resolvedLanguage, 'questions', `items.${thread.id}`)
+      assert.deepEqual(copy.rounds, (language === 'en' ? english.items : items)[thread.id].rounds)
+      for (const id of thread.rounds) {
+        assert.equal(i18n.t(`items.${thread.id}.rounds.${id}.question`), copy.rounds[id].question)
+        assert.equal(i18n.t(`items.${thread.id}.rounds.${id}.answer`), copy.rounds[id].answer)
+      }
+    }
+  }
+})
 test('question image references resolve to existing assets with reserved dimensions and accessible labels', () => {
   for (const thread of threads) {
     for (const [round, references] of Object.entries(thread.questionImages ?? {})) {
@@ -247,7 +306,7 @@ test('bubble padding preserves short single-line questions and complete long tex
 })
 
 test('all question titles get measured boxes across viewport sizes, including explicit breaks and long code', () => {
-  const texts = [...threads.map((thread) => items[thread.id].rounds[thread.rounds[0]].question), '第一行\n第二行\n第三行', 'derived__memory_l1_wavefronts_shared_excessive'.repeat(4)]
+  const texts = [...threads.flatMap((thread) => [items, english.items].map((locale) => locale[thread.id].rounds[thread.rounds[0]].question)), '第一行\n第二行\n第三行', 'derived__memory_l1_wavefronts_shared_excessive'.repeat(4)]
   for (const [width, height] of [[280, 464], [650, 440], [1000, 420], [1800, 608]]) {
     const layouts = Object.fromEntries(texts.map((text, index) => {
       const measure = measureText(text)

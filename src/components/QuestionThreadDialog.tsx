@@ -23,7 +23,7 @@ function ThreadBody({ thread, roundId, open }: { thread: QuestionThread; roundId
     <QuestionConversationFlow open={open} roundId={roundId}>
         <DialogDescription className="sr-only">
           {t("rounds", { count: thread.rounds.length })}
-          {!i18n.language.startsWith("zh") ? ` · ${t("sourceLanguage")}` : ""}
+          {!i18n.language.startsWith("zh") && copy.lang.startsWith("zh") ? ` · ${t("sourceLanguage")}` : ""}
         </DialogDescription>
         <div className="question-rounds" lang={copy.lang}>
           {thread.rounds.map((id, index) => <section className="question-round" id={`question-round-${id}`} key={id}>
@@ -63,7 +63,8 @@ export function QuestionDialogProvider({ children }: { children: ReactNode }) {
   }
   const thread = questionThreads.find((item) => item.id === displayed.id)
   const open = selectedId !== null
-  const motionStyle = { "--question-conversation-exit-duration": `${conversationExitDuration(thread ? questionConversationPartCount(thread) : 1)}ms` } as CSSProperties
+  const exitDuration = `${conversationExitDuration(thread ? questionConversationPartCount(thread) : 1)}ms`
+  const motionStyle = { "--question-conversation-exit-duration": exitDuration, "--dialog-exit-duration": exitDuration } as CSSProperties
   const close = () => {
     if (location.state?.questionDialogFrom) {
       navigate(-1)

@@ -6,7 +6,6 @@
   "contact": "联系方式",
   "github": "GitHub",
   "plain": {
-    "kicker": "朴素文本 / 低干扰",
     "actionsLabel": "主页快捷操作",
     "friendAvatarAlt": "{{name}} 的头像"
   },
@@ -17,7 +16,7 @@
       "tags": {
         "student": "学生",
         "infj": "INFJ",
-        "anime": "Anime & Manga"
+        "anime": "二次元"
       },
       "title": "Akashi",
       "maxim": "快提醒我别再玩手机了",

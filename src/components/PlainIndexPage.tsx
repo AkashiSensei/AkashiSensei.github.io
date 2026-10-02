@@ -1,8 +1,9 @@
+import { PlainImageGallery } from "@/components/PlainImageGallery"
+import { DocumentTag } from "@/components/DocumentTag"
 import { AppLink } from "@/components/AppLink"
 import { BackButton } from "@/components/BackButton"
 import { Layout } from "@/components/Layout"
 import { renderPlainRichText } from "@/components/PlainRichText"
-import { cn } from "@/lib/utils"
 
 export type PlainIndexImage = {
   src: string
@@ -14,6 +15,7 @@ export type PlainIndexImage = {
 
 export type PlainTag = string | {
   label: string
+  // Optional visual-view metadata; document tags use the shared text style.
   className?: string
 }
 
@@ -35,10 +37,6 @@ export type PlainIndexItem = {
 
 function getPlainTagLabel(tag: PlainTag) {
   return typeof tag === "string" ? tag : tag.label
-}
-
-function getPlainTagClassName(tag: PlainTag) {
-  return typeof tag === "string" ? undefined : tag.className
 }
 
 type PlainIndexPageProps = {
@@ -67,14 +65,7 @@ export function PlainIndexPage({
           {items.map((item) => (
             <article key={item.id} className="plain-index-item">
               {item.image ? (
-                <img
-                  src={item.image.src}
-                  alt={item.image.alt}
-                  width={item.image.width}
-                  height={item.image.height}
-                  className="plain-index-image"
-                  loading="lazy"
-                />
+                <PlainImageGallery single images={[item.image]} imageClassName="plain-index-image" />
               ) : null}
 
               <div className="plain-index-item-copy">
@@ -111,16 +102,7 @@ export function PlainIndexPage({
                 {item.tags?.length ? (
                   <ul className="plain-index-tags" aria-label={item.title}>
                     {item.tags.map((tag) => (
-                      <li
-                        key={getPlainTagLabel(tag)}
-                        className={cn(
-                          getPlainTagClassName(tag)
-                            && "plain-index-tag-pill rounded-full border px-2.5 py-1 text-xs font-semibold",
-                          getPlainTagClassName(tag),
-                        )}
-                      >
-                        {getPlainTagLabel(tag)}
-                      </li>
+                      <DocumentTag as="li" key={getPlainTagLabel(tag)} label={getPlainTagLabel(tag)} />
                     ))}
                   </ul>
                 ) : null}

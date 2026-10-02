@@ -1,11 +1,11 @@
 import { type ReactNode } from "react"
 
 export const personalWorkHighlightClassName =
-  "plain-point-highlight text-amber-700 dark:text-violet-300"
+  "plain-point-highlight text-site-bullet-accent"
 
 export function renderEmphasizedText(
   text: string,
-  strongClassName = "font-semibold",
+  strongClassName = "font-medium",
 ): ReactNode[] {
   return text.split(/(\*\*[^*]+\*\*)/g).map((part, index) => {
     if (part.startsWith("**") && part.endsWith("**")) {

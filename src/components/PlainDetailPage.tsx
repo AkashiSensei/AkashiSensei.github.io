@@ -1,9 +1,11 @@
+import { ExternalLinkIcon } from "@/components/ExternalLinkIcon"
+import { DocumentTag } from "@/components/DocumentTag"
 import type { ReactNode } from "react"
 import { BackButton } from "@/components/BackButton"
 import { Layout } from "@/components/Layout"
 import { type PlainIndexImage, type PlainTag } from "@/components/PlainIndexPage"
 import { renderPlainRichText } from "@/components/PlainRichText"
-import { cn } from "@/lib/utils"
+import { PlainImageGallery } from "@/components/PlainImageGallery"
 
 export type PlainDetailLink = {
   label: string
@@ -36,10 +38,6 @@ type PlainDetailPageProps = {
 
 function getPlainTagLabel(tag: PlainTag) {
   return typeof tag === "string" ? tag : tag.label
-}
-
-function getPlainTagClassName(tag: PlainTag) {
-  return typeof tag === "string" ? undefined : tag.className
 }
 
 export function PlainDetailPage({
@@ -77,20 +75,7 @@ export function PlainDetailPage({
 
         {images?.length ? (
           <section className="plain-detail-gallery-section" aria-label={title}>
-            <div className="plain-detail-image-grid">
-              {images.map((image) => (
-                <figure key={image.src}>
-                  <img
-                    src={image.src}
-                    alt={image.alt}
-                    width={image.width}
-                    height={image.height}
-                    loading="lazy"
-                  />
-                  {image.title ? <figcaption>{image.title}</figcaption> : null}
-                </figure>
-              ))}
-            </div>
+            <PlainImageGallery images={images} />
           </section>
         ) : null}
 
@@ -117,8 +102,9 @@ export function PlainDetailPage({
                     {links.map((link) => (
                       <li key={link.href ?? link.label}>
                         {link.href ? (
-                          <a href={link.href} target="_blank" rel="noreferrer">
+                          <a href={link.href} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5">
                             {link.label}
+                            <ExternalLinkIcon className="shrink-0" />
                           </a>
                         ) : (
                           <span>{link.label}</span>
@@ -126,16 +112,7 @@ export function PlainDetailPage({
                         {link.meta?.length ? (
                           <span className="plain-detail-link-meta">
                             {link.meta.map((tag) => (
-                              <span
-                                key={getPlainTagLabel(tag)}
-                                className={cn(
-                                  getPlainTagClassName(tag)
-                                    && "plain-index-tag-pill rounded-full border px-2 py-0.5 text-[0.6875rem] font-semibold leading-none",
-                                  getPlainTagClassName(tag),
-                                )}
-                              >
-                                {getPlainTagLabel(tag)}
-                              </span>
+                              <DocumentTag key={getPlainTagLabel(tag)} label={getPlainTagLabel(tag)} />
                             ))}
                           </span>
                         ) : null}
@@ -150,16 +127,7 @@ export function PlainDetailPage({
                   <h2>{tagsTitle}</h2>
                   <ul className="plain-index-tags">
                   {tags.map((tag) => (
-                    <li
-                      key={getPlainTagLabel(tag)}
-                      className={cn(
-                        getPlainTagClassName(tag)
-                          && "plain-index-tag-pill rounded-full border px-2.5 py-1 text-xs font-semibold",
-                        getPlainTagClassName(tag),
-                      )}
-                    >
-                      {getPlainTagLabel(tag)}
-                    </li>
+                    <DocumentTag as="li" key={getPlainTagLabel(tag)} label={getPlainTagLabel(tag)} />
                   ))}
                 </ul>
                 </section>

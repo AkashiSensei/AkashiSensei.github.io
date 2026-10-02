@@ -6,7 +6,6 @@
   "contact": "Contact",
   "github": "GitHub",
   "plain": {
-    "kicker": "plain text / low distraction",
     "actionsLabel": "Home quick actions",
     "friendAvatarAlt": "{{name}}'s avatar"
   },

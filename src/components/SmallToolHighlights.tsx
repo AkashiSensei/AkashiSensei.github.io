@@ -33,6 +33,7 @@ export function SmallToolHighlights() {
         <div className="resume-feature-offset flex max-w-xl flex-col gap-4 xl:self-start">
           <ArchiveSectionHeader detailPath="/tools" title={t("title")} subtitle={t("subtitle")}
             viewAllLabel={t("viewAllWithCount", { count: smallTools.length })} />
+          <SectionNote><p>{t("description")}</p></SectionNote>
           <div className="flex max-w-md flex-wrap gap-2 px-2 sm:px-3 md:px-4">
             {tags.map((tag) => (
               <span key={tag} className="rounded-full border border-tone-4/35 bg-surface/35 px-2.5 py-1 text-[0.75rem] font-normal leading-none text-tone-3 backdrop-blur-sm dark:bg-surface/20">
@@ -58,7 +59,6 @@ export function SmallToolHighlights() {
           ))}
         </div>
       </div>
-      <SectionNote><p>{t("description")}</p></SectionNote>
     </section>
   )
 }
@@ -73,7 +73,7 @@ function SmallToolLineItem({ tool }: { tool: SmallTool }) {
       <div className="h-full bg-tone-4 dark:bg-tone-3" aria-hidden="true" />
       <div className="flex min-w-0 flex-col gap-3">
         <div className="flex min-w-0 flex-col gap-1.5">
-          <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[0.75rem] leading-none">
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs leading-none">
             <span className={cn("font-normal", roleToneClassName[tool.role])}>
               {t(`labels.${tool.role}`)}
             </span>
@@ -94,7 +94,7 @@ function SmallToolLineItem({ tool }: { tool: SmallTool }) {
             ) : null}
           </div>
 
-          <h3 className="text-lg font-normal leading-tight tracking-tight text-tone-1 sm:text-xl">
+          <h3 className="text-card font-normal leading-tight tracking-tight text-tone-1">
             <AppLink
               to={detailPath}
               className="detail-link-trigger detail-link-emphasis transition-colors hover:text-tone-1"
@@ -104,7 +104,7 @@ function SmallToolLineItem({ tool }: { tool: SmallTool }) {
           </h3>
         </div>
 
-        <p className="text-[0.8125rem] font-normal leading-relaxed text-tone-4 sm:text-[0.875rem]">
+        <p className="text-sm font-body leading-relaxed text-tone-4 sm:text-sm">
           {t(`items.${tool.id}.summary`)}
         </p>
 

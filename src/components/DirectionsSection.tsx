@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react"
 import { useTranslation } from "react-i18next"
 
+import { SectionHeader } from "@/components/SectionHeader"
 import directionsData from "@/data/directions.json"
 import { cn } from "@/lib/utils"
 
@@ -217,10 +218,10 @@ function DirectionOrbitItem({
       </div>
 
       <div className="pt-1">
-        <h3 className="text-base font-normal leading-tight tracking-tight text-tone-1 md:text-[0.9375rem] lg:text-[0.9375rem] xl:text-[1.0625rem]">
+        <h3 className="text-base font-normal leading-tight tracking-tight text-tone-1">
           {t(`items.${item.id}.title`)}
         </h3>
-        <p className="mt-1.5 text-[0.8125rem] font-normal leading-snug text-tone-2 md:mt-1 md:text-[0.75rem] lg:mt-1.5 lg:text-[0.8125rem] xl:text-[0.875rem]">
+        <p className="mt-1.5 text-sm font-normal leading-snug text-tone-2 md:mt-1 lg:mt-1.5">
           {t(`items.${item.id}.summary`)}
         </p>
       </div>
@@ -412,15 +413,7 @@ export function DirectionsSection() {
     <section className="resume-rhythm-section grid w-full items-center">
       <div className="relative grid gap-8 md:grid-cols-2 md:gap-x-8 md:gap-y-7 lg:grid-cols-[minmax(13rem,0.72fr)_minmax(0,1fr)_minmax(0,1fr)] lg:items-center lg:gap-8 xl:grid-cols-[minmax(15rem,0.82fr)_minmax(0,1fr)_minmax(0,1fr)] xl:gap-12">
         <div className="relative z-10 flex max-w-xl flex-col md:col-span-2 lg:col-span-1 lg:-translate-y-8 xl:-translate-y-12">
-          <p className="text-[0.6875rem] font-normal uppercase tracking-[0.22em] text-tone-5">
-            Field
-          </p>
-          <h2 className="mt-3 text-3xl font-normal tracking-tight text-tone-1 md:text-4xl lg:text-[2.15rem] xl:text-4xl">
-            {t("title")}
-          </h2>
-          <p className="mt-3 max-w-sm text-sm font-normal leading-relaxed text-tone-4">
-            {t("subtitle")}
-          </p>
+          <SectionHeader eyebrow="FIELD" title={t("title")} subtitle={t("subtitle")} />
           <StarMotif isActive={activeDirectionId !== null} />
         </div>
 

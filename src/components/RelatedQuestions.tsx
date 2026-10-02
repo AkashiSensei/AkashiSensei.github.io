@@ -2,6 +2,7 @@ import { useId, useState } from "react"
 import { ArrowLeft, ArrowRight } from "lucide-react"
 import { useTranslation } from "react-i18next"
 import { QuestionList } from "@/components/QuestionList"
+import { useAnimationPreference } from "@/components/animation-provider"
 import { Button } from "@/components/ui/button"
 import { filterQuestions, questionProjectKey, questionThreads, type QuestionProject, type QuestionThread } from "@/data/questions"
 import { relatedQuestionPage } from "@/lib/questions"
@@ -9,6 +10,7 @@ import { projectDetailHeadingClassName } from "@/lib/project-detail-styles"
 
 function RelatedQuestionPages({ threads }: { threads: QuestionThread[] }) {
   const { t } = useTranslation("questions")
+  const { isPlainDisplayMode } = useAnimationPreference()
   const [page, setPage] = useState(0)
   const listId = useId()
   const headingId = useId()
@@ -16,7 +18,7 @@ function RelatedQuestionPages({ threads }: { threads: QuestionThread[] }) {
 
   return <section className="related-questions" aria-labelledby={headingId}>
     <header className="related-questions-header">
-      <h2 id={headingId} className={projectDetailHeadingClassName}>{t("related")}</h2>
+      <h2 id={headingId} className={isPlainDisplayMode ? undefined : projectDetailHeadingClassName}>{t("related")}</h2>
       {pageCount > 1 && <nav className="question-pagination" aria-label={t("relatedPagination")}>
         <Button type="button" variant="ghost" size="icon" aria-label={t("previousPage")}
           aria-controls={listId} disabled={pageIndex === 0} onClick={() => setPage(pageIndex - 1)}>
@@ -32,7 +34,7 @@ function RelatedQuestionPages({ threads }: { threads: QuestionThread[] }) {
       </nav>}
     </header>
     <div id={listId}>
-      <QuestionList threads={items} variant="catalog" showProjects={false} />
+      <QuestionList threads={items} variant={isPlainDisplayMode ? "document" : "catalog"} headingLevel={3} showProjects={false} />
     </div>
   </section>
 }

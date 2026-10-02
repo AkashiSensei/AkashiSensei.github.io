@@ -270,10 +270,10 @@ function NotFoundPage() {
           404
         </p>
         <div className="flex flex-col gap-3">
-          <h1 className="text-3xl font-bold tracking-tight md:text-4xl">
+          <h1 className="site-page-title">
             {t("notFound.title")}
           </h1>
-          <p className="text-base leading-relaxed text-foreground/70 sm:text-lg">
+          <p className="site-lede">
             {t("notFound.description")}
           </p>
         </div>

@@ -47,7 +47,7 @@ export function QuestionConversationFlow({ open, roundId, children }: {
       ], {
         duration: open ? CONVERSATION_MOTION.enterDuration : CONVERSATION_MOTION.exitDuration,
         delay: index * CONVERSATION_MOTION.stagger,
-        easing: open ? "cubic-bezier(.22,1,.36,1)" : "cubic-bezier(.55,0,.8,.45)",
+        easing: open ? CONVERSATION_MOTION.enterEasing : CONVERSATION_MOTION.exitEasing,
         fill: "both",
       })
     })

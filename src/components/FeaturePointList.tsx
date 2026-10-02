@@ -36,11 +36,11 @@ export function FeaturePointList({
               className={cn(
                 "mt-[0.65em] h-1.5 w-1.5 shrink-0 rounded-full",
                 highlighted
-                  ? "bg-amber-700 dark:bg-violet-300"
+                  ? "bg-site-bullet-accent"
                   : "bg-foreground/40 dark:bg-foreground/50",
               )}
             />
-            <span>{renderEmphasizedText(point, "font-semibold text-foreground")}</span>
+            <span>{renderEmphasizedText(point, "font-medium")}</span>
           </li>
         )
       })}

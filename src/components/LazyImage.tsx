@@ -33,10 +33,10 @@ export function LazyImage({
         )}
         aria-hidden="true"
       >
-        <span className="max-w-full truncate text-sm font-semibold text-foreground/70 dark:text-foreground/80">
+        <span className="max-w-full truncate text-sm font-normal text-foreground/70 dark:text-foreground/80">
           {placeholderTitle}
         </span>
-        <span className="text-xs font-medium text-foreground/45 dark:text-foreground/55">
+        <span className="text-xs font-normal text-foreground/45 dark:text-foreground/55">
           {loadingLabel}
         </span>
       </div>
