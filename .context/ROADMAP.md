@@ -13,6 +13,8 @@
 
 ## History
 
+- 2026-10-02 | [Unified site design](archive/20261002_Unified-site-design.md) | Unified typography, theme weights, blue emphasis, plain layouts, tags, links and modal motion; completed English question copy, restored plain image previews, fixed FPV controls and icon loops, and documented style reuse for future features.
+
 - 2026-10-01 | [Question wall and conversation threads](archive/20261001_Question-wall-and-conversation-threads.md) | Added 39 question chains with animated resume bubbles, tag-filtered masonry, image-aware conversations and project links; unified typography, plain layouts and rotation timing.
 
 - 2026-09-30 | [Resume and project content refresh](archive/20260930_Resume-project-refresh.md) | Updated bilingual resume/project copy and galleries, moved the thesis to Projects with a legacy redirect, and improved contact, back-button, and detail-preview interactions.

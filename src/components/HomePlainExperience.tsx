@@ -53,8 +53,7 @@ export function HomePlainExperience() {
   return (
     <article className="plain-home-document" aria-labelledby="plain-home-title">
       <header className="plain-home-header">
-        <p className="plain-home-kicker">{t("plain.kicker")}</p>
-        <h1 id="plain-home-title">{t("fpv.page01.title")}</h1>
+        <h1 id="plain-home-title" className="plain-display-title">{t("fpv.page01.title")}</h1>
         <p className="plain-home-lede">{t("fpv.page01.maxim")}</p>
         <ul className="plain-home-intro-list">
           {asStringArray([

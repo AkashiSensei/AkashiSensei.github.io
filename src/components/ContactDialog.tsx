@@ -5,6 +5,8 @@ import { Check, Copy, Mail } from "lucide-react"
 import {
   Dialog,
   DialogContent,
+  DialogTitle,
+  DialogDescription,
   DialogTrigger,
 } from "@/components/ui/dialog"
 import {
@@ -71,7 +73,7 @@ function ensureProfileAssetsReady() {
 }
 
 const socialLinkClassName =
-  "contact-social-pill inline-flex h-8 shrink-0 items-center gap-1 rounded-full border border-foreground bg-foreground px-2 text-xs font-medium text-background shadow-sm transition-[background-color,transform] hover:bg-foreground/85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/45 md:h-9 md:snap-align-none md:gap-1.5 md:px-3 md:text-sm"
+  "contact-social-pill inline-flex h-8 shrink-0 items-center gap-1 rounded-full border border-foreground bg-foreground px-2 text-xs font-normal text-background shadow-sm transition-[background-color,transform] hover:bg-foreground/85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/45 md:h-9 md:snap-align-none md:gap-1.5 md:px-3 md:text-sm"
 
 const whatsappDisplayNumber = "+44 7434 099408"
 const whatsappLinkHref = "https://wa.me/447434099408"
@@ -233,7 +235,7 @@ export function ContactDialog({ children }: { children: ReactNode }) {
       <SpotlightCard asChild>
         <DialogContent
           ref={dialogContentRef}
-          className="contact-dialog-content lit-glass-card workbench-preview-glass workbench-preview-glass-enter max-h-[calc(100svh-1rem)] w-[calc(100%-2rem)] max-w-none overflow-y-auto rounded-xl border-[rgb(var(--site-surface-rgb)_/_0.62)] bg-[rgb(var(--site-surface-rgb)_/_0.66)] p-3 shadow-lg backdrop-blur-xl dark:border-white/10 dark:bg-white/10 sm:max-w-none sm:p-4 md:max-h-[calc(100svh-2rem)] md:w-full md:max-w-4xl md:p-5"
+          className="contact-dialog-content lit-glass-card workbench-preview-glass max-h-[calc(100svh-1rem)] w-[calc(100%-2rem)] max-w-none overflow-y-auto rounded-xl border-[rgb(var(--site-surface-rgb)_/_0.62)] bg-[rgb(var(--site-surface-rgb)_/_0.66)] p-3 shadow-lg backdrop-blur-xl dark:border-white/10 dark:bg-white/10 sm:max-w-none sm:p-4 md:max-h-[calc(100svh-2rem)] md:w-full md:max-w-4xl md:p-5"
           onOpenAutoFocus={(event) => {
             if (window.matchMedia("(max-width: 767px)").matches) {
               event.preventDefault()
@@ -241,6 +243,8 @@ export function ContactDialog({ children }: { children: ReactNode }) {
             }
           }}
         >
+          <DialogTitle className="sr-only">{t("contactDialog.title")}</DialogTitle>
+          <DialogDescription className="sr-only">{t("contactDialog.description")}</DialogDescription>
           <div className="grid gap-3 md:grid-cols-[minmax(15rem,18rem)_minmax(0,1fr)] md:items-center md:gap-5">
             <div className="flex min-w-0 justify-center">
               <ProfileCard
@@ -267,10 +271,10 @@ export function ContactDialog({ children }: { children: ReactNode }) {
             <div className="grid min-w-0 gap-2 px-2 py-0 sm:gap-2.5 sm:px-3 md:min-h-[24rem] md:grid-rows-[auto_minmax(0,1fr)_auto] md:gap-5 md:px-2 md:py-3">
               <div className="flex min-w-0 flex-col gap-2 px-0 md:gap-3 md:px-0.5">
                 <div className="hidden flex-col gap-1.5 md:flex">
-                  <p className="text-[1.7rem] font-semibold leading-[1.02] text-tone-4 sm:text-[2rem] md:text-[2.2rem]">
+                  <p className="text-section font-light leading-tight text-tone-2">
                     {t("contactDialog.casualTitle")}
                   </p>
-                  <p className="text-[0.9375rem] leading-relaxed text-tone-1">
+                  <p className="text-sm leading-relaxed text-tone-1">
                     {t("contactDialog.casualDescription")}
                   </p>
                 </div>
@@ -281,7 +285,7 @@ export function ContactDialog({ children }: { children: ReactNode }) {
                   {casualTopics.map((topic) => (
                     <li
                       key={topic}
-                      className="shrink-0 snap-start rounded-full border border-foreground/12 bg-foreground/5 px-2.5 py-1 text-xs font-medium text-tone-1 dark:border-white/10 dark:bg-white/5 md:snap-align-none"
+                      className="shrink-0 snap-start rounded-full border border-foreground/12 bg-foreground/5 px-2.5 py-1 text-xs font-normal text-tone-1 dark:border-white/10 dark:bg-white/5 md:snap-align-none"
                     >
                       {topic}
                     </li>
@@ -308,7 +312,7 @@ export function ContactDialog({ children }: { children: ReactNode }) {
                     <span className="truncate text-sm text-tone-4">{emailAddress}</span>
                   </div>
                   <span
-                    className="flex shrink-0 items-center gap-1.5 px-2.5 py-1 text-xs font-medium text-tone-3"
+                    className="flex shrink-0 items-center gap-1.5 px-2.5 py-1 text-xs font-normal text-tone-3"
                     aria-live="polite"
                   >
                     {copyState === "copied" ? (

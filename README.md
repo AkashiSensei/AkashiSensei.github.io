@@ -4,6 +4,8 @@
 
 面向访客的**可编辑文案**集中在 `src/content/locales/`（见该目录下 `README.md`）。
 
+仓库开发提示词与样式复用约定见 [AGENTS.md](AGENTS.md)。新增功能必须参考已有同类页面和组件，延续网站已统一的设计风格。
+
 个人主页，用于求职和交友，支持网页端和手机端查看，并提供多语言内容展示。
 
 部署为 GitHub Pages **用户站**：<https://akashisensei.github.io/>（仓库 `AkashiSensei.github.io`，非项目站子路径）。

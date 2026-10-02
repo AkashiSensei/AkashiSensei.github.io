@@ -1,5 +1,7 @@
+import { PlainImageGallery } from "@/components/PlainImageGallery"
+import { ExternalLinkIcon } from "@/components/ExternalLinkIcon"
+import { DocumentTag } from "@/components/DocumentTag"
 import { useEffect, useMemo, useState } from "react"
-import { ArrowUpRight } from "lucide-react"
 import { useTranslation } from "react-i18next"
 
 import { AppLink } from "@/components/AppLink"
@@ -10,25 +12,10 @@ import { SmallToolImageGallery } from "@/components/SmallToolImageGallery"
 import { renderPlainRichText } from "@/components/PlainRichText"
 import { type SmallTool } from "@/data/tools"
 import { getListingPointSections } from "@/lib/project-points"
-import { getSemanticTagClassName } from "@/lib/tag-styles"
-import { cn } from "@/lib/utils"
 
 type PlainToolIndexPageProps = {
   tools: SmallTool[]
 }
-
-const roleClassName = {
-  author:
-    "border-emerald-300/60 bg-emerald-100/70 text-emerald-800 dark:border-emerald-300/30 dark:bg-emerald-300/15 dark:text-emerald-200",
-  contributor:
-    "border-sky-300/60 bg-sky-100/70 text-sky-800 dark:border-sky-300/30 dark:bg-sky-300/15 dark:text-sky-200",
-} satisfies Record<SmallTool["role"], string>
-
-const statusClassName =
-  "border-amber-300/50 bg-amber-100/75 text-amber-850 dark:border-amber-300/25 dark:bg-amber-300/12 dark:text-amber-200"
-
-const archivedClassName =
-  "border-zinc-300/70 bg-zinc-100/80 text-zinc-700 dark:border-zinc-300/25 dark:bg-zinc-300/10 dark:text-zinc-200"
 
 function estimateToolHeight(
   tool: SmallTool,
@@ -125,12 +112,7 @@ export function PlainToolIndexPage({ tools }: PlainToolIndexPageProps) {
                         className="plain-project-gallery"
                       />
                     ) : tool.screenshot ? (
-                      <img
-                        src={tool.screenshot.src}
-                        alt={tool.screenshot.alt}
-                        className="plain-project-fallback-image"
-                        loading="lazy"
-                      />
+                      <PlainImageGallery single images={[{ src: tool.screenshot.src, alt: tool.screenshot.alt }]} imageClassName="plain-project-fallback-image" />
                     ) : null}
 
                     <div className="plain-project-copy">
@@ -158,18 +140,10 @@ export function PlainToolIndexPage({ tools }: PlainToolIndexPageProps) {
                             className="plain-project-repo-link"
                           >
                             {tool.repoTags?.map((repoTag) => (
-                              <span
-                                key={repoTag}
-                                className={cn(
-                                  "plain-index-tag-pill shrink-0 whitespace-nowrap rounded-full border px-2 py-0.5 text-[0.6875rem] font-semibold leading-none",
-                                  getSemanticTagClassName(repoTag),
-                                )}
-                              >
-                                {t(`repoTags.${repoTag}`)}
-                              </span>
+                              <DocumentTag key={repoTag} label={t(`repoTags.${repoTag}`)} />
                             ))}
                             <span className="plain-project-repo-name min-w-0 truncate">{tool.repoName}</span>
-                            <ArrowUpRight className="plain-project-repo-arrow h-4 w-4 shrink-0" />
+                            <ExternalLinkIcon className="plain-project-repo-arrow h-4 w-4 shrink-0" />
                             <GitHubRepoStats
                               repo={tool.githubRepo}
                               className="plain-project-repo-stats"
@@ -178,15 +152,7 @@ export function PlainToolIndexPage({ tools }: PlainToolIndexPageProps) {
                         ) : (
                           <span className="plain-project-repo-link">
                             {tool.repoTags?.map((repoTag) => (
-                              <span
-                                key={repoTag}
-                                className={cn(
-                                  "plain-index-tag-pill shrink-0 whitespace-nowrap rounded-full border px-2 py-0.5 text-[0.6875rem] font-semibold leading-none",
-                                  getSemanticTagClassName(repoTag),
-                                )}
-                              >
-                                {t(`repoTags.${repoTag}`)}
-                              </span>
+                              <DocumentTag key={repoTag} label={t(`repoTags.${repoTag}`)} />
                             ))}
                             <span className="plain-project-repo-name min-w-0 truncate">
                               {tool.repoName ?? t("labels.privateTool")}
@@ -206,33 +172,12 @@ export function PlainToolIndexPage({ tools }: PlainToolIndexPageProps) {
                       ) : null}
 
                       <ul className="plain-index-tags" aria-label={title}>
-                        <li
-                          className={cn(
-                            "plain-index-tag-pill rounded-full border px-2.5 py-1 text-xs font-semibold",
-                            roleClassName[tool.role],
-                          )}
-                        >
-                          {t(`labels.${tool.role}`)}
-                        </li>
+                        <DocumentTag as="li"  label={t(`labels.${tool.role}`)} />
                         {tool.status ? (
-                          <li
-                            className={cn(
-                              "plain-index-tag-pill rounded-full border px-2.5 py-1 text-xs font-semibold",
-                              statusClassName,
-                            )}
-                          >
-                            {t(`labels.${tool.status}`)}
-                          </li>
+                          <DocumentTag as="li"  label={t(`labels.${tool.status}`)} />
                         ) : null}
                         {tool.archived ? (
-                          <li
-                            className={cn(
-                              "plain-index-tag-pill rounded-full border px-2.5 py-1 text-xs font-semibold",
-                              archivedClassName,
-                            )}
-                          >
-                            {t("labels.archived")}
-                          </li>
+                          <DocumentTag as="li"  label={t("labels.archived")} />
                         ) : null}
                       </ul>
                     </div>

@@ -1,8 +1,10 @@
+import { PlainImageGallery } from "@/components/PlainImageGallery"
+import { ExternalLinkIcon } from "@/components/ExternalLinkIcon"
+import { DocumentTag } from "@/components/DocumentTag"
 import { SectionNote } from "@/components/SectionHeader"
 import { QuestionWall } from "@/components/QuestionWall"
 import { useEffect, useMemo, useRef, useState } from "react"
 import { useTranslation } from "react-i18next"
-import { ArrowUpRight } from "lucide-react"
 
 import directions from "@/data/directions.json"
 import { featuredCourseProjects } from "@/data/course-projects"
@@ -21,11 +23,6 @@ import {
   getProjectPointSections,
   sliceProjectPointSections,
 } from "@/lib/project-points"
-import {
-  defaultTagClassName,
-  getCourseProjectSemesterTagClassName,
-  getSemanticTagClassName,
-} from "@/lib/tag-styles"
 import { cn } from "@/lib/utils"
 
 type ValueCard = {
@@ -49,15 +46,6 @@ function asValueCards(value: unknown) {
       ))
     : []
 }
-
-const lifecycleStatusClassName = {
-  starting:
-    "border-sky-300/60 bg-sky-100/70 text-sky-800 dark:border-sky-300/30 dark:bg-sky-300/15 dark:text-sky-200",
-  ongoing:
-    "border-emerald-300/60 bg-emerald-100/70 text-emerald-800 dark:border-emerald-300/30 dark:bg-emerald-300/15 dark:text-emerald-200",
-  completed:
-    "border-zinc-300/70 bg-zinc-100/80 text-zinc-700 dark:border-zinc-300/25 dark:bg-zinc-300/10 dark:text-zinc-200",
-} satisfies Record<Project["lifecycleStatus"], string>
 
 const defaultProjectColumnWidth = 520
 const defaultProjectColumnGap = 42
@@ -304,12 +292,7 @@ function ResumePlainProjectList({
                 className="plain-project-gallery"
               />
             ) : project.screenshot ? (
-              <img
-                src={project.screenshot.src}
-                alt={t(project.screenshot.altKey)}
-                className="plain-project-fallback-image"
-                loading="lazy"
-              />
+              <PlainImageGallery single images={[{ src: project.screenshot.src, alt: t(project.screenshot.altKey) }]} imageClassName="plain-project-fallback-image" />
             ) : null}
 
             <div className="plain-project-copy">
@@ -334,19 +317,11 @@ function ResumePlainProjectList({
                     const repoContent = (
                       <>
                         {link.repoTags?.map((repoTag) => (
-                          <span
-                            key={repoTag}
-                            className={cn(
-                              "plain-index-tag-pill shrink-0 whitespace-nowrap rounded-full border px-2 py-0.5 text-[0.6875rem] font-semibold leading-none",
-                              getSemanticTagClassName(repoTag),
-                            )}
-                          >
-                            {t(`repoTags.${repoTag}`)}
-                          </span>
+                          <DocumentTag key={repoTag} label={t(`repoTags.${repoTag}`)} />
                         ))}
                         <span className="plain-project-repo-name min-w-0 truncate">{repoLabel}</span>
                         {link.url ? (
-                          <ArrowUpRight className="plain-project-repo-arrow h-4 w-4 shrink-0" />
+                          <ExternalLinkIcon className="plain-project-repo-arrow h-4 w-4 shrink-0" />
                         ) : null}
                         <GitHubRepoStats
                           repo={link.githubRepo}
@@ -383,31 +358,14 @@ function ResumePlainProjectList({
               />
 
               <ul className="plain-index-tags" aria-label={title}>
-                <li
-                  className={cn(
-                    "plain-index-tag-pill rounded-full border px-2.5 py-1 text-xs font-semibold",
-                    lifecycleStatusClassName[project.lifecycleStatus],
-                  )}
-                >
-                  {t(`lifecycleStatus.${project.lifecycleStatus}`)}
-                </li>
+                <DocumentTag as="li"  label={t(`lifecycleStatus.${project.lifecycleStatus}`)} />
                 {project.tags.map((tag, tagIndex) => {
                   const isCourseProjectTimeTag = isCourseProject && tagIndex < 2
 
                   return (
-                    <li
-                      key={tag}
-                      className={cn(
-                        "plain-index-tag-pill rounded-full border px-2.5 py-1 text-xs font-semibold",
-                        isCourseProjectTimeTag
-                          ? getCourseProjectSemesterTagClassName(project.tags[1])
-                          : defaultTagClassName,
-                      )}
-                    >
-                      {isCourseProjectTimeTag
+                    <DocumentTag as="li" key={tag} label={isCourseProjectTimeTag
                         ? t(`semesterTags.${tag}`, { defaultValue: tag })
-                        : tag}
-                    </li>
+                        : tag} />
                   )
                 })}
               </ul>
@@ -439,7 +397,7 @@ export function ResumePlainExperience() {
     <article className="plain-home-document plain-resume-document" aria-labelledby="plain-resume-title">
       <header className="plain-home-header">
         <p className="plain-home-kicker">{kickerTags.join(" / ")}</p>
-        <h1 id="plain-resume-title">{t("titleLead")}</h1>
+        <h1 id="plain-resume-title" className="plain-display-title">{t("titleLead")}</h1>
         <p className="plain-home-lede">{t("titleAccent")}</p>
         <div className="plain-resume-description">
           {descriptionParagraphs.map((paragraph) => (
@@ -591,15 +549,7 @@ export function ResumePlainExperience() {
               {tool.repoTags?.length ? (
                 <ul className="plain-index-tags" aria-label={t(`tools:items.${tool.id}.title`)}>
                   {tool.repoTags.map((repoTag) => (
-                    <li
-                      key={repoTag}
-                      className={cn(
-                        "plain-index-tag-pill rounded-full border px-2 py-0.5 text-[0.6875rem] font-semibold leading-none",
-                        getSemanticTagClassName(repoTag),
-                      )}
-                    >
-                      {t(`tools:repoTags.${repoTag}`)}
-                    </li>
+                    <DocumentTag as="li" key={repoTag} label={t(`tools:repoTags.${repoTag}`)} />
                   ))}
                 </ul>
               ) : null}

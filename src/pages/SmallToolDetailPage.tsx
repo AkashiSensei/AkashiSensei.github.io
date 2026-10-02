@@ -1,4 +1,4 @@
-import { ArrowUpRight } from "lucide-react"
+import { ExternalLinkIcon } from "@/components/ExternalLinkIcon"
 import { useTranslation } from "react-i18next"
 import { useParams } from "react-router-dom"
 
@@ -54,14 +54,14 @@ export function SmallToolDetailPage({ tools }: SmallToolDetailPageProps) {
       <Layout>
         <section className="flex min-h-[calc(100svh-11rem)] max-w-xl flex-col justify-center gap-5 py-12">
           <BackButton fallback="/tools" />
-          <p className="text-sm font-medium uppercase tracking-[0.18em] text-foreground/45">
+          <p className="text-sm font-normal uppercase tracking-[0.18em] text-foreground/45">
             404
           </p>
           <div className="flex flex-col gap-3">
-            <h1 className="text-3xl font-bold tracking-tight md:text-4xl">
+            <h1 className="site-page-title">
               {t("common:notFound.title")}
             </h1>
-            <p className="text-base leading-relaxed text-foreground/70 sm:text-lg">
+            <p className="site-lede">
               {t("common:notFound.description")}
             </p>
           </div>
@@ -130,33 +130,33 @@ export function SmallToolDetailPage({ tools }: SmallToolDetailPageProps) {
           <BackButton fallback="/tools" />
 
           <header className="flex max-w-5xl flex-col gap-5">
-            <p className="text-sm font-semibold text-foreground/55 dark:text-foreground/65">
+            <p className="text-sm font-normal text-foreground/55 dark:text-foreground/65">
               {t("title")}
             </p>
             <div className="flex flex-col gap-3">
-              <h1 className="text-3xl font-bold tracking-tight md:text-5xl">
+              <h1 className="site-page-title">
                 {t(`items.${tool.id}.title`)}
               </h1>
-              <p className="text-base leading-relaxed text-foreground/80 dark:text-foreground/90 sm:text-lg">
+              <p className="site-lede">
                 {t(`items.${tool.id}.summary`)}
               </p>
             </div>
             <div className="flex flex-wrap items-center gap-2">
               <span
                 className={cn(
-                  "rounded-full border px-2.5 py-1 text-xs font-semibold leading-none",
+                  "rounded-full border px-2.5 py-1 text-xs font-normal leading-none",
                   roleClassName[tool.role],
                 )}
               >
                 {t(`labels.${tool.role}`)}
               </span>
               {tool.status ? (
-                <span className="rounded-full border border-[rgb(var(--site-surface-rgb)_/_0.45)] bg-[rgb(var(--site-surface-rgb)_/_0.28)] px-2.5 py-1 text-xs font-semibold text-foreground/60 dark:border-white/10 dark:bg-white/[0.04] dark:text-foreground/70">
+                <span className="rounded-full border border-[rgb(var(--site-surface-rgb)_/_0.45)] bg-[rgb(var(--site-surface-rgb)_/_0.28)] px-2.5 py-1 text-xs font-normal text-foreground/60 dark:border-white/10 dark:bg-white/[0.04] dark:text-foreground/70">
                   {t(`labels.${tool.status}`)}
                 </span>
               ) : null}
               {tool.archived ? (
-                <span className="rounded-full border border-zinc-300/70 bg-zinc-100/80 px-2.5 py-1 text-xs font-semibold text-zinc-700 dark:border-zinc-300/25 dark:bg-zinc-300/10 dark:text-zinc-200">
+                <span className="rounded-full border border-zinc-300/70 bg-zinc-100/80 px-2.5 py-1 text-xs font-normal text-zinc-700 dark:border-zinc-300/25 dark:bg-zinc-300/10 dark:text-zinc-200">
                   {t("labels.archived")}
                 </span>
               ) : null}
@@ -203,13 +203,13 @@ export function SmallToolDetailPage({ tools }: SmallToolDetailPageProps) {
                   href={tool.repoUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="group/repo flex min-w-0 items-center gap-1.5 text-sm font-semibold text-foreground/70 transition-colors hover:text-foreground dark:text-foreground/80"
+                  className="group/repo flex min-w-0 items-center gap-1.5 text-sm font-normal text-foreground/70 transition-colors hover:text-foreground dark:text-foreground/80"
                 >
                   {tool.repoTags?.map((repoTag) => (
                     <span
                       key={repoTag}
                       className={cn(
-                        "shrink-0 whitespace-nowrap rounded-full border px-2 py-0.5 text-[0.6875rem] font-semibold leading-none",
+                        "shrink-0 whitespace-nowrap rounded-full border px-2 py-0.5 text-[0.6875rem] font-normal leading-none",
                         getSemanticTagClassName(repoTag),
                       )}
                     >
@@ -217,16 +217,16 @@ export function SmallToolDetailPage({ tools }: SmallToolDetailPageProps) {
                     </span>
                   ))}
                   <span className="min-w-0 truncate">{tool.repoName}</span>
-                  <ArrowUpRight className="h-4 w-4 shrink-0 transition-transform group-hover/repo:-translate-y-0.5 group-hover/repo:translate-x-0.5" />
+                  <ExternalLinkIcon className="h-4 w-4 shrink-0 transition-transform group-hover/repo:-translate-y-0.5 group-hover/repo:translate-x-0.5" />
                   <GitHubRepoStats repo={tool.githubRepo} />
                 </a>
               ) : (
-                <span className="flex min-w-0 items-center gap-1.5 text-sm font-semibold text-foreground/65 dark:text-foreground/75">
+                <span className="flex min-w-0 items-center gap-1.5 text-sm font-normal text-foreground/65 dark:text-foreground/75">
                   {tool.repoTags?.map((repoTag) => (
                     <span
                       key={repoTag}
                       className={cn(
-                        "shrink-0 whitespace-nowrap rounded-full border px-2 py-0.5 text-[0.6875rem] font-semibold leading-none",
+                        "shrink-0 whitespace-nowrap rounded-full border px-2 py-0.5 text-[0.6875rem] font-normal leading-none",
                         getSemanticTagClassName(repoTag),
                       )}
                     >

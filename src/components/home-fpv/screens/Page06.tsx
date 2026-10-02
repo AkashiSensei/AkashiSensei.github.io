@@ -1,7 +1,7 @@
+import { ExternalLinkIcon } from "@/components/ExternalLinkIcon"
 /* eslint-disable react-refresh/only-export-components */
 import type { VirtualScreenDefinition, VirtualScreenProps } from "../types"
 import type { CSSProperties } from "react"
-import { ArrowUpRight } from "lucide-react"
 import { useEffect, useRef, useState } from "react"
 import { useTranslation } from "react-i18next"
 
@@ -270,7 +270,7 @@ function Page06(_props: VirtualScreenProps) {
                   “{quote.preview}”
                 </span>
               </span>
-              <ArrowUpRight className="fpv-friend-pill-icon" aria-hidden="true" />
+              <ExternalLinkIcon className="fpv-friend-pill-icon" aria-hidden="true" />
             </a>
           )
         })}

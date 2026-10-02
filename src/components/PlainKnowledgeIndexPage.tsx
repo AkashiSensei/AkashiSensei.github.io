@@ -1,5 +1,6 @@
+import { ExternalLinkIcon } from "@/components/ExternalLinkIcon"
+import { DocumentTag } from "@/components/DocumentTag"
 import { useEffect, useMemo, useState } from "react"
-import { ArrowUpRight } from "lucide-react"
 import { useTranslation } from "react-i18next"
 
 import { AppLink } from "@/components/AppLink"
@@ -11,22 +12,9 @@ import { renderPlainRichText } from "@/components/PlainRichText"
 import { type KnowledgeEntry } from "@/data/knowledge"
 import { getListingPointSections } from "@/lib/project-points"
 import { getGitHubRepoUpdatedDate } from "@/lib/github-repo-stats"
-import { defaultTagClassName, getSemanticTagClassName } from "@/lib/tag-styles"
-import { cn } from "@/lib/utils"
 
 type PlainKnowledgeIndexPageProps = {
   entries: KnowledgeEntry[]
-}
-
-const kindClassName: Record<KnowledgeEntry["kind"], string> = {
-  blog:
-    "border-sky-300/55 bg-sky-100/70 text-sky-800 dark:border-sky-300/25 dark:bg-sky-300/12 dark:text-sky-200",
-  paperVault:
-    "border-emerald-300/55 bg-emerald-100/70 text-emerald-800 dark:border-emerald-300/25 dark:bg-emerald-300/12 dark:text-emerald-200",
-  digest:
-    "border-amber-300/55 bg-amber-100/75 text-amber-850 dark:border-amber-300/25 dark:bg-amber-300/12 dark:text-amber-200",
-  insights:
-    "border-violet-300/50 bg-violet-100/70 text-violet-800 dark:border-violet-300/25 dark:bg-violet-300/12 dark:text-violet-200",
 }
 
 function estimateKnowledgeHeight(
@@ -154,18 +142,10 @@ export function PlainKnowledgeIndexPage({ entries }: PlainKnowledgeIndexPageProp
                           aria-label={`${t("repoLabel")}: ${entry.repoName}`}
                         >
                           {entry.repoTags?.map((repoTag) => (
-                            <span
-                              key={repoTag}
-                              className={cn(
-                                "plain-index-tag-pill shrink-0 whitespace-nowrap rounded-full border px-2 py-0.5 text-[0.6875rem] font-semibold leading-none",
-                                getSemanticTagClassName(repoTag),
-                              )}
-                            >
-                              {t(`repoTags.${repoTag}`)}
-                            </span>
+                            <DocumentTag key={repoTag} label={t(`repoTags.${repoTag}`)} />
                           ))}
                           <span className="plain-project-repo-name min-w-0 truncate">{entry.repoName}</span>
-                          <ArrowUpRight className="plain-project-repo-arrow h-4 w-4 shrink-0" />
+                          <ExternalLinkIcon className="plain-project-repo-arrow h-4 w-4 shrink-0" />
                           <GitHubRepoStats
                             repo={entry.githubRepo}
                             className="plain-project-repo-stats"
@@ -181,20 +161,10 @@ export function PlainKnowledgeIndexPage({ entries }: PlainKnowledgeIndexPageProp
                             className="plain-project-repo-link"
                           >
                             {link.badgeKeys?.map((badgeKey) => (
-                              <span
-                                key={badgeKey}
-                                className={cn(
-                                  "plain-index-tag-pill shrink-0 whitespace-nowrap rounded-full border px-2 py-0.5 text-[0.6875rem] font-semibold leading-none",
-                                  badgeKey.endsWith(".loginRequired")
-                                    ? "border-rose-400/25 bg-rose-400/10 text-rose-700 dark:border-rose-300/20 dark:bg-rose-300/10 dark:text-rose-200"
-                                    : "border-amber-400/30 bg-amber-400/12 text-amber-800 dark:border-amber-300/20 dark:bg-amber-300/10 dark:text-amber-200",
-                                )}
-                              >
-                                {t(badgeKey)}
-                              </span>
+                              <DocumentTag key={badgeKey} label={t(badgeKey)} />
                             ))}
                             <span className="plain-project-repo-name min-w-0 truncate">{t(link.labelKey)}</span>
-                            <ArrowUpRight className="plain-project-repo-arrow h-4 w-4 shrink-0" />
+                            <ExternalLinkIcon className="plain-project-repo-arrow h-4 w-4 shrink-0" />
                           </a>
                         ))}
                       </div>
@@ -210,24 +180,9 @@ export function PlainKnowledgeIndexPage({ entries }: PlainKnowledgeIndexPageProp
                       ) : null}
 
                       <ul className="plain-index-tags" aria-label={title}>
-                        <li
-                          className={cn(
-                            "plain-index-tag-pill rounded-full border px-2.5 py-1 text-xs font-semibold",
-                            kindClassName[entry.kind],
-                          )}
-                        >
-                          {t(`kinds.${entry.kind}`)}
-                        </li>
+                        <DocumentTag as="li"  label={t(`kinds.${entry.kind}`)} />
                         {entry.tags.map((tag) => (
-                          <li
-                            key={tag}
-                            className={cn(
-                              "plain-index-tag-pill rounded-full border px-2.5 py-1 text-xs font-semibold",
-                              defaultTagClassName,
-                            )}
-                          >
-                            {tag}
-                          </li>
+                          <DocumentTag as="li" key={tag} label={tag} />
                         ))}
                       </ul>
                     </div>

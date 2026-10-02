@@ -34,7 +34,7 @@ export function ResumePage() {
 
   if (isPlainDisplayMode) {
     return (
-      <Layout mainClassName="plain-home-main">
+      <Layout mainClassName="plain-home-main plain-resume-main">
         <ResumePlainExperience />
       </Layout>
     )
@@ -75,21 +75,21 @@ export function ResumePage() {
               {kickerTags.map((tag) => (
                 <span
                   key={tag}
-                  className="w-fit rounded-full border border-[rgb(var(--site-surface-rgb)_/_0.45)] bg-[rgb(var(--site-surface-rgb)_/_0.38)] px-3 py-1 text-[0.6875rem] font-black uppercase tracking-wide text-tone-2 shadow-sm backdrop-blur-md dark:border-white/10 dark:bg-white/10"
+                  className="w-fit rounded-full border border-[rgb(var(--site-surface-rgb)_/_0.45)] bg-[rgb(var(--site-surface-rgb)_/_0.38)] px-3 py-1 text-[0.6875rem] font-normal uppercase tracking-wide text-tone-2 shadow-sm backdrop-blur-md dark:border-white/10 dark:bg-white/10"
                 >
                   {tag}
                 </span>
               ))}
             </div>
             <div className="flex flex-col gap-1 sm:gap-1.5">
-              <h1 className="text-[clamp(3.45rem,15vw,4.25rem)] font-black leading-[0.92] tracking-[-0.035em] text-tone-1 text-pretty sm:text-[clamp(3.65rem,5.8vw,5.65rem)] md:text-[clamp(3.55rem,5.35vw,5.35rem)]">
+              <h1 className="text-hero font-light leading-tight tracking-tight text-tone-1 text-pretty">
                 {t("titleLead")}
               </h1>
-              <p className="max-w-full text-[clamp(1.35rem,5.6vw,1.8rem)] font-medium italic leading-tight text-tone-4 text-pretty sm:text-[clamp(1.25rem,2.2vw,2rem)] sm:leading-none xl:whitespace-nowrap">
+              <p className="max-w-full text-xl font-light italic leading-snug text-tone-3 text-pretty">
                 {t("titleAccent")}
               </p>
             </div>
-            <div className={`flex max-w-3xl flex-col gap-1 text-base font-medium leading-[1.34] text-tone-2 sm:leading-[1.32] lg:max-w-4xl xl:max-w-6xl ${isEnglish ? "sm:text-base" : "sm:text-lg"}`}>
+            <div className={`flex max-w-3xl flex-col text-base font-body leading-[1.45] text-tone-2 lg:max-w-4xl xl:max-w-6xl ${isEnglish ? "sm:text-base" : "sm:text-lg"}`}>
               {descriptionParagraphs.map((paragraph) => (
                 <p key={paragraph} className="whitespace-pre-line min-[1800px]:whitespace-nowrap">
                   {paragraph}
@@ -133,7 +133,7 @@ export function ResumePage() {
                   <h2 className="text-base font-medium leading-tight tracking-tight text-tone-1 sm:text-lg">
                     {card.title}
                   </h2>
-                  <p className="mt-1.5 text-[0.8125rem] font-normal leading-snug text-tone-2 sm:text-[0.875rem]">
+                  <p className="mt-1.5 text-sm font-body leading-snug text-tone-2 sm:text-sm">
                     {card.description}
                   </p>
                 </div>

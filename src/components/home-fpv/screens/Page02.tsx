@@ -13,6 +13,53 @@ const fieldColumns = [
   fieldKeys.filter((_, fieldIndex) => fieldIndex % 2 === 1),
 ]
 
+function FieldCard({ fieldKey, reference = false }: { fieldKey: typeof fieldKeys[number]; reference?: boolean }) {
+  const { t } = useTranslation("home")
+  const bulletsValue = t(`fpv.page02.fields.${fieldKey}.bullets`, { returnObjects: true })
+  const bullets = Array.isArray(bulletsValue)
+    ? bulletsValue.filter((bullet): bullet is string => typeof bullet === "string")
+    : []
+
+  return (
+    <section
+      className={`${reference ? "fpv-attachment-anchor-hidden fpv-attachment-anchor-reference " : ""}fpv-field-card fpv-field-card-${fieldKey}`}
+      data-fpv-attachment-anchor={reference ? `page02-field-${fieldKey}` : undefined}
+    >
+      <div>
+        <p>{t(`fpv.page02.fields.${fieldKey}.subtitle`)}</p>
+        <span>{t(`fpv.page02.fields.${fieldKey}.title`)}</span>
+      </div>
+      <ul>
+        {bullets.map((bullet) => (
+          <li key={bullet}>{bullet}</li>
+        ))}
+      </ul>
+      {fieldKey === "study" ? (
+        <div className="fpv-field-card-actions">
+          <a
+            href="/resume"
+            className="fpv-action-pill fpv-action-pill-solid fpv-page-03-action"
+          >
+            {t("fpv.page02.fields.study.cta")}
+          </a>
+          <a
+            href="https://github.com/AkashiSensei"
+            className="fpv-action-pill fpv-action-pill-outline fpv-page-03-action"
+            target="_blank"
+            rel="noreferrer"
+          >
+            {t("github")}
+          </a>
+        </div>
+      ) : null}
+    </section>
+  )
+}
+
+function StudyFieldCard() {
+  return <FieldCard fieldKey="study" />
+}
+
 function Page02(_props: VirtualScreenProps) {
   void _props
   const { t } = useTranslation(["home", "common"])
@@ -58,50 +105,9 @@ function Page02(_props: VirtualScreenProps) {
             key={columnIndex}
             className="fpv-field-column"
           >
-            {fieldColumn.map((fieldKey) => {
-              const bulletsValue = t(`fpv.page02.fields.${fieldKey}.bullets`, {
-                returnObjects: true,
-              })
-              const bullets = Array.isArray(bulletsValue)
-                ? bulletsValue.filter((bullet): bullet is string => typeof bullet === "string")
-                : []
-
-              return (
-                <section
-                  key={fieldKey}
-                  className={`fpv-attachment-anchor-hidden fpv-attachment-anchor-reference fpv-field-card fpv-field-card-${fieldKey}`}
-                  data-fpv-attachment-anchor={`page02-field-${fieldKey}`}
-                >
-                  <div>
-                    <p>{t(`fpv.page02.fields.${fieldKey}.subtitle`)}</p>
-                    <span>{t(`fpv.page02.fields.${fieldKey}.title`)}</span>
-                  </div>
-                  <ul>
-                    {bullets.map((bullet) => (
-                      <li key={bullet}>{bullet}</li>
-                    ))}
-                  </ul>
-                  {fieldKey === "study" ? (
-                    <div className="fpv-field-card-actions">
-                      <a
-                        href="/resume"
-                        className="fpv-action-pill fpv-action-pill-solid fpv-page-03-action"
-                      >
-                        {t("fpv.page02.fields.study.cta")}
-                      </a>
-                      <a
-                        href="https://github.com/AkashiSensei"
-                        className="fpv-action-pill fpv-action-pill-outline fpv-page-03-action"
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        {t("github")}
-                      </a>
-                    </div>
-                  ) : null}
-                </section>
-              )
-            })}
+            {fieldColumn.map((fieldKey) => (
+              <FieldCard key={fieldKey} fieldKey={fieldKey} reference />
+            ))}
           </div>
         ))}
       </div>
@@ -121,6 +127,8 @@ export const page02Screen: VirtualScreenDefinition = {
       anchor: "page02-field-study",
       className: "fpv-page-02-field-float fpv-page-02-field-study-float",
       interactive: true,
+      cloneAnchor: false,
+      Component: StudyFieldCard,
     },
     {
       id: "page02-field-world-float",

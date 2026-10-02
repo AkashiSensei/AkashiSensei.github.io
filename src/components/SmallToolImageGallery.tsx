@@ -76,6 +76,7 @@ export function SmallToolImageGallery({
   className,
 }: SmallToolImageGalleryProps) {
   const { t } = useTranslation(["tools", "common"])
+  const previewTriggerRef = useRef<HTMLElement | null>(null)
   const galleryRef = useRef<HTMLDivElement>(null)
   const previewGalleryRef = useRef<HTMLDivElement>(null)
   const initialPreviewImageIndexRef = useRef<number | null>(null)
@@ -330,6 +331,7 @@ export function SmallToolImageGallery({
   const cardImages = shouldRenderCardRail ? images : [selectedImage]
 
   const openPreview = (imageIndex: number) => {
+    previewTriggerRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : null
     initialPreviewImageIndexRef.current = imageIndex
     thumbnailScrollBehaviorRef.current = "auto"
     setSelectedIndex(imageIndex)
@@ -518,6 +520,12 @@ export function SmallToolImageGallery({
         }}
       >
         <DialogContent
+          onCloseAutoFocus={(event) => {
+            if (previewTriggerRef.current?.isConnected) {
+              event.preventDefault()
+              previewTriggerRef.current.focus({ preventScroll: true })
+            }
+          }}
           className="image-preview-dialog flex flex-col gap-2 overflow-hidden border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.66)] p-2 shadow-lg backdrop-blur-xl dark:border-white/10 dark:bg-black/45 md:p-3 [&_[data-slot=dialog-close]]:right-3 [&_[data-slot=dialog-close]]:top-3 md:[&_[data-slot=dialog-close]]:right-4 md:[&_[data-slot=dialog-close]]:top-4"
         >
           <DialogTitle className="sr-only">
@@ -547,7 +555,7 @@ export function SmallToolImageGallery({
             ))}
           </div>
           <p
-            className="flex h-6 shrink-0 items-center justify-center px-8 text-center text-sm font-medium leading-6 text-foreground/65 dark:text-white/90 md:h-8 md:text-lg md:leading-8"
+            className="flex h-6 shrink-0 items-center justify-center px-8 text-center text-sm font-normal leading-6 text-foreground/65 dark:text-white/90 md:h-8 md:text-lg md:leading-8"
             aria-live="polite"
           >
             <span

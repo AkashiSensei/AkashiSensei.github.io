@@ -17,7 +17,7 @@ export const semanticTagTone = {
   public: "emerald",
 } as const satisfies Record<string, TagTone>
 
-export const tagPillClassName = "rounded-full border px-2.5 py-1 text-xs font-semibold"
+export const tagPillClassName = "rounded-full border px-2.5 py-1 text-xs font-normal"
 
 export const defaultTagClassName =
   "border-foreground/12 bg-[rgb(var(--site-surface-rgb)_/_0.30)] text-tone-3 dark:border-white/10 dark:bg-white/[0.05] dark:text-foreground/70"

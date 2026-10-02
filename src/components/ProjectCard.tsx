@@ -1,4 +1,4 @@
-import { ArrowUpRight } from "lucide-react"
+import { ExternalLinkIcon } from "@/components/ExternalLinkIcon"
 import { useTranslation } from "react-i18next"
 
 import { AppLink } from "@/components/AppLink"
@@ -98,13 +98,13 @@ export function ProjectCard({
           <div className="flex items-center gap-2">
             <AppLink
               to={detailPath}
-              className="detail-link-trigger detail-link-emphasis min-w-0 text-xl font-bold leading-tight text-foreground/90 transition-colors hover:text-foreground"
+              className="detail-link-trigger detail-link-emphasis min-w-0 site-card-title transition-colors hover:text-foreground"
             >
               {t(`items.${project.id}.title`)}
             </AppLink>
             <span
               className={cn(
-                "shrink-0 rounded-full border px-2.5 py-1 text-xs font-semibold leading-none",
+                "shrink-0 rounded-full border px-2.5 py-1 text-xs font-normal leading-none",
                 lifecycleStatusClassName[project.lifecycleStatus],
               )}
             >
@@ -121,7 +121,7 @@ export function ProjectCard({
                       <span
                         key={repoTag}
                         className={cn(
-                          "shrink-0 whitespace-nowrap rounded-full border px-2 py-0.5 text-[0.6875rem] font-semibold leading-none",
+                          "shrink-0 whitespace-nowrap rounded-full border px-2 py-0.5 text-[0.6875rem] font-normal leading-none",
                           getSemanticTagClassName(repoTag),
                         )}
                       >
@@ -132,7 +132,7 @@ export function ProjectCard({
                       {link.label}
                     </span>
                     {link.url ? (
-                      <ArrowUpRight className="h-4 w-4 shrink-0 transition-transform group-hover/repo:-translate-y-0.5 group-hover/repo:translate-x-0.5" />
+                      <ExternalLinkIcon className="h-4 w-4 shrink-0 transition-transform group-hover/repo:-translate-y-0.5 group-hover/repo:translate-x-0.5" />
                     ) : null}
                     <GitHubRepoStats repo={link.githubRepo} />
                   </>
@@ -145,14 +145,14 @@ export function ProjectCard({
                     target="_blank"
                     rel="noreferrer"
                     aria-label={`${t("repoLabel")}: ${link.label}`}
-                    className="group/repo inline-flex min-w-0 w-fit max-w-full items-center gap-1.5 text-sm font-semibold text-foreground/60 transition-colors hover:text-foreground/90 dark:text-foreground/75 dark:hover:text-foreground"
+                    className="group/repo inline-flex min-w-0 w-fit max-w-full items-center gap-1.5 text-sm font-normal text-foreground/60 transition-colors hover:text-foreground/90 dark:text-foreground/75 dark:hover:text-foreground"
                   >
                     {repoContent}
                   </a>
                 ) : (
                   <span
                     key={link.label}
-                    className="inline-flex min-w-0 w-fit max-w-full items-center gap-1.5 text-sm font-semibold text-foreground/60 dark:text-foreground/75"
+                    className="inline-flex min-w-0 w-fit max-w-full items-center gap-1.5 text-sm font-normal text-foreground/60 dark:text-foreground/75"
                   >
                     {repoContent}
                   </span>
@@ -160,14 +160,14 @@ export function ProjectCard({
               })}
             </div>
           ) : (
-            <span className="flex max-w-full min-w-0 items-center gap-1.5 text-sm font-semibold text-foreground/60 dark:text-foreground/75">
+            <span className="flex max-w-full min-w-0 items-center gap-1.5 text-sm font-normal text-foreground/60 dark:text-foreground/75">
               {project.repoTags?.length ? (
                 <span className="flex shrink-0 flex-wrap gap-1.5">
                   {project.repoTags.map((repoTag) => (
                     <span
                       key={repoTag}
                       className={cn(
-                        "shrink-0 whitespace-nowrap rounded-full border px-2 py-0.5 text-[0.6875rem] font-semibold leading-none",
+                        "shrink-0 whitespace-nowrap rounded-full border px-2 py-0.5 text-[0.6875rem] font-normal leading-none",
                         getSemanticTagClassName(repoTag),
                       )}
                     >

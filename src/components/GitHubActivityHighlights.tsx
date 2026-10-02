@@ -1,6 +1,6 @@
+import { ExternalLinkIcon } from "@/components/ExternalLinkIcon"
 import { SectionHeader, SectionNote } from "@/components/SectionHeader"
 import {
-  ArrowUpRight,
   BookMarked,
   CalendarClock,
   CircleDot,
@@ -218,7 +218,7 @@ export function GitHubActivityHighlights() {
           className="section-action section-action-external">
           <GitHubMark className="h-4 w-4 sm:h-[1.125rem] sm:w-[1.125rem]" />
           <span>{activity?.login ?? "AkashiSensei"}</span>
-          <ArrowUpRight aria-hidden="true" />
+          <ExternalLinkIcon aria-hidden="true" />
         </a>
       } />
 
@@ -233,14 +233,14 @@ export function GitHubActivityHighlights() {
           <div className="h-full bg-tone-3 dark:bg-tone-2" aria-hidden="true" />
           <div className="flex min-w-0 flex-col justify-between gap-5 py-1">
             <div className="flex items-start justify-between gap-4">
-              <div className="inline-flex min-w-0 items-center gap-2 text-[0.6875rem] font-medium uppercase text-tone-4">
+              <div className="inline-flex min-w-0 items-center gap-2 text-xs font-normal uppercase text-tone-4">
                 <CalendarClock className="h-3.5 w-3.5" />
                 <span>{rangeLabel ?? t("githubActivity.eyebrow")}</span>
               </div>
             </div>
 
             <div>
-              <p className="text-[clamp(3.25rem,17vw,5.25rem)] font-black leading-none tracking-tight text-tone-1 md:text-[clamp(4rem,8vw,5.75rem)]">
+              <p className="text-[clamp(3.25rem,17vw,5.25rem)] font-light leading-none tracking-tight text-tone-1 md:text-[clamp(4rem,8vw,5.75rem)]">
                 {typeof activity?.totalContributions === "number"
                   ? numberFormatter.format(activity.totalContributions)
                   : t("githubActivity.unavailable")}
@@ -293,10 +293,10 @@ export function GitHubActivityHighlights() {
                 <div className="h-full bg-tone-4 dark:bg-tone-3" aria-hidden="true" />
                 <div className="flex min-w-0 flex-col justify-between gap-2 py-1">
                   <Icon className="h-4 w-4 shrink-0 text-tone-4" />
-                  <p className="text-[2.35rem] font-black leading-none tracking-tight text-tone-1 sm:text-[2.75rem]">
+                  <p className="text-[2.35rem] font-light leading-none tracking-tight text-tone-1 sm:text-[2.75rem]">
                     {value}
                   </p>
-                  <p className="min-w-0 text-sm font-medium leading-tight text-tone-2">
+                  <p className="min-w-0 text-sm font-body leading-tight text-tone-2">
                     {t(metric.labelKey)}
                   </p>
                 </div>
@@ -346,7 +346,7 @@ export function GitHubActivityHighlights() {
               >
                 <span
                   className={cn(
-                    "pointer-events-none absolute bottom-[calc(100%+0.65rem)] left-1/2 z-50 -translate-x-1/2 whitespace-nowrap rounded-md bg-foreground px-2.5 py-1.5 text-lg font-semibold leading-none text-background shadow-sm transition-[opacity,visibility] duration-150 sm:text-xl",
+                    "pointer-events-none absolute bottom-[calc(100%+0.65rem)] left-1/2 z-50 -translate-x-1/2 whitespace-nowrap rounded-md bg-foreground px-2.5 py-1.5 text-lg font-medium leading-none text-background shadow-sm transition-[opacity,visibility] duration-150 sm:text-xl",
                     isActive ? "visible opacity-100" : "invisible opacity-0",
                   )}
                   role="tooltip"

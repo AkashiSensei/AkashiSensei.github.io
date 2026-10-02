@@ -2,12 +2,12 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 @import "@fontsource-variable/geist";
+@import "./styles/design-tokens.css";
 
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
     --font-heading: var(--font-sans);
-    --font-sans: 'Geist Variable', sans-serif;
     --color-sidebar-ring: var(--sidebar-ring);
     --color-sidebar-border: var(--sidebar-border);
     --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -167,6 +167,11 @@
     @apply bg-background text-foreground;
     min-height: 100%;
   }
+  body { font-weight: var(--site-body-weight); }
+  code, kbd, samp, pre { font-family: var(--font-mono); }
+  strong, b { font-weight: var(--font-weight-medium); }
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--site-accent-on-surface); outline-offset: 3px; }
+  ::selection { background: var(--site-accent-surface); color: var(--site-accent-on-surface); }
   #root {
     min-height: 100svh;
     isolation: isolate;
@@ -273,15 +278,15 @@
   }
 
   .section-title {
-    @apply text-3xl font-normal leading-none tracking-tight text-tone-1 md:text-4xl;
+    @apply text-section font-light leading-tight tracking-tight text-tone-1;
   }
 
   .section-subtitle {
-    @apply max-w-3xl text-[0.9375rem] font-normal leading-relaxed text-tone-4 sm:text-[1.0625rem];
+    @apply max-w-3xl text-base font-body leading-relaxed text-tone-3;
   }
 
   .section-note {
-    @apply flex w-full flex-col gap-1 px-2 text-sm font-normal leading-normal text-tone-2 sm:px-3 sm:text-[0.9375rem] md:px-4;
+    @apply flex w-full flex-col gap-1 px-2 text-sm font-body leading-relaxed text-tone-2 sm:px-3 md:px-4;
   }
 
   .section-note p {
@@ -289,11 +294,11 @@
   }
 
   .section-action {
-    @apply inline-flex w-fit shrink-0 items-center gap-1.5 text-[0.9375rem] font-normal leading-none text-tone-2 transition-colors hover:text-tone-1 sm:text-[1.0625rem];
+    @apply inline-flex w-fit shrink-0 items-center gap-1.5 text-sm font-normal leading-normal text-tone-2 transition-colors;
   }
 
   .section-action svg {
-    @apply size-4 shrink-0 sm:size-[1.125rem];
+    @apply size-4 shrink-0;
   }
 
   .section-action > svg:last-child {
@@ -422,7 +427,7 @@
     gap: 1.1rem;
     color: #383a35;
     font-size: 1.62rem;
-    font-weight: 760;
+    font-weight: var(--font-weight-medium);
     letter-spacing: -0.015em;
     line-height: 1;
   }
@@ -445,7 +450,7 @@
     gap: 0.48rem;
     color: #878884;
     font-size: 1.02rem;
-    font-weight: 560;
+    font-weight: var(--font-weight-medium);
     line-height: 1.08;
     text-align: right;
   }
@@ -458,7 +463,7 @@
     margin: 0;
     color: #353732;
     font-size: 1.72rem;
-    font-weight: 800;
+    font-weight: var(--font-weight-medium);
     letter-spacing: -0.018em;
     line-height: 1.05;
   }
@@ -468,7 +473,7 @@
     margin: 1.35rem 0 0;
     color: #585a56;
     font-size: 1.03rem;
-    font-weight: 650;
+    font-weight: var(--font-weight-medium);
     line-height: 1.22;
   }
 
@@ -500,7 +505,7 @@
   .receipt-item-index {
     color: #52534f;
     font-size: 1rem;
-    font-weight: 650;
+    font-weight: var(--font-weight-medium);
     line-height: 1.35;
     text-align: left;
   }
@@ -515,21 +520,21 @@
     margin: 0;
     color: #5a5c58;
     font-size: 1rem;
-    font-weight: 680;
+    font-weight: var(--font-weight-medium);
     line-height: 1.2;
   }
 
   .receipt-item-copy span {
     color: #8a8b87;
     font-size: 0.98rem;
-    font-weight: 620;
+    font-weight: var(--font-weight-medium);
     line-height: 1;
   }
 
   .receipt-item strong {
     color: #4f504c;
     font-size: 1.06rem;
-    font-weight: 760;
+    font-weight: var(--font-weight-medium);
     line-height: 1.2;
     text-align: right;
     white-space: nowrap;
@@ -573,7 +578,7 @@
     margin: 0 0 0.5rem;
     color: #343631;
     font-size: 1.78rem;
-    font-weight: 820;
+    font-weight: var(--font-weight-medium);
     letter-spacing: -0.02em;
     line-height: 1;
   }
@@ -582,7 +587,7 @@
     margin: 0;
     color: #70716d;
     font-size: 0.98rem;
-    font-weight: 690;
+    font-weight: var(--font-weight-medium);
     line-height: 1;
   }
 
@@ -599,7 +604,7 @@
     margin: 0;
     color: #363833;
     font-size: 1.56rem;
-    font-weight: 680;
+    font-weight: var(--font-weight-medium);
     letter-spacing: -0.018em;
     line-height: 1.14;
   }
@@ -608,7 +613,7 @@
     margin: 3.15rem 0 0;
     color: #777975;
     font-size: 1rem;
-    font-weight: 650;
+    font-weight: var(--font-weight-medium);
     line-height: 1.1;
   }
 
@@ -639,7 +644,7 @@
     padding: 2.35rem 4.55rem 0;
     color: #777975;
     font-size: 0.86rem;
-    font-weight: 630;
+    font-weight: var(--font-weight-medium);
     line-height: 1.35;
   }
 
@@ -655,7 +660,7 @@
 
   .receipt-footer div:last-child span:last-child {
     color: #2d78b5;
-    font-weight: 760;
+    font-weight: var(--font-weight-medium);
   }
 
 }
@@ -675,7 +680,7 @@
     color: var(--site-footer-fg);
     border-top: 1px solid var(--site-footer-border);
     padding-inline: var(--site-footer-inline-padding);
-    font-weight: 300;
+    font-weight: var(--font-weight-light);
   }
 
   .site-footer-inner {
@@ -702,7 +707,7 @@
     list-style: none;
     color: var(--text-tone-4);
     font-size: 0.94rem;
-    font-weight: 300;
+    font-weight: var(--font-weight-light);
     line-height: 1.45;
   }
 
@@ -777,7 +782,7 @@
   .site-footer-settings-item dt {
     color: var(--text-tone-5);
     font-size: 0.82rem;
-    font-weight: 300;
+    font-weight: var(--font-weight-light);
     line-height: 1.35;
   }
 
@@ -785,7 +790,7 @@
     margin: 0;
     color: var(--text-tone-2);
     font-size: 0.82rem;
-    font-weight: 300;
+    font-weight: var(--font-weight-light);
     line-height: 1.35;
   }
 
@@ -800,7 +805,7 @@
   .site-footer-action {
     color: var(--text-tone-2);
     font-size: 0.92rem;
-    font-weight: 300;
+    font-weight: var(--font-weight-light);
     line-height: 1.2;
     text-decoration: none;
     transition:
@@ -832,7 +837,7 @@
     background: color-mix(in oklab, var(--site-footer-fg) 5%, transparent);
     padding: 0.62rem 0.9rem;
     cursor: pointer;
-    font-weight: 300;
+    font-weight: var(--font-weight-light);
   }
 
   .site-footer-link:hover,
@@ -865,7 +870,7 @@
     border-top: 1px solid var(--site-footer-rule);
     color: var(--text-tone-4);
     font-size: 0.78rem;
-    font-weight: 300;
+    font-weight: var(--font-weight-light);
     line-height: 1.5;
   }
 
@@ -1013,7 +1018,7 @@
     gap: 1rem;
     color: rgb(255 255 255 / 0.68);
     font-size: 0.68rem;
-    font-weight: 600;
+    font-weight: var(--font-weight-medium);
     letter-spacing: 0.14em;
     line-height: 1;
     text-transform: uppercase;
@@ -1055,7 +1060,7 @@
     background: rgb(255 255 255 / 0.1);
     color: rgb(255 255 255 / 0.64);
     font-size: 0.72rem;
-    font-weight: 620;
+    font-weight: var(--font-weight-medium);
     line-height: 1;
     text-shadow: 0 1px 10px rgb(0 0 0 / 0.38);
     box-shadow:
@@ -1169,6 +1174,10 @@
     inset: 0;
   }
 
+  .fpv-virtual-screen :is(a, button, input, select, textarea, [role="button"]) {
+    pointer-events: auto;
+  }
+
   .fpv-virtual-page {
     color: white;
   }
@@ -1221,7 +1230,7 @@
     padding: 0.45rem 0.55rem;
     color: var(--fpv-text-tone-1);
     font-size: 0.76rem;
-    font-weight: 700;
+    font-weight: var(--font-weight-medium);
     letter-spacing: 0.1em;
     line-height: 1;
     text-transform: uppercase;
@@ -1247,14 +1256,14 @@
   .fpv-page-01-intro .fpv-page-maxim {
     color: var(--fpv-text-tone-2);
     margin-top: 0.38rem !important;
-    font-weight: 360;
+    font-weight: var(--font-weight-light);
   }
 
   .fpv-page-01-intro .fpv-page-line-stack {
     margin-top: 2.15rem;
     margin-bottom: 0.85rem;
     color: var(--fpv-text-tone-1);
-    font-weight: 260;
+    font-weight: var(--font-weight-light);
     line-height: 1.22;
   }
 
@@ -1282,7 +1291,7 @@
     margin: 0 0 0.42rem !important;
     color: var(--fpv-text-tone-3);
     font-size: 1.08rem;
-    font-weight: 300;
+    font-weight: var(--font-weight-light);
   }
 
   .fpv-page-02-overview .fpv-interest-tags {
@@ -1304,12 +1313,12 @@
     max-width: 34rem;
     color: var(--fpv-text-tone-1);
     font-size: 1.08rem;
-    font-weight: 260;
+    font-weight: var(--font-weight-light);
     line-height: 1.22;
   }
 
   .fpv-page-02-description.fpv-note-list p {
-    font-weight: 260;
+    font-weight: var(--font-weight-light);
   }
 
   .fpv-page-02-field-grid {
@@ -1376,7 +1385,7 @@
     transform: translateX(-2rem);
   }
 
-  .fpv-css3d-attachment > .fpv-attachment-clone.fpv-field-card {
+  .fpv-css3d-attachment > .fpv-field-card {
     position: relative;
     inset: auto;
     width: 100%;
@@ -1405,7 +1414,7 @@
     margin-top: 0.16rem;
     color: var(--fpv-text-tone-1);
     font-size: 1.28rem;
-    font-weight: 760;
+    font-weight: var(--font-weight-medium);
     line-height: 1.08;
   }
 
@@ -1413,7 +1422,7 @@
     margin: 0;
     color: var(--fpv-text-tone-2);
     font-size: 0.78rem;
-    font-weight: 300;
+    font-weight: var(--font-weight-light);
     line-height: 1.2;
     text-transform: uppercase;
   }
@@ -1431,7 +1440,7 @@
     padding-left: 0.72rem;
     color: var(--fpv-text-tone-1);
     font-size: 0.84rem;
-    font-weight: 300;
+    font-weight: var(--font-weight-light);
     line-height: 1.12;
   }
 
@@ -1495,7 +1504,7 @@
 
   .fpv-page-04-title .fpv-page-subtitle {
     font-size: 1.34rem;
-    font-weight: 360;
+    font-weight: var(--font-weight-light);
   }
 
   .fpv-page-04-card {
@@ -1510,7 +1519,7 @@
     width: 78%;
     color: oklch(0.985 0 0);
     font-size: 1.16rem;
-    font-weight: 260;
+    font-weight: var(--font-weight-light);
     line-height: 1.25;
     text-align: left;
     text-shadow: none;
@@ -1538,14 +1547,14 @@
     margin: 1.55rem 0 1.85rem;
     color: var(--fpv-text-tone-1);
     font-size: 3.08rem;
-    font-weight: 660;
+    font-weight: var(--font-weight-medium);
   }
 
   .fpv-page-05-eyebrow {
     margin: 0 0 0.42rem;
     color: var(--fpv-text-tone-3);
     font-size: 1.08rem;
-    font-weight: 300;
+    font-weight: var(--font-weight-light);
     line-height: 1;
   }
 
@@ -1554,7 +1563,7 @@
     max-width: 34rem;
     color: var(--fpv-text-tone-3);
     font-size: 1.08rem;
-    font-weight: 300;
+    font-weight: var(--font-weight-light);
     line-height: 1.22;
   }
 
@@ -1567,12 +1576,12 @@
     max-width: 34rem;
     color: var(--fpv-text-tone-1);
     font-size: 1.08rem;
-    font-weight: 260;
+    font-weight: var(--font-weight-light);
     line-height: 1.28;
   }
 
   .fpv-page-05-description.fpv-note-list p {
-    font-weight: 260;
+    font-weight: var(--font-weight-light);
   }
 
   .fpv-page-05-contact-row {
@@ -1584,7 +1593,6 @@
 
   .fpv-page-05-contact-row .fpv-action-pill {
     margin-top: 0;
-    font-weight: 360;
   }
 
   .fpv-page-05-contact-float .fpv-page-05-contact-row {
@@ -1604,7 +1612,7 @@
     max-width: 34rem;
     color: var(--fpv-text-tone-1);
     font-size: 1.08rem;
-    font-weight: 260;
+    font-weight: var(--font-weight-light);
     line-height: 1.22;
   }
 
@@ -1612,7 +1620,7 @@
     margin-top: 0;
     color: var(--fpv-text-tone-3);
     font-size: 1.08rem;
-    font-weight: 300;
+    font-weight: var(--font-weight-light);
     line-height: 1;
   }
 
@@ -1738,14 +1746,14 @@
     margin: 0 0 1.55rem !important;
     color: var(--fpv-text-tone-3);
     font-size: 1.08rem;
-    font-weight: 300;
+    font-weight: var(--font-weight-light);
     line-height: 1;
   }
 
   .fpv-page-copy.fpv-page-06-title h2 {
     color: var(--fpv-text-tone-1);
     font-size: 3.08rem;
-    font-weight: 660;
+    font-weight: var(--font-weight-medium);
   }
 
   .fpv-page-06-card {
@@ -1771,7 +1779,7 @@
     max-width: 42rem;
     color: var(--fpv-text-tone-3);
     font-size: 1.08rem;
-    font-weight: 300;
+    font-weight: var(--font-weight-light);
     line-height: 1;
     text-align: center;
     text-shadow: none;
@@ -1797,13 +1805,13 @@
 
   .fpv-page-copy h1 {
     font-size: 5.75rem;
-    font-weight: 760;
+    font-weight: var(--font-weight-medium);
     line-height: 0.92;
   }
 
   .fpv-page-copy h2 {
     font-size: 4.15rem;
-    font-weight: 720;
+    font-weight: var(--font-weight-medium);
     line-height: 0.96;
   }
 
@@ -1812,7 +1820,7 @@
     max-width: 36rem;
     color: rgb(255 255 255 / 0.68);
     font-size: 1.24rem;
-    font-weight: 520;
+    font-weight: var(--font-weight-medium);
     line-height: 1.45;
   }
 
@@ -1824,14 +1832,14 @@
     margin-top: 1.1rem !important;
     color: rgb(255 255 255 / 0.86);
     font-size: 2.55rem;
-    font-weight: 690;
+    font-weight: var(--font-weight-medium);
     line-height: 1.08;
   }
 
   .fpv-page-bigline {
     color: rgb(255 255 255 / 0.9);
     font-size: 2.9rem;
-    font-weight: 710;
+    font-weight: var(--font-weight-medium);
     line-height: 1;
   }
 
@@ -1841,7 +1849,7 @@
     margin-top: 1.2rem;
     color: rgb(255 255 255 / 0.68);
     font-size: 1.08rem;
-    font-weight: 470;
+    font-weight: var(--font-weight-normal);
     line-height: 1.5;
   }
 
@@ -1868,7 +1876,7 @@
     padding: 0.36rem 0.62rem;
     color: rgb(255 255 255 / 0.74);
     font-size: 0.8rem;
-    font-weight: 620;
+    font-weight: var(--font-weight-medium);
     line-height: 1;
     box-shadow: var(--fpv-chip-shadow);
     background-clip: padding-box;
@@ -1885,7 +1893,7 @@
     padding: 0.68rem 0.96rem;
     color: rgb(255 255 255 / 0.88);
     font-size: 0.95rem;
-    font-weight: 650;
+    font-weight: var(--font-weight-normal);
     line-height: 1;
     box-shadow: var(--fpv-chip-shadow);
     background-clip: padding-box;
@@ -1910,10 +1918,6 @@
     margin-top: 5px;
     pointer-events: auto;
     width: max-content;
-  }
-
-  .fpv-page-01-action-row .fpv-action-pill {
-    font-weight: 360;
   }
 
   .fpv-page-01-action-row-anchor {
@@ -2007,7 +2011,7 @@
     padding-left: 1.05rem;
     color: rgb(255 255 255 / 0.72);
     font-size: 1.08rem;
-    font-weight: 470;
+    font-weight: var(--font-weight-normal);
     line-height: 1.5;
     text-shadow:
       0 2px 10px rgb(0 0 0 / 0.66),
@@ -2027,7 +2031,7 @@
   .fpv-small-aside {
     color: rgb(255 255 255 / 0.58);
     font-size: 0.9rem;
-    font-weight: 650;
+    font-weight: var(--font-weight-medium);
     line-height: 1.35;
     text-shadow:
       0 2px 8px rgb(0 0 0 / 0.62),
@@ -2074,7 +2078,7 @@
     margin: 0 0 0.46rem;
     color: rgb(255 255 255 / 0.9);
     font-size: 1.08rem;
-    font-weight: 760;
+    font-weight: var(--font-weight-medium);
     line-height: 1.1;
   }
 
@@ -2088,7 +2092,7 @@
     margin: 0.32rem 0 0;
     color: var(--fpv-text-tone-1);
     font-size: 0.86rem;
-    font-weight: 300;
+    font-weight: var(--font-weight-light);
     line-height: 1.24;
   }
 
@@ -2099,7 +2103,7 @@
   .fpv-page-endline {
     color: rgb(255 255 255 / 0.86);
     font-size: 1.48rem;
-    font-weight: 680;
+    font-weight: var(--font-weight-medium);
     line-height: 1.28;
   }
 
@@ -2108,7 +2112,7 @@
     margin-top: 1rem;
     color: rgb(255 255 255 / 0.52);
     font-size: 0.94rem;
-    font-weight: 620;
+    font-weight: var(--font-weight-medium);
   }
 
   .fpv-link-roster {
@@ -2130,14 +2134,14 @@
     margin-bottom: 0.38rem;
     color: rgb(255 255 255 / 0.9);
     font-size: 1.14rem;
-    font-weight: 700;
+    font-weight: var(--font-weight-medium);
   }
 
   .fpv-link-roster p {
     margin: 0;
     color: rgb(255 255 255 / 0.62);
     font-size: 0.96rem;
-    font-weight: 470;
+    font-weight: var(--font-weight-normal);
     line-height: 1.45;
   }
 
@@ -2208,7 +2212,7 @@
     padding: 0.44rem 0.78rem;
     color: var(--fpv-text-tone-1);
     font-size: 0.78rem;
-    font-weight: 360;
+    font-weight: var(--font-weight-light);
     line-height: 1;
     text-shadow: none;
     white-space: nowrap;
@@ -2270,7 +2274,7 @@
       rgb(255 255 255 / 0.08);
     color: rgb(255 255 255 / 0.92);
     font-size: 1.02rem;
-    font-weight: 660;
+    font-weight: var(--font-weight-medium);
     line-height: 1;
   }
 
@@ -2293,7 +2297,7 @@
     min-width: 0;
     color: rgb(14 16 20 / 0.96);
     font-size: 1.1rem;
-    font-weight: 650;
+    font-weight: var(--font-weight-medium);
     line-height: 1.05;
   }
 
@@ -2317,7 +2321,7 @@
     overflow: hidden;
     color: rgb(14 16 20 / 0.9);
     font-size: 0.84rem;
-    font-weight: 300;
+    font-weight: var(--font-weight-light);
     line-height: 1.22;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -2340,7 +2344,7 @@
     gap: 0.28rem;
     color: rgb(255 255 255 / 0.92);
     font-size: 1.3rem;
-    font-weight: 620;
+    font-weight: var(--font-weight-medium);
     line-height: 0.96;
     text-shadow:
       0 2px 12px rgb(0 0 0 / 0.72),
@@ -2355,7 +2359,7 @@
   .fpv-space-text span {
     color: rgb(255 255 255 / 0.58);
     font-size: 0.72rem;
-    font-weight: 520;
+    font-weight: var(--font-weight-medium);
     line-height: 1.25;
     text-transform: lowercase;
   }
@@ -2377,7 +2381,7 @@
   .fpv-space-card span {
     color: rgb(255 255 255 / 0.9);
     font-size: 0.95rem;
-    font-weight: 640;
+    font-weight: var(--font-weight-medium);
     line-height: 1.15;
     text-transform: lowercase;
   }
@@ -2386,7 +2390,7 @@
     margin: 0;
     color: rgb(255 255 255 / 0.66);
     font-size: 0.76rem;
-    font-weight: 450;
+    font-weight: var(--font-weight-normal);
     line-height: 1.42;
   }
 
@@ -2398,7 +2402,7 @@
     padding: 0.36rem 0.5rem;
     color: rgb(255 255 255 / 0.68);
     font-size: 0.62rem;
-    font-weight: 650;
+    font-weight: var(--font-weight-medium);
     letter-spacing: 0.1em;
     line-height: 1;
     text-transform: uppercase;
@@ -2689,7 +2693,7 @@
       display: block;
       padding-left: 0.54rem;
       font-size: 0.54rem;
-      font-weight: 300;
+      font-weight: var(--font-weight-light);
       line-height: 1.14;
     }
 
@@ -2709,7 +2713,6 @@
       min-height: 1.24rem;
       padding: 0.28rem 0.42rem;
       font-size: 0.48rem;
-      font-weight: 460;
       line-height: 1;
     }
 
@@ -2781,7 +2784,7 @@
       display: block;
       margin-top: 0.16rem;
       font-size: 0.5rem;
-      font-weight: 300;
+      font-weight: var(--font-weight-light);
       line-height: 1.14;
     }
 
@@ -3502,15 +3505,15 @@
   }
 
   .display-mode-menu-copy span {
-    font-size: 0.82rem;
-    font-weight: 560;
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-medium);
     line-height: 1.1;
   }
 
   .display-mode-menu-copy small {
     color: var(--text-tone-4);
-    font-size: 0.72rem;
-    font-weight: 400;
+    font-size: var(--text-xs);
+    font-weight: var(--font-weight-normal);
     line-height: 1.25;
   }
 
@@ -3532,28 +3535,34 @@
   .plain-home-main {
     background: var(--background);
     color: var(--foreground);
-    padding-top: clamp(7.5rem, 13svh, 9.5rem) !important;
+    padding-top: calc(clamp(7.5rem, 13svh, 9.5rem) + var(--plain-top-offset, 0px)) !important;
     padding-bottom: clamp(5.5rem, 9svh, 8rem) !important;
   }
 
+  .plain-home-landing-main,
+  .plain-resume-main {
+    --plain-top-offset: clamp(1.5rem, 4svh, 3rem);
+  }
+
   .plain-home-document {
+    --text-card: clamp(1.25rem, 1.6vw, 1.375rem);
     --plain-measure: 100ch;
     --plain-body-measure: 68ch;
     --plain-list-measure: 72ch;
-    --plain-body-size: clamp(0.96rem, 0.25vw + 0.9rem, 1.08rem);
+    --plain-body-size: var(--text-base);
     --plain-body-line: 1.72;
-    --plain-title-size: clamp(2.15rem, 5vw, 3.6rem);
+    --plain-title-size: var(--text-page);
     --plain-title-line: 1.04;
-    --plain-h2-size: clamp(1.35rem, 1.4vw, 1.78rem);
+    --plain-h2-size: var(--text-section);
     --plain-h2-line: 1.18;
-    --plain-h3-size: clamp(1.03rem, 0.5vw + 0.95rem, 1.18rem);
+    --plain-h3-size: var(--text-card);
     --plain-h3-line: 1.3;
-    --plain-heading-weight: 560;
-    --plain-subtitle-weight: 300;
-    --plain-kicker-size: 0.78rem;
+    --plain-heading-weight: var(--font-weight-light);
+    --plain-subtitle-weight: var(--site-body-weight);
+    --plain-kicker-size: var(--text-xs);
     --plain-kicker-line: 1.4;
     --plain-kicker-bottom-gap: 0.9rem;
-    --plain-lede-size: clamp(1.08rem, 0.6vw + 0.98rem, 1.34rem);
+    --plain-lede-size: var(--text-base);
     --plain-lede-line: 1.55;
     --plain-intro-list-top-gap: 0.85rem;
     --plain-subtitle-line: 1.48;
@@ -3561,6 +3570,7 @@
     --plain-section-gap: clamp(2.7rem, 5vw, 4.5rem);
     --plain-section-padding: clamp(2rem, 3.6vw, 3rem);
     --plain-header-padding: clamp(1.8rem, 4vw, 3rem);
+    --plain-index-header-gap: var(--plain-header-padding);
     --plain-h2-subtitle-gap: 0.34rem;
     --plain-h3-top-gap: 1.35rem;
     --plain-h3-subtitle-gap: 0.24rem;
@@ -3577,8 +3587,8 @@
     --plain-action-gap-block: 0.55rem;
     --plain-action-gap-inline: 1.05rem;
     --plain-action-top-gap: 1.1rem;
-    --plain-action-size: 0.96rem;
-    --plain-link-underline-offset: 0.18em;
+    --plain-action-size: var(--text-sm);
+    --plain-link-underline-offset: var(--site-link-offset);
     --plain-divider: color-mix(in oklab, var(--foreground) 16%, transparent);
     --plain-friend-grid-min: 6.75rem;
     --plain-friend-list-top-gap: 1.1rem;
@@ -3586,19 +3596,19 @@
     --plain-friend-column-gap: 0.85rem;
     --plain-friend-card-gap: 0.34rem;
     --plain-friend-avatar-size: 5.5rem;
-    --plain-friend-name-size: 0.95rem;
+    --plain-friend-name-size: var(--text-sm);
     --plain-friend-name-line: 1.18;
-    --plain-friend-name-weight: 560;
+    --plain-friend-name-weight: var(--font-weight-normal);
     --plain-friend-link-underline-offset: 0.16em;
-    --plain-friend-quote-size: 0.84rem;
+    --plain-friend-quote-size: var(--text-sm);
     --plain-friend-quote-line: 1.35;
     --plain-index-item-gap: clamp(1.4rem, 2.8vw, 2.1rem);
     --plain-index-image-size: clamp(5.6rem, 13vw, 8.5rem);
     --plain-index-image-gap: clamp(1rem, 2.2vw, 1.65rem);
-    --plain-index-meta-size: 0.78rem;
-    --plain-index-tag-gap: 0.38rem;
+    --plain-index-meta-size: var(--text-xs);
+    --plain-index-tag-gap: 0.35rem 0.75rem;
     --plain-index-icon-size: 1.45rem;
-    --plain-detail-aside-width: 24rem;
+    --plain-detail-column-min: 24rem;
     --plain-detail-layout-gap: clamp(1.6rem, 3.6vw, 3rem);
     --plain-detail-image-width: clamp(16rem, 34vw, 26rem);
     --plain-resume-mini-gap: clamp(1.1rem, 2.8vw, 1.8rem);
@@ -3606,25 +3616,21 @@
     margin-inline: auto;
     color: var(--foreground);
     font-size: var(--plain-body-size);
+    font-weight: var(--site-body-weight);
     line-height: var(--plain-body-line);
     text-align: left;
   }
 
   .plain-index-document,
-  .plain-detail-document {
+  .plain-detail-document,
+  .plain-resume-document {
     --plain-measure: var(--container-7xl);
+  }
+
+  .plain-index-document,
+  .plain-detail-document {
     --plain-body-measure: 100%;
     --plain-list-measure: 100%;
-  }
-
-  .plain-resume-document {
-    --plain-measure: 100%;
-  }
-
-  .plain-not-found-document {
-    --plain-measure: var(--container-xl);
-    max-width: var(--plain-measure);
-    margin-inline: 0;
   }
 
   .plain-home-document * {
@@ -3653,6 +3659,12 @@
     padding-bottom: 0;
   }
 
+  .plain-index-document > .plain-index-header + * {
+    margin-top: var(--plain-index-header-gap);
+    padding-top: 0;
+    border-top: 0;
+  }
+
   .plain-index-back {
     margin-bottom: 1rem;
   }
@@ -3665,7 +3677,7 @@
   .plain-home-kicker {
     margin: 0 0 var(--plain-kicker-bottom-gap);
     color: var(--text-tone-4);
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    font-family: var(--font-mono);
     font-size: var(--plain-kicker-size);
     line-height: var(--plain-kicker-line);
   }
@@ -3684,6 +3696,13 @@
     line-height: var(--plain-title-line);
   }
 
+  .plain-home-document .plain-display-title {
+    font-size: var(--text-hero);
+    font-weight: var(--font-weight-light);
+    line-height: 1.05;
+    letter-spacing: -0.035em;
+  }
+
   .plain-home-document h2 {
     margin-bottom: var(--plain-h2-subtitle-gap);
     padding-top: 0.25rem;
@@ -3692,6 +3711,7 @@
   }
 
   .plain-home-document h3 {
+    font-weight: var(--plain-heading-weight);
     margin-top: var(--plain-h3-top-gap);
     margin-bottom: var(--plain-h3-subtitle-gap);
     font-size: var(--plain-h3-size);
@@ -3752,10 +3772,10 @@
     color: var(--text-tone-5);
   }
 
-  .plain-home-document a,
-  .plain-home-document button {
-    color: var(--foreground);
+  .plain-home-document a {
+    color: inherit;
     text-decoration: underline;
+    text-decoration-thickness: var(--site-link-thickness);
     text-underline-offset: var(--plain-link-underline-offset);
     transition:
       color 140ms ease,
@@ -3763,10 +3783,9 @@
   }
 
   .plain-home-document a:hover,
-  .plain-home-document button:hover,
-  .plain-home-document a:focus-visible,
-  .plain-home-document button:focus-visible {
-    color: var(--text-tone-2);
+  .plain-home-document a:focus-visible {
+    color: inherit;
+    text-decoration-thickness: 2px;
   }
 
   .plain-home-actions {
@@ -3779,6 +3798,13 @@
 
   .plain-home-actions button {
     cursor: pointer;
+    text-decoration-line: underline;
+    text-decoration-thickness: var(--site-link-thickness);
+    text-underline-offset: var(--site-link-offset);
+  }
+
+  .plain-home-actions button:is(:hover, :focus-visible) {
+    text-decoration-thickness: 2px;
   }
 
   .plain-home-subsection {
@@ -3894,13 +3920,15 @@
   }
 
   .plain-index-item h2 {
+    font-size: var(--text-card);
+    font-weight: var(--plain-heading-weight);
     margin-bottom: 0;
     padding-top: 0;
   }
 
   .plain-index-meta {
     color: var(--text-tone-4) !important;
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    font-family: var(--font-mono);
     font-size: var(--plain-index-meta-size);
     line-height: 1.35;
   }
@@ -3915,10 +3943,15 @@
     list-style: none !important;
   }
 
-  .plain-index-tags li:not(.plain-index-tag-pill) {
-    color: var(--text-tone-4);
-    font-size: 0.78rem;
-    line-height: 1.35;
+  .plain-index-tags .document-tag {
+    color: var(--text-tone-3);
+    font-size: var(--text-xs);
+    line-height: 1.6;
+  }
+
+  .plain-index-tags .document-tag[data-highlighted="true"] {
+    background: var(--site-accent-surface);
+    color: var(--text-tone-1);
   }
 
   .plain-index-tags li + li,
@@ -3935,7 +3968,7 @@
     align-items: center;
     gap: 0.34rem;
     color: var(--text-tone-3);
-    font-size: 0.82rem;
+    font-size: var(--text-sm);
     line-height: 1.25;
   }
 
@@ -3997,12 +4030,12 @@
 
   .plain-project-copy > p,
   .plain-project-copy > ul {
-    font-size: 0.875rem;
+    font-size: var(--text-sm);
     line-height: 1.625;
   }
 
   .plain-home-document strong {
-    font-weight: 600;
+    font-weight: var(--font-weight-medium);
   }
 
   .plain-home-document .plain-point-highlight::marker {
@@ -4010,6 +4043,8 @@
   }
 
   .plain-project-copy h2 {
+    font-size: var(--text-card);
+    font-weight: var(--plain-heading-weight);
     margin-bottom: 0;
     padding-top: 0;
   }
@@ -4027,16 +4062,30 @@
     max-width: 100%;
     min-width: 0;
     overflow: hidden;
-    color: var(--text-tone-3) !important;
-    font-size: 0.86rem;
-    font-weight: 560;
-    line-height: 1.25;
-    text-decoration: none !important;
+    color: var(--text-tone-3);
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-normal);
+    line-height: 1.4;
   }
 
-  .plain-project-repo-link:hover,
-  .plain-project-repo-link:focus-visible {
-    color: var(--foreground) !important;
+  .plain-home-document a.plain-project-repo-link {
+    text-decoration: none;
+  }
+
+  a.plain-project-repo-link .plain-project-repo-name,
+  a.plain-project-repo-link > .truncate {
+    text-decoration: underline;
+    text-decoration-thickness: var(--site-link-thickness);
+    text-underline-offset: var(--site-link-offset);
+  }
+
+  a.plain-project-repo-link:is(:hover, :focus-visible) :is(.plain-project-repo-name, .truncate) {
+    text-decoration-thickness: 2px;
+  }
+
+  a.plain-project-repo-link:hover,
+  a.plain-project-repo-link:focus-visible {
+    color: inherit;
   }
 
   .plain-project-repo-link > .truncate {
@@ -4094,6 +4143,12 @@
     margin-top: 0.95rem !important;
   }
 
+  .plain-detail-document h2 {
+    font-size: var(--text-lg);
+    font-weight: var(--plain-heading-weight);
+    line-height: 1.4;
+  }
+
   .plain-detail-header .plain-home-lede {
     margin-top: clamp(0.78rem, 1.4vw, 1.15rem);
   }
@@ -4115,6 +4170,19 @@
     column-gap: 0.75rem;
   }
 
+  .plain-image-preview { display: block; min-width: 0; }
+
+  .plain-image-trigger {
+    display: block;
+    max-width: 100%;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: zoom-in;
+  }
+
+  .plain-detail-image-grid .plain-image-trigger { width: 100%; }
+
   .plain-detail-image-grid figure {
     display: block;
     break-inside: avoid;
@@ -4132,13 +4200,13 @@
   .plain-detail-image-grid figcaption {
     margin-top: 0.45rem;
     color: var(--text-tone-4);
-    font-size: 0.75rem;
+    font-size: var(--text-xs);
     line-height: 1.4;
   }
 
   .plain-detail-layout {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(12rem, var(--plain-detail-aside-width));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--plain-detail-column-min)), 1fr));
     gap: var(--plain-detail-layout-gap);
   }
 
@@ -4184,8 +4252,9 @@
 
   .plain-resume-description {
     display: grid;
-    gap: 0.18rem;
+    gap: 0;
     margin-top: var(--plain-intro-list-top-gap);
+    line-height: 1.45;
   }
 
   .plain-resume-mini-list {
@@ -4235,7 +4304,7 @@
 
   @media (max-width: 767px) {
     .plain-home-main {
-      padding-top: calc(env(safe-area-inset-top, 0px) + 6.75rem) !important;
+      padding-top: calc(env(safe-area-inset-top, 0px) + 6.75rem + var(--plain-top-offset, 0px)) !important;
       padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 8rem) !important;
     }
 
@@ -4244,7 +4313,7 @@
     }
 
     .plain-home-document {
-      --plain-body-size: 0.96rem;
+      --plain-body-size: var(--text-base);
       --plain-body-line: 1.66;
       --plain-section-gap: 2.6rem;
       width: 100%;
@@ -4545,11 +4614,6 @@
   }
 
   @media (max-width: 767px) {
-    .contact-dialog-content,
-    .contact-dialog-content > * {
-      animation: none !important;
-    }
-
     .contact-social-pill::before,
     .contact-social-pill::after {
       display: none;
@@ -4572,8 +4636,8 @@
     background: var(--contact-social-speech-background);
     padding: 0.44rem 0.78rem;
     color: rgb(255 255 255 / 0.94);
-    font-size: 0.78rem;
-    font-weight: 500;
+    font-size: var(--text-xs);
+    font-weight: var(--font-weight-medium);
     line-height: 1;
     text-shadow: none;
     white-space: nowrap;
@@ -4683,7 +4747,7 @@
     }
 
     to {
-      transform: translateX(calc(-50% - 0.375rem));
+      transform: translateX(var(--software-icon-marquee-distance, 0px));
     }
   }
 

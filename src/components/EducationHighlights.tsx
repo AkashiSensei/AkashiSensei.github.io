@@ -55,20 +55,20 @@ export function EducationHighlights() {
                     className="education-stop-mark"
                   />
                 ) : null}
-              <p className="text-[0.75rem] font-normal tracking-[0.08em] text-tone-5 sm:text-[0.8125rem]">
+              <p className="text-xs font-normal tracking-[0.08em] text-tone-5 sm:text-sm">
                 {t(`education.items.${entry.id}.period`)}
               </p>
-              <p className="mt-1 text-[0.9375rem] font-normal leading-snug text-tone-3 sm:text-[1.0625rem]">
+              <p className="mt-1 text-sm font-body leading-snug text-tone-3 sm:text-base">
                 {t(`education.items.${entry.id}.school`)}
               </p>
-              <h3 className="mt-2 text-[1.35rem] font-normal leading-tight tracking-tight text-tone-1 sm:text-[1.65rem] md:text-[clamp(1.4rem,2.6vw,1.85rem)]">
+              <h3 className="mt-2 text-card font-normal leading-tight tracking-tight text-tone-1">
                 {t(`education.items.${entry.id}.headline`)}
               </h3>
               <ul className="mt-2.5 flex list-none flex-col gap-1.5 p-0">
                 {entry.colleges.map((college) => (
                   <li
                     key={college.id}
-                    className="flex items-center gap-2 text-sm font-normal leading-none text-tone-4 sm:text-[0.9375rem]"
+                    className="flex items-center gap-2 text-sm font-normal leading-none text-tone-4 sm:text-sm"
                   >
                     {college.emblem ? (
                       <span className="inline-flex h-[1.25em] w-[1.7em] shrink-0 items-center justify-center">
@@ -91,7 +91,7 @@ export function EducationHighlights() {
               {honors.length > 0 ? (
                 <FeaturePointList
                   points={honors}
-                  className="mt-3 text-[0.9375rem] leading-snug text-tone-2"
+                  className="mt-3 text-sm leading-snug text-tone-2"
                 />
               ) : null}
               </div>

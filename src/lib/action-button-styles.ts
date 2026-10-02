@@ -1,5 +1,5 @@
 export const pillActionClassName =
-  "rounded-full text-base font-bold transition-colors"
+  "rounded-full text-base font-normal transition-colors"
 
 export const ghostPillActionClassName =
   `${pillActionClassName} h-12 cursor-pointer px-4 text-tone-2 hover:bg-[rgb(var(--site-surface-rgb)_/_0.30)] hover:text-tone-1 dark:hover:bg-white/10`

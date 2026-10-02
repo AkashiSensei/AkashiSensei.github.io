@@ -1,4 +1,4 @@
-import { ArrowUpRight } from "lucide-react"
+import { ExternalLinkIcon } from "@/components/ExternalLinkIcon"
 import { useTranslation } from "react-i18next"
 import { useParams } from "react-router-dom"
 
@@ -61,14 +61,14 @@ export function KnowledgeDetailPage({ entries }: KnowledgeDetailPageProps) {
       <Layout>
         <section className="flex min-h-[calc(100svh-11rem)] max-w-xl flex-col justify-center gap-5 py-12">
           <BackButton fallback="/knowledge" />
-          <p className="text-sm font-medium uppercase tracking-[0.18em] text-foreground/45">
+          <p className="text-sm font-normal uppercase tracking-[0.18em] text-foreground/45">
             404
           </p>
           <div className="flex flex-col gap-3">
-            <h1 className="text-3xl font-bold tracking-tight md:text-4xl">
+            <h1 className="site-page-title">
               {t("common:notFound.title")}
             </h1>
-            <p className="text-base leading-relaxed text-foreground/70 sm:text-lg">
+            <p className="site-lede">
               {t("common:notFound.description")}
             </p>
           </div>
@@ -146,27 +146,27 @@ export function KnowledgeDetailPage({ entries }: KnowledgeDetailPageProps) {
           <BackButton fallback="/knowledge" />
 
           <header className="flex w-full flex-col gap-5">
-            <p className="text-sm font-semibold text-foreground/55 dark:text-foreground/65">
+            <p className="text-sm font-normal text-foreground/55 dark:text-foreground/65">
               {t("title")}
             </p>
             <div className="flex flex-col gap-3">
-              <h1 className="text-3xl font-bold tracking-tight md:text-5xl">
+              <h1 className="site-page-title">
                 {t(`items.${entry.id}.title`)}
               </h1>
               <div className="flex w-full flex-wrap items-center gap-x-4 gap-y-2 pt-1 sm:pt-2">
                 <span
                   className={cn(
-                    "rounded-full border px-3 py-1.5 text-base font-semibold leading-none",
+                    "rounded-full border px-3 py-1.5 text-base font-normal leading-none",
                     kindClassName[entry.kind],
                   )}
                 >
                   {t(`kinds.${entry.kind}`)}
                 </span>
-                <span className="ml-auto text-right text-base font-semibold text-foreground/45 dark:text-foreground/55">
+                <span className="ml-auto text-right text-base font-medium text-foreground/45 dark:text-foreground/55">
                   {t("updatedLabel")} {updatedLabel}
                 </span>
               </div>
-              <p className="text-lg leading-relaxed text-foreground/80 dark:text-foreground/90 lg:text-xl">
+              <p className="site-lede">
                 {t(`items.${entry.id}.summary`)}
               </p>
             </div>
@@ -201,13 +201,13 @@ export function KnowledgeDetailPage({ entries }: KnowledgeDetailPageProps) {
                 href={entry.url}
                 target="_blank"
                 rel="noreferrer"
-                className="group/repo flex min-w-0 flex-nowrap items-center gap-1.5 text-sm font-semibold text-foreground/70 transition-colors hover:text-foreground dark:text-foreground/80"
+                className="group/repo flex min-w-0 flex-nowrap items-center gap-1.5 text-sm font-normal text-foreground/70 transition-colors hover:text-foreground dark:text-foreground/80"
               >
                 {entry.repoTags?.map((repoTag) => (
                   <span
                     key={repoTag}
                     className={cn(
-                      "shrink-0 whitespace-nowrap rounded-full border px-2 py-0.5 text-[0.6875rem] font-semibold leading-none",
+                      "shrink-0 whitespace-nowrap rounded-full border px-2 py-0.5 text-[0.6875rem] font-normal leading-none",
                       getSemanticTagClassName(repoTag),
                     )}
                   >
@@ -217,7 +217,7 @@ export function KnowledgeDetailPage({ entries }: KnowledgeDetailPageProps) {
                 <span className="min-w-0 max-w-[8rem] truncate sm:max-w-[10rem] md:max-w-[14rem] lg:max-w-[20rem] xl:max-w-[24rem]">
                   {entry.repoName}
                 </span>
-                <ArrowUpRight className="h-4 w-4 shrink-0 transition-transform group-hover/repo:-translate-y-0.5 group-hover/repo:translate-x-0.5" />
+                <ExternalLinkIcon className="h-4 w-4 shrink-0 transition-transform group-hover/repo:-translate-y-0.5 group-hover/repo:translate-x-0.5" />
                 <GitHubRepoStats repo={entry.githubRepo} />
               </a>
               {entry.externalLinks?.map((link) => (
@@ -232,7 +232,7 @@ export function KnowledgeDetailPage({ entries }: KnowledgeDetailPageProps) {
                     <span
                       key={badgeKey}
                       className={cn(
-                        "rounded-full border px-2 py-0.5 text-[0.6875rem] font-semibold leading-none whitespace-nowrap",
+                        "rounded-full border px-2 py-0.5 text-[0.6875rem] font-normal leading-none whitespace-nowrap",
                         badgeKey.endsWith(".loginRequired")
                           ? "border-rose-400/25 bg-rose-400/10 text-rose-700 dark:border-rose-300/20 dark:bg-rose-300/10 dark:text-rose-200"
                           : "border-amber-400/30 bg-amber-400/12 text-amber-800 dark:border-amber-300/20 dark:bg-amber-300/10 dark:text-amber-200",
@@ -242,7 +242,7 @@ export function KnowledgeDetailPage({ entries }: KnowledgeDetailPageProps) {
                     </span>
                   ))}
                   <span>{t(link.labelKey)}</span>
-                  <ArrowUpRight className="h-4 w-4 shrink-0 transition-transform group-hover/external:-translate-y-0.5 group-hover/external:translate-x-0.5" />
+                  <ExternalLinkIcon className="h-4 w-4 shrink-0 transition-transform group-hover/external:-translate-y-0.5 group-hover/external:translate-x-0.5" />
                 </a>
               ))}
             </GlassPanel>
@@ -252,7 +252,7 @@ export function KnowledgeDetailPage({ entries }: KnowledgeDetailPageProps) {
                 <span
                   key={tag}
                   className={cn(
-                    "rounded-full border px-2.5 py-1 text-xs font-semibold",
+                    "rounded-full border px-2.5 py-1 text-xs font-normal",
                     defaultTagClassName,
                   )}
                 >

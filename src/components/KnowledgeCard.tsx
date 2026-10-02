@@ -1,6 +1,6 @@
+import { ExternalLinkIcon } from "@/components/ExternalLinkIcon"
 import {
   ArrowRight,
-  ArrowUpRight,
   BookOpen,
   Brain,
   FileText,
@@ -12,6 +12,8 @@ import { useTranslation } from "react-i18next"
 
 import { GitHubRepoStats } from "@/components/GitHubRepoStats"
 import { GlassPanel } from "@/components/GlassPanel"
+import { FeaturePointList } from "@/components/FeaturePointList"
+import { getListingPointSections } from "@/lib/project-points"
 import { AppLink } from "@/components/AppLink"
 import { type KnowledgeEntry } from "@/data/knowledge"
 import { getGitHubRepoUpdatedDate } from "@/lib/github-repo-stats"
@@ -54,6 +56,7 @@ export function KnowledgeCard({
   const [isCompactDesktop, setIsCompactDesktop] = useState(false)
   const Icon = kindIcon[entry.kind]
   const detailPath = `/knowledge/${entry.id}`
+  const { points } = getListingPointSections(t(`items.${entry.id}.points`, { returnObjects: true }))
   const updatedDate = getGitHubRepoUpdatedDate(entry.githubRepo, entry.updatedAt)
   const updatedLabel = updatedDate
     ? new Intl.DateTimeFormat(i18n.language, {
@@ -115,14 +118,14 @@ export function KnowledgeCard({
         <div className="flex items-start justify-between gap-3">
           <span
             className={cn(
-              "inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-semibold leading-none",
+              "inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-normal leading-none",
               kindClassName[entry.kind],
             )}
           >
             <Icon className="h-3.5 w-3.5" />
             {t(`kinds.${entry.kind}`)}
           </span>
-          <span className="shrink-0 text-xs font-semibold text-foreground/45 dark:text-foreground/55">
+          <span className="shrink-0 text-xs font-normal text-foreground/45 dark:text-foreground/55">
             {t("updatedLabel")} {updatedLabel}
           </span>
         </div>
@@ -132,9 +135,7 @@ export function KnowledgeCard({
             to={detailPath}
             className={cn(
               "detail-link-trigger detail-link-emphasis group/title inline-flex w-fit max-w-full items-center gap-1.5 leading-tight text-foreground/90 transition-colors hover:text-foreground",
-              variant === "compact"
-                ? "text-xl font-bold md:text-lg md:font-medium xl:text-xl"
-                : "text-xl font-bold",
+              "site-card-title",
             )}
           >
             <span className="min-w-0">{t(`items.${entry.id}.title`)}</span>
@@ -144,13 +145,13 @@ export function KnowledgeCard({
             target="_blank"
             rel="noreferrer"
             aria-label={`${t("repoLabel")}: ${entry.repoName}`}
-            className="group/repo inline-flex min-w-0 w-fit max-w-full items-center gap-1.5 text-sm font-semibold text-foreground/60 transition-colors hover:text-foreground/90 dark:text-foreground/75 dark:hover:text-foreground"
+            className="group/repo inline-flex min-w-0 w-fit max-w-full items-center gap-1.5 text-sm font-normal text-foreground/60 transition-colors hover:text-foreground/90 dark:text-foreground/75 dark:hover:text-foreground"
           >
             {entry.repoTags?.map((repoTag) => (
               <span
                 key={repoTag}
                 className={cn(
-                  "shrink-0 whitespace-nowrap rounded-full border px-2 py-0.5 text-[0.6875rem] font-semibold leading-none",
+                  "shrink-0 whitespace-nowrap rounded-full border px-2 py-0.5 text-[0.6875rem] font-normal leading-none",
                   getSemanticTagClassName(repoTag),
                 )}
               >
@@ -160,7 +161,7 @@ export function KnowledgeCard({
             <span className="min-w-0 max-w-[8rem] truncate sm:max-w-[10rem] md:max-w-[14rem] xl:max-w-[18rem]">
               {entry.repoName}
             </span>
-            <ArrowUpRight className="h-4 w-4 shrink-0 transition-transform group-hover/repo:-translate-y-0.5 group-hover/repo:translate-x-0.5" />
+            <ExternalLinkIcon className="h-4 w-4 shrink-0 transition-transform group-hover/repo:-translate-y-0.5 group-hover/repo:translate-x-0.5" />
             <GitHubRepoStats repo={entry.githubRepo} />
           </a>
           {entry.externalLinks?.map((link) => (
@@ -180,7 +181,7 @@ export function KnowledgeCard({
                 <span
                   key={badgeKey}
                   className={cn(
-                    "rounded-full border px-2 py-0.5 text-[0.6875rem] font-semibold leading-none whitespace-nowrap",
+                    "rounded-full border px-2 py-0.5 text-[0.6875rem] font-normal leading-none whitespace-nowrap",
                     badgeKey.endsWith(".loginRequired")
                       ? "border-rose-400/25 bg-rose-400/10 text-rose-700 dark:border-rose-300/20 dark:bg-rose-300/10 dark:text-rose-200"
                       : "border-amber-400/30 bg-amber-400/12 text-amber-800 dark:border-amber-300/20 dark:bg-amber-300/10 dark:text-amber-200",
@@ -190,7 +191,7 @@ export function KnowledgeCard({
                 </span>
               ))}
               <span>{t(link.labelKey)}</span>
-              <ArrowUpRight className="h-4 w-4 shrink-0 transition-transform group-hover/external:-translate-y-0.5 group-hover/external:translate-x-0.5" />
+              <ExternalLinkIcon className="h-4 w-4 shrink-0 transition-transform group-hover/external:-translate-y-0.5 group-hover/external:translate-x-0.5" />
             </a>
           ))}
         </div>
@@ -205,7 +206,7 @@ export function KnowledgeCard({
             <span
               key={tag}
               className={cn(
-                "rounded-full border px-2.5 py-1 text-xs font-semibold",
+                "rounded-full border px-2.5 py-1 text-xs font-normal",
                 defaultTagClassName,
               )}
             >
@@ -219,16 +220,22 @@ export function KnowledgeCard({
             className={cn(
               "leading-relaxed text-foreground/80 dark:text-foreground/90",
               variant === "compact"
-                ? "text-sm md:text-[0.8125rem] xl:text-sm"
+                ? "text-sm md:text-sm xl:text-sm"
                 : "text-sm",
             )}
           >
             {t(`items.${entry.id}.summary`)}
           </p>
 
+          {points.length > 0 ? (
+            <FeaturePointList
+              points={points}
+            />
+          ) : null}
+
           <AppLink
             to={detailPath}
-            className="detail-link-trigger detail-link-emphasis group/detail mt-auto inline-flex w-fit items-center gap-1.5 text-sm font-semibold text-foreground/65 transition-colors hover:text-foreground dark:text-foreground/75 dark:hover:text-foreground"
+            className="detail-link-trigger detail-link-emphasis group/detail mt-auto inline-flex w-fit items-center gap-1.5 text-sm font-normal text-foreground/65 transition-colors hover:text-foreground dark:text-foreground/75 dark:hover:text-foreground"
           >
             {t("details.viewDetails")}
             <ArrowRight className="detail-link-arrow h-4 w-4 transition-transform group-hover/detail:translate-x-0.5" />
