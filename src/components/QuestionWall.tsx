@@ -176,7 +176,6 @@ function AnimatedQuestionWall() {
       </div>
     </div>
     <div className="section-note question-wall-toolbar">
-      <p>{t("wallHint")}</p>
       <Button type="button" variant="ghost" className={ghostPillActionClassName} onClick={() => setPaused(!userPaused)} aria-pressed={userPaused}>
         {userPaused ? <Play size={16} aria-hidden="true" /> : <Pause size={16} aria-hidden="true" />}
         {t(userPaused ? "resume" : "pause")}
@@ -194,7 +193,6 @@ export function QuestionWall() {
     <h2><AppLink to="/questions">{t("title")}</AppLink></h2>
     <p>{t("subtitle")}</p>
     <QuestionList threads={plainThreads} showProjects={false} variant="document" headingLevel={3} masonry />
-    <p className="question-plain-note">{t("wallHint")}</p>
     <AppLink className="question-view-all" to="/questions">{t("viewAll", { count: questionThreads.length })}<ArrowRight size={16} aria-hidden="true" /></AppLink>
   </section>
   return <section id="questions" className="resume-rhythm-section question-wall-section">
