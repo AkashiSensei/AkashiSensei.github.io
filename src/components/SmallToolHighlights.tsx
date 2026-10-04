@@ -30,10 +30,10 @@ export function SmallToolHighlights() {
       className="resume-rhythm-section small-tools-rhythm-section flex w-full flex-col justify-center gap-5"
     >
       <div className="small-tools-layout grid w-full content-start items-start gap-5 sm:gap-6 xl:grid-cols-[minmax(14rem,0.72fr)_minmax(0,1.28fr)] xl:gap-12">
-        <div className="resume-feature-offset flex max-w-xl flex-col gap-4 xl:self-start">
+        <div className="resume-feature-offset flex w-full min-w-0 flex-col gap-4 xl:max-w-xl xl:self-start">
           <ArchiveSectionHeader detailPath="/tools" title={t("title")} subtitle={t("subtitle")}
             viewAllLabel={t("viewAllWithCount", { count: smallTools.length })} />
-          <SectionNote><p>{t("description")}</p></SectionNote>
+          <SectionNote className="max-w-xl"><p>{t("description")}</p></SectionNote>
           <div className="flex max-w-md flex-wrap gap-2 px-2 sm:px-3 md:px-4">
             {tags.map((tag) => (
               <span key={tag} className="rounded-full border border-tone-4/35 bg-surface/35 px-2.5 py-1 text-[0.75rem] font-normal leading-none text-tone-3 backdrop-blur-sm dark:bg-surface/20">
