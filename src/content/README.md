@@ -34,7 +34,7 @@
 简历简介之后先展示教育经历，再展示项目；普通/静态模式接着展示兴趣、活跃度与课设；课设之后依次展示问题墙、博客精选、工作台、知识沉淀、小工具，普通与朴素模式顺序一致；`/questions` 支持标签、项目范围和分批阅读。各入口共用问答弹窗，`question` 与 `round` 查询参数可以定位具体问答。执行 `npm run test:questions` 可检查数据引用、筛选及轮换边界。
 
 
-博客原文继续在 `blob-article` 编写；站点发布清单为 `src/content/blog/publish.json`，按稳定文章 ID 指定双语文件、摘要、分类、标签、审阅状态和项目关联，不自动扫描或发布其他草稿。当前纳入源仓库正式索引的 7 篇双语文章，覆盖 AI 提效、云计算与 AI 基础设施、工程实践三类；封面单独声明，简介为站点维护的双语摘要。运行 `npm run import:blog -- /path/to/content-repository`（或设置 `BLOG_SOURCE_DIR`）生成 `src/content/blog/generated.json` 及 `public/assets/blog/` 中的 WebP 配图；生成文件由脚本维护，修改原稿后重新导入，不能在站点快照里手动改正文。当前快照随站点版本保存，构建时检查发布清单与图片完整性，不在访客浏览器中读取 GitHub；远端内容自动取得流程尚未接入。
+博客原文继续在 `blog-article` 编写；站点发布清单为 `src/content/blog/publish.json`，按稳定文章 ID 指定双语文件、摘要、分类、标签、审阅状态和项目关联，不自动扫描或发布其他草稿。当前纳入源仓库正式索引的 7 篇双语文章，覆盖 AI 提效、云计算与 AI 基础设施、工程实践三类；封面单独声明，简介为站点维护的双语摘要。运行 `npm run import:blog -- /path/to/content-repository`（或设置 `BLOG_SOURCE_DIR`）生成 `src/content/blog/generated.json` 及 `public/assets/blog/` 中的 WebP 配图；生成文件由脚本维护，修改原稿后重新导入，不能在站点快照里手动改正文。当前快照随站点版本保存，构建时检查发布清单与图片完整性，不在访客浏览器中读取 GitHub；远端内容自动取得流程尚未接入。
 
 简历博客精选通过 `src/data/blog.ts` 的稳定 ID 顺序引用现有文章实体，当前为 Volcano 作业接纳与调度、CLI 工具设计、RDMA 内存锁定上限。`BlogHighlights` 位于问题墙与工作台之间，复用 `BlogCard` 与 `ArchiveSectionHeader`：普通/静态宽屏三列、手机单列且显示全部三篇，朴素模式沿用知识精选的两列/手机单列。各卡片顶端对齐，按实际内容决定高度，不做等高拉伸。卡片内容、语言、图片轮播/预览和链接均由博客现有管线维护；精选不裁掉简介，模块高度可随内容增长。
 

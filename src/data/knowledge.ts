@@ -28,9 +28,9 @@ export type KnowledgeEntry = {
 export const knowledgeEntries: KnowledgeEntry[] = [
   {
     id: "blob-article",
-    url: "https://github.com/AkashiSensei/blob-article",
-    repoName: "AkashiSensei/blob-article",
-    githubRepo: "AkashiSensei/blob-article",
+    url: "https://github.com/AkashiSensei/blog-article",
+    repoName: "AkashiSensei/blog-article",
+    githubRepo: "AkashiSensei/blog-article",
     repoTags: ["public"],
     externalLinks: [
       {

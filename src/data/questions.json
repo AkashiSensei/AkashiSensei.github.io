@@ -438,6 +438,11 @@
           "module": "course-projects",
           "id": "vr-experiments-2026",
           "note": "推断"
+        },
+        {
+          "module": "course-projects",
+          "id": "parallel-programming-2024",
+          "note": "基础实践对照：圆形渲染尝试减少内层条件分支，并按场景选择 kernel。"
         }
       ],
       "rounds": [
@@ -851,6 +856,11 @@
         {
           "module": "course-projects",
           "id": "vr-experiments-2026"
+        },
+        {
+          "module": "course-projects",
+          "id": "parallel-programming-2024",
+          "note": "对应开篇的基础存储模型：报告梳理各类 CUDA 存储，圆形渲染使用共享内存缓存相关圆形；后续 Nsight 延迟分析属于更晚的学习。"
         }
       ],
       "rounds": [

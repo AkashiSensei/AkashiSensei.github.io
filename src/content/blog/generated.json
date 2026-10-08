@@ -49,7 +49,7 @@
         "zhihuUrl": "https://zhuanlan.zhihu.com/p/2091278072184160310"
       },
       "source": {
-        "repository": "AkashiSensei/blob-article",
+        "repository": "AkashiSensei/blog-article",
         "baseCommit": "85352652ceadf4894c8af4d1f9007e2dfb83ec3c",
         "contentHash": "e376c33af9b0ff31d37d2057fd96dcedf008722992a8978416d51b96d112ca8e"
       },
@@ -243,7 +243,7 @@
         "zhihuUrl": "https://zhuanlan.zhihu.com/p/2089405831787845035"
       },
       "source": {
-        "repository": "AkashiSensei/blob-article",
+        "repository": "AkashiSensei/blog-article",
         "baseCommit": "85352652ceadf4894c8af4d1f9007e2dfb83ec3c",
         "contentHash": "13c3e5e4b16a72da706cfcf4dde628039c85460604ac2627c79dd44003ba023d"
       },
@@ -339,7 +339,7 @@
         "zhihuUrl": "https://zhuanlan.zhihu.com/p/2041206568620913470"
       },
       "source": {
-        "repository": "AkashiSensei/blob-article",
+        "repository": "AkashiSensei/blog-article",
         "baseCommit": "85352652ceadf4894c8af4d1f9007e2dfb83ec3c",
         "contentHash": "d60d4c447929aaafca439a437f02fa3f23b71a4a230464a53deda141af6a7147"
       },
@@ -641,7 +641,7 @@
         "publishedAt": "2026-05-16"
       },
       "source": {
-        "repository": "AkashiSensei/blob-article",
+        "repository": "AkashiSensei/blog-article",
         "baseCommit": "85352652ceadf4894c8af4d1f9007e2dfb83ec3c",
         "contentHash": "eea817fe389822dcfc61bce05176b1632a4563ba8e473a547c23b716ebcc422a"
       },
@@ -739,7 +739,7 @@
         "publishedAt": "2026-05-12"
       },
       "source": {
-        "repository": "AkashiSensei/blob-article",
+        "repository": "AkashiSensei/blog-article",
         "baseCommit": "85352652ceadf4894c8af4d1f9007e2dfb83ec3c",
         "contentHash": "aa753bb33d98439c76f3d2af497ac34117517e833c83aa0a9f7ed5233688062f"
       },
@@ -1087,7 +1087,7 @@
         "zhihuUrl": "https://zhuanlan.zhihu.com/p/2027137133660381420"
       },
       "source": {
-        "repository": "AkashiSensei/blob-article",
+        "repository": "AkashiSensei/blog-article",
         "baseCommit": "85352652ceadf4894c8af4d1f9007e2dfb83ec3c",
         "contentHash": "59f7740f98747b2795735d407c486c2dcb3f3aad1f351e5a354a0999b0dc83d5"
       },
@@ -1279,7 +1279,7 @@
         "zhihuUrl": "https://zhuanlan.zhihu.com/p/2023356669497804002"
       },
       "source": {
-        "repository": "AkashiSensei/blob-article",
+        "repository": "AkashiSensei/blog-article",
         "baseCommit": "85352652ceadf4894c8af4d1f9007e2dfb83ec3c",
         "contentHash": "48c9c1f9b647c65c1e5973c6d7ed27d2029820cf45fdef0c2ebd1af8ddf72ebe"
       },

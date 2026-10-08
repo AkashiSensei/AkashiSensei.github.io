@@ -151,7 +151,7 @@ export async function importArticle(sourceRoot, entry, { publicRoot = path.join(
     for (const change of replacements.sort((a, b) => b.start - a.start)) rewritten = rewritten.slice(0, change.start) + change.value + rewritten.slice(change.end)
     locales[locale] = { title, summary: config.summary, reviewed: config.reviewed, readingStats: readingStatsFromTree(tree, locale), markdown: rewritten, ...(cover ? { cover } : {}), images }
   }
-  return { id: entry.id, category: entry.category, ...(entry.publishedAt ? { publishedAt: entry.publishedAt } : {}), ...(entry.zhihuUrl ? { zhihuUrl: entry.zhihuUrl } : {}), tags: entry.tags, relatedProjects: entry.relatedProjects, selection: entry, source: { repository: 'AkashiSensei/blob-article', baseCommit, contentHash: fingerprint.digest('hex') }, locales }
+  return { id: entry.id, category: entry.category, ...(entry.publishedAt ? { publishedAt: entry.publishedAt } : {}), ...(entry.zhihuUrl ? { zhihuUrl: entry.zhihuUrl } : {}), tags: entry.tags, relatedProjects: entry.relatedProjects, selection: entry, source: { repository: 'AkashiSensei/blog-article', baseCommit, contentHash: fingerprint.digest('hex') }, locales }
 }
 
 async function importSource(sourceRoot) {
@@ -166,7 +166,7 @@ async function importSource(sourceRoot) {
     articles.push(await importArticle(root, entry, { baseCommit: commit }))
   }
   await writeFile(output, JSON.stringify({ articles }, null, 2) + '\n')
-  console.log(`Imported ${articles.length} bilingual blog article(s); source bodies remain in blob-article`)
+  console.log(`Imported ${articles.length} bilingual blog article(s); source bodies remain in blog-article`)
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {

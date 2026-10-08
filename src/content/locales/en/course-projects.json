@@ -326,9 +326,27 @@
         ]
       }
     },
+    "parallel-programming-2024": {
+      "title": "Parallel Programming Coursework",
+      "summary": "Undergraduate coursework at BUAA exploring process communication, thread synchronization, and parallel algorithms with MPI, Pthreads, and OpenMP. A CUDA final assignment built on Stanford's CS149 framework extends the work to GPU prefix sums and circle rendering. The repository preserves implementations, experiment data, reports, and algorithm diagrams.",
+      "images": {
+        "circleRenderingComparison": "Correct and incorrect CUDA circle rendering results for RGB and rand10K scenes",
+        "circleRenderingOptimizationResults": "CUDA circle rendering: tile-based optimization and performance results",
+        "exclusivePrefixSumDiagram": "Parallel exclusive prefix sum algorithm diagram",
+        "repeatedElementDetectionDiagram": "Prefix-sum-based detection of adjacent repeated elements",
+        "scanAndRepeatPerformanceResults": "Performance results for exclusive prefix sums and repeated-element detection"
+      },
+      "points": [
+        "Used MPI for distributed Monte Carlo estimation of pi and parallel password enumeration with the course-provided MD5 library.",
+        "Implemented Pthreads-based numerical integration with busy-wait, mutex, and semaphore reduction variants, plus a task queue using condition variables to wake worker threads.",
+        "Parallelized the course's serial CYK reference implementation with OpenMP and documented performance through timing scripts, experiment data, and a report.",
+        "Implemented CUDA SAXPY transfers, kernel execution, and timing, alongside parallel prefix sums and repeated-element detection, within the Stanford CS149 Assignment 3 framework.",
+        "Also within the Stanford CS149 Assignment 3 framework, parallelized CUDA circle rendering with tile-based filtering, shared memory, and prefix sums to organize relevant circles, documenting the design in the report and algorithm diagrams."
+      ]
+    },
     "compiler": {
       "title": "SysY MIPS Compiler",
-      "summary": "A BUAA Compiler Technology assignment: a Java 32-bit MIPS compiler for SysY, covering lexing, parsing, IR generation, target code generation, and error handling.",
+      "summary": "An independently built compiler for BUAA's Compiler Technology course, written in roughly 10,000 lines of Java. It compiles SysY through LLVM IR to 32-bit MIPS, supports arrays, recursion, and I/O, and combines semantic checks and basic optimizations with configurable output for inspecting each compilation stage.",
       "images": {
         "symbolTableDetail2": "Detailed output: real-time symbol table (2)",
         "sysyOverview": "SysY language overview",
@@ -338,15 +356,13 @@
         "symbolTableDetail1": "Detailed output: real-time symbol table (1)",
         "targetCodeOutput": "Detailed output: target code generation"
       },
-      "points": {
-        "projectIntro": [
-          "SysY is a subset of the C language and does not include pointer variables or floating-point numbers.",
-          "Controls compiler behavior through configuration options, including optimization and detailed output for each stage.",
-          "Supports detailed output with recursive structures and displays real-time symbol tables to make debugging easier.",
-          "Uses constant propagation, strength reduction, and pointer constant optimization to improve target-code performance."
-        ],
-        "personalWork": []
-      }
+      "points": [
+        "Built the lexer, recursive-descent parser, and AST for SysY, a C subset without pointer variables or floating-point types. Used layered symbol tables for scope management, type checking, and error reporting.",
+        "Designed the LLVM IR type and instruction model, lowering array access, short-circuit evaluation, and control flow into an intermediate representation.",
+        "Implemented the MIPS backend, including stack-frame layout, function calls, and recursion.",
+        "Combined constant folding and propagation, strength reduction, and address optimizations. Represented fixed addresses as stack offsets and reused register values with deferred storage of intermediate results to reduce redundant work and memory accesses.",
+        "Added configurable diagnostics for inspecting nested syntax structures, live symbol tables, and generated code during debugging."
+      ]
     },
     "learning-living-platform": {
       "title": "YIYAN Learning and Living Platform",

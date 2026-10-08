@@ -94,14 +94,14 @@
       "updatedAt": "2026-06-03T23:06:47Z",
       "fetchedAt": "2026-07-28T02:30:41.359Z"
     },
-    "AkashiSensei/blob-article": {
-      "commits": 9,
+    "AkashiSensei/blog-article": {
+      "commits": 12,
       "defaultBranch": "main",
+      "fetchedAt": "2026-10-08T14:08:06.652Z",
       "isPrivate": false,
-      "pushedAt": "2026-06-02T11:38:33Z",
+      "pushedAt": "2026-10-08T13:43:11Z",
       "stars": 0,
-      "updatedAt": "2026-06-02T11:38:38Z",
-      "fetchedAt": "2026-07-28T02:30:41.359Z"
+      "updatedAt": "2026-10-08T13:43:15Z"
     },
     "AkashiSensei/crater": {
       "commits": 2557,
@@ -323,6 +323,24 @@
       "pushedAt": "2026-07-26T06:07:42Z",
       "stars": 543,
       "updatedAt": "2026-07-26T06:08:06Z"
+    },
+    "AkashiSensei/BUAA-Compiler-2023": {
+      "commits": 1,
+      "defaultBranch": "main",
+      "fetchedAt": "2026-10-08T14:08:06.652Z",
+      "isPrivate": false,
+      "pushedAt": "2026-10-08T05:50:03Z",
+      "stars": 0,
+      "updatedAt": "2026-10-08T05:50:07Z"
+    },
+    "AkashiSensei/BUAA-Parallel-Programming-2024": {
+      "commits": 3,
+      "defaultBranch": "main",
+      "fetchedAt": "2026-10-08T14:08:06.652Z",
+      "isPrivate": false,
+      "pushedAt": "2026-10-08T08:35:36Z",
+      "stars": 0,
+      "updatedAt": "2026-10-08T08:35:40Z"
     }
   },
   "userActivity": {

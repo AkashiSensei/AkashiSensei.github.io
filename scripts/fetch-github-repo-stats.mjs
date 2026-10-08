@@ -172,7 +172,7 @@ const fallbackKnowledgeRepoStats = {
     stars: 3,
     updatedAt: "2026-06-03T23:06:47Z",
   },
-  "AkashiSensei/blob-article": {
+  "AkashiSensei/blog-article": {
     commits: 9,
     defaultBranch: "main",
     isPrivate: false,
