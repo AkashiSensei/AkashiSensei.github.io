@@ -1,3 +1,5 @@
+import enBlog from "./content/locales/en/blog.json"
+import zhBlog from "./content/locales/zh/blog.json"
 import i18n from "i18next"
 import { initReactI18next } from "react-i18next"
 
@@ -27,6 +29,7 @@ import zhWorkbench from "./content/locales/zh/workbench.json"
 
 const resources = {
   zh: {
+    blog: zhBlog,
     questions: zhQuestions,
     common: zhCommon,
     nav: zhNav,
@@ -40,6 +43,7 @@ const resources = {
     tools: zhTools,
   },
   en: {
+    blog: enBlog,
     questions: enQuestions,
     common: enCommon,
     nav: enNav,
@@ -89,7 +93,7 @@ void i18n.init({
   fallbackLng: "en",
   defaultNS: "common",
   fallbackNS: "common",
-  ns: ["questions", "common", "nav", "home", "resume", "knowledge", "directions", "projects", "courseProjects", "workbench", "tools"],
+  ns: ["blog", "questions", "common", "nav", "home", "resume", "knowledge", "directions", "projects", "courseProjects", "workbench", "tools"],
   interpolation: {
     escapeValue: false,
   },

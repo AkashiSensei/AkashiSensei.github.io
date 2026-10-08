@@ -1,14 +1,12 @@
 import { Suspense, lazy, useEffect, useLayoutEffect, useRef, useState } from "react"
 import { Navigate, Route, Routes, useLocation } from "react-router-dom"
-import { useTranslation } from "react-i18next"
 
-import { AppLink } from "@/components/AppLink"
 import { useAnimationPreference } from "@/components/animation-provider"
 import { Layout } from "@/components/Layout"
 import LightRays from "@/components/LightRays.jsx"
-import { Button } from "@/components/ui/button"
 import { QuestionDialogProvider } from "@/components/QuestionThreadDialog"
 import { QuestionsPage } from "@/pages/QuestionsPage"
+import { NotFoundPage } from "@/pages/NotFoundPage"
 import { HomePage } from "@/pages/HomePage"
 import { CourseProjectsPage } from "@/pages/CourseProjectsPage"
 import { KnowledgeDetailPage } from "@/pages/KnowledgeDetailPage"
@@ -34,8 +32,12 @@ const pageTitles: Record<string, string> = {
   "/tools": "Akashi - Tools",
   "/questions": "Akashi - Questions",
   "/knowledge": "Akashi - Knowledge",
+  "/blog": "Akashi - Blog",
   "/receipt-preview": "Akashi - Receipt Preview",
 }
+
+const BlogPage = lazy(() => import("@/pages/BlogPage").then((module) => ({ default: module.BlogPage })))
+const BlogArticlePage = lazy(() => import("@/pages/BlogArticlePage").then((module) => ({ default: module.BlogArticlePage })))
 
 const LiquidEther = lazy(() => import("@/components/LiquidEther.jsx"))
 const LIQUID_ETHER_DARK_COLORS = ["#7b1024", "#5227FF", "#063d66"]
@@ -216,6 +218,8 @@ function RouteEffects() {
   }, [pathname])
 
   useEffect(() => {
+    if (pathname.startsWith("/blog/")) return
+
     if (pathname.startsWith("/projects/")) {
       document.title = "Akashi - Project Detail"
       return
@@ -240,53 +244,6 @@ function RouteEffects() {
   }, [pathname])
 
   return null
-}
-
-function NotFoundPage() {
-  const { t } = useTranslation("common")
-  const { isPlainDisplayMode } = useAnimationPreference()
-
-  if (isPlainDisplayMode) {
-    return (
-      <Layout mainClassName="plain-home-main">
-        <article className="plain-home-document plain-detail-document plain-not-found-document" aria-labelledby="plain-not-found-title">
-          <header className="plain-home-header plain-detail-header">
-            <p className="plain-home-kicker">404</p>
-            <h1 id="plain-not-found-title">{t("notFound.title")}</h1>
-            <p className="plain-home-lede">{t("notFound.description")}</p>
-            <div className="plain-home-actions">
-              <AppLink to="/">{t("notFound.homeCta")}</AppLink>
-            </div>
-          </header>
-        </article>
-      </Layout>
-    )
-  }
-
-  return (
-    <Layout>
-      <section className="flex min-h-[calc(100svh-11rem)] max-w-xl flex-col justify-center gap-5 py-12">
-        <p className="text-sm font-medium uppercase tracking-[0.18em] text-foreground/45">
-          404
-        </p>
-        <div className="flex flex-col gap-3">
-          <h1 className="site-page-title">
-            {t("notFound.title")}
-          </h1>
-          <p className="site-lede">
-            {t("notFound.description")}
-          </p>
-        </div>
-        <Button
-          asChild
-          variant="outline"
-          className="mt-2 w-fit rounded-full border-white/40 bg-white/40 px-5 backdrop-blur-md transition-colors hover:bg-white/60 dark:border-white/10 dark:bg-white/10 dark:hover:bg-white/20"
-        >
-          <AppLink to="/">{t("notFound.homeCta")}</AppLink>
-        </Button>
-      </section>
-    </Layout>
-  )
 }
 
 function LightRaysBackground({
@@ -541,6 +498,8 @@ function App() {
             <Route path="/workbench" element={<WorkbenchPage />} />
             <Route path="/tools" element={<ToolsPage />} />
             <Route path="/questions" element={<QuestionsPage />} />
+            <Route path="/blog" element={<Suspense fallback={<Layout><p className="text-tone-3">…</p></Layout>}><BlogPage /></Suspense>} />
+            <Route path="/blog/:articleId" element={<Suspense fallback={<Layout><p className="text-tone-3">…</p></Layout>}><BlogArticlePage /></Suspense>} />
             <Route path="/knowledge" element={<KnowledgePage />} />
             <Route
               path="/knowledge/:entryId"

@@ -40,8 +40,7 @@ export const knowledgeEntries: KnowledgeEntry[] = [
       },
     ],
     kind: "blog",
-    featured: true,
-    featuredOrder: 1,
+    featured: false,
     updatedAt: "2026-06",
     tags: ["AI Productivity", "Engineering", "Cloud Native"],
     images: [
@@ -132,7 +131,7 @@ export const knowledgeEntries: KnowledgeEntry[] = [
     repoTags: ["public"],
     kind: "insights",
     featured: true,
-    featuredOrder: 4,
+    featuredOrder: 1,
     updatedAt: "2026-04",
     tags: ["Crater", "Platform Engineering", "Kubernetes"],
     images: [

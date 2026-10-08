@@ -97,18 +97,8 @@
 .question-answer[data-unanswered="true"] { color: var(--text-tone-3); }
 .question-bubble code { padding: .08em .25em; background: color-mix(in srgb, var(--color-foreground) 5%, transparent); border-radius: var(--radius-sm); font-size: .9em; }
 .question-bubble strong { font-weight: var(--font-weight-medium); }
-.question-project-summary { pointer-events: auto; align-self: flex-start; flex-shrink: 0; width: 100%; margin-top: 3.5rem; overflow: hidden; border: 1px solid var(--color-border); border-radius: var(--radius-xl); background: var(--color-popover); }
-.question-project-summary-header { display: flex; align-items: center; gap: .75rem; padding: .7rem 1rem; border-bottom: 1px solid var(--color-border); background: color-mix(in srgb, var(--color-foreground) 4%, var(--color-popover)); }
-.question-project-summary-icon { display: grid; place-items: center; flex-shrink: 0; width: 2.25rem; height: 2.25rem; border-radius: var(--radius); background: var(--color-background); color: var(--text-tone-3); }
-.question-project-summary-header h3 { margin: 0; font-size: var(--text-sm); font-weight: var(--font-weight-medium); line-height: 1.5; color: var(--text-tone-1); }
-.question-project-rows { list-style: none; margin: .3rem 0; padding: 0; }
-.question-project-rows a { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: .75rem; min-height: 2.4rem; padding: .5rem 1rem; font-size: var(--text-sm); line-height: 1.45; color: var(--text-tone-2); }
-.question-project-rows a:hover { background: color-mix(in srgb, var(--color-foreground) 5%, transparent); color: var(--text-tone-1); }
-.question-project-rows a:focus-visible { outline: 2px solid var(--color-ring); outline-offset: -3px; }
+.question-project-summary { margin-top: 3.5rem; }
 .question-project-name { min-width: 0; overflow-wrap: anywhere; }
-.question-project-kind { color: var(--text-tone-3); white-space: nowrap; }
-.question-project-separator { padding-inline: .25rem; color: var(--text-tone-5); }
-.question-project-rows svg { color: var(--text-tone-3); }
 .question-list-trigger:focus-visible, .question-catalog-trigger:focus-visible, .question-document-trigger:focus-visible,
 .question-filter-tags button:focus-visible,
 .question-wall-toolbar button:focus-visible { outline: 2px solid var(--color-ring); outline-offset: 3px; }

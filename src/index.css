@@ -874,6 +874,14 @@
     line-height: 1.5;
   }
 
+  .site-footer-meta-link {
+    min-height: 0;
+    color: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+  }
+
   @media (min-width: 640px) {
     .site-footer {
       --site-footer-inline-padding: 2rem;
@@ -3006,14 +3014,42 @@
 
   }
 
+  /* Measured item heights keep translated, variable-content lists balanced. */
+  .measured-masonry {
+    --masonry-columns: 1;
+    --masonry-gap: 0.75rem;
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(var(--masonry-columns), minmax(0, 1fr));
+    column-gap: var(--masonry-gap);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .measured-masonry > li { min-width: 0; padding-bottom: var(--masonry-gap); }
+  .measured-masonry[data-masonry-ready="true"] { display: block; }
+  .measured-masonry[data-masonry-ready="true"] > li {
+    position: absolute;
+    width: calc((100% - (var(--masonry-columns) - 1) * var(--masonry-gap)) / var(--masonry-columns));
+  }
+  @media (min-width: 768px) {
+    .measured-masonry { --masonry-columns: 2; }
+  }
+
   .image-preview-dialog {
     --image-preview-dialog-inline-gap: 0.5rem;
     --image-preview-dialog-block-gap: 4rem;
+    --image-preview-dialog-width: min(120rem, calc(100vw - (var(--image-preview-dialog-inline-gap) * 2)));
+    /* Cap the whole viewer, including its caption and thumbnails, at height / width = 1.2. */
+    --image-preview-dialog-height: min(
+      calc(100dvh - (var(--image-preview-dialog-block-gap) * 2)),
+      calc(var(--image-preview-dialog-width) * 1.2)
+    );
 
-    width: calc(100vw - (var(--image-preview-dialog-inline-gap) * 2)) !important;
-    height: calc(100dvh - (var(--image-preview-dialog-block-gap) * 2)) !important;
+    width: var(--image-preview-dialog-width) !important;
+    height: var(--image-preview-dialog-height) !important;
     max-width: 120rem !important;
-    max-height: calc(100dvh - (var(--image-preview-dialog-block-gap) * 2)) !important;
+    max-height: var(--image-preview-dialog-height) !important;
   }
 
   @media (min-width: 768px) {
@@ -3412,10 +3448,6 @@
   @media (min-width: 1000px) {
     .navbar-desktop-row {
       display: flex;
-    }
-
-    .navbar-dropdown-panel {
-      display: none;
     }
   }
 

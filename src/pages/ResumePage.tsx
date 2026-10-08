@@ -2,6 +2,7 @@ import { useRef } from "react"
 import { useTranslation } from "react-i18next"
 
 import { ContactDialog } from "@/components/ContactDialog"
+import { BlogHighlights } from "@/components/BlogHighlights"
 import { CourseProjectHighlights } from "@/components/CourseProjectHighlights"
 import { DirectionsSection } from "@/components/DirectionsSection"
 import { EducationHighlights } from "@/components/EducationHighlights"
@@ -141,13 +142,14 @@ export function ResumePage() {
             ))}
           </div>
         </section>
-        <ProjectHighlights />
         <EducationHighlights />
-        <GitHubActivityHighlights />
+        <ProjectHighlights />
         <DirectionsSection />
+        <GitHubActivityHighlights />
         <CourseProjectHighlights />
-        <WorkbenchHighlights />
         <QuestionWall />
+        <BlogHighlights />
+        <WorkbenchHighlights />
         <KnowledgeHighlights />
         <SmallToolHighlights />
       </div>

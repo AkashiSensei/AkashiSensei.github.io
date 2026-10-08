@@ -1,3 +1,5 @@
+import { NotFoundPage } from "@/pages/NotFoundPage"
+import { RelatedArticles } from "@/components/RelatedArticles"
 import { ExternalLinkIcon } from "@/components/ExternalLinkIcon"
 import { RelatedQuestions } from "@/components/RelatedQuestions"
 import { useTranslation } from "react-i18next"
@@ -51,37 +53,7 @@ export function ProjectDetailPage({
   const { isPlainDisplayMode } = useAnimationPreference()
   const project = projects.find((entry) => entry.id === projectId)
 
-  if (!project) {
-    if (isPlainDisplayMode) {
-      return (
-        <PlainDetailPage
-          title={t("common:notFound.title")}
-          summary={t("common:notFound.description")}
-          kicker="404"
-          fallback={fallbackPath}
-        />
-      )
-    }
-
-    return (
-      <Layout>
-        <section className="flex min-h-[calc(100svh-11rem)] max-w-xl flex-col justify-center gap-5 py-12">
-          <BackButton fallback={fallbackPath} />
-          <p className="text-sm font-normal uppercase tracking-[0.18em] text-foreground/45">
-            404
-          </p>
-          <div className="flex flex-col gap-3">
-            <h1 className="site-page-title">
-              {t("common:notFound.title")}
-            </h1>
-            <p className="site-lede">
-              {t("common:notFound.description")}
-            </p>
-          </div>
-        </section>
-      </Layout>
-    )
-  }
+  if (!project) return <NotFoundPage fallbackPath={fallbackPath} />
 
   const title = t(`items.${project.id}.title`)
   const { projectIntroPoints, personalWorkPoints } = getProjectPointSections(
@@ -163,7 +135,7 @@ export function ProjectDetailPage({
         showSingleSectionTitle
         sectionHeadingClassName={projectDetailHeadingClassName}
         tagsTitle={t("common:details.tags")}
-        asideContent={<RelatedQuestions project={{ module: translationNamespace === "projects" ? "projects" : "course-projects", id: project.id }} />}
+        asideContent={<><RelatedQuestions project={{ module: translationNamespace === "projects" ? "projects" : "course-projects", id: project.id }} />{translationNamespace === "projects" ? <RelatedArticles projectId={project.id} /> : null}</>}
       />
     )
   }
@@ -331,6 +303,7 @@ export function ProjectDetailPage({
               })}
             </div>
             <RelatedQuestions project={{ module: translationNamespace === "projects" ? "projects" : "course-projects", id: project.id }} />
+            {translationNamespace === "projects" ? <RelatedArticles projectId={project.id} /> : null}
           </aside>
         </div>
       </article>

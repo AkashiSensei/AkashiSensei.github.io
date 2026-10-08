@@ -4,6 +4,7 @@ import { useLocation } from "react-router-dom"
 
 import { AppLink } from "@/components/AppLink"
 import { ContactDialog } from "@/components/ContactDialog"
+import { ExternalLinkIcon } from "@/components/ExternalLinkIcon"
 import { GitHubMark } from "@/components/GitHubMark"
 import { useAnimationPreference } from "@/components/animation-provider"
 import { useTheme } from "@/components/theme-provider"
@@ -13,9 +14,10 @@ const primaryLinks = [
   { to: "/resume", labelKey: "nav:resume" },
   { to: "/projects", labelKey: "nav:projects" },
   { to: "/course-projects", labelKey: "nav:coursework" },
-  { to: "/workbench", labelKey: "nav:workspace" },
   { to: "/questions", labelKey: "nav:questions" },
+  { to: "/blog", labelKey: "nav:blog" },
   { to: "/knowledge", labelKey: "nav:knowledge" },
+  { to: "/workbench", labelKey: "nav:workspace" },
   { to: "/tools", labelKey: "nav:tools" },
 ] as const
 
@@ -128,6 +130,8 @@ export function SiteFooter() {
     breadcrumbs.push({ label: t("nav:questions") })
   } else if (section === "knowledge") {
     breadcrumbs.push({ label: t("nav:knowledge"), to: detailId ? "/knowledge" : undefined })
+  } else if (section === "blog") {
+    breadcrumbs.push({ label: t("nav:blog"), to: detailId ? "/blog" : undefined })
   } else if (section === "tools") {
     breadcrumbs.push({ label: t("nav:tools"), to: detailId ? "/tools" : undefined })
   } else if (section === "receipt-preview") {
@@ -190,7 +194,7 @@ export function SiteFooter() {
               className="site-footer-action"
             >
               <GitHubMark className="h-4 w-4 shrink-0" />
-              <span>{t("footer.github")}</span>
+              <span>{t("footer.profile")}</span>
             </a>
             <ContactDialog>
               <button type="button" className="site-footer-action">
@@ -212,6 +216,16 @@ export function SiteFooter() {
             </dl>
           </div>
           <p>{t("footer.copyright", { year: currentYear })}</p>
+          <a
+            href="https://github.com/AkashiSensei/AkashiSensei.github.io"
+            target="_blank"
+            rel="noreferrer"
+            className="group/repo site-footer-link site-footer-meta-link w-fit gap-1.5"
+          >
+            <GitHubMark className="h-[1em] w-[1em] shrink-0" />
+            <span className="site-text-link">{t("footer.source")}</span>
+            <ExternalLinkIcon className="h-[1em] w-[1em] shrink-0 transition-transform group-hover/repo:-translate-y-0.5 group-hover/repo:translate-x-0.5 motion-reduce:transform-none" />
+          </a>
         </div>
       </div>
     </footer>

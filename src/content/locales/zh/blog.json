@@ -1,0 +1,31 @@
+{
+  "title": "博客",
+  "subtitle": "写下实践中的问题，整理系统背后的思路",
+  "viewAllWithCount": "查看全部 {{count}} 篇博客",
+  "all": "全部",
+  "categoriesLabel": "文章分类",
+  "categories": {
+    "cloud-and-ai-infra": "云计算与 AI 基础设施",
+    "ai-productivity": "AI 提效手记",
+    "engineering": "工程实践"
+  },
+  "toc": "目录",
+  "openToc": "展开文章目录",
+  "closeToc": "收起文章目录",
+  "authorNote": "作者补充",
+  "translationDraft": "英文版为 AI 辅助翻译稿，尚待人工审阅",
+  "fallback": "暂未提供此语言的版本，以下显示中文原文",
+  "relatedProjects": "相关项目",
+  "relatedArticles": "相关文章",
+  "table": "可横向滚动的表格",
+  "enlarge": "放大图片：{{image}}",
+  "copySectionLink": "复制此章节的链接",
+  "copyCode": "复制完整代码",
+  "zhihuSource": "知乎发布页",
+  "zhihuLanguage": "中文",
+  "zhihuPosts": "也在知乎",
+  "characterCount": "{{formattedCount}} 字",
+  "wordCount": "{{formattedCount}} 词",
+  "readingTime": "预计阅读 {{minutes}} 分钟",
+  "publishedAt": "发布于 {{date}}"
+}

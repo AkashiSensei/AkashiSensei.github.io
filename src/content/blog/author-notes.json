@@ -1,0 +1,32 @@
+[
+  {
+    "id": "keyring-storage-update",
+    "articleId": "cli-tool-design",
+    "publishedAt": "2026-09-28",
+    "locales": {
+      "zh": {
+        "anchor": { "kind": "section-end", "text": "access token 的保存" },
+        "markdown": "前不久抛弃了 token 存在 keyring 的设计，因为这在一些工程做的不太好的系统上可能会有问题。比如通过 ssh 登陆使用，但是目标主机却在桌面弹出了 keyring 的认证和确认信息，导致 `crater auth login` 被卡住。而且我们的 token 本来就能通过浏览器拿到，明文保存这个并不会有特别大的安全风险。"
+      },
+      "en": {
+        "anchor": { "kind": "section-end", "text": "Saving access tokens" },
+        "markdown": "I recently abandoned the design of storing tokens in the keyring, because it can cause problems on systems whose integration is not well implemented. For example, when logging in over SSH, the target machine may display a keyring authentication and confirmation prompt on its desktop, leaving `crater auth login` stuck. Our tokens can already be obtained through the browser, so storing them in plaintext does not introduce a particularly large additional security risk."
+      }
+    }
+  },
+  {
+    "id": "qclaw-shutdown-update",
+    "articleId": "qclaw-first-look",
+    "publishedAt": "2026-10-08",
+    "locales": {
+      "zh": {
+        "anchor": { "kind": "section-end", "text": "缘起" },
+        "markdown": "9 月 24 号腾讯说 QClaw 要在 12 月 24 号停止运营了，只能说情理和预料之中，本来就是一个欠打磨的东西，完全比不过 Codex 远程、Grok Bot 之类的，这俩是我现在用的最多的了。再见捏，企鹅小虾～"
+      },
+      "en": {
+        "anchor": { "kind": "section-end", "text": "Why I tried it" },
+        "markdown": "On September 24, Tencent said QClaw would shut down on December 24. I can only say that this makes sense and is what I expected: it was an underpolished product to begin with, and it cannot compete with tools such as Codex remote access and Grok Bot, which are the two I use most these days. Bye-bye, little penguin shrimp~"
+      }
+    }
+  }
+]

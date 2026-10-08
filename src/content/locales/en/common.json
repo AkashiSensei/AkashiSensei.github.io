@@ -1,4 +1,6 @@
 {
+  "relatedProjectCount_one": "{{count}} related project",
+  "relatedProjectCount_other": "{{count}} related projects",
   "site": {
     "displayName": "Akashi"
   },
@@ -70,13 +72,14 @@
     "themeValues": {
       "dark": "Dark",
       "light": "Light",
-      "system": "{{theme}}(System)"
+      "system": "{{theme}} (System)"
     },
     "languageValues": {
       "zh": "中文",
-      "en": "English"
+      "en": "English (translated by AI)"
     },
-    "github": "GitHub",
+    "profile": "Profile",
+    "source": "Site source",
     "contact": "Contact",
     "copyright": "© {{year}} Akashi. Built for GitHub Pages."
   },

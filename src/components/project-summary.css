@@ -1,0 +1,20 @@
+.project-summary { pointer-events: auto; align-self: flex-start; flex-shrink: 0; width: 100%; overflow: hidden; border: 1px solid var(--color-border); border-radius: var(--radius-xl); background: var(--color-popover); }
+.project-summary-header { display: flex; align-items: center; gap: .75rem; padding: .7rem 1rem; border-bottom: 1px solid var(--color-border); background: color-mix(in srgb, var(--color-foreground) 4%, var(--color-popover)); }
+.project-summary-icon { display: grid; place-items: center; flex-shrink: 0; width: 2.25rem; height: 2.25rem; border-radius: var(--radius); background: var(--color-background); color: var(--text-tone-3); }
+.project-summary-header :is(h2, h3) { margin: 0; padding: 0; font-size: var(--text-sm); font-weight: var(--font-weight-medium); line-height: 1.5; color: var(--text-tone-1); }
+.project-summary-rows { list-style: none; margin: .3rem 0; padding: 0; }
+.project-summary-rows a { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: .75rem; min-height: 2.4rem; padding: .5rem 1rem; font-size: var(--text-sm); line-height: 1.45; color: var(--text-tone-2); }
+.project-summary-rows a:hover { background: color-mix(in srgb, var(--color-foreground) 5%, transparent); color: var(--text-tone-1); }
+.project-summary-rows a:focus-visible { outline: 2px solid var(--color-ring); outline-offset: -3px; }
+.project-summary-name { min-width: 0; overflow-wrap: anywhere; }
+.project-summary-kind { color: var(--text-tone-3); white-space: nowrap; }
+.project-summary-separator { padding-inline: .25rem; color: var(--text-tone-5); }
+.project-summary-rows svg { color: var(--text-tone-3); }
+.project-summary[data-display-mode="plain"] { border: 0; border-radius: 0; background: none; }
+.project-summary[data-display-mode="plain"] .project-summary-header { padding: 0; border: 0; background: none; }
+.project-summary[data-display-mode="plain"] .project-summary-icon { width: auto; height: auto; background: none; }
+.project-summary[data-display-mode="plain"] .project-summary-rows a { padding-inline: 0; }
+.project-summary-rows[data-variant="text"] { display: flex; flex-direction: column; gap: .5rem; margin: 0; }
+.project-summary-rows[data-variant="text"] a { display: inline-grid; max-width: 100%; min-height: 0; padding: 0; }
+.project-summary-rows[data-variant="text"] a:hover { background: none; }
+.project-summary-rows[data-variant="text"] a:focus-visible { outline-offset: 3px; }

@@ -1,3 +1,5 @@
+import { NotFoundPage } from "@/pages/NotFoundPage"
+import { AppLink } from "@/components/AppLink"
 import { ExternalLinkIcon } from "@/components/ExternalLinkIcon"
 import { useTranslation } from "react-i18next"
 import { useParams } from "react-router-dom"
@@ -45,37 +47,7 @@ export function KnowledgeDetailPage({ entries }: KnowledgeDetailPageProps) {
   const { isPlainDisplayMode } = useAnimationPreference()
   const entry = entries.find((item) => item.id === entryId)
 
-  if (!entry) {
-    if (isPlainDisplayMode) {
-      return (
-        <PlainDetailPage
-          title={t("common:notFound.title")}
-          summary={t("common:notFound.description")}
-          kicker="404"
-          fallback="/knowledge"
-        />
-      )
-    }
-
-    return (
-      <Layout>
-        <section className="flex min-h-[calc(100svh-11rem)] max-w-xl flex-col justify-center gap-5 py-12">
-          <BackButton fallback="/knowledge" />
-          <p className="text-sm font-normal uppercase tracking-[0.18em] text-foreground/45">
-            404
-          </p>
-          <div className="flex flex-col gap-3">
-            <h1 className="site-page-title">
-              {t("common:notFound.title")}
-            </h1>
-            <p className="site-lede">
-              {t("common:notFound.description")}
-            </p>
-          </div>
-        </section>
-      </Layout>
-    )
-  }
+  if (!entry) return <NotFoundPage fallbackPath="/knowledge" />
 
   const points = getPoints(t(`items.${entry.id}.points`, { returnObjects: true }))
   const updatedDate = getGitHubRepoUpdatedDate(entry.githubRepo, entry.updatedAt)
@@ -89,6 +61,7 @@ export function KnowledgeDetailPage({ entries }: KnowledgeDetailPageProps) {
   if (isPlainDisplayMode) {
     return (
       <PlainDetailPage
+        asideContent={entry.id === "blob-article" ? <AppLink to="/blog" className="site-text-link">{t("blog:title")}</AppLink> : undefined}
         title={t(`items.${entry.id}.title`)}
         summary={t(`items.${entry.id}.summary`)}
         kicker={t("title")}
@@ -146,6 +119,7 @@ export function KnowledgeDetailPage({ entries }: KnowledgeDetailPageProps) {
           <BackButton fallback="/knowledge" />
 
           <header className="flex w-full flex-col gap-5">
+            {entry.id === "blob-article" ? <AppLink to="/blog" className="site-text-link text-tone-2">{t("blog:title")}</AppLink> : null}
             <p className="text-sm font-normal text-foreground/55 dark:text-foreground/65">
               {t("title")}
             </p>

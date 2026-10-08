@@ -6,7 +6,7 @@ import { Dialog as DialogPrimitive } from "radix-ui"
 import { Dialog, DialogPortal, DialogOverlay, DialogDescription, DialogTitle } from "@/components/ui/dialog"
 import { QuestionText } from "@/components/QuestionText"
 import { QuestionTags } from "@/components/QuestionTags"
-import { QuestionProjectSummary } from "@/components/QuestionProjectLinks"
+import { ProjectSummary } from "@/components/ProjectSummary"
 import { QuestionConversationFlow } from "@/components/QuestionConversationFlow"
 import { QuestionImageBubble } from "@/components/QuestionImageBubble"
 import { questionConversationPartCount, questionRoundImages } from "@/lib/question-images"
@@ -39,7 +39,7 @@ function ThreadBody({ thread, roundId, open }: { thread: QuestionThread; roundId
             </div>
           </section>)}
         </div>
-        <QuestionProjectSummary projects={thread.relatedProjects} />
+        <ProjectSummary projects={thread.relatedProjects} className="question-project-summary" />
     </QuestionConversationFlow>
   )
 }

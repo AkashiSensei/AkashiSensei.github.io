@@ -3,6 +3,7 @@ import { ExternalLinkIcon } from "@/components/ExternalLinkIcon"
 import { DocumentTag } from "@/components/DocumentTag"
 import { SectionNote } from "@/components/SectionHeader"
 import { QuestionWall } from "@/components/QuestionWall"
+import { BlogHighlights } from "@/components/BlogHighlights"
 import { useEffect, useMemo, useRef, useState } from "react"
 import { useTranslation } from "react-i18next"
 
@@ -425,19 +426,6 @@ export function ResumePlainExperience() {
       </header>
 
       <section>
-        <h2>
-          <AppLink to="/projects">{t("projects:title")}</AppLink>
-        </h2>
-        <p>{t("projects:subtitle")}</p>
-        <ResumePlainProjectList
-          detailBasePath="/projects"
-          projects={plainResumeProjects}
-          sectionIndex={0}
-          translationNamespace="projects"
-        />
-      </section>
-
-      <section>
         <h2>{t("education.title")}</h2>
         <p>{t("education.subtitle")}</p>
         <div className="plain-resume-mini-list">
@@ -461,6 +449,19 @@ export function ResumePlainExperience() {
             )
           })}
         </div>
+      </section>
+
+      <section>
+        <h2>
+          <AppLink to="/projects">{t("projects:title")}</AppLink>
+        </h2>
+        <p>{t("projects:subtitle")}</p>
+        <ResumePlainProjectList
+          detailBasePath="/projects"
+          projects={plainResumeProjects}
+          sectionIndex={0}
+          translationNamespace="projects"
+        />
       </section>
 
       <section>
@@ -489,6 +490,9 @@ export function ResumePlainExperience() {
         />
         <SectionNote><p>{t("courseProjects:reflection")}</p></SectionNote>
       </section>
+
+      <QuestionWall />
+      <BlogHighlights />
 
       <section>
         <h2>
@@ -519,8 +523,6 @@ export function ResumePlainExperience() {
           })}
         </div>
       </section>
-
-      <QuestionWall />
 
       <section>
         <h2>

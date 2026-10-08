@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { toString as qrToString } from "qrcode";
 import {
   type AnimationMode,
@@ -24,6 +24,7 @@ import {
   X,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { navigationGlassSurfaceClassName } from "@/lib/glass-surface-styles";
 
 const phoneQrPanelWidth = 224;
 const phoneQrPanelGap = 8;
@@ -95,6 +96,7 @@ export function Navbar() {
   const { animationMode, isAnimationEnabled, setAnimationMode } =
     useAnimationPreference();
   const location = useLocation();
+  const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [displayModeMenuOpen, setDisplayModeMenuOpen] = useState(false);
   const [displayModePanelPosition, setDisplayModePanelPosition] = useState<{
@@ -115,6 +117,7 @@ export function Navbar() {
   const [phoneQrError, setPhoneQrError] = useState(false);
   const [scrollDisplacement, setScrollDisplacement] = useState(0);
   const navRef = useRef<HTMLDivElement>(null);
+  const activeNavMenuButtonRef = useRef<HTMLButtonElement | null>(null);
   const phoneQrPanelRef = useRef<HTMLDivElement>(null);
   const displayModePanelRef = useRef<HTMLDivElement>(null);
   const themePanelRef = useRef<HTMLDivElement>(null);
@@ -203,6 +206,10 @@ export function Navbar() {
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
+        if (mobileMenuOpen) {
+          setMobileMenuOpen(false);
+          activeNavMenuButtonRef.current?.focus();
+        }
         setDisplayModeMenuOpen(false);
         setThemeMenuOpen(false);
       }
@@ -213,7 +220,7 @@ export function Navbar() {
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, []);
+  }, [mobileMenuOpen]);
 
   const currentPageUrl = useMemo(
     () => `${window.location.origin}${location.pathname}${location.search}${location.hash}`,
@@ -553,18 +560,27 @@ export function Navbar() {
   const toggleLanguage = () => {
     const currentLanguage = i18n.resolvedLanguage ?? i18n.language;
     const nextLang = currentLanguage.startsWith("zh") ? "en" : "zh";
+    if (location.pathname.startsWith("/blog/")) {
+      const params = new URLSearchParams(location.search);
+      params.set("lang", nextLang);
+      navigate({ pathname: location.pathname, search: params.toString(), hash: location.hash }, { replace: true, preventScrollReset: true });
+    }
     i18n.changeLanguage(nextLang);
   };
 
-  const navLinks = [
+  const primaryNavLinks = [
     { href: "/resume", label: t("nav:resume") },
     { href: "/projects", label: t("nav:projects") },
     { href: "/course-projects", label: t("nav:coursework") },
-    { href: "/workbench", label: t("nav:workspace") },
     { href: "/questions", label: t("nav:questions") },
+    { href: "/blog", label: t("nav:blog") },
+  ];
+  const secondaryNavLinks = [
+    { href: "/workbench", label: t("nav:workspace") },
     { href: "/knowledge", label: t("nav:knowledge") },
     { href: "/tools", label: t("nav:tools") },
   ];
+  const navLinks = [...primaryNavLinks, ...secondaryNavLinks];
 
   const currentPathname = location.pathname.replace(/\/+$/, "") || "/";
   const isNavLinkActive = (href: string) =>
@@ -585,7 +601,8 @@ export function Navbar() {
     setPhoneQrOpen((isOpen) => !isOpen);
   };
 
-  const toggleDesktopMenu = () => {
+  const toggleDesktopMenu = (event: { currentTarget: HTMLButtonElement }) => {
+    activeNavMenuButtonRef.current = event.currentTarget;
     setPhoneQrOpen(false);
     setDisplayModeMenuOpen(false);
     setThemeMenuOpen(false);
@@ -976,7 +993,7 @@ export function Navbar() {
       className="site-navbar-shell fixed bottom-7 inset-x-6 z-50 mx-auto max-w-5xl transition-transform duration-[460ms] ease-out will-change-transform sm:bottom-8 sm:inset-x-8 md:bottom-auto md:top-4 md:inset-x-12 md:mx-0 md:max-w-none min-[900px]:inset-x-14 min-[1000px]:w-auto min-[1000px]:px-0 xl:inset-x-32 2xl:inset-x-44"
       style={{ transform: `translate3d(0, ${scrollDisplacement.toFixed(2)}px, 0)` }}
     >
-      <SpotlightCard asChild className="mobile-navbar-pill lit-glass-card relative z-50 flex h-12 items-center justify-between rounded-full border border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.42)] py-2 pl-[11px] pr-3 shadow-sm backdrop-blur-md transition-all duration-300 dark:border-white/10 dark:bg-white/10 md:hidden">
+      <SpotlightCard asChild className={cn(navigationGlassSurfaceClassName, "mobile-navbar-pill relative z-50 flex h-12 items-center justify-between rounded-full py-2 pl-[11px] pr-3 transition-all duration-300 md:hidden")}>
         <nav>
           <div className="mobile-navbar-brand flex min-w-0 items-center gap-2">
             <img
@@ -1014,6 +1031,8 @@ export function Navbar() {
 
             <button 
               onClick={toggleDesktopMenu}
+              aria-expanded={mobileMenuOpen}
+              aria-controls="navbar-navigation-dropdown"
               className="flex h-8 w-8 items-center justify-center rounded-full transition-colors hover:bg-muted/50"
               title={t("a11y.toggleMenu")}
             >
@@ -1061,6 +1080,8 @@ export function Navbar() {
           {renderPhoneQrButton("compact")}
           <button
             onClick={toggleDesktopMenu}
+            aria-expanded={mobileMenuOpen}
+            aria-controls="navbar-navigation-dropdown"
             className="desktop-menu-item flex h-8 w-8 items-center justify-center rounded-full hover:bg-muted/50"
             title={t("a11y.toggleMenu")}
           >
@@ -1087,7 +1108,7 @@ export function Navbar() {
 
         <SpotlightCard asChild className="desktop-menu-cluster lit-glass-card flex h-12 min-w-0 items-center justify-center gap-3.5 rounded-full border border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.42)] px-5 text-sm font-normal text-foreground/80 shadow-sm backdrop-blur-md transition-all duration-300 dark:border-white/10 dark:bg-white/10 xl:gap-5 xl:px-6">
           <nav>
-            {navLinks.map((link) => {
+            {primaryNavLinks.map((link) => {
               const isActive = isNavLinkActive(link.href);
 
               return (
@@ -1105,6 +1126,20 @@ export function Navbar() {
                 </span>
               );
             })}
+            <button
+              type="button"
+              onClick={toggleDesktopMenu}
+              className={cn(
+                "desktop-menu-item flex h-8 w-8 shrink-0 items-center justify-center rounded-full hover:bg-muted/50",
+                (mobileMenuOpen || secondaryNavLinks.some((link) => isNavLinkActive(link.href))) && "bg-muted/50 text-tone-1",
+              )}
+              aria-label={t("a11y.toggleMenu")}
+              aria-expanded={mobileMenuOpen}
+              aria-controls="navbar-navigation-dropdown"
+              title={t("a11y.toggleMenu")}
+            >
+              {mobileMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+            </button>
           </nav>
         </SpotlightCard>
 
@@ -1136,10 +1171,10 @@ export function Navbar() {
       {renderDisplayModePanel()}
 
       {mobileMenuOpen && (
-        <SpotlightCard className="navbar-dropdown-panel lit-glass-card absolute bottom-full left-0 right-0 mb-2 origin-bottom rounded-3xl border border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.42)] p-3 shadow-sm backdrop-blur-md transition-all duration-300 dark:border-white/10 dark:bg-white/10 md:bottom-auto md:left-auto md:right-0 md:top-full md:mt-2 md:w-[22rem] md:origin-top">
-          <div className="flex flex-col gap-1 text-sm font-normal">
+        <SpotlightCard className="navbar-dropdown-panel lit-glass-card absolute bottom-full left-0 right-0 mb-2 origin-bottom rounded-3xl border border-[rgb(var(--site-surface-rgb)_/_0.42)] bg-[rgb(var(--site-surface-rgb)_/_0.42)] p-3 shadow-sm backdrop-blur-md transition-all duration-300 dark:border-white/10 dark:bg-white/10 md:bottom-auto md:left-1/2 md:right-auto md:top-full md:mt-2 md:w-[22rem] md:-translate-x-1/2 md:origin-top min-[1000px]:w-48">
+          <nav id="navbar-navigation-dropdown" aria-label={t("a11y.toggleMenu")} className="flex flex-col gap-1 text-sm font-normal">
             {navLinks.map((link, idx) => (
-              <span key={idx} className="block">
+              <span key={link.href} className={cn("block", idx < primaryNavLinks.length && "min-[1000px]:hidden")}>
                 {(() => {
                   const isActive = isNavLinkActive(link.href);
 
@@ -1158,7 +1193,7 @@ export function Navbar() {
                 })()}
               </span>
             ))}
-          </div>
+          </nav>
         </SpotlightCard>
       )}
     </div>

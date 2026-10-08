@@ -1,3 +1,4 @@
+import { NotFoundPage } from "@/pages/NotFoundPage"
 import { ExternalLinkIcon } from "@/components/ExternalLinkIcon"
 import { useTranslation } from "react-i18next"
 import { useParams } from "react-router-dom"
@@ -38,37 +39,7 @@ export function SmallToolDetailPage({ tools }: SmallToolDetailPageProps) {
   const { isPlainDisplayMode } = useAnimationPreference()
   const tool = tools.find((entry) => entry.id === toolId)
 
-  if (!tool) {
-    if (isPlainDisplayMode) {
-      return (
-        <PlainDetailPage
-          title={t("common:notFound.title")}
-          summary={t("common:notFound.description")}
-          kicker="404"
-          fallback="/tools"
-        />
-      )
-    }
-
-    return (
-      <Layout>
-        <section className="flex min-h-[calc(100svh-11rem)] max-w-xl flex-col justify-center gap-5 py-12">
-          <BackButton fallback="/tools" />
-          <p className="text-sm font-normal uppercase tracking-[0.18em] text-foreground/45">
-            404
-          </p>
-          <div className="flex flex-col gap-3">
-            <h1 className="site-page-title">
-              {t("common:notFound.title")}
-            </h1>
-            <p className="site-lede">
-              {t("common:notFound.description")}
-            </p>
-          </div>
-        </section>
-      </Layout>
-    )
-  }
+  if (!tool) return <NotFoundPage fallbackPath="/tools" />
 
   const points = getPoints(t(`items.${tool.id}.points`, { returnObjects: true }))
 

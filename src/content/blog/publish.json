@@ -1,0 +1,249 @@
+[
+  {
+    "id": "volcano-job-scheduling-admission",
+    "directory": "cloud-and-ai-infra/volcano-job-scheduling-admission",
+    "category": "cloud-and-ai-infra",
+    "tags": [
+      "Kubernetes",
+      "Volcano",
+      "Scheduling"
+    ],
+    "relatedProjects": [
+      "crater"
+    ],
+    "locales": {
+      "zh": {
+        "file": "zh-CN.md",
+        "summary": "在 Crater 这样的共享 AI 集群中，训练、推理等作业往往包含多个需要协同启动的 Pod，调度不仅要找到空闲节点，还要处理作业整体与队列之间的资源竞争。文章先厘清 Volcano 与 Kubernetes 的分工，以及 Job、PodGroup、Queue 的关系，再沿一轮调度周期解释 enqueue 接纳、allocate 分配和回填、抢占、回收。最后讨论配置、插件与 Extender 的扩展方式，说明平台策略与调度器的职责边界，帮助理解作业获准参与分配与真正取得资源的区别。",
+        "reviewed": true,
+        "cover": {
+          "file": "images/0-volcano-cover.png",
+          "alt": "Volcano 作业接纳与调度：文章封面"
+        }
+      },
+      "en": {
+        "file": "en-US.md",
+        "summary": "Shared AI clusters such as Crater must coordinate multiple Pods within a job while balancing competing queues. The article introduces Volcano’s role alongside Kubernetes and the relationships between Job, PodGroup, and Queue, then follows a scheduling cycle through admission, allocation, backfill, preemption, and reclamation. It closes with configuration, plugins, and Extender, clarifying platform and scheduler responsibilities and why admission does not guarantee resource allocation.",
+        "reviewed": false,
+        "cover": {
+          "file": "images/0-volcano-cover.png",
+          "alt": "Volcano job admission and scheduling: article cover"
+        }
+      }
+    },
+    "publishedAt": "2026-10-07",
+    "zhihuUrl": "https://zhuanlan.zhihu.com/p/2091278072184160310"
+  },
+  {
+    "id": "platform-components-taints-tolerations",
+    "directory": "cloud-and-ai-infra/platform-components-taints-tolerations",
+    "category": "cloud-and-ai-infra",
+    "tags": [
+      "Kubernetes",
+      "RDMA",
+      "CSI",
+      "Scheduling"
+    ],
+    "relatedProjects": [
+      "crater"
+    ],
+    "locales": {
+      "zh": {
+        "file": "zh-CN.md",
+        "summary": "共享集群通过污点实现节点独占时，网络与存储组件也需要正确的容忍，否则业务作业获准调度，底层服务仍可能缺席。文章复盘 Crater 中 RDMA 资源消失与新建服务无法挂载的两次故障，从现象、排查到配置入口追踪 OFED、设备插件和 CephFS CSI 的部署问题。随后给出 Network Operator、NicClusterPolicy 与 Rook 的修复配置，验证部署、资源与挂载，说明为何应修改控制器配置源，而不只修改生成的 DaemonSet。",
+        "reviewed": true,
+        "cover": {
+          "file": "cover.png",
+          "alt": "从 RDMA 资源消失到 CSI 挂载失败：平台组件的污点与容忍：文章封面"
+        }
+      },
+      "en": {
+        "file": "en-US.md",
+        "summary": "Node taints used for exclusive accounts can also block the network and storage components needed by workloads. Two Crater incidents—missing RDMA resources and failed mounts in new storage-server Pods—trace the diagnosis through OFED, device plugins, and CephFS CSI. The article identifies the relevant Network Operator, NicClusterPolicy, and Rook settings, then verifies component placement, resource discovery, and mounts. It explains why fixes belong in controller configuration rather than generated DaemonSets.",
+        "reviewed": false,
+        "cover": {
+          "file": "cover.png",
+          "alt": "From Missing RDMA Resources to Failed CSI Mounts: Taints and Tolerations for Platform Components: article cover"
+        }
+      }
+    },
+    "publishedAt": "2026-10-02",
+    "zhihuUrl": "https://zhuanlan.zhihu.com/p/2089405831787845035"
+  },
+  {
+    "id": "cli-tool-design",
+    "directory": "engineering/cli-tool-design",
+    "category": "engineering",
+    "tags": [
+      "CLI",
+      "Go",
+      "Agents",
+      "Skills"
+    ],
+    "relatedProjects": [
+      "crater-cli"
+    ],
+    "locales": {
+      "zh": {
+        "file": "zh-CN.md",
+        "summary": "为了让 AI Agent、脚本和习惯命令行的用户直接操作 Crater，CLI 需要在复用 Web 后端接口的同时，兼顾人类使用体验与机器调用的可靠性。文章从仓库归属、名词优先的命令组织和文档驱动开发开始，逐项讨论 Go 技术选型、构建分发、凭据与鉴权、接口网络和测试，再介绍帮助信息、多语言、Tab 补全与交互提示。最后梳理非交互模式、JSON 输出及 Skills 的组织与分发，记录基本框架阶段的设计权衡，也明确版本管理等尚待完善的部分。",
+        "reviewed": true,
+        "cover": {
+          "file": "img/cover.png",
+          "alt": "Web 平台 CLI 工具开发的诸多问题、思考和决策：文章封面"
+        }
+      },
+      "en": {
+        "file": "en-US.md",
+        "summary": "Crater CLI gives AI agents, scripts, and command-line users access to a platform previously served through a Web frontend. The article works through repository placement, noun-first commands, and documentation-driven development, then examines Go, distribution, credentials, authentication, networking, and tests. Help, localization, completion, and prompts serve human users; non-interactive mode, JSON output, and Skills serve agents. It records early design trade-offs and identifies unfinished work such as version management.",
+        "reviewed": false,
+        "cover": {
+          "file": "img/cover.png",
+          "alt": "Many Problems, Thoughts, and Decisions in Building a CLI Tool for a Web Platform: article cover"
+        }
+      }
+    },
+    "publishedAt": "2026-05-22",
+    "zhihuUrl": "https://zhuanlan.zhihu.com/p/2041206568620913470"
+  },
+  {
+    "id": "codex-mobile-remote-control",
+    "directory": "ai-productivity/codex-mobile-remote-control",
+    "category": "ai-productivity",
+    "tags": [
+      "Codex",
+      "Remote Control",
+      "Proxy"
+    ],
+    "relatedProjects": [],
+    "locales": {
+      "zh": {
+        "file": "zh-CN.md",
+        "summary": "为了在手机上继续电脑中的工作，我尝试配置 Codex 远控，却遇到手机始终等待桌面端、桌面对话反复重连的问题。文章记录这次排障，推测症状与远控所需的长连接失败有关，并指出自己代理环境变量遗漏 URL 协议头的配置错误。随后介绍本人采用的 TUN 接管、清理旧配置并重启的解决过程，同时列出显式配置代理的另一种思路，区分已验证方案与未亲自使用的做法，供类似现象排查参考。",
+        "reviewed": true,
+        "cover": {
+          "file": "img/cover.jpg",
+          "alt": "五次重连/Codex手机版一直显示等待桌面端：文章封面"
+        },
+        "title": "五次重连/Codex手机版一直显示等待桌面端"
+      },
+      "en": {
+        "file": "en-US.md",
+        "summary": "Trying to continue desktop work from a phone, I encountered Codex mobile waiting for desktop and repeated reconnect attempts. This troubleshooting note links the symptoms to a suspected failure of the long-lived connection needed for remote control and identifies a missing URL scheme in my proxy variables. It records the fix I used—TUN mode, removing the old configuration, and restarting Codex—alongside an explicit-proxy alternative I did not personally test, keeping the diagnosis tied to this case.",
+        "reviewed": false,
+        "cover": {
+          "file": "img/cover.jpg",
+          "alt": "Five Reconnect Attempts and Codex Mobile Stuck Waiting for Desktop: article cover"
+        },
+        "title": "Five Reconnect Attempts and Codex Mobile Stuck Waiting for Desktop"
+      }
+    },
+    "zhihuUrl": "https://zhuanlan.zhihu.com/p/2038938826651989256",
+    "publishedAt": "2026-05-16"
+  },
+  {
+    "id": "ai-pr-review",
+    "directory": "ai-productivity/ai-pr-review",
+    "category": "ai-productivity",
+    "tags": [
+      "AI",
+      "Code Review",
+      "GitHub Copilot",
+      "Cursor Bugbot"
+    ],
+    "relatedProjects": [
+      "crater",
+      "npu-computing-forecast"
+    ],
+    "locales": {
+      "zh": {
+        "file": "zh-CN.md",
+        "summary": "当一个 PR 涉及大量文件、代码又越来越多由 AI 生成时，人工逐行检查的成本很高，也容易遗漏当前功能之外的影响。文章结合团队项目中 GitHub Copilot code review 与 Cursor Bugbot 的使用经历，先解释 AI 审查为何值得作为额外的一层检查，再分别介绍接入方式、能力边界和仓库级自定义指令。通过具体审查反馈与配置经验，讨论误报、上下文限制、提示词约束，以及多种工具配合的价值，最后记录重复维护审查规则等实际问题，帮助判断何时使用、怎样引导和如何看待 AI 的意见，而非把它当作质量保证。",
+        "reviewed": true,
+        "cover": {
+          "file": "img/cover.png",
+          "alt": "AI 来 review PR：要不要？怎么做？：文章封面"
+        }
+      },
+      "en": {
+        "file": "en-US.md",
+        "summary": "Large PRs and AI-generated changes make thorough human review costly and leave room for overlooked effects. Drawing on team use of GitHub Copilot code review and Cursor Bugbot, the article treats AI review as another layer of checking, then covers setup, capability limits, and repository instructions. Examples explore useful findings, false positives, context and prompt constraints, and complementary tools. It closes with the burden of duplicated review rules and guidance on judging AI feedback rather than treating it as a quality guarantee.",
+        "reviewed": false,
+        "cover": {
+          "file": "img/cover.png",
+          "alt": "AI PR Review: Should You Use It, and How?: article cover"
+        }
+      }
+    },
+    "zhihuUrl": "https://zhuanlan.zhihu.com/p/2037582638454682241",
+    "publishedAt": "2026-05-12"
+  },
+  {
+    "id": "qclaw-first-look",
+    "directory": "ai-productivity/qclaw-first-look",
+    "category": "ai-productivity",
+    "tags": [
+      "AI",
+      "QClaw",
+      "Agents"
+    ],
+    "relatedProjects": [],
+    "locales": {
+      "zh": {
+        "file": "zh-CN.md",
+        "summary": "出于利用手机碎片时间继续工作、探索 Agent 在学习和平台运维中用途的想法，我试用了 QClaw。文章从安装与权限、API Key 配置开始，对比不同通讯工具的远控体验，再记录原生接口、定时任务、子 Agent 和后台功耗方面的观察。随后结合资料调研、文档整理、概念学习等实际用途，说明哪些操作已经派上用场，哪些受交互、任务执行与产品完善程度限制。重点是日常使用的收益与不足，为判断是否值得投入配置时间提供个人体验参考。",
+        "reviewed": true,
+        "cover": {
+          "file": "img/cover.png",
+          "alt": "QClaw 体验报告：是生产力工具，也是待雕琢的“半成品”：文章封面"
+        }
+      },
+      "en": {
+        "file": "en-US.md",
+        "summary": "I tried QClaw to make use of spare time on my phone and explore agents for learning and platform operations. The account covers installation, permissions, API keys, and remote-control channels, followed by interfaces, scheduled tasks, child agents, and idle power use. Research, documentation, and learning examples show what proved useful and where interaction or task execution fell short, offering a personal basis for weighing the setup effort against an unfinished product’s benefits.",
+        "reviewed": false,
+        "cover": {
+          "file": "img/cover.png",
+          "alt": "QClaw Experience Report: A Productivity Tool and an Unpolished Half-Finished Product: article cover"
+        }
+      }
+    },
+    "publishedAt": "2026-04-13",
+    "zhihuUrl": "https://zhuanlan.zhihu.com/p/2027137133660381420"
+  },
+  {
+    "id": "rdma-memlock-limit",
+    "directory": "cloud-and-ai-infra/rdma-memlock-limit",
+    "category": "cloud-and-ai-infra",
+    "tags": [
+      "Kubernetes",
+      "containerd",
+      "RDMA"
+    ],
+    "relatedProjects": [
+      "crater"
+    ],
+    "locales": {
+      "zh": {
+        "file": "zh-CN.md",
+        "summary": "在 Kubernetes 与 containerd 环境中，RDMA 带宽测试可能在小消息下正常，却因无法注册更大的内存区域而失败。文章从 Crater 集群中的实际故障出发，解释 RDMA 锁定内存的需求、Pod 内的 RLIMIT_MEMLOCK，以及权限与额度上限的区别。先给出导出并保留完整 OCI 基础规范、修改上限并让 containerd 引用的解决步骤，再通过带宽测试验证效果，最后复盘容器内 ulimit、宿主机配置及仅调整服务限制等尝试为何不足，并提醒逐节点部署和配置持久化的注意事项。",
+        "reviewed": true,
+        "cover": {
+          "file": "img/cover.webp",
+          "alt": "K8s-containerd 环境下为 RDMA 修改 Pod 内存锁定上限：文章封面"
+        }
+      },
+      "en": {
+        "file": "en-US.md",
+        "summary": "RDMA tests in Kubernetes with containerd can pass for small messages yet fail to register larger memory regions. A Crater incident explains pinned memory, Pod RLIMIT_MEMLOCK, and the distinction between permissions and limits. The article first preserves and edits the full OCI base specification for containerd, then checks the result with bandwidth tests. It revisits unsuccessful changes inside the container, on the host, and to the service limit alone, and covers per-node rollout and configuration persistence.",
+        "reviewed": false,
+        "cover": {
+          "file": "img/cover.webp",
+          "alt": "Raising the Pod Memory Lock Limit for RDMA in a K8s-containerd Environment: article cover"
+        }
+      }
+    },
+    "publishedAt": "2026-04-03",
+    "zhihuUrl": "https://zhuanlan.zhihu.com/p/2023356669497804002"
+  }
+]

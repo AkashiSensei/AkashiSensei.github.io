@@ -1,3 +1,4 @@
+import { copyTextToClipboard } from "@/lib/clipboard"
 import { type ReactNode, useEffect, useRef, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Check, Copy, Mail } from "lucide-react"
@@ -18,6 +19,7 @@ import {
 import { GitHubMark } from "@/components/GitHubMark"
 import { ProfileCard } from "@/components/ProfileCard"
 import { SpotlightCard } from "@/components/SpotlightCard"
+import { socialPillActionClassName } from "@/lib/action-button-styles"
 
 const profileRoleTags = ["Developer", "Engineer", "Product Manager", "Explorer"] as const
 const profileRoleRotationMs = 3500
@@ -73,7 +75,7 @@ function ensureProfileAssetsReady() {
 }
 
 const socialLinkClassName =
-  "contact-social-pill inline-flex h-8 shrink-0 items-center gap-1 rounded-full border border-foreground bg-foreground px-2 text-xs font-normal text-background shadow-sm transition-[background-color,transform] hover:bg-foreground/85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/45 md:h-9 md:snap-align-none md:gap-1.5 md:px-3 md:text-sm"
+  `contact-social-pill ${socialPillActionClassName} md:snap-align-none`
 
 const whatsappDisplayNumber = "+44 7434 099408"
 const whatsappLinkHref = "https://wa.me/447434099408"
@@ -185,19 +187,7 @@ export function ContactDialog({ children }: { children: ReactNode }) {
     }
 
     try {
-      if (navigator.clipboard) {
-        await navigator.clipboard.writeText(emailAddress)
-      } else {
-        const textArea = document.createElement("textarea")
-        textArea.value = emailAddress
-        textArea.setAttribute("readonly", "")
-        textArea.style.position = "fixed"
-        textArea.style.top = "-9999px"
-        document.body.appendChild(textArea)
-        textArea.select()
-        document.execCommand("copy")
-        document.body.removeChild(textArea)
-      }
+      await copyTextToClipboard(emailAddress)
 
       setCopyState("copied")
     } catch {

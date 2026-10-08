@@ -13,6 +13,8 @@
 
 ## History
 
+- 2026-10-08 | [Bilingual blog pages](archive/20261008_Bilingual-blog-pages.md) | Added seven bilingual articles with WebP galleries, Markdown/math/code rendering, adaptive reading contents, author notes, publication metadata and project links; integrated resume highlights and unified navigation, footer and 404 styling.
+
 - 2026-10-04 | [Resume layout polish](archive/20261004_Resume-layout-polish.md) | Fixed the stacked Small Tools header alignment, moved question rotation controls below the wall on the left, and hid the supplementary question-wall hint.
 
 - 2026-10-02 | [Unified site design](archive/20261002_Unified-site-design.md) | Unified typography, theme weights, blue emphasis, plain layouts, tags, links and modal motion; completed English question copy, restored plain image previews, fixed FPV controls and icon loops, and documented style reuse for future features.

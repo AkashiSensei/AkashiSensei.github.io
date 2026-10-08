@@ -1,4 +1,5 @@
 {
+  "relatedProjectCount": "关联 {{count}} 个项目",
   "site": {
     "displayName": "Akashi"
   },
@@ -74,9 +75,10 @@
     },
     "languageValues": {
       "zh": "中文",
-      "en": "English"
+      "en": "English（由 AI 翻译）"
     },
-    "github": "GitHub",
+    "profile": "Profile",
+    "source": "站点源码",
     "contact": "联系方式",
     "copyright": "© {{year}} Akashi. Built for GitHub Pages."
   },

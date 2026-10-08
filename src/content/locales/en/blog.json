@@ -1,0 +1,31 @@
+{
+  "title": "Blog",
+  "subtitle": "Notes from practice, and the thinking behind the systems",
+  "viewAllWithCount": "View all {{count}} articles",
+  "all": "All",
+  "categoriesLabel": "Article categories",
+  "categories": {
+    "cloud-and-ai-infra": "Cloud & AI Infrastructure",
+    "ai-productivity": "AI Productivity Notes",
+    "engineering": "Engineering Practices"
+  },
+  "toc": "On this page",
+  "openToc": "Open article contents",
+  "closeToc": "Close article contents",
+  "authorNote": "Author’s note",
+  "translationDraft": "AI-assisted English translation · Pending human review",
+  "fallback": "This translation is not available yet. Showing the Chinese original.",
+  "relatedProjects": "Related projects",
+  "relatedArticles": "Related articles",
+  "table": "Horizontally scrollable table",
+  "enlarge": "Enlarge image: {{image}}",
+  "copySectionLink": "Copy link to this section",
+  "copyCode": "Copy all code",
+  "zhihuSource": "Published on Zhihu",
+  "zhihuLanguage": "Chinese",
+  "zhihuPosts": "Also on Zhihu",
+  "characterCount": "{{formattedCount}} characters",
+  "wordCount": "{{formattedCount}} words",
+  "readingTime": "~{{minutes}} min read",
+  "publishedAt": "Published {{date}}"
+}

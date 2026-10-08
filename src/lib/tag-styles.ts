@@ -40,6 +40,17 @@ export function getSemanticTagClassName(semantic: keyof typeof semanticTagTone) 
   return tagToneClassName[semanticTagTone[semantic]]
 }
 
+const blogCategoryTone: Record<string, TagTone> = {
+  "ai-productivity": "violet",
+  "cloud-and-ai-infra": "sky",
+  engineering: "emerald",
+}
+
+export function getBlogCategoryTagClassName(category: string) {
+  const tone = blogCategoryTone[category]
+  return tone ? tagToneClassName[tone] : defaultTagClassName
+}
+
 const courseProjectSemesterTagClassName: Record<string, string> = {
   "2026春":
     "border-emerald-300/45 bg-emerald-100/70 text-emerald-800 shadow-sm shadow-emerald-900/5 dark:border-emerald-300/25 dark:bg-emerald-300/12 dark:text-emerald-200",

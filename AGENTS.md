@@ -21,12 +21,14 @@
 | 五级文字对比度、页面布局、朴素文档样式 | `src/index.css` 与 SPEC §3.6 |
 | 页面壳、章节标题与说明 | `src/components/Layout.tsx`、`src/components/SectionHeader.tsx` |
 | 卡片与玻璃表面 | `src/components/GlassPanel.tsx`、`src/components/SpotlightCard.tsx` |
+| 移动导航及浮动入口毛玻璃 | `src/lib/glass-surface-styles.ts` 的 `navigationGlassSurfaceClassName`，配合 `SpotlightCard` |
 | 普通 tag、按钮 | `src/lib/tag-styles.ts`、`src/lib/action-button-styles.ts`、`src/components/ui/button.tsx` |
 | 朴素 tag、外链图标 | `src/components/DocumentTag.tsx`、`src/lib/tag-label.ts`、`src/components/ExternalLinkIcon.tsx` |
 | bullet 与个人贡献强调 | `src/components/FeaturePointList.tsx`、`src/lib/emphasized-text.tsx` |
 | 弹窗、背景遮罩、进退场 | `src/components/ui/dialog.tsx`、`src/components/ui/dialog.css`、`src/lib/dialog-motion.ts` |
 | 图片查看 | `src/components/ProjectImageGallery.tsx`、`src/components/SmallToolImageGallery.tsx`、`src/components/PlainImageGallery.tsx` |
 | 问题列表与问答链 | `src/components/QuestionList.tsx`、`src/components/QuestionThreadDialog.tsx`、`src/components/questions.css` |
+| 关联项目摘要框与文本链接行 | `src/components/ProjectSummary.tsx` 的 `ProjectSummary` / `ProjectLinks`、`src/components/project-summary.css`；问题阅读框与博客详情共用 |
 | FPV 场景及可点击浮层 | `src/components/home-fpv/README.md` 和相邻 screen 组件 |
 
 ## 已确认的设计约定
@@ -35,7 +37,9 @@
 - 使用共享字号角色及五级文字对比度。Akashi 的展示标题明显大于普通标题；正文、元信息、标题不能混用层级。不要为新组件另选字体或随意增加粗体。
 - 蓝色表面与文字强调分开：浅色模式的气泡/选中 tag 用浅蓝，深色模式用深蓝；强调 bullet 的文字和圆点使用反向蓝色。复用对应 token，普通链接保持原文字颜色。
 - 普通模式保留现有胶囊 tag 和按钮。朴素 tag 使用 `#CUDA`、`#resource_sharing` 形式，仅显示时把空格替换为下划线，选中或匹配时使用文字背景高亮，不修改规范数据。
+- 荧光笔式的文字背景高亮仅用于朴素文档模式，包括文字筛选项、语言切换和匹配 tag；普通/静态模式不得直接给文字铺矩形高亮背景，应复用胶囊按钮/tag 的选中表面、边框或文字对比度。选中胶囊控件的底色与文字背景高亮是不同角色，不能混用。此约束不改变浏览器拖选文字、代码底色或正文强调文字的行为。
 - 朴素链接和可点击文字操作使用共享下划线。复合仓库链接只给名称加下划线，不给图标、tag 或统计数字整行加线。
+- 普通/静态模式不使用下划线表示链接，常态、悬浮和聚焦均遵循这一规则。复用项目等详情页的文字对比度、悬浮反馈与外链图标；共享 `site-text-link` 默认无下划线，仅在朴素文档容器或 `data-display-mode="plain"` 下启用文档下划线。键盘焦点轮廓和原有交互语义须保留。
 - 阴影复用同类卡片的外阴影，不以外发光代替。风格调整不能顺带更换已有页面背景、玻璃表面或背景动画配色。
 - 朴素文档除首页外复用共同的页面宽度与标题后留白；首页和简历顶部已有额外留白。不要在新页面重新定义一套阅读宽度。
 - 完整弹窗统一从底部进入、顶部离开，背景复用模糊与反向主题色遮罩：浅色模式深色遮罩 25%，深色模式浅色遮罩 10%。使用共享变量，不在新弹窗复制数值；手机二维码等边缘小浮框保留原交互。遵循 reduced-motion。
