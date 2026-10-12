@@ -1,4 +1,6 @@
-import { type RefObject, useEffect, useRef } from "react"
+import { type RefObject, useCallback, useEffect, useRef } from "react"
+
+import { getResumeSectionScrollY } from "@/lib/resume-sections"
 
 const LANDSCAPE_PAGING_QUERY = "(min-width: 768px) and (orientation: landscape)"
 const SECTION_SELECTOR = ".resume-hero-section, .resume-rhythm-section"
@@ -106,50 +108,53 @@ export function useResumeLandscapeSectionPaging(
 ) {
   const animationFrameRef = useRef<number | null>(null)
 
-  useEffect(() => {
-    if (!enabled) {
+  const cancelAnimation = useCallback(() => {
+    if (animationFrameRef.current !== null) {
+      window.cancelAnimationFrame(animationFrameRef.current)
+      animationFrameRef.current = null
+    }
+  }, [])
+
+  const animateScrollTo = useCallback((targetY: number) => {
+    const maxScrollY = getMaxScrollY()
+    const startY = window.scrollY
+    const nextY = clamp(targetY, 0, maxScrollY)
+    const deltaY = nextY - startY
+
+    cancelAnimation()
+
+    if (prefersReducedMotion() || Math.abs(deltaY) < 1) {
+      window.scrollTo({ top: nextY, behavior: "instant" })
       return
     }
 
-    const cancelAnimation = () => {
-      if (animationFrameRef.current !== null) {
-        window.cancelAnimationFrame(animationFrameRef.current)
-        animationFrameRef.current = null
-      }
-    }
+    const startTime = performance.now()
 
-    const animateScrollTo = (targetY: number) => {
-      const maxScrollY = getMaxScrollY()
-      const startY = window.scrollY
-      const nextY = clamp(targetY, 0, maxScrollY)
-      const deltaY = nextY - startY
+    const tick = (currentTime: number) => {
+      const progress = clamp01((currentTime - startTime) / SCROLL_DURATION_MS)
+      window.scrollTo({ top: startY + deltaY * easeInOutCubic(progress), behavior: "instant" })
 
-      cancelAnimation()
-
-      if (prefersReducedMotion() || Math.abs(deltaY) < 1) {
-        window.scrollTo(0, nextY)
+      if (progress < 1) {
+        animationFrameRef.current = window.requestAnimationFrame(tick)
         return
       }
 
-      const startTime = performance.now()
-
-      const tick = (currentTime: number) => {
-        const progress = clamp01((currentTime - startTime) / SCROLL_DURATION_MS)
-        window.scrollTo(0, startY + deltaY * easeInOutCubic(progress))
-
-        if (progress < 1) {
-          animationFrameRef.current = window.requestAnimationFrame(tick)
-          return
-        }
-
-        animationFrameRef.current = null
-      }
-
-      animationFrameRef.current = window.requestAnimationFrame(tick)
+      animationFrameRef.current = null
     }
 
+    animationFrameRef.current = window.requestAnimationFrame(tick)
+  }, [cancelAnimation])
+
+  const scrollToSection = useCallback((id: string) => {
+    const section = stackRef.current?.querySelector<HTMLElement>(`[id="${id}"]`)
+    if (!section || hasBlockingOverlay(null)) return
+    animateScrollTo(id === "resume-intro" ? 0 : getResumeSectionScrollY(section))
+  }, [animateScrollTo, stackRef])
+
+  useEffect(() => {
     const handlePageKeyDown = (event: KeyboardEvent) => {
       if (
+        !enabled ||
         event.defaultPrevented ||
         event.altKey ||
         event.ctrlKey ||
@@ -198,5 +203,7 @@ export function useResumeLandscapeSectionPaging(
       window.removeEventListener("touchstart", cancelAnimation)
       window.removeEventListener("resize", cancelAnimation)
     }
-  }, [enabled, stackRef])
+  }, [animateScrollTo, cancelAnimation, enabled, stackRef])
+
+  return scrollToSection
 }

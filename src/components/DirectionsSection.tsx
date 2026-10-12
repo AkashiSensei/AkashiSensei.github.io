@@ -410,7 +410,7 @@ export function DirectionsSection() {
   const rightDirections = directions.slice(4)
 
   return (
-    <section className="resume-rhythm-section grid w-full items-center">
+    <section id="interests" className="resume-rhythm-section grid w-full items-center">
       <div className="relative grid gap-8 md:grid-cols-2 md:gap-x-8 md:gap-y-7 lg:grid-cols-[minmax(13rem,0.72fr)_minmax(0,1fr)_minmax(0,1fr)] lg:items-center lg:gap-8 xl:grid-cols-[minmax(15rem,0.82fr)_minmax(0,1fr)_minmax(0,1fr)] xl:gap-12">
         <div className="relative z-10 flex max-w-xl flex-col md:col-span-2 lg:col-span-1 lg:-translate-y-8 xl:-translate-y-12">
           <SectionHeader eyebrow="FIELD" title={t("title")} subtitle={t("subtitle")} />

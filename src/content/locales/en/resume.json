@@ -26,6 +26,11 @@
   "plain": {
     "valuesTitle": "Principles"
   },
+  "sectionNavigation": {
+    "label": "Resume sections",
+    "intro": "Introduction",
+    "item": "Go to section {{n}}: {{title}}"
+  },
   "contact": "Contact",
   "github": "Profile",
   "education": {

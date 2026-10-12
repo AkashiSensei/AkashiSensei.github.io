@@ -26,6 +26,11 @@
   "plain": {
     "valuesTitle": "判断"
   },
+  "sectionNavigation": {
+    "label": "简历章节导航",
+    "intro": "简介",
+    "item": "跳转到第 {{n}} 节：{{title}}"
+  },
   "contact": "联系方式",
   "github": "动态",
   "education": {

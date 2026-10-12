@@ -1,0 +1,241 @@
+/* Homepage-style chapter dots share the global navigation's glass material. */
+.resume-section-nav {
+  --resume-nav-expanded-left: clamp(0.5rem, 1.2vw, 2.5rem);
+  --resume-nav-circle-size: 1.82rem;
+  position: fixed;
+  z-index: 40;
+  inset-inline-start: var(--resume-nav-expanded-left);
+  top: 50%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.12rem;
+  max-height: max(2.75rem, calc(100svh - 11rem));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+  padding: 0.25rem;
+  transform: translateY(-50%);
+}
+.resume-section-nav::-webkit-scrollbar { display: none; }
+.resume-section-nav-button {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 999px;
+  cursor: pointer;
+}
+.resume-section-nav-circle {
+  display: grid;
+  place-items: center;
+  width: var(--resume-nav-circle-size);
+  height: var(--resume-nav-circle-size);
+  color: var(--text-tone-3);
+  font-size: var(--text-xs);
+  font-weight: var(--font-weight-normal);
+  line-height: 1;
+  transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease, transform 180ms ease;
+}
+.resume-section-nav-button:is(:hover, :focus-visible, [data-highlighted="true"]) .resume-section-nav-circle {
+  color: var(--text-tone-1);
+  border-color: var(--site-accent-border);
+  transform: scale(1.08);
+}
+.resume-section-nav-button[aria-current="step"] .resume-section-nav-circle {
+  background: var(--site-accent-surface);
+  border-color: var(--site-accent-border);
+  color: var(--text-tone-1);
+}
+.resume-section-nav-button:focus-visible {
+  outline: 2px solid var(--site-accent-on-surface);
+  outline-offset: 0;
+}
+/* A continuous theme-colored gradient protects contrast without backdrop blur. */
+.resume-section-nav-backdrop {
+  --resume-nav-edge-color: var(--site-page-base-background);
+  --resume-nav-edge-mid-opacity: 65%;
+  position: fixed;
+  inset: 0 auto 0 0;
+  z-index: 39;
+  width: var(--resume-nav-backdrop-width, 16rem);
+  max-width: 100vw;
+  pointer-events: none;
+  visibility: hidden;
+  opacity: 0;
+  /* Sample a smoothstep fade on each side of the midpoint. Stops interpolate
+     continuously; the tiny tail approaches zero gently instead of being cut. */
+  background: linear-gradient(to right,
+    var(--resume-nav-edge-color) 0%,
+    color-mix(in srgb, var(--resume-nav-edge-color) calc(64.8% + var(--resume-nav-edge-mid-opacity) * 0.352), transparent) 20%,
+    color-mix(in srgb, var(--resume-nav-edge-color) calc(10.4% + var(--resume-nav-edge-mid-opacity) * 0.896), transparent) 40%,
+    color-mix(in srgb, var(--resume-nav-edge-color) var(--resume-nav-edge-mid-opacity), transparent) 50%,
+    color-mix(in srgb, var(--resume-nav-edge-color) calc(var(--resume-nav-edge-mid-opacity) * 0.896), transparent) 60%,
+    color-mix(in srgb, var(--resume-nav-edge-color) calc(var(--resume-nav-edge-mid-opacity) * 0.648), transparent) 70%,
+    color-mix(in srgb, var(--resume-nav-edge-color) calc(var(--resume-nav-edge-mid-opacity) * 0.352), transparent) 80%,
+    color-mix(in srgb, var(--resume-nav-edge-color) calc(var(--resume-nav-edge-mid-opacity) * 0.104), transparent) 90%,
+    color-mix(in srgb, var(--resume-nav-edge-color) calc(var(--resume-nav-edge-mid-opacity) * 0.028), transparent) 95%,
+    color-mix(in srgb, var(--resume-nav-edge-color) calc(var(--resume-nav-edge-mid-opacity) * 0.004672), transparent) 98%,
+    transparent 100%);
+  transition: opacity var(--resume-nav-backdrop-close-duration, 240ms) ease,
+    visibility 0s linear var(--resume-nav-backdrop-close-duration, 240ms);
+}
+:root:not(.dark) .resume-section-nav-backdrop {
+  --resume-nav-edge-mid-opacity: 85%;
+}
+.resume-section-nav-backdrop[data-active="true"] {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity var(--resume-nav-backdrop-open-duration, 380ms) ease, visibility 0s;
+}
+/* Portaled titles remain outside the short-viewport rail's clipping boundary. */
+.resume-section-nav-titles {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  pointer-events: none;
+}
+.resume-section-nav-title {
+  position: absolute;
+  visibility: hidden;
+  box-sizing: border-box;
+  padding: 0;
+  border: 0;
+  background: none;
+  text-align: start;
+  cursor: pointer;
+  pointer-events: none;
+}
+.resume-section-nav-title:focus-visible {
+  outline: 2px solid var(--site-accent-on-surface);
+  outline-offset: 0;
+}
+.resume-section-nav-title-measure {
+  position: absolute;
+  width: max-content;
+  white-space: nowrap;
+  visibility: hidden;
+  pointer-events: none;
+  font-size: var(--text-lg);
+  font-weight: var(--font-weight-normal);
+  line-height: 1.4;
+}
+.resume-section-nav-title[data-in-viewport="true"] { visibility: visible; }
+.resume-section-nav-titles[data-open="true"] .resume-section-nav-title[data-in-viewport="true"] {
+  pointer-events: auto;
+}
+.resume-section-nav-title-text {
+  position: absolute;
+  inset-inline: 10px;
+  top: var(--resume-title-center, 50%);
+  display: block;
+  color: var(--text-tone-3);
+  font-size: var(--text-base);
+  font-weight: var(--font-weight-normal);
+  line-height: 1.4;
+  opacity: 0;
+  transform: translate(-12px, -50%);
+  /* A soft reveal edge travels across the text, alongside the fade and drift. */
+  mask-image: linear-gradient(to right, #000 0%, #000 33.333%, transparent 66.667%, transparent 100%);
+  mask-size: 300% 100%;
+  mask-repeat: no-repeat;
+  mask-position: 100% 0;
+  transition: opacity 200ms ease, transform var(--resume-wave-close-duration, 240ms) ease, mask-position var(--resume-wave-close-duration, 240ms) ease, color 180ms ease, font-size 480ms ease;
+  transition-delay: var(--resume-wave-delay, 0ms), var(--resume-wave-delay, 0ms), var(--resume-wave-delay, 0ms), 0ms, 0ms;
+}
+.resume-section-nav-title[data-current="true"] .resume-section-nav-title-text { color: var(--text-tone-2); }
+.resume-section-nav-title[data-highlighted="true"] .resume-section-nav-title-text {
+  color: var(--text-tone-1);
+  font-size: var(--text-lg);
+}
+.resume-section-nav-titles[data-open="true"] .resume-section-nav-title-text {
+  opacity: 1;
+  transform: translate(0, -50%);
+  mask-position: 0 0;
+  transition-duration: 280ms, 340ms, var(--resume-wave-open-duration, 380ms), 180ms, 480ms;
+  transition-timing-function: ease, cubic-bezier(0.22, 1, 0.36, 1), cubic-bezier(0.22, 1, 0.36, 1), ease, ease;
+}
+.resume-section-nav-titles[data-open="true"] .resume-section-nav-title[data-highlighted="true"] .resume-section-nav-title-text {
+  transition-duration: 280ms, 340ms, var(--resume-wave-open-duration, 380ms), 180ms, 320ms;
+}
+@media (min-width: 768px) {
+  .resume-section-nav { padding-block: 0.75rem; }
+  .resume-section-nav-button {
+    margin-block: var(--resume-row-before, 0px) var(--resume-row-after, 0px);
+    transition: margin-top 480ms cubic-bezier(0.22, 1, 0.36, 1), margin-bottom 480ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .resume-section-nav-button[data-highlighted="true"] { transition-duration: 320ms; }
+}
+/* One third of each resting circle's diameter sits behind the edge. Only the
+   transform changes; the expanded destination and document layout stay fixed. */
+@media (min-width: 768px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  /* The shared glass shadow must not linger along the light viewport edge. */
+  :root:not(.dark) .resume-section-nav:not([data-edge-state="ready"]) .resume-section-nav-circle {
+    box-shadow: none;
+  }
+  .resume-section-nav {
+    transform: translate(calc((var(--resume-nav-reveal, 0) - 1) * (50% + var(--resume-nav-expanded-left) - var(--resume-nav-circle-size) / 6)), -50%);
+    transition: transform 180ms ease-out;
+  }
+  .resume-section-nav[data-edge-state="ready"] {
+    transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .resume-section-nav:has(:focus-visible) {
+    /* Keyboard focus must become usable before the next pointer update. */
+    transform: translate(0, -50%);
+  }
+  .resume-section-nav[data-edge-pressed="true"] {
+    transform: var(--resume-nav-held-transform);
+    transition: none;
+  }
+  .resume-section-nav[data-edge-pressed="true"] .resume-section-nav-button {
+    transform: var(--resume-row-held-transform);
+    margin-block: var(--resume-row-held-before) var(--resume-row-held-after);
+    transition: none;
+  }
+}
+/* Landscape chapters already align to full-screen keyboard paging targets. */
+.resume-section-stack > [id],
+.plain-resume-document > [id] { scroll-margin-top: 6rem; }
+@media (min-width: 768px) and (orientation: landscape) {
+  .resume-section-stack > [id] { scroll-margin-top: 0; }
+}
+@media (max-width: 767px) {
+  .resume-section-nav-backdrop { display: none; }
+  .resume-section-nav-titles { display: none; }
+  .resume-section-nav {
+    inset-inline-start: 50%;
+    top: auto;
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 5.6rem);
+    flex-direction: row;
+    gap: 0.12rem;
+    max-height: none;
+    max-width: calc(100vw - 1.5rem);
+    overflow: visible;
+    transform: translateX(-50%);
+  }
+  .resume-section-nav-button {
+    width: clamp(1.5rem, 3.5vw, 2rem);
+    height: 2.25rem;
+  }
+  .resume-section-nav-circle {
+    width: 1.35rem;
+    height: 1.35rem;
+    font-size: calc(var(--text-xs) * 0.88);
+  }
+  .resume-section-stack > [id],
+  .plain-resume-document > [id] { scroll-margin-top: 1rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .resume-section-nav-backdrop,
+  .resume-section-nav-backdrop[data-active="true"] { transition: none; }
+  .resume-section-nav-button,
+  .resume-section-nav-circle,
+  .resume-section-nav-title-text,
+  .resume-section-nav-titles[data-open="true"] .resume-section-nav-title-text,
+  .resume-section-nav-titles[data-open="true"] .resume-section-nav-title[data-highlighted="true"] .resume-section-nav-title-text,
+  .resume-section-nav-button[data-highlighted="true"] { transition: none; }
+  .resume-section-nav-button,
+  .resume-section-nav-button:is(:hover, :focus-visible, [data-highlighted="true"]) .resume-section-nav-circle { transform: none; }
+  .resume-section-nav-button { margin-block: 0; }
+}

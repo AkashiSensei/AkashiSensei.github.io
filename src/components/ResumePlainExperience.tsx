@@ -4,7 +4,7 @@ import { DocumentTag } from "@/components/DocumentTag"
 import { SectionNote } from "@/components/SectionHeader"
 import { QuestionWall } from "@/components/QuestionWall"
 import { BlogHighlights } from "@/components/BlogHighlights"
-import { useEffect, useMemo, useRef, useState } from "react"
+import { type RefObject, useEffect, useMemo, useRef, useState } from "react"
 import { useTranslation } from "react-i18next"
 
 import directions from "@/data/directions.json"
@@ -380,7 +380,7 @@ function ResumePlainProjectList({
   )
 }
 
-export function ResumePlainExperience() {
+export function ResumePlainExperience({ stackRef }: { stackRef: RefObject<HTMLElement | null> }) {
   const { t } = useTranslation([
     "resume",
     "projects",
@@ -395,8 +395,8 @@ export function ResumePlainExperience() {
   const kickerTags = asStringArray(t("kickerTags", { returnObjects: true }))
 
   return (
-    <article className="plain-home-document plain-resume-document" aria-labelledby="plain-resume-title">
-      <header className="plain-home-header">
+    <article ref={stackRef} className="plain-home-document plain-resume-document" aria-labelledby="plain-resume-title">
+      <header id="resume-intro" className="plain-home-header">
         <p className="plain-home-kicker">{kickerTags.join(" / ")}</p>
         <h1 id="plain-resume-title" className="plain-display-title">{t("titleLead")}</h1>
         <p className="plain-home-lede">{t("titleAccent")}</p>
@@ -425,7 +425,7 @@ export function ResumePlainExperience() {
         </div>
       </header>
 
-      <section>
+      <section id="education">
         <h2>{t("education.title")}</h2>
         <p>{t("education.subtitle")}</p>
         <div className="plain-resume-mini-list">
@@ -451,7 +451,7 @@ export function ResumePlainExperience() {
         </div>
       </section>
 
-      <section>
+      <section id="projects">
         <h2>
           <AppLink to="/projects">{t("projects:title")}</AppLink>
         </h2>
@@ -464,7 +464,7 @@ export function ResumePlainExperience() {
         />
       </section>
 
-      <section>
+      <section id="interests">
         <h2>{t("directions:title")}</h2>
         <p>{t("directions:subtitle")}</p>
         <div className="plain-resume-mini-list">
@@ -477,7 +477,7 @@ export function ResumePlainExperience() {
         </div>
       </section>
 
-      <section>
+      <section id="course-projects">
         <h2>
           <AppLink to="/course-projects">{t("courseProjects:title")}</AppLink>
         </h2>
@@ -494,7 +494,7 @@ export function ResumePlainExperience() {
       <QuestionWall />
       <BlogHighlights />
 
-      <section>
+      <section id="workbench">
         <h2>
           <AppLink to="/workbench">{t("workbench:title")}</AppLink>
         </h2>
@@ -524,7 +524,7 @@ export function ResumePlainExperience() {
         </div>
       </section>
 
-      <section>
+      <section id="knowledge">
         <h2>
           <AppLink to="/knowledge">{t("knowledge:title")}</AppLink>
         </h2>
@@ -539,7 +539,7 @@ export function ResumePlainExperience() {
         </div>
       </section>
 
-      <section>
+      <section id="tools">
         <h2>
           <AppLink to="/tools">{t("tools:title")}</AppLink>
         </h2>

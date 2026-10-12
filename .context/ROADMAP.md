@@ -13,6 +13,8 @@
 
 ## History
 
+- 2026-10-12 | [Resume section navigation](archive/20261012_Resume-section-navigation.md) | Added responsive chapter dots, shared scrolling, proximity reveal, centered title waves and clickable title targets, with theme-aware feathered contrast tint across resume display modes.
+
 - 2026-10-08 | [Coursework and blog content refresh](archive/20261008_Coursework-and-blog-content-refresh.md) | Refreshed compiler copy, semester and repository links; added undergraduate parallel programming coursework with five WebP images and two foundational CUDA question associations; corrected the blog repository name and refreshed scoped GitHub statistics.
 
 - 2026-10-08 | [Bilingual blog pages](archive/20261008_Bilingual-blog-pages.md) | Added seven bilingual articles with WebP galleries, Markdown/math/code rendering, adaptive reading contents, author notes, publication metadata and project links; integrated resume highlights and unified navigation, footer and 404 styling.

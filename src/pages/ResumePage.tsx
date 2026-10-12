@@ -13,6 +13,7 @@ import { KnowledgeHighlights } from "@/components/KnowledgeHighlights"
 import { Layout } from "@/components/Layout"
 import { ProjectHighlights } from "@/components/ProjectHighlights"
 import { ResumePlainExperience } from "@/components/ResumePlainExperience"
+import { ResumeSectionNavigation } from "@/components/ResumeSectionNavigation"
 import { SmallToolHighlights } from "@/components/SmallToolHighlights"
 import { Button } from "@/components/ui/button"
 import { WorkbenchHighlights } from "@/components/WorkbenchHighlights"
@@ -31,12 +32,13 @@ export function ResumePage() {
   const { isPlainDisplayMode } = useAnimationPreference()
   const sectionStackRef = useRef<HTMLDivElement>(null)
 
-  useResumeLandscapeSectionPaging(sectionStackRef, !isPlainDisplayMode)
+  const scrollToSection = useResumeLandscapeSectionPaging(sectionStackRef, !isPlainDisplayMode)
 
   if (isPlainDisplayMode) {
     return (
       <Layout mainClassName="plain-home-main plain-resume-main">
-        <ResumePlainExperience />
+        <ResumeSectionNavigation stackRef={sectionStackRef} onNavigate={scrollToSection} />
+        <ResumePlainExperience stackRef={sectionStackRef} />
       </Layout>
     )
   }
@@ -69,8 +71,9 @@ export function ResumePage() {
 
   return (
     <Layout mainClassName="resume-page-main">
+      <ResumeSectionNavigation stackRef={sectionStackRef} onNavigate={scrollToSection} />
       <div ref={sectionStackRef} className="resume-section-stack mt-8 flex flex-col sm:mt-16 md:mt-2">
-        <section className="resume-hero-section grid w-full items-center gap-9 pb-5 pt-2 sm:gap-10 sm:pb-6 sm:pt-4 md:gap-8 md:pb-6 md:pt-0 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,24rem)] lg:gap-8 xl:grid-cols-[minmax(0,1fr)_minmax(20rem,31rem)] xl:gap-12 xl:pb-8 min-[1800px]:!grid-cols-[minmax(0,1fr)_31rem] min-[1800px]:!gap-18">
+        <section id="resume-intro" className="resume-hero-section grid w-full items-center gap-9 pb-5 pt-2 sm:gap-10 sm:pb-6 sm:pt-4 md:gap-8 md:pb-6 md:pt-0 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,24rem)] lg:gap-8 xl:grid-cols-[minmax(0,1fr)_minmax(20rem,31rem)] xl:gap-12 xl:pb-8 min-[1800px]:!grid-cols-[minmax(0,1fr)_31rem] min-[1800px]:!gap-18">
           <div className="flex flex-col gap-5 sm:gap-6">
             <div className="flex flex-wrap gap-2">
               {kickerTags.map((tag) => (
