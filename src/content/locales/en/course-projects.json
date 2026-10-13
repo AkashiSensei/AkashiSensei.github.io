@@ -70,10 +70,10 @@
       },
       "points": {
         "projectIntro": [
-          "Uses C, Makefile, Shell, and Python to organize experiment code and helper scripts for reproducible workflows.",
-          "Addresses typical parallel programming course problems using classic models such as OpenMP, pthread, and MPI, implements various parallel algorithms, and analyzes their performance.",
-          "Implemented naive and shared-memory optimized CUDA matrix multiplication, and used Nsight Systems and Nsight Compute to analyze performance across memory access, warp state, and pipeline utilization, building a clearer understanding of GPU execution.",
-          "Cross-checked CUDA source, SASS, and Nsight Compute instructions to study memory access, FMA, synchronization, predication, and parameter/thread-index access, explaining shared-memory and synchronization bottlenecks."
+          "**Connecting implementation with measurement**: Implemented naive and shared-memory CUDA GEMM, then used Nsight Systems and Nsight Compute to study memory access, warp states, and pipeline utilization and understand how implementation choices affect execution.",
+          "**Tracing source code to instructions**: Compared CUDA source, SASS, and measured instructions to analyze memory access, FMA, synchronization, and predicated execution. Studied access to kernel arguments, threadIdx, and blockIdx, and used instruction sequences to explain shared-memory and synchronization bottlenecks.",
+          "**Parallel programming practice**: Implemented and analyzed algorithms for typical course problems with OpenMP, pthread, and MPI.",
+          "**Reproducible experiments**: Organized code, helper scripts, and run records with C, Makefile, Shell, and Python so implementations and measurements can be revisited."
         ],
         "personalWork": []
       }
@@ -91,16 +91,16 @@
       },
       "points": {
         "projectIntro": [
-          "Built a C++17 ray tracing renderer from scratch, with JSON scene descriptions and PPM/PNG image output.",
-          "Implemented sphere and triangle-mesh intersection, OBJ/GLB import, BVH acceleration, and material/light support including PBR, textures, transparent media, and emissive surfaces.",
-          "Added build scripts, regression tests, golden images, rendering quality reports, and benchmark scripts to keep image correctness and performance observable.",
-          "Extended the project toward a CUDA acceptance path and a Blender RenderEngine integration, connecting the standalone CLI renderer with a DCC workflow."
+          "**Standalone rendering system**: The team built a C++17 ray tracer from scratch, with JSON scene descriptions and PPM/PNG output.",
+          "**Scene and lighting support**: Provides sphere and triangle-mesh intersection, OBJ/GLB import, BVH acceleration, PBR, textures, transparent media, and emissive surfaces.",
+          "**Rendering validation**: Includes build scripts, regression tests, golden images, quality reports, and benchmarks for checking correctness and performance.",
+          "**Workflow extensions**: Explores a CUDA acceptance path and Blender RenderEngine integration to connect the standalone renderer with DCC workflows."
         ],
         "personalWork": [
-          "Proposed the ray tracing renderer direction based on my own interest in and understanding of rendering, graphics, and toolchain integration.",
-          "Built Blender scenes and supported the Blender plugin, local bridge program, and remote rendering server, connecting the standalone command-line renderer with a Blender workflow.",
-          "Integrated the OIDN denoiser and exported albedo and normal auxiliary buffers to improve denoising quality and visual stability for low-sample renders.",
-          "Used Nsight Systems and Nsight Compute to analyze the CUDA implementation, identifying that oversized kernels used so many registers that they exceeded the limit and spilled register values into local memory; the implementation also did not use shared, texture, or surface memory, causing heavy long scoreboard stalls and very low efficiency."
+          "**Toolchain integration and delivery**: Built Blender scenes and supported the plugin, local bridge, and remote rendering server, connecting the renderer with a Blender workflow.",
+          "**Performance diagnosis**: Used Nsight Systems and Nsight Compute to identify register pressure and local-memory spills in oversized CUDA kernels. Studied memory access and long scoreboard stalls to understand low efficiency, and documented the lack of shared, texture, and surface memory use.",
+          "**Image-quality improvement**: Integrated OIDN with albedo and normal auxiliary buffers to improve denoising and stability at low sample counts.",
+          "**Technical direction**: Proposed ray tracing as the team’s project direction based on my interest in rendering, graphics, and toolchain integration."
         ]
       }
     },
@@ -133,15 +133,14 @@
       },
       "points": {
         "projectIntro": [
-          "Used the Nsight Systems timeline to break down time spent in initialization, data preparation, GPU kernels, synchronization waits, and resource release, observing that the core kernel-active region is short in the overall profiling view and deepening my understanding of multi-GPU synchronization and data movement.",
-          "Read Nsight Compute kernel summaries and Roofline charts to judge whether each kernel is more compute-bound or memory-bound, separating the performance traits of stage-state construction, main force computation, and RK4 weighted integration.",
-          "Combined the particle data structure with Source Counters' instruction-level memory behavior to understand NCU's optimization direction for the main cloth-solving kernel: the AoS layout causes neighboring threads to access non-contiguous addresses for the same component, lowering sector utilization.",
-          "Connected Warp Stall distributions with source-level instruction scheduling and data dependencies to explain stalls such as long scoreboard, math pipe throttle, barrier, and branch resolving, clarifying why the Warp Scheduler view shows relatively few eligible warps.",
-          "Used the occupancy chart to understand how register usage, per-block shared memory, block size, and hardware residency limits jointly constrain theoretical occupancy.",
-          "The quadruped animation assignment used Blender to build the model, rigging, and walk/run animation, then exported GLB, video, and presentation materials.",
-          "The OpenGL / GLSL assignments used the same animal model for STL, OBJ, and 3DS parsing, an interactive viewer, and shader stages including fixed color, texture mixing, Gouraud lighting, and Phong lighting.",
-          "The virtual-surgery assignment implemented mass-spring soft-tissue deformation on a brain model to observe local deformation and recovery under mouse dragging.",
-          "The CUDA physical-animation assignment implemented cloth and 3D SPH fluid simulation, used shared memory to optimize neighborhood computation, ran in a multi-GPU environment, and focused on Nsight Systems / Nsight Compute analysis of kernels, memory access, and GPU synchronization."
+          "**Whole-program performance analysis**: Used Nsight Systems to separate initialization, data preparation, kernels, synchronization, and cleanup. Identified the kernel-active share of the full run and studied host/device and device/device transfers, event/stream coordination, and multi-GPU synchronization.",
+          "**Bottleneck assessment**: Used Nsight Compute to study kernel summaries and Roofline plots, assess compute versus memory limits, and compare stage-state construction, force computation, and RK4 weighted integration.",
+          "**Data layout and memory behavior**: Connected particle structures with Source Counters instructions to understand how AoS makes neighboring threads access non-contiguous addresses for the same component, lowering sector utilization, and examined the tool’s optimization suggestions.",
+          "**Dependencies and scheduling**: Connected Warp Stall distributions with source ordering and data dependencies to study long scoreboard, math pipe, barrier, and branch resolving stalls, and understand why few warps were eligible to issue.",
+          "**Hardware resource constraints**: Used occupancy charts to study how registers, per-block shared memory, block size, and residency limits jointly constrain theoretical occupancy.",
+          "**GPU simulation practice**: Implemented CUDA cloth and 3D SPH fluid simulation, used shared memory for neighborhood calculations, ran in a multi-GPU environment, and profiled kernels, memory access, and synchronization.",
+          "**Graphics workflow practice**: Built and rigged a quadruped in Blender, animated walking/running, and exported GLB, video, and presentation materials. Used the same model for an OpenGL/GLSL viewer, STL/OBJ/3DS parsing, textures, and Gouraud/Phong shading.",
+          "**Interactive deformation modeling**: Implemented mass-spring soft-tissue deformation on a brain model to observe local movement and recovery under mouse dragging."
         ],
         "personalWork": []
       }
@@ -157,16 +156,18 @@
         "shellTimeRefill": "Shell program timing with fast refill",
         "refillChallengesSolution1": "Fast refill challenges and solutions (1)",
         "refillChallengesSolution2": "Fast refill challenges and solutions (2)",
-        "refillCode": "Fast refill code excerpt"
+        "refillCode": "Fast refill code excerpt",
+        "memcpyIssueExplanation": "memcpy issue explanation",
+        "instructorPhoto": "Photo with the course instructor"
       },
       "points": {
         "projectIntro": [
-          "For extra credit, implemented fast TLB refill in MIPS assembly using CPU documentation, $k0/$k1, and coprocessor registers, without AI assistance. Reduced context-saving overhead, found and fixed an ASID reuse bug through self-testing, and cut total runtime to about a quarter in tests with frequent TLB misses.",
-          "As a teaching assistant, traced unexpected MALTA device writes through syscall_write_dev to a memcpy defect and fixed it, supporting migration to QEMU and MIPS 4Kc.",
-          "As a teaching assistant, fixed a block-counting error that left disk blocks allocated after file deletion, and simplified redundant deletion logic.",
-          "Read nearly the entire OS codebase, including headers, C, assembly, Makefiles, and linker scripts; revisited core logic to understand call flows across modules.",
-          "Kept asking and answering my own questions, leaving behind a large set of lab notes.",
-          "Used GXemul to emulate the MIPS R3000 processor, with implementation in C and MIPS assembly."
+          "**Low-level implementation and validation**: Implemented fast TLB refill for extra credit in MIPS assembly from CPU manuals and page-table layouts, without AI assistance. Used $k0/$k1 and coprocessor registers to reduce context-saving overhead, cutting runtime to about 25% of baseline under frequent TLB misses. Also found and fixed an ASID-reuse bug during testing.",
+          "**Root cause analysis across layers**: As a TA, investigated unexpected system behavior during syscall_write_dev writes to MALTA devices. Traced the issue to the OS-provided memcpy implementation and fixed it, supporting migration to QEMU and MIPS 4Kc.",
+          "**Source-level diagnosis and repair**: Investigated incomplete disk-block reclamation after file deletion, traced it to a block-counting error, fixed the calculation, and simplified redundant deletion logic.",
+          "**Building a system-level understanding**: Read nearly the entire OS codebase, including C, assembly, headers, Makefiles, and linker scripts. Revisited core call flows and kept extensive notes through questions and investigation.",
+          "**Technical teaching and documentation**: Delivered and recorded lab video lectures for a full course offering, maintained the lab OS, and answered student questions.",
+          "**Connecting software and hardware**: Used C and MIPS assembly on a GXemul-emulated MIPS R3000 to complete labs on paged memory, processes, IPC, exceptions, filesystems, and a shell."
         ],
         "personalWork": []
       }
@@ -186,9 +187,9 @@
       },
       "points": {
         "projectIntro": [
-          "Designed OpenMP programs with different bottlenecks, optimized them, and compared performance across thread counts and data scales.",
-          "Experimented with compiler optimization, OpenMP thread binding, and NUMA binding.",
-          "Used DrCCTProf and Linux Performance Counters to analyze classic parallel algorithms, find bottlenecks, optimize them, and verify results."
+          "**Diagnosing parallel bottlenecks**: Designed OpenMP programs with different bottlenecks, optimized them, and compared results across thread counts and data sizes.",
+          "**Controlled analysis of system factors**: Experimented with compiler optimizations, OpenMP thread affinity, and NUMA binding to study their performance effects.",
+          "**Measurement-driven optimization**: Used DrCCTProf call-path analysis and Linux Performance Counters to investigate classic parallel algorithms, identify bottlenecks, and validate changes through experiments."
         ],
         "personalWork": []
       }
@@ -205,9 +206,9 @@
       },
       "points": {
         "projectIntro": [
-          "Used Python for data preprocessing and analysis to guide feature engineering.",
-          "Combined key risk factors and created cross features and basic risk features from domain knowledge.",
-          "Built a risk prediction model with XGBoost and used Optuna for hyperparameter search."
+          "**Data-informed feature design**: Preprocessed and analyzed data in Python to guide feature engineering.",
+          "**Encoding domain knowledge**: Combined key risk factors into cross features and baseline risk features for the model.",
+          "**Model training and tuning**: Built an XGBoost accident-risk predictor and used Optuna for hyperparameter search."
         ],
         "personalWork": []
       }
@@ -220,7 +221,7 @@
       },
       "points": {
         "projectIntro": [
-          "Allows users to create arbitrary points on a plane, then shows the process of building the convex hull and using rotating calipers to find the farthest pair of points."
+          "**Making algorithms visible**: Lets users place points on a plane and inspect convex-hull construction and the rotating-calipers search for the farthest pair."
         ],
         "personalWork": []
       }
@@ -230,9 +231,9 @@
       "summary": "A BUAA Object-Oriented Programming (Java) iterative assignment with four requirement rounds, teacher/student clients, and most traditional SCS functions.",
       "points": {
         "projectIntro": [
-          "Practiced Java object-oriented modeling and code organization through multiple rounds of iterative tasks.",
-          "The teacher client supports course and experiment CRUD, plus adding students and teaching assistants.",
-          "Students can join courses and submit experiments; teaching assistants can help teachers manage courses."
+          "**Iterative object-oriented design**: Practiced Java modeling and code organization through successive requirement rounds.",
+          "**Teaching administration**: The teacher client manages courses and labs and assigns students and teaching assistants.",
+          "**Coordinated course roles**: Students join courses and submit lab work, while teaching assistants help instructors manage courses."
         ],
         "personalWork": []
       }
@@ -253,16 +254,13 @@
       },
       "points": {
         "projectIntro": [
-          "Strictly followed Scrum agile practices, managed the Scrum board through the course-provided platform, and completed two requirement iterations in 11 days.",
-          "Participated across Scrum standups, story-point tracking, pair programming, automated checks, and manual code review.",
-          "Companies can manage employees, profiles, recruitment positions, and jobs; job seekers can manage resumes and apply.",
-          "Users and companies can publish, like, and comment on posts to understand each other better.",
-          "Users can send and manage private messages for closer job seeker-HR communication.",
-          "Implemented notifications for private messages, likes, and comments.",
-          "Used a large model to provide suggestions for improving resumes uploaded by users."
+          "**Agile delivery**: Used Scrum and the course platform’s board to complete two requirement iterations in 11 days.",
+          "**Collaboration and quality practices**: Combined daily standups, story-point tracking, pair programming, automated checks, and manual code review.",
+          "**Recruitment and resume support**: Companies manage employees, profiles, and vacancies. Applicants upload and manage resumes, submit applications, and receive AI suggestions for improving their resumes.",
+          "**Interaction and communication**: Users and companies share posts, likes, and comments. Applicants and HR teams exchange and manage private messages, with notifications for messages and feed interactions."
         ],
         "personalWork": [
-          "Served primarily as frontend developer and Scrum Master, delivered code aligned with the project's positioning and visual style, coordinated tasks, and reviewed code from other developers."
+          "**Team coordination and frontend delivery**: Worked primarily as frontend developer and Scrum Master, delivered code consistent with the product’s positioning and visual style, coordinated tasks, and reviewed teammates’ changes."
         ]
       }
     },
@@ -285,16 +283,13 @@
       },
       "points": {
         "projectIntro": [
-          "Strictly followed agile development with daily standups and status reports, managed progress on Alibaba Cloud DevOps, and completed two requirement iterations in 10 days.",
-          "Uses projects as the unit for team management, chat, documents, prototype design, and more, allowing users to create, join, and manage projects.",
-          "Provides project documents with rich-text and multi-user online collaborative editing; users can mention others in documents or share documents outside the project with desired permissions.",
-          "Provides chat and messaging: users can send text, images, files, and more to other users or in created groups, with delivery and read status.",
-          "Provides online prototype design for creating and editing Web page prototypes as the baseline for later development.",
-          "Implemented a notification system that alerts users when mentioned in documents or when new chat messages arrive.",
-          "Compiled development and technical summaries capturing each team member's reflections to preserve and share knowledge for future team development."
+          "**Short-cycle delivery**: Used daily standups, status reports, and Alibaba Cloud DevOps to track agile development, completing two requirement iterations in 10 days.",
+          "**Project collaboration and design**: Users create, join, and manage projects with shared documents and prototypes. Supports collaborative rich-text editing, member mentions, permission-based external sharing, and web prototyping to guide development.",
+          "**Messaging and notifications**: Provides direct and group chat with text, images, files, and delivery/read status, plus notifications for document mentions and new messages.",
+          "**Shared engineering knowledge**: Collects members’ development reflections and technical summaries for future teams."
         ],
         "personalWork": [
-          "Served primarily as frontend developer, delivered frontend and backend code aligned with the project's positioning and visual style, participated in overall project design and discussion, and reviewed code from other developers."
+          "**Collaborative delivery and review**: Worked primarily on the frontend, contributed to product design discussions and frontend/backend implementation, maintained a consistent visual style, and reviewed teammates’ code."
         ]
       }
     },
@@ -313,16 +308,16 @@
       },
       "points": {
         "projectIntro": [
-          "Went through the full process from requirements research, requirements modeling, and analysis modeling to architecture research and design, data design, coding, and deployment, producing documentation along the way.",
-          "On Kubernetes, created Deployments and other resources tailored to each microservice, used Ingress for load balancing, and delivered a high-availability deployment that supports high concurrency.",
-          "Used Elasticsearch for full-text and advanced literature search, combining keywords with operators such as AND, OR, and NOT.",
-          "Analyzes and visualizes researchers' research directions, collaborations, and citation relationships.",
-          "Provides personalized literature recommendations based on users' reading, download, and favorite history.",
-          "Allows readers to discuss literature or cite it in column articles with analysis and introductions."
+          "**Full development lifecycle**: Covered requirements research and modeling, analysis models, architecture and data design, implementation, and deployment, with supporting documentation.",
+          "**Microservice deployment**: Configured Kubernetes Deployments and related resources for individual services, using Ingress load balancing to support high concurrency and availability.",
+          "**Flexible literature search**: Uses Elasticsearch for full-text and advanced search, combining keywords with AND, OR, and NOT.",
+          "**Research relationship visualization**: Analyzes and displays research interests, collaborations, and citation relationships.",
+          "**Personalized discovery**: Recommends literature from reading, download, and bookmark history.",
+          "**Academic discussion and sharing**: Supports literature discussions and articles that cite, analyze, and introduce publications."
         ],
         "personalWork": [
-          "Participated deeply in every stage starting from requirements research, and communicated requirement details multiple times with our virtual users (instructors and teaching assistants).",
-          "Served as project architect, frontend developer, and related roles, designed the overall system architecture, and delivered frontend and backend code aligned with the project's positioning and design style."
+          "**Requirements discovery and clarification**: Contributed from the initial research stage onward, repeatedly discussing details with instructors and TAs acting as the project’s users.",
+          "**Architecture and collaborative implementation**: Served as project architect and frontend developer, designed the overall system architecture, and contributed frontend and backend code consistent with the product’s positioning and visual style."
         ]
       }
     },
@@ -337,11 +332,11 @@
         "scanAndRepeatPerformanceResults": "Performance results for exclusive prefix sums and repeated-element detection"
       },
       "points": [
-        "Used MPI for distributed Monte Carlo estimation of pi and parallel password enumeration with the course-provided MD5 library.",
-        "Implemented Pthreads-based numerical integration with busy-wait, mutex, and semaphore reduction variants, plus a task queue using condition variables to wake worker threads.",
-        "Parallelized the course's serial CYK reference implementation with OpenMP and documented performance through timing scripts, experiment data, and a report.",
-        "Implemented CUDA SAXPY transfers, kernel execution, and timing, alongside parallel prefix sums and repeated-element detection, within the Stanford CS149 Assignment 3 framework.",
-        "Also within the Stanford CS149 Assignment 3 framework, parallelized CUDA circle rendering with tile-based filtering, shared memory, and prefix sums to organize relevant circles, documenting the design in the report and algorithm diagrams."
+        "**Organizing parallel work**: Built a CUDA circle rasterizer within Stanford CS149 Assignment 3, using tile culling, shared memory, and prefix sums to organize relevant circles. Documented the design in reports and diagrams.",
+        "**GPU algorithm implementation**: Implemented SAXPY transfers, kernel execution, and timing in the same framework, along with parallel exclusive prefix sums and adjacent-repeat detection, preserving performance results.",
+        "**Comparing synchronization mechanisms**: Implemented Pthreads numerical integration with busy-wait, mutex, and semaphore reduction variants. Used condition variables to wake workers for task queues and linked-list operations.",
+        "**Distributed work partitioning**: Used MPI for Monte Carlo sampling and aggregation to estimate pi, and for parallel password enumeration with the course-provided MD5 library.",
+        "**Parallelization and evaluation**: Parallelized the course’s serial CYK reference implementation with OpenMP and recorded performance using timing scripts, experiment data, and a report."
       ]
     },
     "compiler": {
@@ -357,11 +352,11 @@
         "targetCodeOutput": "Detailed output: target code generation"
       },
       "points": [
-        "Built the lexer, recursive-descent parser, and AST for SysY, a C subset without pointer variables or floating-point types. Used layered symbol tables for scope management, type checking, and error reporting.",
-        "Designed the LLVM IR type and instruction model, lowering array access, short-circuit evaluation, and control flow into an intermediate representation.",
-        "Implemented the MIPS backend, including stack-frame layout, function calls, and recursion.",
-        "Combined constant folding and propagation, strength reduction, and address optimizations. Represented fixed addresses as stack offsets and reused register values with deferred storage of intermediate results to reduce redundant work and memory accesses.",
-        "Added configurable diagnostics for inspecting nested syntax structures, live symbol tables, and generated code during debugging."
+        "**Language analysis and semantic modeling**: Built a lexer, recursive-descent parser, and AST for SysY, a C subset without pointer variables or floating-point types. Used hierarchical symbol tables for scope management, type checking, and error diagnostics.",
+        "**Control flow and intermediate representation**: Designed LLVM IR type and instruction representations, lowering array addressing, short-circuit evaluation, and control flow into IR for the backend.",
+        "**Target-code generation**: Wrote an LLVM IR-to-MIPS generator that manages stack frames, argument passing, and returns, supporting function calls and recursion on 32-bit MIPS.",
+        "**Basic optimization**: Implemented constant folding and local-variable access through immediate offsets from the stack pointer. Kept intermediate results in registers for subsequent operations and deferred writes to stack memory, saving values at register overwrites, jumps, and function calls as required.",
+        "**Inspectable compilation**: Added configurable diagnostics for nested syntax structures, live symbol tables, and generated code, making scope handling and code generation easier to inspect."
       ]
     },
     "learning-living-platform": {
@@ -381,15 +376,15 @@
       },
       "points": {
         "projectIntro": [
-          "Used waterfall project management and produced standardized documentation across the full lifecycle from requirements analysis and system design to deployment and maintenance.",
-          "Designed a task-oriented frontend with detailed prompts and embedded guidance to deliver the best user experience.",
-          "Used JWT Token for authentication and a heartbeat mechanism to detect whether users are online.",
-          "Developed a self-designed resource deletion queue algorithm to prevent unreferenced dead resources from accumulating in platform storage.",
-          "Deployed frontend, backend, and database in the cloud with nginx for load balancing and GitHub Actions CI/CD."
+          "**Lifecycle planning and documentation**: Used waterfall project management and documented requirements, system design, deployment, and maintenance.",
+          "**Task-oriented interaction**: Embedded clear prompts and guidance to help users understand and complete actions.",
+          "**Identity and presence management**: Uses JWT authentication and heartbeats to detect online users.",
+          "**Storage lifecycle management**: Uses a deletion queue to remove unreferenced resources and prevent abandoned data from accumulating.",
+          "**Cloud deployment and continuous delivery**: Deploys frontend, backend, and database in the cloud, with nginx load balancing and GitHub Actions CI/CD."
         ],
         "personalWork": [
-          "Served as project lead, coordinating progress, assigning tasks, and ensuring on-time delivery.",
-          "Served as frontend developer, designing and implementing frontend code aligned with the project's positioning and style, refining details carefully to deliver an excellent user experience."
+          "**Team organization and delivery**: Led the project, assigned tasks, coordinated progress, and kept delivery on schedule.",
+          "**Experience design and implementation**: Designed and built the frontend, maintaining a consistent product identity and refining interaction details."
         ]
       }
     },
@@ -403,9 +398,9 @@
       },
       "points": {
         "projectIntro": [
-          "An assignment from when I was first learning Java, supporting user management, archive upload, download, search, deletion, and related functions.",
-          "Implemented the GUI with Java Swing and used FlatLaf to provide different style and theme choices.",
-          "Used Git for version management and provided detailed guidance and prompts for users to improve the user experience."
+          "**Business workflow implementation**: Built an early Java coursework project for user management and archive upload, download, search, and deletion.",
+          "**Desktop interaction design**: Implemented the GUI with Java Swing and used FlatLaf for style and theme choices.",
+          "**Development practice and user guidance**: Used Git for version control and added detailed prompts and instructions to improve usability."
         ],
         "personalWork": []
       }

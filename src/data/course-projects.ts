@@ -427,6 +427,19 @@ const courseProjectEntries: Project[] = [
         height: 1736,
         brightness: "high",
       },
+      {
+        src: "/assets/course-projects/os2023/memcpy-issue-explanation.webp",
+        altKey: "items.os2023.images.memcpyIssueExplanation",
+        width: 1454,
+        height: 896,
+        brightness: "high",
+      },
+      {
+        src: "/assets/course-projects/os2023/instructor-photo.webp",
+        altKey: "items.os2023.images.instructorPhoto",
+        width: 1280,
+        height: 960,
+      },
     ],
   },
   {

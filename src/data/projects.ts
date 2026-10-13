@@ -180,6 +180,20 @@ export const projects: Project[] = [
         brightness: "high",
       },
       {
+        src: "/assets/projects/npu-computing-forecast/training-resource-distribution.webp",
+        altKey: "items.npu-computing-forecast.images.trainingResourceDistribution",
+        width: 982,
+        height: 876,
+        brightness: "high",
+      },
+      {
+        src: "/assets/projects/npu-computing-forecast/configuration-coverage-distribution.webp",
+        altKey: "items.npu-computing-forecast.images.configurationCoverageDistribution",
+        width: 1011,
+        height: 631,
+        brightness: "high",
+      },
+      {
         src: "/assets/projects/npu-computing-forecast/cpu-metrics-comparison.webp",
         altKey: "items.npu-computing-forecast.images.cpuMetricsComparison",
         width: 1280,

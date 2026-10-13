@@ -13,6 +13,10 @@
 
 ## History
 
+- 2026-10-13 | [Project and coursework copy refresh](archive/20261013_Project-and-coursework-copy-refresh.md) | Unified 216 bilingual bullets across all projects and coursework, aligned contributions with the latest resume, consolidated platform features, and documented the interim Llama predictor's measured results.
+
+- 2026-10-12 | [Content copy and gallery refresh](archive/20261012_Content-copy-and-gallery-refresh.md) | Added a bilingual AI PR Review author note, removed NPU GNN trial wording, added two WebP images each for NPU and MOS, and cleared task staging and incremental-check caches.
+
 - 2026-10-12 | [Resume section navigation](archive/20261012_Resume-section-navigation.md) | Added responsive chapter dots, shared scrolling, proximity reveal, centered title waves and clickable title targets, with theme-aware feathered contrast tint across resume display modes.
 
 - 2026-10-08 | [Coursework and blog content refresh](archive/20261008_Coursework-and-blog-content-refresh.md) | Refreshed compiler copy, semester and repository links; added undergraduate parallel programming coursework with five WebP images and two foundational CUDA question associations; corrected the blog repository name and refreshed scoped GitHub statistics.

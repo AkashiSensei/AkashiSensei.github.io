@@ -42,21 +42,20 @@
         "microbatchThroughputMemory": "Microbatch throughput and memory trade-offs",
         "dataOrderAllocatorComparison": "Memory comparison across data orders and allocator settings",
         "llmFinetuningPredictor": "LLM fine-tuning resource predictor",
-        "recommendationPredictorArchitecture": "Recommendation workload predictor architecture"
+        "recommendationPredictorArchitecture": "Recommendation workload predictor architecture",
+        "trainingResourceDistribution": "3D distribution of training configurations and resource usage",
+        "configurationCoverageDistribution": "Model and NPU-count coverage with fine-tuning method distribution"
       },
       "points": {
         "projectIntro": [
-          "Explores resource prediction methods using task configuration, model structure, and data features to estimate hardware usage, TTFT/TPOT, and KV cache. Investigates GNNs to improve generalization through model structure.",
-          "Studies real training and inference workloads to understand Ascend hardware and its software ecosystem, reporting firsthand resource and performance issues to the partner."
+          "**Training and inference resource analysis**: Studies how task configuration, model structure, and data features can predict hardware usage, TTFT, TPOT, and KV cache for recommendation and language models.",
+          "**Evidence from real workloads**: Observes resource and performance behavior on Ascend NPUs, builds familiarity with the hardware and software ecosystem, and reports firsthand issues to the partner."
         ],
         "personalWork": [
-          "Independently built a configuration-driven data collection framework for TorchRec, DeepCTR, Torch-RecHub, and RecSDK, extending it to LLaMA Factory, vLLM, and multiple NPUs.",
-          "Isolated data-order-driven memory peaks through controlled experiments, distinguished active from reserved memory, and validated expandable segments across models and tuning methods.",
-          "Built NPU monitoring with npu-smi, npu-exporter, and DCMI; cross-checked container CPU/memory with vmstat, sar, cgroup, and lxcfs, preserving raw traces.",
-          "Aligned per-rank training events with monitoring and separated initialization from training. Found and fixed ineffective gradient-checkpointing settings to protect data validity.",
-          "Built XGBoost predictors for recommendation workloads and LLM fine-tuning, estimating HBM, compute, and bandwidth usage from configuration, structure, and data features.",
-          "Compared features and evaluation splits, exploring direct memory prediction and corrections to static estimates. Some metrics reached R² 0.96+ for new configurations of known models; unseen models were evaluated separately.",
-          "Reported long-term observations to the partner, including slow DLRM first epochs and fluctuating memory high-water marks."
+          "**Reproducible experiment infrastructure**: Independently built a configuration-driven framework that unifies execution, logging, and configuration/result retention for performance diagnosis and resource prediction. Adapted TorchRec, DeepCTR, Torch-RecHub, and RecSDK, then extended it to LLaMA Factory fine-tuning, vLLM inference, and multiple NPUs, with checks that configurations take effect.",
+          "**From observation to diagnosis**: Tracked workload behavior and reported issues to the partner, including slow first epochs in DLRM and reserved-memory fluctuations. After observing the memory fluctuations, designed experiments on input order and allocator settings, distinguished active from reserved memory, traced the effect of variable-length inputs, and validated expandable segments across models and tuning methods.",
+          "**Trustworthy measurement**: Collected NPU, CPU, and memory metrics through DCMI, cgroup, and related interfaces, preserving raw traces for analysis and feature extraction. Aligned per-rank events with resource traces, separated initialization from training, and cross-checked measurements with npu-smi, npu-exporter, vmstat, lxcfs, and sar.",
+          "**Resource modeling and feature design**: Used XGBoost with pre-run features from task configuration, model structure, and data distributions, comparing feature sets, data splits, direct memory prediction, and corrections to static estimates. Built an interim Llama fine-tuning resource predictor on 1,031 runs across 1B/3B/8B/70B models, using 43 features to predict 20 metrics covering peak per-device HBM usage, AI Core/Vector Core utilization, HBM bandwidth utilization, and power over full-observation and shared training windows. On 206 runs held out by configuration group, mean R² over 20 targets was 0.976, with individual target scores of 0.922–0.992 across the full test set."
         ]
       }
     },
@@ -78,20 +77,19 @@
       },
       "points": {
         "projectIntro": [
-          "Our deployment serves 600+ users with 280+ accelerators, 5,600+ CPU cores, and 200+ daily jobs. Enterprise adoption has brought collaboration invitations; some components are deliverables under China's National Key R&D Program.",
-          "Combines a custom admission controller with Volcano scheduling, quotas, backfilling, CephFS limits, and bandwidth controls. Plans to migrate admission control to a Volcano extender integration.",
-          "Detects GPU-hoarding scripts that hold resources for long periods without doing meaningful work, helping curb misuse.",
-          "Replaces the lab's Slurm tooling with a web console and supports systems research in scheduling and distributed storage.",
-          "Supports snapshots, Buildx/Envd image builds, NFS/Ceph storage, and shared model and dataset management for reusable environments and assets.",
-          "Mostly completed an embedded Q&A agent to help users query and locate problems faster."
+          "**Deployment and adoption**: The lab deployment serves 600+ students and faculty with 280+ accelerators, 5,600+ CPU cores, and 200+ jobs created daily. Multiple companies have adopted the platform and proposed collaborations; some components are National Key R&D Program deliverables.",
+          "**Shared resource governance**: Combines a custom admission controller with Volcano scheduling, account quotas, queueing and backfilling, CephFS space limits, and bandwidth controls. A migration to Volcano extender integration is planned.",
+          "**Resource misuse detection**: Identifies scripts that reserve GPUs for long periods without doing meaningful work, helping curb resource hoarding.",
+          "**Unified platform access**: Replaces the lab’s Slurm tooling with a web console and supports systems research in scheduling and distributed storage.",
+          "**Reusable environments and data**: Provides snapshots, Buildx and Envd image builds, NFS and Ceph storage, and model and dataset download management.",
+          "**Automated user support**: An embedded Q&A agent is largely implemented to help users find information and troubleshoot platform issues."
         ],
         "personalWork": [
-          "As a **core maintainer**, helped shape requirements and designs, reviewed 40+ PRs, distinguished blockers from follow-ups, and mentored new contributors.",
-          "Diagnosed production issues involving RDMA devices, CephFS, slow jobs, container startup, and cluster egress, and helped drive fixes.",
-          "Early on, built and refined Jupyter, CUDA, and PyTorch images for the platform, simplifying setup and improving out-of-the-box usability.",
-          "Designed and built the Crater CLI framework and Agent Skills from scratch for users, scripts, and AI agents.",
-          "Turned user feedback into features and fixes, improving workflows, error messages, and usability.",
-          "Created development Skills for code, documentation, and releases, capturing engineering constraints, review lessons, and verification requirements."
+          "**Turning user needs into delivery**: Translated frontline feedback into features and fixes, improving workflows and error messages. Designed and built the Crater CLI framework and Agent Skills from scratch for people, scripts, and AI agents.",
+          "**Technical judgment and review**: As a core maintainer, contributed to planning and design reviews. Used AI to study mechanisms I did not yet understand, formed my own understanding, and brought that judgment into 40+ PR reviews. Wrote technical posts and mentored new contributors through delivery.",
+          "**Production diagnosis**: Identified root causes and helped drive fixes for RDMA device detection, CephFS faults, job slowdowns caused by the platform, container startup failures, and cluster egress issues.",
+          "**Reusable engineering practice**: Created development Skills for code, documentation, and releases, capturing engineering constraints, review lessons, and verification requirements for AI collaboration.",
+          "**Usable development environments**: Built and refined Jupyter, CUDA, and PyTorch images early in the project, adapting them to the platform and simplifying first use and environment setup."
         ]
       }
     },
@@ -107,16 +105,14 @@
       },
       "points": {
         "projectIntro": [
-          "Provides a new way to access and operate the Crater platform for script/CLI users and AI agents in the new era.",
-          "Gradually connecting the APIs of Crater modules..."
+          "**More ways to operate Crater**: Gives command-line users, scripts, and AI agents an entry point that complements the web interface.",
+          "**Growing API coverage**: Gradually connects Crater module APIs to expand the operations available through the CLI."
         ],
         "personalWork": [
-          "Provides architecture, spec, command, and review docs, using documentation-driven development for AI-era coding.",
-          "Provides multilingual Tab completion and survey-style interactive selection across shells.",
-          "Distributes Skills, supports non-interactive/formatted output, and defines error codes for agent use and troubleshooting.",
-          "Implements sandboxed network and storage access so tests do not affect real environments or cluster data.",
-          "Improves AI-generated code reliability with unit tests and a sandbox-based snapshot/golden-file mechanism that leaves reference examples for later AI coding and lets reviewers see real command output.",
-          "Designed from scratch, accumulating architecture design experience and real engineering reflections."
+          "**Interface and architecture design**: Designed the CLI from scratch around people, scripts, and AI agents. Added non-interactive operation, structured output, defined error codes, and accompanying Skills for automation and troubleshooting.",
+          "**Verifiable delivery**: Isolated network and storage access in a sandbox so tests leave real environments and cluster data untouched. Combined unit tests with golden snapshots so reviewers can inspect command output and later AI development has concrete examples.",
+          "**AI collaboration practices**: Maintained architecture, specification, command, and review documents to guide implementation through explicit contracts and verification requirements, recording engineering decisions and trade-offs.",
+          "**Usable command-line interaction**: Provided multilingual Tab completion across shells and survey-style prompts, balancing human convenience with predictable automated use."
         ]
       }
     },
@@ -135,12 +131,12 @@
       },
       "points": {
         "projectIntro": [
-          "Won third prize in the 2nd 'China Data Valley Huawei Cup' China Graduate Operating System Open Source Innovation Competition.",
-          "Decomposes large language model structure and uses mathematical methods to model the storage and compute requirements of each part of the model."
+          "**Competition recognition**: Won third prize in the 2nd “China Data Valley Huawei Cup” China Graduate Operating System Open Source Innovation Competition.",
+          "**Model resource analysis**: Decomposes language model structure and mathematically models the storage and compute requirements of each component."
         ],
         "personalWork": [
-          "Built a modern frontend with Vue 3, TypeScript, Vite, and Element Plus, packaging backend capabilities into an interactive product.",
-          "Integrated ECharts and ECharts-GL to visualize latency, throughput, memory, and phase progress, showing how requirement changes affect deployment cost."
+          "**Turning backend capabilities into a product**: Built an interactive frontend with Vue 3, TypeScript, Vite, and Element Plus for exploring model resource estimates.",
+          "**Visualization for informed decisions**: Used ECharts and ECharts-GL to show latency, throughput, memory, and phase progress, helping users connect model structure and inference stages with resource demand and understand how changing requirements affect deployment cost."
         ]
       }
     },
@@ -165,10 +161,10 @@
       },
       "points": {
         "projectIntro": [
-          "Designed layouts for phones and desktops of different sizes, with multiple languages, light/dark themes, and animation levels; dark mode also dims overly bright screenshots so reading stays comfortable.",
-          "Maintained AI prompts and project specs that capture purpose, design principles, and constraints, so long-term iteration stays coherent.",
-          "Used AI to generate line art, light/dark concepts, and video, then recovered the camera path for the homepage FPV fly-through. The footage carries the space; copy, language, and theme stay in the site, so they can change without remaking the video. Gained experience in the problems of getting generated media into a product.",
-          "Separated presentation from content: the same components can render different entries, and one entry can appear on multiple pages, making changes and extensions easier."
+          "**Designing across viewing conditions**: Adapted layouts to phones and varied desktop sizes, with multiple languages, themes, and animation levels. Dimmed bright screenshots in dark mode to keep reading comfortable.",
+          "**Consistent long-term iteration**: Maintained AI instructions and project specifications that capture goals, design principles, and constraints for future changes.",
+          "**Integrating generated media into a product**: Generated line art, theme concepts, and video with AI, then recovered the camera path for the homepage FPV sequence. Kept copy, language, and theme in the site so content changes do not require a new video, building practical experience in media integration.",
+          "**Reusable content architecture**: Separated presentation from content so components can render different entries and one entry can serve several pages, simplifying maintenance and extension."
         ],
         "personalWork": []
       }
@@ -195,9 +191,9 @@
       },
       "points": {
         "projectIntro": [
-          "Mapped ONNX operators to GPU kernel sequences, built kernel-level computation graphs, and studied mapping patterns to inform resource prediction.",
-          "Built a rule-based model to predict kernels and estimate compute and memory usage at low cost. Evaluated predictions to support future interference analysis and scheduling.",
-          "Automated batch profiling, trace parsing, and Nsight Compute data integration, with tools for mapping analysis, rule-model construction, and visualization."
+          "**Modeling execution behavior**: Mapped ONNX operators to GPU kernel sequences, built kernel-level computation graphs, and studied the factors that affect those mappings.",
+          "**Low-cost prediction and evaluation**: Built rule-based models to predict the kernels used by ONNX operators and estimate compute and memory usage. Evaluated predictions as groundwork for later interference analysis and scheduling.",
+          "**Automated experimentation**: Built tools for batch profiling, trace parsing, and Nsight Compute data integration, supporting mapping analysis, rule construction, and visualization."
         ],
         "personalWork": []
       }

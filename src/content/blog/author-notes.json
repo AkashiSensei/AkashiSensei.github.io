@@ -28,5 +28,26 @@
         "markdown": "On September 24, Tencent said QClaw would shut down on December 24. I can only say that this makes sense and is what I expected: it was an underpolished product to begin with, and it cannot compete with tools such as Codex remote access and Grok Bot, which are the two I use most these days. Bye-bye, little penguin shrimp~"
       }
     }
+  },
+  {
+    "id": "ai-pr-review-design-limits-update",
+    "articleId": "ai-pr-review",
+    "publishedAt": "2026-10-12",
+    "locales": {
+      "zh": {
+        "anchor": {
+          "kind": "after-paragraph",
+          "text": "先说关键结论。经过一段时间的使用，我觉得现在这类 AI review 的 Harness 和模型能力都有待加强，但是绝对是值得使用的，尤其是在代码几乎都是 AI 写的情况下，尤其是在中大型的多开发者/开源项目中，多这样一层上下文与开发环境独立的检查，能够帮助发现不少问题。"
+        },
+        "markdown": "到现在为止，AI 的静态 review 还是基本上只能检查代码实现的问题，更高层的业务逻辑或者设计之类的还是不太能有效的 review。更好的实现方式可能是让 AI 在检查代码实现的基础上，讲清楚代码设计和逻辑，由人类 reviewer 理解进一步判断是否合理。"
+      },
+      "en": {
+        "anchor": {
+          "kind": "after-paragraph",
+          "text": "Here is the key conclusion first. After using these tools for a while, I think both the harness and the model capability of current AI review tools still need improvement, but they are absolutely worth using. This is especially true when most of the code is already written by AI, and even more so in medium-to-large multi-developer or open-source projects. Adding one extra layer of checking that is independent from the original development context and environment can help catch quite a few problems."
+        },
+        "markdown": "So far, static AI review can mostly only identify problems in code implementation. It still struggles to effectively review higher-level business logic or design. A better approach might be to have AI explain the code design and logic alongside checking the implementation, so that human reviewers can understand them and judge whether they make sense."
+      }
+    }
   }
 ]
