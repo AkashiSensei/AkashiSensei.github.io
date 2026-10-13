@@ -8,11 +8,13 @@ import { getListingPointSections } from "@/lib/project-points"
 type ProjectGridProps = {
   projects: Project[]
   translationNamespace?: "projects" | "courseProjects"
+  highlightedTags?: string[]
 }
 
 export function ProjectGrid({
   projects,
   translationNamespace = "projects",
+  highlightedTags,
 }: ProjectGridProps) {
   const { t } = useTranslation(translationNamespace)
   const [columns, setColumns] = useState(2)
@@ -82,6 +84,7 @@ export function ProjectGrid({
               imageAutoCycleStaggerIndex={colIdx * 3 + projectIndex}
               variant="full"
               translationNamespace={translationNamespace}
+              highlightedTags={highlightedTags}
               className="h-auto"
             />
           ))}

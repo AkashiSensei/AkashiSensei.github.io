@@ -10,6 +10,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "test:questions": "node --test tests/questions.test.mjs",
+    "test:tags": "node --test tests/tag-filter.test.mjs",
     "preview": "vite preview",
     "import:blog": "node scripts/import-blog.mjs",
     "test:blog": "node --experimental-strip-types --test tests/blog.test.mjs"

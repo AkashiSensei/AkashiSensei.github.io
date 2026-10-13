@@ -12,6 +12,7 @@ import { getListingPointSections } from "@/lib/project-points"
 import {
   defaultTagClassName,
   tagPillClassName,
+  selectedTagClassName,
   getCourseProjectSemesterTagClassName,
   getSemanticTagClassName,
 } from "@/lib/tag-styles"
@@ -23,6 +24,7 @@ type ProjectCardProps = {
   imageAutoCycleStaggerIndex?: number
   variant?: "compact" | "full"
   translationNamespace?: "projects" | "courseProjects"
+  highlightedTags?: string[]
 }
 
 const lifecycleStatusClassName = {
@@ -40,6 +42,7 @@ export function ProjectCard({
   imageAutoCycleStaggerIndex = 0,
   variant = "full",
   translationNamespace = "projects",
+  highlightedTags = [],
 }: ProjectCardProps) {
   const { t } = useTranslation([translationNamespace, "common"])
   const pointsValue = t(`items.${project.id}.points`, { returnObjects: true })
@@ -206,7 +209,9 @@ export function ProjectCard({
                 tagPillClassName,
                 isCourseProjectTimeTag
                   ? semesterTagClassName
-                  : defaultTagClassName,
+                  : highlightedTags.includes(tag)
+                    ? selectedTagClassName
+                    : defaultTagClassName,
               )}
             >
               {tagLabel}

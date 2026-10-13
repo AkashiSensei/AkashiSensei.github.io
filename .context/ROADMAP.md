@@ -13,6 +13,8 @@
 
 ## History
 
+- 2026-10-13 | [Project and coursework tag filtering](archive/20261013_Project-and-coursework-tag-filtering.md) | Added shared tag filters, paired coursework time/technology groups, English semester URLs, matched-tag styling, and collapsible mobile filters with inline reset.
+
 - 2026-10-13 | [Project and coursework copy refresh](archive/20261013_Project-and-coursework-copy-refresh.md) | Unified 216 bilingual bullets across all projects and coursework, aligned contributions with the latest resume, consolidated platform features, and documented the interim Llama predictor's measured results.
 
 - 2026-10-12 | [Content copy and gallery refresh](archive/20261012_Content-copy-and-gallery-refresh.md) | Added a bilingual AI PR Review author note, removed NPU GNN trial wording, added two WebP images each for NPU and MOS, and cleared task staging and incremental-check caches.

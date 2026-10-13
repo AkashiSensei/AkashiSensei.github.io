@@ -23,6 +23,7 @@
 | 卡片与玻璃表面 | `src/components/GlassPanel.tsx`、`src/components/SpotlightCard.tsx` |
 | 移动导航及浮动入口毛玻璃 | `src/lib/glass-surface-styles.ts` 的 `navigationGlassSurfaceClassName`，配合 `SpotlightCard` |
 | 普通 tag、按钮 | `src/lib/tag-styles.ts`、`src/lib/action-button-styles.ts`、`src/components/ui/button.tsx` |
+| 列表 tag 筛选与取消选择 | `src/components/TagFilter.tsx`、`src/components/tag-filter.css`、`src/lib/tag-filter.ts`；课设时间/技术分组复用 `CourseProjectTagFilter.tsx`、`src/lib/course-project-filter.ts` |
 | 朴素 tag、外链图标 | `src/components/DocumentTag.tsx`、`src/lib/tag-label.ts`、`src/components/ExternalLinkIcon.tsx` |
 | bullet 与个人贡献强调 | `src/components/FeaturePointList.tsx`、`src/lib/emphasized-text.tsx` |
 | 弹窗、背景遮罩、进退场 | `src/components/ui/dialog.tsx`、`src/components/ui/dialog.css`、`src/lib/dialog-motion.ts` |

@@ -1,4 +1,12 @@
 {
+  "tagFilter": {
+    "label": "按标签筛选",
+    "expand": "展开标签筛选",
+    "collapse": "收起标签筛选",
+    "reset": "取消选择",
+    "empty": "没有符合筛选条件的条目",
+    "emptyHint": "试试其他标签，或取消选择查看全部条目"
+  },
   "relatedProjectCount": "关联 {{count}} 个项目",
   "site": {
     "displayName": "Akashi"

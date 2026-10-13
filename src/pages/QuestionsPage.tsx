@@ -4,14 +4,11 @@ import { BackButton } from "@/components/BackButton"
 import { Layout } from "@/components/Layout"
 import { SectionHeader } from "@/components/SectionHeader"
 import { QuestionList } from "@/components/QuestionList"
-import { Button } from "@/components/ui/button"
+import { TagFilter, TagFilterReset } from "@/components/TagFilter"
 import { useAnimationPreference } from "@/components/animation-provider"
 import { filterQuestions, questionTags, questionThreads } from "@/data/questions"
-import { normalizeQuestionTags, toggleQuestionTag } from "@/lib/questions"
-import { defaultTagClassName, tagPillClassName } from "@/lib/tag-styles"
+import { normalizeQuestionTags } from "@/lib/questions"
 import { cn } from "@/lib/utils"
-import { filledPillActionClassName } from "@/lib/action-button-styles"
-import { formatDocumentTag } from "@/lib/tag-label"
 
 const tagsByCount = Object.keys(questionTags).sort((a, b) =>
   questionThreads.filter((q) => q.tagIds.includes(b)).length - questionThreads.filter((q) => q.tagIds.includes(a)).length,
@@ -44,7 +41,7 @@ export function QuestionsPage() {
             <h1 tabIndex={-1} data-question-fallback>{t("title")}</h1>
             <p className="plain-home-lede">{t("subtitle")}</p>
           </div>
-          {!allSelected && <button type="button" className="question-document-reset site-text-link shrink-0 cursor-pointer text-sm" onClick={() => selectTags([])}>{t("resetSelection")}</button>}
+          {!allSelected && <TagFilterReset onReset={() => selectTags([])} label={t("resetSelection")} />}
         </div>
       </header> : <div className="mb-8 flex flex-col px-2 sm:mb-12 sm:px-4">
         <BackButton />
@@ -54,18 +51,10 @@ export function QuestionsPage() {
           subtitle={t("subtitle")}
           className="px-0 sm:px-0 md:px-0"
           headingProps={{ tabIndex: -1, "data-question-fallback": true }}
-          action={!allSelected ? <Button type="button" variant="outline"
-            className={cn(filledPillActionClassName, "h-9 shrink-0 px-4 text-sm")}
-            onClick={() => selectTags([])}>{t("resetSelection")}</Button> : undefined}
+          action={!allSelected ? <TagFilterReset onReset={() => selectTags([])} label={t("resetSelection")} /> : undefined}
         />
       </div>}
-      <fieldset className="question-filters">
-        <legend className="sr-only">{t("tags")}</legend>
-        <div className="question-filter-tags" lang="en">{tagsByCount.map((id) => <button key={id} type="button"
-          className={isPlainDisplayMode ? "document-tag question-document-filter" : cn(tagPillClassName, defaultTagClassName)}
-          aria-pressed={allSelected || tags.includes(id)}
-          onClick={() => selectTags(toggleQuestionTag(tags, id, tagsByCount))}>{isPlainDisplayMode ? formatDocumentTag(questionTags[id]) : questionTags[id]}</button>)}</div>
-      </fieldset>
+      <TagFilter available={tagsByCount} selected={tags} label={t("tags")} getLabel={(id) => questionTags[id]} onChange={selectTags} lang="en" />
       <div className="question-results">
         {results.length
           ? <QuestionList threads={results} showProjects={false} variant={isPlainDisplayMode ? "document" : "catalog"} highlightedTags={tags} masonry />

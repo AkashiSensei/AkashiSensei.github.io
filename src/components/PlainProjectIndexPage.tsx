@@ -2,6 +2,7 @@ import { PlainImageGallery } from "@/components/PlainImageGallery"
 import { ExternalLinkIcon } from "@/components/ExternalLinkIcon"
 import { DocumentTag } from "@/components/DocumentTag"
 import { useEffect, useMemo, useRef, useState } from "react"
+import type { ReactNode } from "react"
 import { useTranslation } from "react-i18next"
 
 import { AppLink } from "@/components/AppLink"
@@ -10,12 +11,16 @@ import { GitHubRepoStats } from "@/components/GitHubRepoStats"
 import { Layout } from "@/components/Layout"
 import { ProjectImageGallery } from "@/components/ProjectImageGallery"
 import { PlainPointList } from "@/components/PlainPointList"
+import { TagFilterEmpty } from "@/components/TagFilter"
 import { type Project } from "@/data/projects"
 import { getListingPointSections } from "@/lib/project-points"
 
 type PlainProjectIndexPageProps = {
   projects: Project[]
   translationNamespace?: "projects" | "courseProjects"
+  highlightedTags?: string[]
+  filters?: ReactNode
+  action?: ReactNode
 }
 
 type PlainProjectRepoLink = {
@@ -110,6 +115,9 @@ function estimateProjectHeight(
 export function PlainProjectIndexPage({
   projects,
   translationNamespace = "projects",
+  highlightedTags = [],
+  filters,
+  action,
 }: PlainProjectIndexPageProps) {
   const { t } = useTranslation([translationNamespace, "common"])
   const masonryRef = useRef<HTMLElement | null>(null)
@@ -213,19 +221,26 @@ export function PlainProjectIndexPage({
 
   return (
     <Layout mainClassName="plain-home-main">
-      <article className="plain-home-document plain-index-document plain-project-index-document" aria-labelledby="plain-project-index-title">
+      <article className="project-index-page plain-home-document plain-index-document plain-project-index-document" aria-labelledby="plain-project-index-title">
         <header className="plain-home-header plain-index-header">
           <BackButton fallback="/resume" className="plain-index-back" />
-          <h1 id="plain-project-index-title">{t("title")}</h1>
-          <p className="plain-home-lede">{t("subtitle")}</p>
+          <div className="tag-filter-heading">
+            <div>
+              <h1 id="plain-project-index-title">{t("title")}</h1>
+              <p className="plain-home-lede">{t("subtitle")}</p>
+            </div>
+            {action}
+          </div>
         </header>
+
+        {filters}
 
         <section
           ref={masonryRef}
           className="plain-project-masonry"
           aria-label={t("title")}
         >
-          {columnsData.map((columnProjects, columnIndex) => (
+          {!projects.length ? <TagFilterEmpty /> : columnsData.map((columnProjects, columnIndex) => (
             <div key={columnIndex} className="plain-project-column">
               {columnProjects.map((project, projectIndex) => {
                 const title = t(`items.${project.id}.title`)
@@ -326,7 +341,7 @@ export function PlainProjectIndexPage({
                             hasCourseProjectTimeTags && tagIndex < 2
 
                           return (
-                            <DocumentTag as="li" key={tag} label={isCourseProjectTimeTag
+                            <DocumentTag as="li" key={tag} highlighted={highlightedTags.includes(tag)} label={isCourseProjectTimeTag
                                 ? t(`semesterTags.${tag}`, { defaultValue: tag })
                                 : tag} />
                           )

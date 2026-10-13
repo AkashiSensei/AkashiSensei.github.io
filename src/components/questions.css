@@ -21,12 +21,7 @@
 
 .questions-page { --question-tag-selected-background: var(--site-accent-surface); --question-tag-selected-border: var(--site-accent-border); --question-tag-selected-text: var(--site-accent-on-surface); }
 .questions-page-header { display: flex; align-items: center; justify-content: space-between; gap: clamp(1rem, 3vw, 2rem); padding-block: 1.1rem 1.5rem; }
-.question-filters { min-width: 0; margin: 0; padding: 0 0 1rem; border: 0; }
-.question-filter-tags { display: flex; flex-wrap: wrap; gap: .375rem; }
-.question-filter-tags button { font-weight: var(--font-weight-normal); cursor: pointer; }
-.question-filter-tags button[aria-pressed="true"], .question-thread-tag[data-highlighted="true"] { background: var(--question-tag-selected-background); border-color: var(--question-tag-selected-border); color: var(--question-tag-selected-text); }
-.question-filter-tags button[aria-pressed="false"] { opacity: .4; }
-.question-filter-tags button[aria-pressed="false"]:hover { opacity: .7; }
+.question-thread-tag[data-highlighted="true"] { background: var(--question-tag-selected-background); border-color: var(--question-tag-selected-border); color: var(--question-tag-selected-text); }
 .question-results { min-width: 0; }
 .question-list { list-style: none; margin: 0; padding: 0; }
 .question-list-catalog { display: grid; grid-template-columns: minmax(0, 1fr); column-gap: clamp(2rem, 4vw, 4rem); align-items: start; }
@@ -100,7 +95,6 @@
 .question-project-summary { margin-top: 3.5rem; }
 .question-project-name { min-width: 0; overflow-wrap: anywhere; }
 .question-list-trigger:focus-visible, .question-catalog-trigger:focus-visible, .question-document-trigger:focus-visible,
-.question-filter-tags button:focus-visible,
 .question-wall-toolbar button:focus-visible { outline: 2px solid var(--color-ring); outline-offset: 3px; }
 @media (min-width: 768px) {
   .question-list-catalog { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -127,7 +121,7 @@
 .question-answer { color: var(--text-tone-2); }
 
 /* Reuse the site's small-surface/card elevation instead of a question-specific glow. */
-.questions-page:not(.questions-page-plain) :is(.question-bubble, .question-thread-tag, .question-filter-tags button) {
+.questions-page:not(.questions-page-plain) :is(.question-bubble, .question-thread-tag) {
   box-shadow: var(--shadow-sm);
 }
 
@@ -135,9 +129,6 @@
 .questions-page-plain .questions-page-header { flex-wrap: wrap; padding: 0; }
 .questions-page-plain .questions-page-header > div { gap: var(--plain-lede-gap); }
 .questions-page-plain h1 { color: var(--foreground); }
-.questions-page-plain .question-filters { margin-top: var(--plain-index-header-gap); padding: 0; }
-.questions-page-plain .question-filter-tags { gap: var(--plain-index-tag-gap); }
-.questions-page-plain .question-filter-tags button { text-decoration: none; font-weight: var(--font-weight-normal); }
 .questions-page-plain .question-results { margin-top: var(--plain-index-item-gap); }
 .question-list-document { --question-column-gap: var(--plain-two-column-gap); }
 .question-list-document > .question-list-item { padding: 0 0 var(--plain-index-item-gap); }
@@ -148,10 +139,3 @@
 .related-questions .question-list-document > .question-list-item { padding: 0; }
 .plain-detail-aside .related-questions { margin-top: 0; }
 .plain-detail-aside .related-questions-header { margin-bottom: 0; }
-
-/* Document filters retain button semantics while reading as plain hashtags. */
-.questions-page-plain .question-filter-tags { gap: 0.5rem 0.75rem; }
-.question-filter-tags .question-document-filter { padding: 0; min-height: 0; background: transparent; border: 0; border-radius: 0; }
-.question-filter-tags .question-document-filter[aria-pressed="true"] { background: var(--site-accent-surface); color: var(--text-tone-1); text-decoration: none; }
-.question-filter-tags .question-document-filter[aria-pressed="false"] { opacity: 1; color: var(--text-tone-3); }
-.question-filter-tags .question-document-filter:hover { color: var(--text-tone-1); }

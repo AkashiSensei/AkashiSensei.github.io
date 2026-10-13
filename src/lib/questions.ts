@@ -1,5 +1,7 @@
 import type { QuestionProject, QuestionThread } from "../data/questions"
 
+export { normalizeTagSelection as normalizeQuestionTags, toggleTagSelection as toggleQuestionTag } from "./tag-filter.ts"
+
 export function questionProjectKey(project: QuestionProject) {
   return `${project.module}:${project.id}`
 }
@@ -11,18 +13,6 @@ export function shuffleQuestions(threads: QuestionThread[], random = Math.random
     ;[result[i], result[j]] = [result[j], result[i]]
   }
   return result
-}
-
-// An empty selection represents the default all-highlighted state.
-export function normalizeQuestionTags(selected: string[], available: string[]) {
-  const valid = [...new Set(selected)].filter((id) => available.includes(id))
-  return valid.length === available.length ? [] : valid
-}
-
-export function toggleQuestionTag(selected: string[], id: string, available: string[]) {
-  const current = normalizeQuestionTags(selected, available)
-  if (!available.includes(id)) return current
-  return normalizeQuestionTags(current.includes(id) ? current.filter((tag) => tag !== id) : [...current, id], available)
 }
 
 export function filterQuestions(threads: QuestionThread[], tags: string[] = [], project = "") {

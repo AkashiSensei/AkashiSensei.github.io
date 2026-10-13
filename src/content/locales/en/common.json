@@ -1,4 +1,12 @@
 {
+  "tagFilter": {
+    "label": "Filter by tag",
+    "expand": "Show tag filters",
+    "collapse": "Hide tag filters",
+    "reset": "Clear selection",
+    "empty": "No entries match these filters",
+    "emptyHint": "Try another tag or clear the selection to see all entries."
+  },
   "relatedProjectCount_one": "{{count}} related project",
   "relatedProjectCount_other": "{{count}} related projects",
   "site": {

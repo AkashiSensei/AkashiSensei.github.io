@@ -19,6 +19,8 @@
 
 小工具的结构数据在 `src/data/tools.ts`，标题、说明和要点在各语言的 `tools.json` 中通过同一个小工具 `id` 对应。
 
+项目与课设列表的筛选项直接来自 `src/data/projects.ts` / `src/data/course-projects.ts` 的 `tags`，无需维护独立清单；按命中条目数排序，同数保留首次出现顺序。课设年级、学期标签沿用 `course-projects.json` 的 `semesterTags` 翻译，规范值不随语言改变，时间筛选的 URL 使用独立英文标识，例如 `tag=spring-2026`，一项表示整对年级/学期；继续兼容旧中文时间参数。顶部默认全部高亮，首次点击单选、随后可多选（任一标签匹配），取消选择恢复全部。课设将时间筛选放在技术筛选上方，年级与学期从每条数据前两项 tags 成对派生，点击任一标签整对切换；时间组与技术组取交集，组内多选取并集，每组空选择/全选均表示该组不限制。普通/静态模式的时间胶囊沿用既有学期配色，朴素模式保持文档高亮；技术 tag 只高亮实际选中的匹配项。共用控件与样式位于 `TagFilter.tsx` / `tag-filter.css`，筛选及 URL 工具位于 `src/lib/tag-filter.ts`，课设分组与绑定逻辑位于 `CourseProjectTagFilter.tsx` / `src/lib/course-project-filter.ts`，通用文案位于 `common.json` 的 `tagFilter`；问题列表也复用控件与选择逻辑。移动端（768px 以下）项目与课设筛选默认收起，通过双语按钮展开；折叠保留筛选条件，移动端取消选择放在展开/收起按钮右侧，桌面直接展示筛选且取消选择保留在标题区。展开状态不随语言、主题、展示模式或窗口尺寸变化而重置。运行 `npm run test:tags` 验证两套数据的筛选与翻译。
+
 新增或替换图片时，先将运行时引用的素材转为 WebP（确实不适合 WebP 的动图等例外除外）。添加到 `src/data/projects.ts`、`src/data/course-projects.ts`、`src/data/tools.ts` 或 `src/data/knowledge.ts` 后，还需要检查图片是否过白、过亮；如果是白底面积很大或深色模式下会刺眼的截图，在对应图片对象上添加 `brightness: "high"`，让深色模式自动叠加统一的暗色半透明遮罩。
 
 加载逻辑在 `src/i18n.ts`。
