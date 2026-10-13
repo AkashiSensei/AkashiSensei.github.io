@@ -596,7 +596,7 @@ const courseProjectEntries: Project[] = [
     ],
     lifecycleStatus: "completed",
     status: ["public", "private"],
-    tags: ["大三暑期", "2024夏", "Java", "Vue", "Frontend/Backend Separation"],
+    tags: ["大三暑期", "2024夏", "Java", "Vue", "Frontend/Backend Separation", "CI/CD"],
     images: [
       {
         src: "/assets/course-projects/career-yiyan/home.webp",
@@ -752,6 +752,7 @@ const courseProjectEntries: Project[] = [
       "Rich Text Editor",
       "Prototype Design",
       "DevOps",
+      "CI/CD",
     ],
     images: [
       {
@@ -1102,6 +1103,68 @@ const courseProjectEntries: Project[] = [
       },
     ],
   },
+  {
+    id: "circle-knight-2022",
+    repoName: "AkashiSensei/BUAA-Summer-Term-2022",
+    externalUrl: "https://github.com/AkashiSensei/BUAA-Summer-Term-2022",
+    githubRepo: "AkashiSensei/BUAA-Summer-Term-2022",
+    repoTags: ["public"],
+    lifecycleStatus: "completed",
+    status: ["public"],
+    tags: [
+      "大一暑期",
+      "2022夏",
+      "Java",
+      "Java Swing",
+      "2D Game",
+      "OOP",
+      "Photoshop",
+    ],
+    images: [
+      {
+        src: "/assets/course-projects/circle-knight-2022/cover.webp",
+        altKey: "items.circle-knight-2022.images.cover",
+        width: 1280,
+        height: 720,
+      },
+      {
+        src: "/assets/course-projects/circle-knight-2022/settings.webp",
+        altKey: "items.circle-knight-2022.images.settings",
+        width: 1280,
+        height: 720,
+      },
+      {
+        src: "/assets/course-projects/circle-knight-2022/gameplay-01.webp",
+        altKey: "items.circle-knight-2022.images.gameplayOne",
+        width: 2784,
+        height: 1664,
+      },
+      {
+        src: "/assets/course-projects/circle-knight-2022/gameplay-02.webp",
+        altKey: "items.circle-knight-2022.images.gameplayTwo",
+        width: 2784,
+        height: 1664,
+      },
+      {
+        src: "/assets/course-projects/circle-knight-2022/gameplay-03.webp",
+        altKey: "items.circle-knight-2022.images.gameplayThree",
+        width: 2784,
+        height: 1664,
+      },
+      {
+        src: "/assets/course-projects/circle-knight-2022/gameplay-04.webp",
+        altKey: "items.circle-knight-2022.images.gameplayFour",
+        width: 2784,
+        height: 1664,
+      },
+      {
+        src: "/assets/course-projects/circle-knight-2022/victory.webp",
+        altKey: "items.circle-knight-2022.images.victory",
+        width: 1280,
+        height: 720,
+      },
+    ],
+  },
 ]
 
 const courseProjectSemesterOrder = new Map<string, number>([
@@ -1114,6 +1177,7 @@ const courseProjectSemesterOrder = new Map<string, number>([
   ["2023夏", 4],
   ["2023春", 3],
   ["2022秋", 2],
+  ["2022夏", 1],
 ])
 
 function getCourseProjectSemesterOrder(project: Project) {

@@ -54,7 +54,9 @@
     "2023秋": "Fall 2023",
     "2023夏": "Summer 2023",
     "2023春": "Spring 2023",
-    "2022秋": "Fall 2022"
+    "2022秋": "Fall 2022",
+    "大一暑期": "Freshman Summer",
+    "2022夏": "Summer 2022"
   },
   "items": {
     "parallel-programming-2026": {
@@ -407,6 +409,31 @@
           "**Development practice and user guidance**: Used Git for version control and added detailed prompts and instructions to improve usability."
         ],
         "personalWork": []
+      }
+    },
+    "circle-knight-2022": {
+      "title": "Circle Knight",
+      "summary": "A top-down action game built for BUAA’s open-ended summer-term coursework in 2022. I learned Java from scratch and used Swing to connect exploration, combat, and a playable soul ability.",
+      "images": {
+        "cover": "Circle Knight title screen",
+        "settings": "Game settings",
+        "gameplayOne": "Starting area and tutorial",
+        "gameplayTwo": "Map portals",
+        "gameplayThree": "Greenpath",
+        "gameplayFour": "Soul form",
+        "victory": "Objective complete"
+      },
+      "points": {
+        "projectIntro": [
+          "**Open-ended coursework**: A first-year summer-term software project with no prescribed language or application type; I chose to build a playable action game.",
+          "**Exploration and soul abilities**: Three maps, two enemy types, and an in-game tutorial support combat and exploration. Soul form adds temporary protection, stronger attacks, and movement beyond map boundaries."
+        ],
+        "personalWork": [
+          "**Learning through delivery**: Learned Java from scratch while building the menu, game window, combat, revival, and completion flow, putting classes, interfaces, inheritance, and access control into practice.",
+          "**Extensible object models**: Organized shared map and enemy behavior into abstract classes. Subclasses define layouts, portals, spawn points, enemy attributes, and death effects; repeated restructuring made the code easier to extend.",
+          "**State-driven interactions**: Coordinated player actions, map transitions, and enemy patrols using game states, collision boxes, damage and knockback handling, and skill timers and cooldowns.",
+          "**Visual implementation**: Used Swing component positions and icon changes for scrolling and animation, and edited Hollow Knight assets in Photoshop to create map, character, and interface images."
+        ]
       }
     }
   }

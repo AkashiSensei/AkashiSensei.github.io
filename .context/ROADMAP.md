@@ -13,6 +13,8 @@
 
 ## History
 
+- 2026-10-13 | [Circle Knight coursework and resume copy](archive/20261013_Circle-Knight-coursework-and-resume-copy.md) | Added the earliest coursework with seven WebP images, CI/CD tags, and bilingual Crater/NPU and resume highlights focused on delivery, inquiry, and judgment.
+
 - 2026-10-13 | [Project and coursework tag filtering](archive/20261013_Project-and-coursework-tag-filtering.md) | Added shared tag filters, paired coursework time/technology groups, English semester URLs, matched-tag styling, and collapsible mobile filters with inline reset.
 
 - 2026-10-13 | [Project and coursework copy refresh](archive/20261013_Project-and-coursework-copy-refresh.md) | Unified 216 bilingual bullets across all projects and coursework, aligned contributions with the latest resume, consolidated platform features, and documented the interim Llama predictor's measured results.
