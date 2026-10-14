@@ -37,7 +37,6 @@ export const smallTools: SmallTool[] = [
     githubRepo: "AkashiSensei/TypeLift",
     repoTags: ["private"],
     role: "author",
-    status: "doing",
     featured: true,
     featuredOrder: 1,
     screenshots: [
@@ -114,7 +113,6 @@ export const smallTools: SmallTool[] = [
     githubRepo: "AkashiSensei/PromptSketch",
     repoTags: ["public"],
     role: "author",
-    status: "doing",
     featured: true,
     featuredOrder: 2,
     screenshots: [

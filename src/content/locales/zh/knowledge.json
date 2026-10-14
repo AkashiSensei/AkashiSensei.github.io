@@ -1,10 +1,10 @@
 {
   "title": "知识沉淀",
-  "subtitle": "博客、工程洞见、论文阅读与 AI 行业观察",
+  "subtitle": "博客、工程洞见、论文阅读、算法练习与 AI 行业观察",
   "viewAll": "查看所有",
   "viewAllWithCount": "查看全部 {{count}} 条知识沉淀",
   "viewAllTitle": "全部知识沉淀",
-  "viewAllDescription": "浏览文章、笔记与行业摘要",
+  "viewAllDescription": "浏览文章、笔记、算法练习与行业摘要",
   "repoLabel": "仓库",
   "updatedLabel": "更新于",
   "openRepository": "打开仓库",
@@ -28,9 +28,10 @@
   },
   "kinds": {
     "blog": "博客文稿",
-    "paperVault": "论文库",
+    "researchVault": "研究知识库",
     "digest": "行业摘要",
-    "insights": "工程洞见"
+    "insights": "工程洞见",
+    "practice": "算法练习"
   },
   "items": {
     "blob-article": {
@@ -48,17 +49,19 @@
       }
     },
     "paper-vault": {
-      "title": "Paper Vault",
-      "summary": "一个 Obsidian 风格的论文阅读知识库，用于保存论文笔记、文献索引和 AI 辅助科研工作流。它把论文、主题、方法、场景、数据集和会议分开索引，适合持续积累系统、LLM、长上下文与 GPU 内存优化等方向的研究线索。",
+      "title": "Research Vault",
+      "summary": "面向系统与 AI 基础设施的个人研究知识库，用 Obsidian 整理论文、技术知识点与领域研究报告。",
       "points": [
-        "用论文、主题、方法、场景、数据集、会议等多维索引组织阅读材料，让新论文能挂到已有知识网络里。",
-        "沉淀 AI 辅助论文导读和 ingest skill，把论文阅读从临时总结变成可重复的工作流。",
-        "重点积累系统、LLM、长上下文、Token Sparsity、GPU 内存优化等方向的研究线索。"
+        "用 AI 辅助论文发现、阅读与整理，按主题、方法和场景建立索引，持续积累论文笔记。",
+        "整理技术点与知识点，关联对应论文，通过 Obsidian 内部链接连接相关笔记，便于查阅与追溯。",
+        "围绕具体问题撰写领域研究报告，结合论文、知识点与工程实践比较方案、梳理研究脉络。"
       ],
       "images": {
-        "paperGuide": "论文导读笔记截图",
-        "paperSkill": "创建论文导读 Skill 截图",
-        "indexes": "多维度论文索引截图"
+        "parallelism": "并行笔记",
+        "paperGuide": "论文导读",
+        "inference": "推理笔记",
+        "paperSkill": "导读工作流",
+        "indexes": "文献索引"
       }
     },
     "ai-builders-digest": {
@@ -76,15 +79,31 @@
     },
     "crater-insights": {
       "title": "Crater 工程洞见",
-      "summary": "围绕 RAIDS Lab Crater 项目的个人理解、架构判断和工程洞见。内容覆盖可访问性、AI 集成、CLI 设计、基础设施、作业管理、资源监控等专题，是把真实平台开发中的隐性理解写出来的笔记库。",
+      "summary": "围绕 RAIDS Lab Crater 平台开发积累的工程笔记，记录架构判断、交互问题和实现中的取舍，覆盖 CLI、认证、作业管理与资源监控等主题。",
       "points": [
-        "把 Crater 平台开发中的架构判断、交互问题和工程权衡写成专题笔记，降低复杂项目的隐性知识成本。",
-        "覆盖可访问性、AI 集成、CLI 设计、基础设施、作业管理、资源监控等多个平台工程主题。",
-        "用流程图和结构化文档解释真实系统中的认证、组件嵌套、资源监控等具体问题。"
+        "整理平台开发中的架构判断、交互问题和工程取舍，保留决策依据。",
+        "覆盖可访问性、AI 集成、CLI 设计、基础设施、作业管理与资源监控。",
+        "用流程图解释认证、组件嵌套等机制，结合结构化文档记录实现细节。"
       ],
       "images": {
         "frontendNesting": "Crater 前端组件嵌套笔记截图",
         "authFlow": "Crater 认证流程图截图"
+      }
+    },
+    "oj-solutions": {
+      "title": "算法刷题记录",
+      "summary": "个人算法练习记录，包括 LeetCode、Codeforces 等平台题目与课程题解，保留解题思路、实现与优化实验。",
+      "points": [
+        "使用 C、C++ 和 Go 解题，练习算法与数据结构。",
+        "通过题目后继续探索算法与实现上的优化，对比自实现数据结构、STL 及不同实现方式，实测耗时、内存与以空间换时间的效果。",
+        "使用 VS Code 和命令行调试器设置断点、单步执行、查看变量与调用栈，定位实现问题。",
+        "收录大一下《数据结构》与大二上《算法分析与设计》两门课的代码作业。"
+      ],
+      "images": {
+        "implementationIndex": "解法索引",
+        "leetcodeSubmissions": "提交记录",
+        "lldbDebugging": "单步调试",
+        "lldbTui": "分屏调试"
       }
     }
   }

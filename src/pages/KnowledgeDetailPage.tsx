@@ -14,7 +14,7 @@ import { PlainDetailPage } from "@/components/PlainDetailPage"
 import { ProjectImageGallery } from "@/components/ProjectImageGallery"
 import { type KnowledgeEntry } from "@/data/knowledge"
 import { getGitHubRepoUpdatedDate } from "@/lib/github-repo-stats"
-import { getSemanticTagClassName } from "@/lib/tag-styles"
+import { getSemanticTagClassName, tagToneClassName } from "@/lib/tag-styles"
 import { cn } from "@/lib/utils"
 
 type KnowledgeDetailPageProps = {
@@ -24,9 +24,10 @@ type KnowledgeDetailPageProps = {
 const detailSectionClassName = "px-2 sm:px-4"
 
 const kindClassName: Record<KnowledgeEntry["kind"], string> = {
+  practice: tagToneClassName.cyan,
   blog:
     "border-sky-300/55 bg-sky-100/70 text-sky-800 dark:border-sky-300/25 dark:bg-sky-300/12 dark:text-sky-200",
-  paperVault:
+  researchVault:
     "border-emerald-300/55 bg-emerald-100/70 text-emerald-800 dark:border-emerald-300/25 dark:bg-emerald-300/12 dark:text-emerald-200",
   digest:
     "border-amber-300/55 bg-amber-100/75 text-amber-850 dark:border-amber-300/25 dark:bg-amber-300/12 dark:text-amber-200",

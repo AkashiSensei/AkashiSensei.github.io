@@ -1,10 +1,10 @@
 {
   "title": "Knowledge",
-  "subtitle": "Writing, notes, papers, and AI industry observations.",
+  "subtitle": "Writing, papers, algorithm practice, and AI industry observations.",
   "viewAll": "View All",
   "viewAllWithCount": "View all {{count}} knowledge notes",
   "viewAllTitle": "All Knowledge Notes",
-  "viewAllDescription": "Browse writing, notes, and digests.",
+  "viewAllDescription": "Browse writing, notes, algorithm practice, and digests.",
   "repoLabel": "Repository",
   "updatedLabel": "Updated",
   "openRepository": "Open Repository",
@@ -28,9 +28,10 @@
   },
   "kinds": {
     "blog": "Blog Drafts",
-    "paperVault": "Paper Vault",
+    "researchVault": "Research Vault",
     "digest": "Industry Digest",
-    "insights": "Engineering Insights"
+    "insights": "Engineering Insights",
+    "practice": "Algorithm Practice"
   },
   "items": {
     "blob-article": {
@@ -48,17 +49,19 @@
       }
     },
     "paper-vault": {
-      "title": "Paper Vault",
-      "summary": "An Obsidian-style paper-reading knowledge base for paper notes, literature indexes, and AI-assisted research workflows. It separates papers, topics, methods, scenarios, datasets, and venues, making it easier to keep accumulating research threads around systems, LLMs, long context, and GPU memory optimization.",
+      "title": "Research Vault",
+      "summary": "A personal Obsidian knowledge base for systems and AI infrastructure, covering papers, technical concepts, and domain research reports.",
       "points": [
-        "Indexes papers by topics, methods, scenarios, datasets, and venues so each new note can connect to the existing knowledge graph.",
-        "Captures AI-assisted paper-reading and ingest skills, turning paper reading into a repeatable workflow.",
-        "Focuses on systems, LLMs, long context, token sparsity, and GPU memory optimization."
+        "Uses AI-assisted paper discovery and reading to build paper notes, indexed by topic, method, and scenario.",
+        "Organizes technical concepts and knowledge points, linking them to relevant papers and related notes through Obsidian’s internal links for easy reference.",
+        "Combines papers, technical concepts, and engineering practice in reports that compare approaches and trace research directions."
       ],
       "images": {
-        "paperGuide": "Paper guide note screenshot",
-        "paperSkill": "Paper ingest skill screenshot",
-        "indexes": "Multidimensional paper indexes screenshot"
+        "parallelism": "Parallelism Notes",
+        "paperGuide": "Paper Guide",
+        "inference": "Inference Notes",
+        "paperSkill": "Reading Workflow",
+        "indexes": "Literature Index"
       }
     },
     "ai-builders-digest": {
@@ -76,15 +79,31 @@
     },
     "crater-insights": {
       "title": "Crater Engineering Insights",
-      "summary": "A note base for my personal understanding, architectural judgment, and engineering insights around the RAIDS Lab Crater project. It covers accessibility, AI integration, CLI design, infrastructure, job management, and resource monitoring.",
+      "summary": "Engineering notes from work on RAIDS Lab Crater, covering architecture decisions, interface issues, and implementation trade-offs in CLI design, authentication, job management, and monitoring.",
       "points": [
-        "Externalizes architecture judgment, interaction issues, and engineering trade-offs from Crater platform development.",
+        "Records architecture decisions, interface issues, and the reasoning behind engineering trade-offs.",
         "Covers accessibility, AI integration, CLI design, infrastructure, job management, and resource monitoring.",
-        "Uses diagrams and structured notes to explain concrete system issues such as authentication flow, component nesting, and monitoring."
+        "Uses diagrams and structured notes to explain authentication, component nesting, and implementation details."
       ],
       "images": {
         "frontendNesting": "Crater frontend component nesting note screenshot",
         "authFlow": "Crater authentication flow diagram screenshot"
+      }
+    },
+    "oj-solutions": {
+      "title": "Algorithm Practice",
+      "summary": "A personal collection of algorithm practice and course solutions, including problems from LeetCode, Codeforces, and other platforms, with solution ideas, implementations, and optimization experiments.",
+      "points": [
+        "Practices algorithms and data structures through solutions in C, C++, and Go.",
+        "Continues optimizing algorithms and implementations after acceptance, comparing custom data structures with STL and testing alternative implementations to measure runtime, memory use, and whether extra space improves speed.",
+        "Uses VS Code and command-line debuggers to set breakpoints, step through code, and inspect variables and call stacks to diagnose implementation issues.",
+        "Includes programming assignments from Data Structures (Year 1, spring) and Algorithm Analysis and Design (Year 2, fall)."
+      ],
+      "images": {
+        "implementationIndex": "Solution Index",
+        "leetcodeSubmissions": "Submission History",
+        "lldbDebugging": "Step Debugging",
+        "lldbTui": "Split-View Debugging"
       }
     }
   }

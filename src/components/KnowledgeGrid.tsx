@@ -40,7 +40,7 @@ export function KnowledgeGrid({ entries }: KnowledgeGridProps) {
       const summary = t(`items.${entry.id}.summary`) as string
       estimatedHeight += Math.ceil((summary?.length || 0) / 24) * 24
 
-      const { points } = getListingPointSections(t(`items.${entry.id}.points`, { returnObjects: true }))
+      const { points } = getListingPointSections(t(`items.${entry.id}.points`, { returnObjects: true }), entry.listingPointLimit)
       estimatedHeight += points.reduce(
         (height, point) => height + Math.ceil(point.length / 24) * 24 + 8,
         0,

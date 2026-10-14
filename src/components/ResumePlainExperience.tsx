@@ -529,7 +529,7 @@ export function ResumePlainExperience({ stackRef }: { stackRef: RefObject<HTMLEl
           <AppLink to="/knowledge">{t("knowledge:title")}</AppLink>
         </h2>
         <p>{t("knowledge:subtitle")}</p>
-        <div className="plain-resume-mini-list">
+        <div className="plain-resume-mini-list items-start">
           {featuredKnowledgeEntries.map((entry) => (
             <section key={entry.id} className="plain-resume-mini-item">
               <h3><AppLink to={`/knowledge/${entry.id}`}>{t(`knowledge:items.${entry.id}.title`)}</AppLink></h3>

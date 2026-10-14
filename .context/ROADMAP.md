@@ -13,6 +13,8 @@
 
 ## History
 
+- 2026-10-14 | [Knowledge showcase and Research Vault refresh](archive/20261014_Knowledge-showcase-and-research-vault-refresh.md) | Added algorithm practice and Research Vault content/media, refreshed bilingual resume cards with natural image sizing and three-bullet previews, and removed two tool status labels.
+
 - 2026-10-13 | [Circle Knight coursework and resume copy](archive/20261013_Circle-Knight-coursework-and-resume-copy.md) | Added the earliest coursework with seven WebP images, CI/CD tags, and bilingual Crater/NPU and resume highlights focused on delivery, inquiry, and judgment.
 
 - 2026-10-13 | [Project and coursework tag filtering](archive/20261013_Project-and-coursework-tag-filtering.md) | Added shared tag filters, paired coursework time/technology groups, English semester URLs, matched-tag styling, and collapsible mobile filters with inline reset.

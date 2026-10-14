@@ -63,6 +63,7 @@ export function PlainKnowledgeIndexPage({ entries }: PlainKnowledgeIndexPageProp
       const summary = t(`items.${entry.id}.summary`)
       const { points } = getListingPointSections(
         t(`items.${entry.id}.points`, { returnObjects: true }),
+        entry.listingPointLimit,
       )
       const estimatedHeight = estimateKnowledgeHeight(entry, title, summary, points)
       let minColIdx = 0
@@ -105,6 +106,7 @@ export function PlainKnowledgeIndexPage({ entries }: PlainKnowledgeIndexPageProp
                   : entry.updatedAt
                 const { points } = getListingPointSections(
                   t(`items.${entry.id}.points`, { returnObjects: true }),
+                  entry.listingPointLimit,
                 )
 
                 return (

@@ -11,9 +11,10 @@ export type KnowledgeEntry = {
     labelKey: string
     badgeKeys?: string[]
   }[]
-  kind: "blog" | "paperVault" | "digest" | "insights"
+  kind: "blog" | "researchVault" | "digest" | "insights" | "practice"
   featured?: boolean
   featuredOrder?: number
+  listingPointLimit?: number
   updatedAt: string
   tags: string[]
   images?: {
@@ -67,21 +68,35 @@ export const knowledgeEntries: KnowledgeEntry[] = [
   },
   {
     id: "paper-vault",
-    url: "https://github.com/AkashiSensei/paper-vault",
-    repoName: "AkashiSensei/paper-vault",
-    githubRepo: "AkashiSensei/paper-vault",
+    url: "https://github.com/AkashiSensei/research-vault",
+    repoName: "AkashiSensei/research-vault",
+    githubRepo: "AkashiSensei/research-vault",
     repoTags: ["public"],
-    kind: "paperVault",
+    kind: "researchVault",
     featured: true,
     featuredOrder: 2,
-    updatedAt: "2026-06",
-    tags: ["Paper Notes", "Systems", "LLM"],
+    updatedAt: "2026-10",
+    tags: ["Knowledge Notes", "Paper Notes", "AI Infrastructure", "LLM"],
     images: [
+      {
+        src: "/assets/knowledge/paper-vault/parallelism.webp",
+        altKey: "items.paper-vault.images.parallelism",
+        width: 2558,
+        height: 1752,
+        brightness: "high",
+      },
       {
         src: "/assets/knowledge/paper-vault/paper-guide.webp",
         altKey: "items.paper-vault.images.paperGuide",
         width: 2678,
         height: 2032,
+      },
+      {
+        src: "/assets/knowledge/paper-vault/inference.webp",
+        altKey: "items.paper-vault.images.inference",
+        width: 2558,
+        height: 1752,
+        brightness: "high",
       },
       {
         src: "/assets/knowledge/paper-vault/paper-skill.webp",
@@ -104,8 +119,7 @@ export const knowledgeEntries: KnowledgeEntry[] = [
     githubRepo: "AkashiSensei/ai-builders-digest",
     repoTags: ["public"],
     kind: "digest",
-    featured: true,
-    featuredOrder: 3,
+    featured: false,
     updatedAt: "2026-06",
     tags: ["AI Builders", "Digest", "Bilingual"],
     images: [
@@ -146,6 +160,45 @@ export const knowledgeEntries: KnowledgeEntry[] = [
         altKey: "items.crater-insights.images.authFlow",
         width: 1710,
         height: 2326,
+      },
+    ],
+  },
+  {
+    id: "oj-solutions",
+    url: "https://github.com/AkashiSensei/oj-solutions",
+    repoName: "AkashiSensei/oj-solutions",
+    githubRepo: "AkashiSensei/oj-solutions",
+    repoTags: ["public"],
+    kind: "practice",
+    featured: true,
+    featuredOrder: 3,
+    listingPointLimit: 4,
+    updatedAt: "2026-10",
+    tags: ["Algorithms", "LeetCode", "Codeforces", "C", "C++", "Go"],
+    images: [
+      {
+        src: "/assets/knowledge/oj-solutions/implementation-index.webp",
+        altKey: "items.oj-solutions.images.implementationIndex",
+        width: 2292,
+        height: 1598,
+      },
+      {
+        src: "/assets/knowledge/oj-solutions/leetcode-submissions.webp",
+        altKey: "items.oj-solutions.images.leetcodeSubmissions",
+        width: 1250,
+        height: 801,
+      },
+      {
+        src: "/assets/knowledge/oj-solutions/lldb-debugging.webp",
+        altKey: "items.oj-solutions.images.lldbDebugging",
+        width: 5102,
+        height: 2808,
+      },
+      {
+        src: "/assets/knowledge/oj-solutions/lldb-tui.webp",
+        altKey: "items.oj-solutions.images.lldbTui",
+        width: 5104,
+        height: 2802,
       },
     ],
   },

@@ -188,13 +188,13 @@ const fallbackKnowledgeRepoStats = {
     stars: 1,
     updatedAt: "2026-06-04T08:48:39Z",
   },
-  "AkashiSensei/paper-vault": {
-    commits: 3,
+  "AkashiSensei/research-vault": {
+    commits: 16,
     defaultBranch: "main",
     isPrivate: false,
-    pushedAt: "2026-06-02T13:21:24Z",
+    pushedAt: "2026-10-14T10:21:17Z",
     stars: 0,
-    updatedAt: "2026-06-02T13:22:00Z",
+    updatedAt: "2026-10-13T14:43:53Z",
   },
 }
 

@@ -78,6 +78,7 @@ export const listingSectionPointLimit = 2
 
 export function sliceListingPointSections(
   sections: ProjectPointSections,
+  unsectionedPointLimit = listingUnsectionedPointLimit,
 ): ProjectPointSections {
   const hasSectionSplit =
     sections.projectIntroPoints.length > 0 &&
@@ -104,16 +105,16 @@ export function sliceListingPointSections(
     }
   }
 
-  const points = sections.points.slice(0, listingUnsectionedPointLimit)
+  const points = sections.points.slice(0, unsectionedPointLimit)
 
   return {
     projectIntroPoints: sections.projectIntroPoints.slice(
       0,
-      listingUnsectionedPointLimit,
+      unsectionedPointLimit,
     ),
     personalWorkPoints: sections.personalWorkPoints.slice(
       0,
-      listingUnsectionedPointLimit,
+      unsectionedPointLimit,
     ),
     points,
     highlightedIndexes: sections.highlightedIndexes.filter(
@@ -122,6 +123,6 @@ export function sliceListingPointSections(
   }
 }
 
-export function getListingPointSections(value: unknown) {
-  return sliceListingPointSections(getProjectPointSections(value))
+export function getListingPointSections(value: unknown, unsectionedPointLimit = listingUnsectionedPointLimit) {
+  return sliceListingPointSections(getProjectPointSections(value), unsectionedPointLimit)
 }

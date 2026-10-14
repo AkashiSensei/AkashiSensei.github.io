@@ -1,13 +1,12 @@
 import { ExternalLinkIcon } from "@/components/ExternalLinkIcon"
 import {
-  ArrowRight,
   BookOpen,
   Brain,
+  CodeXml,
   FileText,
   Newspaper,
   type LucideIcon,
 } from "lucide-react"
-import { useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
 
 import { GitHubRepoStats } from "@/components/GitHubRepoStats"
@@ -17,7 +16,7 @@ import { getListingPointSections } from "@/lib/project-points"
 import { AppLink } from "@/components/AppLink"
 import { type KnowledgeEntry } from "@/data/knowledge"
 import { getGitHubRepoUpdatedDate } from "@/lib/github-repo-stats"
-import { defaultTagClassName, getSemanticTagClassName } from "@/lib/tag-styles"
+import { defaultTagClassName, getSemanticTagClassName, tagToneClassName } from "@/lib/tag-styles"
 import { ProjectImageGallery } from "@/components/ProjectImageGallery"
 import { cn } from "@/lib/utils"
 
@@ -30,15 +29,17 @@ type KnowledgeCardProps = {
 
 const kindIcon: Record<KnowledgeEntry["kind"], LucideIcon> = {
   blog: FileText,
-  paperVault: BookOpen,
+  researchVault: BookOpen,
   digest: Newspaper,
   insights: Brain,
+  practice: CodeXml,
 }
 
 const kindClassName: Record<KnowledgeEntry["kind"], string> = {
+  practice: tagToneClassName.cyan,
   blog:
     "border-sky-300/55 bg-sky-100/70 text-sky-800 dark:border-sky-300/25 dark:bg-sky-300/12 dark:text-sky-200",
-  paperVault:
+  researchVault:
     "border-emerald-300/55 bg-emerald-100/70 text-emerald-800 dark:border-emerald-300/25 dark:bg-emerald-300/12 dark:text-emerald-200",
   digest:
     "border-amber-300/55 bg-amber-100/75 text-amber-850 dark:border-amber-300/25 dark:bg-amber-300/12 dark:text-amber-200",
@@ -53,10 +54,12 @@ export function KnowledgeCard({
   variant = "full",
 }: KnowledgeCardProps) {
   const { i18n, t } = useTranslation(["knowledge", "common"])
-  const [isCompactDesktop, setIsCompactDesktop] = useState(false)
   const Icon = kindIcon[entry.kind]
   const detailPath = `/knowledge/${entry.id}`
-  const { points } = getListingPointSections(t(`items.${entry.id}.points`, { returnObjects: true }))
+  const { points } = getListingPointSections(
+    t(`items.${entry.id}.points`, { returnObjects: true }),
+    variant === "compact" ? undefined : entry.listingPointLimit,
+  )
   const updatedDate = getGitHubRepoUpdatedDate(entry.githubRepo, entry.updatedAt)
   const updatedLabel = updatedDate
     ? new Intl.DateTimeFormat(i18n.language, {
@@ -65,44 +68,20 @@ export function KnowledgeCard({
       }).format(updatedDate)
     : entry.updatedAt
 
-  useEffect(() => {
-    if (variant !== "compact") {
-      return undefined
-    }
-
-    const mediaQuery = window.matchMedia("(min-width: 768px)")
-    const updateIsCompactDesktop = () => {
-      setIsCompactDesktop(mediaQuery.matches)
-    }
-
-    updateIsCompactDesktop()
-    mediaQuery.addEventListener("change", updateIsCompactDesktop)
-
-    return () => {
-      mediaQuery.removeEventListener("change", updateIsCompactDesktop)
-    }
-  }, [variant])
-
   return (
     <GlassPanel
       className={cn(
-        "detail-link-pair flex h-full min-h-0 flex-col overflow-hidden transition-colors hover:bg-[rgb(var(--site-surface-rgb)_/_0.70)] dark:hover:bg-white/10",
-        variant === "full" && "h-auto",
+        "site-card-link-surface detail-link-pair flex h-auto min-h-0 flex-col overflow-hidden transition-colors hover:bg-[rgb(var(--site-surface-rgb)_/_0.70)] dark:hover:bg-white/10",
         className,
       )}
     >
       {entry.images?.length ? (
         <ProjectImageGallery
-          cardAspectRatio={
-            variant === "compact"
-              ? isCompactDesktop
-                ? "16 / 9.5"
-                : "16 / 12.5"
-              : undefined
-          }
+          className="relative z-10"
+          cardAspectRatioMode={variant === "compact" ? "natural" : "bounded"}
           cardAutoCycle
           cardAutoCycleStaggerIndex={imageAutoCycleStaggerIndex}
-          cardImageFit={variant === "compact" ? "cover" : "contain"}
+          cardImageFit="contain"
           cardScrollable={false}
           images={entry.images}
           translationNamespace="knowledge"
@@ -111,7 +90,7 @@ export function KnowledgeCard({
 
       <div
         className={cn(
-          "flex min-h-0 flex-1 flex-col p-4",
+          "flex min-h-0 flex-col p-4",
           variant === "compact" ? "gap-4 md:gap-3.5" : "gap-4",
         )}
       >
@@ -134,7 +113,7 @@ export function KnowledgeCard({
           <AppLink
             to={detailPath}
             className={cn(
-              "detail-link-trigger detail-link-emphasis group/title inline-flex w-fit max-w-full items-center gap-1.5 leading-tight text-foreground/90 transition-colors hover:text-foreground",
+              "site-card-link site-text-link detail-link-trigger detail-link-emphasis group/title inline-flex w-fit max-w-full items-center gap-1.5 leading-tight text-foreground/90 transition-colors hover:text-foreground",
               "site-card-title",
             )}
           >
@@ -145,7 +124,7 @@ export function KnowledgeCard({
             target="_blank"
             rel="noreferrer"
             aria-label={`${t("repoLabel")}: ${entry.repoName}`}
-            className="group/repo inline-flex min-w-0 w-fit max-w-full items-center gap-1.5 text-sm font-normal text-foreground/60 transition-colors hover:text-foreground/90 dark:text-foreground/75 dark:hover:text-foreground"
+            className="group/repo relative z-10 inline-flex min-w-0 w-fit max-w-full items-center gap-1.5 text-sm font-normal text-foreground/60 transition-colors hover:text-foreground/90 dark:text-foreground/75 dark:hover:text-foreground"
           >
             {entry.repoTags?.map((repoTag) => (
               <span
@@ -171,7 +150,7 @@ export function KnowledgeCard({
               target="_blank"
               rel="noreferrer"
               className={cn(
-                "group/external w-fit max-w-full flex-wrap items-center gap-x-1.5 gap-y-1 text-sm font-normal text-foreground/62 transition-colors hover:text-foreground/90 dark:text-foreground/72 dark:hover:text-foreground",
+                "group/external relative z-10 w-fit max-w-full flex-wrap items-center gap-x-1.5 gap-y-1 text-sm font-normal text-foreground/62 transition-colors hover:text-foreground/90 dark:text-foreground/72 dark:hover:text-foreground",
                 variant === "compact"
                   ? "hidden xl:inline-flex"
                   : "inline-flex",
@@ -215,7 +194,7 @@ export function KnowledgeCard({
           ))}
         </div>
 
-        <div className="flex min-h-0 flex-1 flex-col gap-3">
+        <div className="flex min-h-0 flex-col gap-3">
           <p
             className={cn(
               "leading-relaxed text-foreground/80 dark:text-foreground/90",
@@ -232,14 +211,6 @@ export function KnowledgeCard({
               points={points}
             />
           ) : null}
-
-          <AppLink
-            to={detailPath}
-            className="detail-link-trigger detail-link-emphasis group/detail mt-auto inline-flex w-fit items-center gap-1.5 text-sm font-normal text-foreground/65 transition-colors hover:text-foreground dark:text-foreground/75 dark:hover:text-foreground"
-          >
-            {t("details.viewDetails")}
-            <ArrowRight className="detail-link-arrow h-4 w-4 transition-transform group-hover/detail:translate-x-0.5" />
-          </AppLink>
         </div>
       </div>
     </GlassPanel>
