@@ -13,6 +13,8 @@
 
 ## History
 
+- 2026-10-15 | [Question wall content expansion](archive/20261015_Question-wall-content-expansion.md) | Added 10 bilingual question chains (24 rounds), including six inherited training/MoE/Volcano/Crater chains first recorded on October 4–5 and handed over on October 12, three C++ chains and one PD-disaggregation chain; added nine tags and preserved project links, inference notes and newest-first display.
+
 - 2026-10-14 | [Knowledge showcase and Research Vault refresh](archive/20261014_Knowledge-showcase-and-research-vault-refresh.md) | Added algorithm practice and Research Vault content/media, refreshed bilingual resume cards with natural image sizing and three-bullet previews, and removed two tool status labels.
 
 - 2026-10-13 | [Circle Knight coursework and resume copy](archive/20261013_Circle-Knight-coursework-and-resume-copy.md) | Added the earliest coursework with seven WebP images, CI/CD tags, and bilingual Crater/NPU and resume highlights focused on delivery, inquiry, and judgment.

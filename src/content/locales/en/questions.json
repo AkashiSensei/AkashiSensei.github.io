@@ -378,6 +378,142 @@
           "answer": "The table describes ownership, not a fixed physical row per thread. The compiler determines per-thread register demand, and hardware allocates resources at its supported granularity when a block becomes resident. During execution, thread context and the SASS register number locate each value. Larger allocations leave room for fewer threads and blocks. This mapping need not use a lookup table and is not the same as CPU register renaming for out-of-order execution."
         }
       }
+    },
+    "training-batch-step-epoch": {
+      "rounds": {
+        "opening": {
+          "question": "How does training or fine-tuning work? What do batch, microbatch, step, and epoch mean, and when are weights updated?",
+          "answer": "A forward pass produces predictions and a loss; backpropagation computes gradients, and the optimizer uses them to update weights. A microbatch usually means the data processed by one device in a single forward and backward pass. With gradient accumulation, several microbatches contribute gradients before one weight update. Batch can mean the data in a single pass or the effective total for one update. In typical data-parallel training, the effective batch size is the per-device microbatch size × accumulation steps × number of data-parallel devices. For example, one device processing 2 samples at a time and accumulating over 4 passes updates weights every 8 samples. Training logs often use step for an optimizer update, but some implementations count microbatch passes instead, so check the definition. An epoch is one complete pass through the training data and usually contains many weight updates; updates do not wait until the epoch ends."
+        }
+      }
+    },
+    "moe-token-routing-memory": {
+      "rounds": {
+        "opening": {
+          "question": "In MoE language models, are experts really selected per token?",
+          "answer": "Yes. Typical sparse MoE models select experts for each token rather than assigning one fixed set to an entire sentence. They replace a single feed-forward network (FFN) with several expert FFNs. A router uses each token's current hidden representation to select a few experts and combine their outputs. With fixed top-k routing, each token usually selects k experts, but different tokens can select different ones. The total number of experts used by a text is therefore not the number activated per token."
+        },
+        "follow-up-one": {
+          "question": "A Transformer has many layers, each with attention and an FFN. Does every layer in an MoE model have multiple FFNs?",
+          "answer": "Not necessarily: a model can use MoE in some layers or all of them. An \"MoE layer\" here means a Transformer layer whose FFN is replaced by expert FFNs and a router, usually retaining attention; more precisely, the MoE module is one component of that layer. Layers typically have their own expert weights, and some models also have shared experts that process every token. When expert weights remain resident on the device, unselected experts still occupy device memory; they simply do not perform expert computation for the current token."
+        },
+        "follow-up-two": {
+          "question": "So the weights stay on the NPU, and although the active experts differ, their number is similar. Wouldn't compute and saved intermediate values also be similar, keeping HBM usage fairly steady?",
+          "answer": "Broadly yes, provided expert weights stay resident, the number of experts selected per token is fixed, and token counts and training settings are unchanged. Selecting different experts mainly changes where computation goes; it does not imply repeatedly loading and unloading expert weights, and the total size of intermediate tensors is usually similar. Still, uneven token distribution across experts, communication, temporary buffers, and the memory allocator can cause fluctuations. This reasoning does not directly apply when experts are offloaded or the number activated varies."
+        }
+      }
+    },
+    "volcano-enqueue-admission": {
+      "rounds": {
+        "opening": {
+          "question": "In Volcano's `enqueue`, does `Reject` turn a job away until the user resubmits it, while `Abstain` leaves it undecided for this round? If many jobs wait this way, where do they accumulate: in a separate queue, or are they retried on every pass? Is the whole Job being admitted?",
+          "answer": "Admission evaluates the whole job, using the `JobInfo` for its PodGroup. In v1.13.4, which we checked, `Reject` only denies admission for the current cycle: the job keeps waiting and is retried later without resubmission. `Abstain` means that one plugin abstains, not that the entire process pauses; if all abstain, admission is allowed by default. Each `enqueue` collects eligible pending jobs from the current snapshot, orders them by Queue and Job, and tries them in turn. A rejected job is not immediately requeued within that pass; it is reconsidered next cycle."
+        },
+        "follow-up-one": {
+          "question": "Is there a queue or pending-admission pool before `enqueue`? Can jobs receiving `Reject` pile up, and does every pass try to `enqueue` every job?",
+          "answer": "Think of it as a pending-admission pool: the jobs already exist in Kubernetes and belong to a Queue, but their PodGroups still await admission. There is no separate external message queue. Persistently rejected jobs can accumulate. Each `enqueue` rebuilds a temporary candidate list and processes the eligible pending jobs in the current snapshot; admitted jobs are not evaluated again. A PodGroup without `minResources` goes straight to Inqueue, bypassing the admission vote. Rejecting another candidate does not, by itself, stop later jobs from being checked."
+        },
+        "follow-up-two": {
+          "question": "What does \"eligible\" mean? And what triggers each `enqueue`: a timer, or the completion of the previous pass?",
+          "answer": "Eligible means all jobs currently visible to the scheduler that have valid queue membership and are still waiting for admission; it does not mean they will pass the admission checks. `enqueue` runs before `allocate`, so no nodes have been assigned yet, but admission policies can still check quotas and resource requirements. It has no timer of its own: it is an Action within the scheduling cycle. After the cycle finishes its actions and closes the Session, the scheduler waits for `schedule-period` before starting the next cycle—one second by default in v1.13.4. The interval between cycle starts therefore also includes execution time. Rejected jobs are retried when the next cycle traverses the candidates again."
+        }
+      }
+    },
+    "volcano-podgroup-job-task": {
+      "rounds": {
+        "opening": {
+          "question": "Is a Volcano PodGroup closer to a Job or a Task? I noticed that `Inqueue` is a PodGroup state, but `enqueue` handles the whole job, so should PodGroup be closer to Job? In this context, is the whole job usually one PodGroup whose Pods need to run together?",
+          "answer": "In the standard Volcano Job workflow, a PodGroup corresponds more closely to the whole Job. The Job defines Task roles, replica counts, and the execution lifecycle; its PodGroup organizes the Pods across those roles into a scheduling group, specifying queue membership and a minimum member requirement. When `enqueue` admits the job, the PodGroup moves to Inqueue. Coordinating the group does not require every replica to start at once: for eight Pods with a minimum of four, allocations can be committed once that minimum is met. Node selection and binding still operate on individual Pods."
+        }
+      }
+    },
+    "crater-volcano-quota-reservations": {
+      "rounds": {
+        "opening": {
+          "question": "Crater checks user quotas through Volcano admission callbacks and syncs job states through an Informer. Suppose it checks job A and returns `Abstain`, then Volcano admits A. If the callback for job B arrives before the Informer syncs A's new state, Crater could miss A's quota usage. Is the reservation ledger there to handle which of these two paths runs faster?",
+          "answer": "I initially saw this as a race between notifications and callbacks, but within one `enqueue` pass the information gap is unavoidable. When Volcano admits A, it first updates the current Session's internal state; it computes and writes back the PodGroup status only as the Session closes. When B is checked, there is no new admission status for A that the Informer could sync yet. Crater must record a reservation after A passes its own checks and before replying, so B's check includes A's resource request. The ledger also covers the gap after status writeback, before the cache catches up and the snapshot is rebuilt."
+        },
+        "follow-up-one": {
+          "question": "If the Informer keeps updating the cache, when does Crater refresh the snapshot used for admission checks? Does a cache update also update that snapshot?",
+          "answer": "The distinction I need here is between the continuously updated object cache and an admission snapshot reused across a batch of checks. When a callback arrives and no reusable snapshot exists, Crater builds one from cached job states and admitted usage. The Informer can keep updating the cache without changing that snapshot. Receiving `onSessionClose` invalidates it; the next callback builds a new one. If the close notification does not arrive for too long, a later request can also trigger a timeout-based rebuild. A fresh snapshot therefore reorganizes the data currently visible to Crater; it does not guarantee that Volcano's latest scheduling results have arrived."
+        }
+      }
+    },
+    "crater-volcano-starvation-protection": {
+      "rounds": {
+        "opening": {
+          "question": "When Crater handles admission control and Volcano assigns nodes, suppose the cluster has just one eight-GPU node with four GPUs already occupied. A job requesting eight GPUs in a single Pod is waiting, while one-GPU jobs keep arriving behind it. Since Volcano still tries smaller jobs when the large one cannot fit, could those arrivals keep it from ever getting enough resources and cause starvation? Does Crater have a mechanism to mitigate this?",
+          "answer": "On the ordinary `allocate` path without extra protection, small jobs can keep consuming scattered free resources and leave a large job waiting indefinitely. The Crater Extender implementation we discussed provides protection after a waiting timeout. It uses job creation time and the allowed waiting duration; once its blocking conditions are met, the `enqueue` callback defers competing candidates in the same Queue whose resource types and eligible node ranges overlap. Resources released by finishing jobs then have a chance to accumulate. This reduces later competition; it neither reserves nodes directly for the large job nor changes Volcano's node allocation algorithm."
+        },
+        "follow-up-one": {
+          "question": "So the system initially lets small jobs run first, making large-job starvation more likely, then restricts further admissions once a large job has waited too long—shifting toward a form of head-of-line blocking?",
+          "answer": "This can be understood as a shift from prioritizing idle-resource use toward conditional protection for waiting jobs, at the cost of leaving some resources temporarily idle. The trigger is a waiting timeout, not proof that starvation has occurred, and blocking applies only to candidates within the defined scope that have not yet been admitted. Small jobs already in `Inqueue` can still receive allocations, and other Queues may continue competing. It is therefore neither strict FIFO nor a guarantee that the large job will eventually get all eight GPUs."
+        }
+      }
+    },
+    "cpp-const-reference": {
+      "rounds": {
+        "opening": {
+          "question": "In C++, how does the compiler handle a `const vector<int>& v` parameter? How does the generated code differ from the version without `const`, `vector<int>& v`?",
+          "answer": "Both typically pass the original object's address without copying the `vector` or passing an extra `const` flag. Identical reads can produce identical machine code; the main difference is compile-time type checking that restricts modifications, rather than CPU-enforced write protection. However, `const` can also affect overload resolution and optimization, so the generated code is not guaranteed to be identical in every case."
+        },
+        "follow-up-one": {
+          "question": "So the compiler checks for writes? Could the function bypass this by taking `&v` and passing it to a function that modifies the vector through a non-`const` pointer?",
+          "answer": "Not directly: taking the address preserves `const`. The type of `&v` is `const vector<int>*`, which cannot implicitly convert to the `vector<int>*` required by the modifying function. Switching from a reference to a pointer does not bypass type checking."
+        },
+        "follow-up-two": {
+          "question": "Then is there another way to bypass this restriction?",
+          "answer": "An explicit cast such as `const_cast` can remove `const` from the access path and allow a modifying function to be called. Whether the modification is valid depends on the original object: modifying an ordinary `vector` accessed through a `const` reference is legal after the cast, but modifying an object that was itself defined as `const` is undefined behavior. This mechanism helps prevent accidental changes and express interface contracts; it cannot stop a programmer from deliberately bypassing type checking."
+        }
+      }
+    },
+    "cpp-const-cast-storage": {
+      "rounds": {
+        "opening": {
+          "question": "In C++, is it impossible to cast a `const int` to an `int`?",
+          "answer": "Copying a value differs from obtaining writable access to the original object. Given `const int a = 10`, both `int b = a` and `int b = (int)a` copy its value: changing `b` leaves `a` unchanged, and `(int)a` is a value that cannot appear on the left of an assignment. A reference obtained through `const_cast<int&>(a)` or the C-style `(int&)a` still refers to the original object, but using it to modify an object defined as `const` is undefined behavior. The cast changes the access type; it does not redefine the original object as an ordinary variable."
+        },
+        "follow-up-one": {
+          "question": "What actually happens if I cast away `const` from a local `const int a` and modify it? I suspect it may already have become an immediate constant.",
+          "answer": "On this ARM64 Mac, Apple Clang 17 produced the same surprising output at `-O0` and `-O2`: the expression `a` yielded `10`, while the pointer expression yielded `20`. Both builds retained stack storage for `a` and wrote `20` into it, yet even `-O0` used the immediate `10` for direct uses of `a` instead of reloading the stack. At `-O0`, the code first stored `10`, then overwrote it with `20`; at `-O2`, it skipped the initial store of `10`, wrote `20` directly, and also folded the local `*p` expression to `20`. A separately compiled reader confirmed that memory actually contained `20`. Disabling major optimizations does not disable all constant handling, and retaining storage does not require every use of a name to read it. These are observations after undefined behavior, not language guarantees."
+        },
+        "follow-up-two": {
+          "question": "When does the compiler allocate memory for `a`: at the beginning or when it is cast? What if I only take its address, or never take its address at all?",
+          "answer": "The cast itself allocates no memory; the compiler plans storage for the function as a whole. In this experiment, even with the declaration of `a` after a function call, the generated code reserved the stack frame on entry, then stored `10` into its slot at the declaration. Taking the address just computed the slot location. Whether a slot survived depended on optimization: `-O0` retained stack storage even for an unused local constant, while `-O2` could replace value-only access, an unused address, or even a local pointer read with an immediate. Printing the address or passing it to a separately compiled reader retained storage in these tests. Reserving space, initializing it, computing an address, and reading a value are separate operations."
+        },
+        "follow-up-three": {
+          "question": "I remember constants being stored in a constant data area, such as string literals. What happens if I forcibly modify a constant stored there?",
+          "answer": "String literals and some global or static constants typically live in read-only data, but adding `const` to a local variable does not automatically place it there. In local `const char* p = \"hello\"`, the literal `\"hello\"` usually occupies read-only storage, while the pointer `p` may live on the stack or in a register. Local `const char a[] = \"hello\"` defines a separate array, which this experiment placed on the stack. Ordinary global `const int` and constant character-array definitions naturally landed in the nonwritable `__TEXT,__const` section. The casts succeeded, but actual writes through separately compiled functions terminated the processes with `SIGBUS` at both `-O0` and `-O2`. When the writer implementation was visible, `-O2` instead eliminated the write calls and the programs exited normally with unchanged values. Memory-page protection can therefore exist alongside the language restriction, and a normal exit does not establish that a modification succeeded."
+        }
+      }
+    },
+    "prefill-decode-disaggregation": {
+      "rounds": {
+        "opening": {
+          "question": "With prefill/decode disaggregation, I would expect a compute-bound phase and a memory-bound phase to complement each other on the same GPU. Why separate them?",
+          "answer": "I initially assumed different bottlenecks meant complementary resource use, but both phases still share compute resources and memory bandwidth. Mixing them does not ensure either finishes on time: a long prefill can delay decode tokens, so users experience pauses even while the GPU is busy. Chunked prefill can exploit this complementarity; disaggregation instead pays for KV transfer and resource coordination to isolate the phases and configure them independently. The choice depends on the workload and latency requirements."
+        },
+        "follow-up-one": {
+          "question": "So is the main motivation for PD disaggregation better control of serving latency rather than higher GPU utilization?",
+          "answer": "In the context of DistServe, the more useful measure is how many requests each GPU can serve within the latency targets: goodput. Isolating interference and configuring the two phases independently aim to meet both time-to-first-token and subsequent-token latency requirements while reducing serving costs. A busier GPU is only an observation; it does not necessarily mean more requests meet those requirements."
+        }
+      }
+    },
+    "cpp-integer-literal-types": {
+      "rounds": {
+        "opening": {
+          "question": "In C++, can `0x80000000` represent the smallest value of a 32-bit `int`?",
+          "answer": "I initially confused the two's-complement bit pattern with the numeric value of a literal. The smallest 32-bit `int` does have the bit pattern `0x80000000`, but where `int` is 32 bits, this literal has type `unsigned int` and the positive value `2147483648`. The expression `-(1LL << 31)` gives the intended minimum: compute positive `2³¹` as a `long long`, then negate it."
+        },
+        "follow-up-one": {
+          "question": "Would `-0x80000000` work, then? How is an unsigned value negated?",
+          "answer": "Unsigned negation keeps the type and computes `0 - x`, wrapping modulo `2³²` here. If the mathematical result is negative, adding `2³²` brings it back into the unsigned range. For example, `-1u` produces `2³² - 1`. Here, `x = 2³¹`, so the result is `2³² - 2³¹ = 2³¹`, still the positive value `2147483648`. Writing `-0x80000000LL` instead performs the negation in signed `long long`."
+        },
+        "follow-up-two": {
+          "question": "Without a suffix, is the default type `unsigned int`?",
+          "answer": "No: the type depends on the base and the value. An unsuffixed decimal literal tries `int`, `long`, then `long long`; a hexadecimal literal also tries each corresponding unsigned type immediately after its signed counterpart, choosing the first type that can hold the value. Thus `1` has type `int`, and `-1` is representable, while `0x80000000` selects `unsigned int` where `int` is 32 bits. The language standard defines the candidate order; the actual type ranges depend on the implementation."
+        }
+      }
     }
   }
 }

@@ -49,7 +49,16 @@
     "kv-cache": "KV Cache",
     "scheduling": "Scheduling",
     "computer-architecture": "Computer Architecture",
-    "x86": "x86"
+    "x86": "x86",
+    "cpp": "C++",
+    "compilers": "Compilers",
+    "model-training": "Model Training",
+    "fine-tuning": "Fine-Tuning",
+    "gradient-accumulation": "Gradient Accumulation",
+    "moe": "MoE",
+    "volcano": "Volcano",
+    "admission-control": "Admission Control",
+    "gang-scheduling": "Gang Scheduling"
   },
   "threads": [
     {
@@ -909,6 +918,178 @@
           }
         ]
       }
+    },
+    {
+      "id": "training-batch-step-epoch",
+      "tagIds": [
+        "model-training",
+        "fine-tuning",
+        "gradient-accumulation"
+      ],
+      "relatedProjects": [
+        {
+          "module": "projects",
+          "id": "npu-computing-forecast"
+        }
+      ],
+      "rounds": [
+        "opening"
+      ]
+    },
+    {
+      "id": "moe-token-routing-memory",
+      "tagIds": [
+        "moe",
+        "llm",
+        "model-architecture",
+        "memory-management"
+      ],
+      "relatedProjects": [
+        {
+          "module": "projects",
+          "id": "npu-computing-forecast"
+        }
+      ],
+      "rounds": [
+        "opening",
+        "follow-up-one",
+        "follow-up-two"
+      ]
+    },
+    {
+      "id": "volcano-enqueue-admission",
+      "tagIds": [
+        "kubernetes",
+        "volcano",
+        "scheduling",
+        "admission-control"
+      ],
+      "relatedProjects": [
+        {
+          "module": "projects",
+          "id": "crater"
+        }
+      ],
+      "rounds": [
+        "opening",
+        "follow-up-one",
+        "follow-up-two"
+      ]
+    },
+    {
+      "id": "volcano-podgroup-job-task",
+      "tagIds": [
+        "kubernetes",
+        "volcano",
+        "scheduling",
+        "gang-scheduling"
+      ],
+      "relatedProjects": [
+        {
+          "module": "projects",
+          "id": "crater"
+        }
+      ],
+      "rounds": [
+        "opening"
+      ]
+    },
+    {
+      "id": "crater-volcano-quota-reservations",
+      "tagIds": [
+        "kubernetes",
+        "volcano",
+        "scheduling",
+        "admission-control"
+      ],
+      "relatedProjects": [
+        {
+          "module": "projects",
+          "id": "crater"
+        }
+      ],
+      "rounds": [
+        "opening",
+        "follow-up-one"
+      ]
+    },
+    {
+      "id": "crater-volcano-starvation-protection",
+      "tagIds": [
+        "kubernetes",
+        "volcano",
+        "scheduling",
+        "admission-control"
+      ],
+      "relatedProjects": [
+        {
+          "module": "projects",
+          "id": "crater"
+        }
+      ],
+      "rounds": [
+        "opening",
+        "follow-up-one"
+      ]
+    },
+    {
+      "id": "cpp-const-reference",
+      "tagIds": [
+        "cpp",
+        "compilers"
+      ],
+      "relatedProjects": [],
+      "rounds": [
+        "opening",
+        "follow-up-one",
+        "follow-up-two"
+      ]
+    },
+    {
+      "id": "cpp-const-cast-storage",
+      "tagIds": [
+        "cpp",
+        "compilers"
+      ],
+      "relatedProjects": [],
+      "rounds": [
+        "opening",
+        "follow-up-one",
+        "follow-up-two",
+        "follow-up-three"
+      ]
+    },
+    {
+      "id": "prefill-decode-disaggregation",
+      "tagIds": [
+        "llm-inference",
+        "resource-sharing",
+        "scheduling"
+      ],
+      "relatedProjects": [
+        {
+          "module": "projects",
+          "id": "npu-computing-forecast",
+          "note": "推断：项目涉及任务共置、资源观测及 TTFT、TPOT 预测，与阶段隔离和延迟权衡相关，不代表已实践 PD 分离。"
+        }
+      ],
+      "rounds": [
+        "opening",
+        "follow-up-one"
+      ]
+    },
+    {
+      "id": "cpp-integer-literal-types",
+      "tagIds": [
+        "cpp",
+        "compilers"
+      ],
+      "relatedProjects": [],
+      "rounds": [
+        "opening",
+        "follow-up-one",
+        "follow-up-two"
+      ]
     }
   ]
 }
