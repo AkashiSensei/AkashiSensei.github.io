@@ -163,8 +163,8 @@ export const projects: Project[] = [
   },
   {
     id: "npu-computing-forecast",
-    repoName: "AkashiSensei/npu_computing_forecast",
-    githubRepo: "AkashiSensei/npu_computing_forecast",
+    repoName: "raids-lab/npu_computing_forecast",
+    githubRepo: "raids-lab/npu_computing_forecast",
     repoTags: ["private"],
     featured: true,
     featuredOrder: 2,
