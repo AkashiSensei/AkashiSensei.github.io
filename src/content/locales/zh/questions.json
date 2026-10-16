@@ -356,6 +356,9 @@
           "question": "我在 Nsight Compute 中看到过 long scoreboard stall，想知道 L1、L2、shared memory、constant memory 和显存的访问通常各要多少周期。L1、L2 竟然比 shared memory 还慢这么多？",
           "answer": "先建立数量级直觉：shared memory 通常是十几到几十个周期，L1 命中通常是几十个周期，L2 是上百个周期，访问显存则可能需要数百个周期，具体数值随架构和访问条件变化。shared memory 的访问更直接，不承担通用缓存的命中判断等职责，但 bank conflict 会使访问串行化，所以不能认为它总比 L1 快固定倍数。constant cache 命中时开销较低，同一 warp 读取同一地址可以广播，读取不同地址则可能串行化，未命中还要承担下层访问延迟。寄存器无需经过这些缓存，但也不能把相关指令的数据依赖延迟理解成零。"
         }
+      },
+      "images": {
+        "gpuMemoryHierarchy": "NVIDIA Hopper H100 概念结构图：SM 内的寄存器、shared memory、L1TEX 和常量读取路径，以及共享 L2 与 HBM 显存的连接关系"
       }
     },
     "gpu-register-allocation": {
@@ -509,6 +512,50 @@
           "answer": "不是，类型取决于进制和数值大小。无后缀十进制整数依次尝试 `int`、`long`、`long long`；十六进制则在各级有符号类型之后穿插对应的无符号类型，选择第一个能容纳数值的类型。因此 `1` 是 `int`，`-1` 可以正常表示，而 `0x80000000` 在 32 位 `int` 环境中选中了 `unsigned int`。候选顺序由语言标准规定，各类型的具体范围则与实现有关。"
         }
       }
+    },
+    "l1-shared-memory-wavefronts": {
+      "rounds": {
+        "opening": {
+          "question": "在 NVIDIA GPU 中，wavefront 这个概念在 L1 和 shared memory 两条路上都有？shared memory 上考虑的是 bank 冲突，L1 上考虑的是 sector？",
+          "answer": "两条路径都有 wavefront，可以把它理解为内存流水线某个阶段能够一次并行处理的一批访问工作。shared memory 主要看访问宽度、bank 映射及 bank 冲突；L1TEX 则要看 cache line、sector 的分布，以及标签查找和数据访问阶段的处理限制。例如，在 L1TEX 的数据访问阶段，分别访问 line A 的 sector 0、line B 的 sector 1、line C 的 sector 2、line D 的 sector 3，即使地址不连续，也可以由一个 data wavefront 并行处理；反而四条 line 都访问 sector 0 时，可能需要多个。"
+        }
+      },
+      "images": {
+        "gpuMemoryHierarchy": "NVIDIA Hopper H100 概念结构图：L1TEX 与 shared memory 的位置，以及 wavefront、sector 和 bank conflict 的术语说明"
+      }
+    },
+    "scoreboard-read-write-barriers": {
+      "rounds": {
+        "opening": {
+          "question": "在 Nsight Compute 中，`Long Scoreboard` 和 `Short Scoreboard` 看起来是 scoreboard 机制导致的 stall。那么，SASS 中的 Read/Write Barrier 有没有各自对应的 stall 类型？",
+          "answer": "它们与 NCU 的 stall 类型没有简单的一一对应关系。`Barrier` 通常表示等待同一线程块中的其他 warp 到达同步屏障；`Long Scoreboard` 表示等待 L1TEX 路径操作的依赖，`Short Scoreboard` 则主要表示等待 MIO 路径操作的依赖，例如 shared memory 访问。Read/Write Barrier 引起的依赖等待可以体现为 scoreboard stall，但具体分类取决于操作路径和硬件报告的原因，不能直接把读屏障、写屏障分别对应到某一个类型。"
+        },
+        "follow-up-one": {
+          "question": "那么，scoreboard 和 Read/Write Barrier，逻辑上是不同的概念，但在硬件实现上可能是同一套机制吗？",
+          "answer": "更准确地说，它们描述的是同一套指令依赖管理过程的不同层面。Read/Write Barrier 是编译器在 SASS 中表达依赖的控制信息：Write Barrier 跟踪结果何时就绪，Read Barrier 保护尚未读完的源寄存器，后续指令通过等待掩码指定需要等待哪些依赖；scoreboard 则从硬件执行的角度维护这些依赖状态，避免后续指令过早使用结果或覆盖仍需读取的寄存器，并判断指令能否发射。这些功能可以共用底层的状态跟踪与检查机制，不要求各自对应一个独立硬件模块。不过，不能据此断言所有 scoreboard 依赖都通过 SASS 屏障实现，或所有架构都采用完全相同的内部结构。"
+        }
+      }
+    },
+    "async-copy-l2-cache": {
+      "rounds": {
+        "opening": {
+          "question": "Ampere 的 `cp.async` 和 Hopper 的 TMA，从 shared memory 到 global memory，或者反过来搬运数据时，不经过寄存器了，那么是否经过 L2？",
+          "answer": "先区分方向：Ampere 的经典 `cp.async` 只支持 global memory → shared memory，不支持反向搬运；Hopper TMA 则支持双向搬运。它们绕过的是通用寄存器中转，这些涉及 global memory 的搬运仍然使用 L2 缓存层级。可以把 L2 理解为 HBM 的“前哨”：读取所需数据时，如果命中 L2，就不必再从 HBM 获取。但经过 L2 不代表每次都会实际访问 HBM，写入也可能先由缓存处理，之后再写回 HBM。"
+        }
+      },
+      "images": {
+        "gpuMemoryHierarchy": "NVIDIA Hopper H100 概念结构图：GPU 存储层级、L2 与 HBM，以及 cp.async 和 TMA 的异步搬运路径"
+      }
+    },
+    "pushbuffer-gpfifo-memory-location": {
+      "rounds": {
+        "opening": {
+          "question": "在 NVIDIA GPU 中，Push Buffer 和 GPFIFO 物理上是在一块的吗，比如都放在 CPU 内存中？我注意到它们似乎有一些相同的性质，比如都需要 CPU 和 GPU 能够访问？",
+          "answer": "在通常由 CPU 提交命令的场景中，它们确实具有类似的访问要求：CPU 一侧准备内容，GPU 前端读取，但不必位于同一块物理内存。GPFIFO 保存指向 Push Buffer 的地址和长度，Push Buffer 保存实际命令，二者通过地址引用连接，不依赖物理相邻。NVIDIA 公开的 UVM 驱动分别定义了 `gpfifo_loc` 和 `pushbuffer_loc`，独立管理两者的存储位置，代码中也存在 GPFIFO 放在显存、Push Buffer 放在系统内存的配置，进一步说明它们可以位于不同的存储中。"
+        }
+      }
     }
-  }
+  },
+  "hasImages": "含配图",
+  "pairCount": "{{count}} 对问答"
 }

@@ -1,10 +1,19 @@
 import { DIALOG_MOTION } from "./dialog-motion.ts"
 
-export const CONVERSATION_MOTION = { ...DIALOG_MOTION, stagger: 70 } as const
+export const CONVERSATION_MOTION = {
+  ...DIALOG_MOTION,
+  exitDuration: 200,
+  stagger: 70,
+  exitStagger: 35,
+} as const
 
-// Radix retains the modal until the last staggered part has finished leaving.
+export function conversationExitDelay(index: number) {
+  return Math.max(0, index) * CONVERSATION_MOTION.exitStagger
+}
+
+// Only the visual exit layer remains until the last staggered part leaves.
 export function conversationExitDuration(partCount: number) {
-  return CONVERSATION_MOTION.exitDuration + Math.max(0, partCount - 1) * CONVERSATION_MOTION.stagger
+  return CONVERSATION_MOTION.exitDuration + conversationExitDelay(partCount - 1)
 }
 
 export function conversationTravel(top: number, bottom: number, viewportHeight: number) {

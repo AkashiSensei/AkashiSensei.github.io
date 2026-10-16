@@ -1,5 +1,5 @@
 import "./questions.css"
-import { useRef, useState, type CSSProperties, type ReactNode } from "react"
+import { useLayoutEffect, useRef, type RefObject, type ReactNode } from "react"
 import { useTranslation } from "react-i18next"
 import { useLocation, useNavigate } from "react-router-dom"
 import { Dialog as DialogPrimitive } from "radix-ui"
@@ -9,11 +9,31 @@ import { QuestionTags } from "@/components/QuestionTags"
 import { ProjectSummary } from "@/components/ProjectSummary"
 import { QuestionConversationFlow } from "@/components/QuestionConversationFlow"
 import { QuestionImageBubble } from "@/components/QuestionImageBubble"
-import { questionConversationPartCount, questionRoundImages } from "@/lib/question-images"
-import { conversationExitDuration } from "@/lib/question-conversation-motion"
+import { questionRoundImages } from "@/lib/question-images"
+import { retainConversationExit } from "@/lib/question-conversation-animation"
 import { questionThreads, type QuestionThread } from "@/data/questions"
 import { useQuestionCopy } from "@/hooks/use-question-copy"
 import { QuestionDialogContext } from "@/hooks/use-question-dialog"
+
+function QuestionConversationPresence({ children, contentRef, backdropRef, exitRef }: {
+  children: ReactNode
+  contentRef: RefObject<HTMLDivElement | null>
+  backdropRef: RefObject<HTMLDivElement | null>
+  exitRef: RefObject<(() => void) | null>
+}) {
+  useLayoutEffect(() => {
+    // Reopening removes an older exit layer before the new dialog is painted.
+    exitRef.current?.()
+    exitRef.current = null
+    return () => {
+      // Layout cleanup runs before the modal DOM and its scroll lock detach.
+      // The portal mounts after this effect; capture its live refs on unmount.
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      if (contentRef.current) exitRef.current = retainConversationExit(contentRef.current, backdropRef.current)
+    }
+  }, [contentRef, backdropRef, exitRef])
+  return children
+}
 
 function ThreadBody({ thread, roundId, open }: { thread: QuestionThread; roundId: string | null; open: boolean }) {
   const { t, i18n } = useTranslation("questions")
@@ -37,6 +57,7 @@ function ThreadBody({ thread, roundId, open }: { thread: QuestionThread; roundId
                 <QuestionText text={copy.rounds[id].answer || t("unanswered")} />
               </div>
             </div>
+            {questionRoundImages(thread, id, "answer").map((image) => <QuestionImageBubble key={image.src} image={image} side="answer" />)}
           </section>)}
         </div>
         <ProjectSummary projects={thread.relatedProjects} className="question-project-summary" />
@@ -51,20 +72,15 @@ export function QuestionDialogProvider({ children }: { children: ReactNode }) {
   const getCopy = useQuestionCopy()
   const triggerRef = useRef<HTMLElement | null>(null)
   const contentRef = useRef<HTMLDivElement>(null)
+  const backdropRef = useRef<HTMLDivElement>(null)
+  const exitRef = useRef<(() => void) | null>(null)
   const triggerPath = useRef("")
   const blankPointerDown = useRef(false)
   const params = new URLSearchParams(location.search)
   const selectedId = params.get("question")
   const roundId = params.get("round")
-  // Keep the last reading content while Radix runs its closing presence animation.
-  const [displayed, setDisplayed] = useState({ id: selectedId, roundId })
-  if (selectedId !== null && (displayed.id !== selectedId || displayed.roundId !== roundId)) {
-    setDisplayed({ id: selectedId, roundId })
-  }
-  const thread = questionThreads.find((item) => item.id === displayed.id)
+  const thread = questionThreads.find((item) => item.id === selectedId)
   const open = selectedId !== null
-  const exitDuration = `${conversationExitDuration(thread ? questionConversationPartCount(thread) : 1)}ms`
-  const motionStyle = { "--question-conversation-exit-duration": exitDuration, "--dialog-exit-duration": exitDuration } as CSSProperties
   const close = () => {
     if (location.state?.questionDialogFrom) {
       navigate(-1)
@@ -86,10 +102,11 @@ export function QuestionDialogProvider({ children }: { children: ReactNode }) {
     })
   } }}>
     {children}
-    <Dialog open={open} onOpenChange={(nextOpen) => { if (!nextOpen && open) close() }}>
+    {open && <QuestionConversationPresence contentRef={contentRef} backdropRef={backdropRef} exitRef={exitRef}>
+    <Dialog open onOpenChange={(nextOpen) => { if (!nextOpen) close() }}>
       <DialogPortal>
-        <DialogOverlay className="question-conversation-backdrop" style={motionStyle} />
-        <DialogPrimitive.Content className="question-conversation" ref={contentRef} style={motionStyle} inert={!open}
+        <DialogOverlay className="question-conversation-backdrop" ref={backdropRef} />
+        <DialogPrimitive.Content className="question-conversation" ref={contentRef}
         onOpenAutoFocus={(event) => {
           // Start reading at the first question, not at the project's first link below it.
           event.preventDefault()
@@ -104,6 +121,7 @@ export function QuestionDialogProvider({ children }: { children: ReactNode }) {
         }}
         onCloseAutoFocus={(event) => {
           event.preventDefault()
+          if (contentRef.current) return
           if (window.location.pathname === triggerPath.current && triggerRef.current?.isConnected) {
             triggerRef.current.focus({ preventScroll: true })
           } else if (!triggerRef.current) {
@@ -113,10 +131,11 @@ export function QuestionDialogProvider({ children }: { children: ReactNode }) {
           <DialogTitle className="sr-only">
             {thread ? <span lang={getCopy(thread).lang}><QuestionText text={getCopy(thread).rounds[thread.rounds[0]].question} /></span> : t("notFound")}
           </DialogTitle>
-        {thread ? <ThreadBody key={thread.id} thread={thread} roundId={displayed.roundId} open={open} />
+        {thread ? <ThreadBody key={thread.id} thread={thread} roundId={roundId} open />
           : <QuestionConversationFlow open={open}><DialogDescription className="question-bubble" data-conversation-not-found>{t("notFoundDescription")}</DialogDescription></QuestionConversationFlow>}
         </DialogPrimitive.Content>
       </DialogPortal>
     </Dialog>
+    </QuestionConversationPresence>}
   </QuestionDialogContext.Provider>
 }

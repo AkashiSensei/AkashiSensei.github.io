@@ -8,7 +8,8 @@ import { filterQuestions, questionProjectKey, normalizeQuestionTags, toggleQuest
 import { fitQuestionText } from '../src/lib/question-text-layout.ts'
 import { getWallDepth, getWallMotionFrames, QUESTION_WALL_MOTION } from '../src/lib/question-wall-motion.ts'
 import { conversationTravel, conversationExitDuration, CONVERSATION_MOTION } from '../src/lib/question-conversation-motion.ts'
-import { questionRoundImages, resolveQuestionImage, questionConversationPartCount } from '../src/lib/question-images.ts'
+import { animateConversationFrames, retainConversationExit } from '../src/lib/question-conversation-animation.ts'
+import { questionRoundImages, resolveQuestionImage, questionConversationPartCount, questionThreadHasImages } from '../src/lib/question-images.ts'
 import { masonryLayout } from '../src/lib/masonry-layout.ts'
 
 test('question masonry fills the shorter column while preserving newest-first vertical order', () => {
@@ -36,7 +37,147 @@ test('conversation parts enter below the viewport and fully leave above it, incl
     assert.ok(bottom + travel.exit < 0)
   }
   for (const parts of [1, 2, 3, 7, 20]) {
-    assert.equal(conversationExitDuration(parts), CONVERSATION_MOTION.exitDuration + (parts - 1) * CONVERSATION_MOTION.stagger)
+    assert.equal(conversationExitDuration(parts), 200 + (parts - 1) * 35)
+  }
+})
+
+test('conversation exits preserve distinct staggered starts and interrupted positions, with the original entrance speed', () => {
+  const calls = []
+  const frames = Array.from({ length: 15 }, (_, index) => ({
+    part: { animate: (keyframes, options) => { calls.push({ keyframes, options }); return {} } },
+    top: 24 * index, bottom: 24 * index + 40, y: 18, opacity: .6, visible: true,
+  }))
+  animateConversationFrames(frames, false, true, 800)
+  calls.forEach(({ keyframes, options }, index) => {
+    assert.equal(options.duration, 200)
+    assert.equal(options.delay, index * 35)
+    assert.deepEqual(keyframes[0], { transform: 'translateY(18px)', opacity: .6 })
+    assert.ok(frames[index].bottom + Number(keyframes[1].transform.match(/-?\d+/)[0]) < 0)
+  })
+  assert.equal(conversationExitDuration(frames.length), calls.at(-1).options.delay + calls.at(-1).options.duration)
+  calls.length = 0
+  animateConversationFrames(frames, true, false, 800)
+  calls.forEach(({ options }, index) => {
+    assert.equal(options.duration, 500)
+    assert.equal(options.delay, index * 70)
+  })
+  calls.length = 0
+  animateConversationFrames([{ ...frames[0], top: -900, bottom: -400, visible: false }], false, true, 800)
+  assert.deepEqual(calls[0].keyframes, [{ opacity: 0 }, { opacity: 0 }])
+})
+
+test('tall question and answer images keep their exit slots and cannot overtake earlier text', () => {
+  const calls = []
+  const frames = [
+    { top: -700, bottom: -100, y: 0, visible: false },
+    { top: 60, bottom: 140, y: 12, visible: true },
+    { top: 180, bottom: 1280, y: 24, visible: true },
+    { top: 1320, bottom: 1400, y: 0, visible: false },
+    { top: 1440, bottom: 2600, y: 0, visible: false },
+  ].map((frame) => ({ ...frame, opacity: 1, part: { animate: (keyframes, options) => { calls.push({ keyframes, options }); return {} } } }))
+  animateConversationFrames(frames, false, true, 800)
+  assert.equal(calls[1].options.delay, 0)
+  assert.equal(calls[2].options.delay, 35)
+  const displacement = (call) => Number(call.keyframes[1].transform.match(/-?\d+/)[0])
+    - Number(call.keyframes[0].transform.match(/-?\d+/)[0])
+  assert.equal(displacement(calls[1]), displacement(calls[2]))
+  assert.ok(frames[2].bottom + frames[2].y + displacement(calls[2]) < 0)
+  assert.deepEqual(calls[4].keyframes, [{ opacity: 0 }, { opacity: 0 }])
+
+  // The same order must hold with a question illustration, text, and an answer illustration.
+  calls.length = 0
+  const allVisible = frames.slice(2).map((frame) => ({ ...frame, visible: true }))
+  animateConversationFrames(allVisible, false, true, 1600)
+  assert.deepEqual(calls.map((call) => call.options.delay), [0, 35, 70])
+  assert.equal(new Set(calls.map(displacement)).size, 1)
+})
+
+test('the retained exit is an inert disposable copy preserving reading scroll, with immediate reduced-motion dismissal', async () => {
+  const animations = []
+  class Element {
+    constructor(kind = '', children = []) {
+      this.kind = kind
+      this.children = []
+      this.style = { transform: 'none', opacity: '1' }
+      this.dataset = {}
+      this.attributes = { id: `source-${kind}` }
+      this.scrollTop = 0
+      this.rect = { top: 100, bottom: 200 }
+      children.forEach((child) => this.append(child))
+    }
+    append(child) { this.children.push(child); child.parent = this }
+    setAttribute(key, value) { this.attributes[key] = value }
+    removeAttribute(key) { delete this.attributes[key] }
+    querySelectorAll(selector) {
+      const descendants = this.children.flatMap((child) => [child, ...child.querySelectorAll('*')])
+      return selector === '*' ? descendants : descendants.filter((child) => selector === '[id]' ? child.attributes.id : child.kind === 'part')
+    }
+    getBoundingClientRect() { return this.rect }
+    cloneNode() {
+      const clone = new Element(this.kind, this.children.map((child) => child.cloneNode()))
+      clone.style = { ...this.style }; clone.dataset = { ...this.dataset }; clone.attributes = { ...this.attributes }
+      return clone
+    }
+    animate(keyframes, options) {
+      let finish
+      const animation = { element: this, keyframes, options, cancelled: false,
+        finished: new Promise((resolve) => { finish = resolve }),
+        cancel() { this.cancelled = true; finish() }, finish: () => finish() }
+      animations.push(animation)
+      return animation
+    }
+    remove() { this.parent.children = this.parent.children.filter((child) => child !== this) }
+  }
+  const body = new Element('body')
+  const content = new Element('content', [new Element('part'), new Element('part')])
+  content.scrollTop = 480
+  content.rect = { top: 0, bottom: 800, width: 1280, height: 800 }
+  content.children[1].rect = { top: -900, bottom: -300 }
+  const backdrop = new Element('backdrop')
+  let reduced = false
+  const replacements = {
+    document: { body, createElement: () => new Element() },
+    window: { innerHeight: 800, matchMedia: () => ({ matches: reduced }), setTimeout, clearTimeout },
+    getComputedStyle: (element) => element.style,
+  }
+  const descriptors = Object.fromEntries(Object.keys(replacements).map((key) => [key, Object.getOwnPropertyDescriptor(globalThis, key)]))
+  Object.assign(globalThis, replacements)
+  try {
+    const cleanup = retainConversationExit(content, backdrop)
+    const [layer] = body.children
+    assert.equal(layer.inert, true)
+    assert.equal(layer.attributes['aria-hidden'], 'true')
+    const clone = layer.children[1]
+    assert.notEqual(clone, content)
+    assert.equal(clone.scrollTop, 480)
+    assert.equal(clone.style.width, '1280px')
+    assert.equal(clone.style.height, '800px')
+    assert.equal(clone.dataset.state, 'closed')
+    assert.deepEqual(clone.querySelectorAll('[id]'), [])
+    assert.ok(content.attributes.id)
+    assert.ok(animations.every((animation) => animation.element !== content && !content.children.includes(animation.element)))
+    assert.equal(animations[0].options.duration, 200)
+    cleanup()
+    cleanup()
+    assert.deepEqual(body.children, [])
+    assert.ok(animations.every((animation) => animation.cancelled))
+
+    animations.length = 0
+    retainConversationExit(content, backdrop)
+    animations.forEach((animation) => animation.finish())
+    await new Promise(setImmediate)
+    assert.deepEqual(body.children, [])
+
+    reduced = true
+    animations.length = 0
+    retainConversationExit(content, backdrop)()
+    assert.deepEqual(body.children, [])
+    assert.deepEqual(animations, [])
+  } finally {
+    for (const [key, descriptor] of Object.entries(descriptors)) {
+      if (descriptor) Object.defineProperty(globalThis, key, descriptor)
+      else delete globalThis[key]
+    }
   }
 })
 
@@ -102,21 +243,57 @@ test('language switching selects complete English and Chinese question resources
 })
 test('question image references resolve to existing assets with reserved dimensions and accessible labels', () => {
   for (const thread of threads) {
-    for (const [round, references] of Object.entries(thread.questionImages ?? {})) {
-      assert.ok(thread.rounds.includes(round))
-      const images = questionRoundImages(thread, round)
-      assert.equal(images.length, references.length)
-      assert.equal(new Set(images.map((image) => image.src)).size, images.length)
-      for (const image of images) {
-        assert.ok(image.width > 0 && image.height > 0)
-        assert.ok(readFileSync(new URL(`../public${image.src}`, import.meta.url)).length)
-        const locale = readJson(`../src/content/locales/zh/${image.namespace === 'projects' ? 'projects' : 'course-projects'}.json`)
-        assert.equal(typeof image.altKey.split('.').reduce((value, key) => value?.[key], locale), 'string')
+    for (const side of ['question', 'answer']) {
+      for (const [round, references] of Object.entries((side === 'answer' ? thread.answerImages : thread.questionImages) ?? {})) {
+        assert.ok(thread.rounds.includes(round))
+        const images = questionRoundImages(thread, round, side)
+        assert.equal(images.length, references.length)
+        assert.equal(new Set(images.map((image) => image.src)).size, images.length)
+        for (const image of images) {
+          assert.ok(image.width > 0 && image.height > 0)
+          assert.ok(readFileSync(new URL(`../public${image.src}`, import.meta.url)).length)
+          const filename = { projects: 'projects', courseProjects: 'course-projects', questions: 'questions' }[image.namespace]
+          assert.ok(filename)
+          for (const language of ['zh', 'en']) {
+            const locale = readJson(`../src/content/locales/${language}/${filename}.json`)
+            const label = image.altKey.split('.').reduce((value, key) => value?.[key], locale)
+            assert.equal(typeof label, 'string')
+            assert.ok(label.trim())
+          }
+        }
       }
     }
   }
   assert.equal(resolveQuestionImage({ module: 'course-projects', id: 'missing', imageKey: 'missing' }), undefined)
   assert.equal(resolveQuestionImage({ module: 'course-projects', id: 'parallel-programming-2026', imageKey: 'missing' }), undefined)
+})
+
+test('standalone answer supplements preserve question images and extend the conversation lifetime', () => {
+  const thread = threads.find((item) => item.id === 'async-copy-l2-cache')
+  assert.deepEqual(thread.relatedProjects, [])
+  assert.deepEqual(questionRoundImages(thread, 'opening'), [])
+  const [image] = questionRoundImages(thread, 'opening', 'answer')
+  assert.equal(image.namespace, 'questions')
+  assert.equal(image.brightness, 'high')
+  assert.deepEqual([image.width, image.height], [3200, 2050])
+  const bytes = readFileSync(new URL(`../public${image.src}`, import.meta.url))
+  assert.equal(bytes.toString('ascii', 0, 4), 'RIFF')
+  assert.equal(bytes.toString('ascii', 8, 12), 'WEBP')
+  const withoutImages = { ...thread, answerImages: undefined }
+  assert.equal(questionConversationPartCount(thread), questionConversationPartCount(withoutImages) + 1)
+  assert.equal(conversationExitDuration(questionConversationPartCount(thread))
+    - conversationExitDuration(questionConversationPartCount(withoutImages)), CONVERSATION_MOTION.exitStagger)
+  const combined = { ...thread, questionImages: thread.answerImages }
+  assert.equal(questionRoundImages(combined, 'opening').length, 1)
+  assert.equal(questionRoundImages(combined, 'opening', 'answer').length, 1)
+  assert.equal(questionConversationPartCount(combined), questionConversationPartCount(withoutImages) + 2)
+  assert.equal(questionThreadHasImages(withoutImages), false)
+  assert.equal(questionThreadHasImages(thread), true)
+  assert.equal(questionThreadHasImages({ ...withoutImages, questionImages: thread.answerImages }), true)
+  const laterRound = { ...withoutImages, rounds: ['opening', 'later'], answerImages: { later: thread.answerImages.opening } }
+  assert.equal(questionThreadHasImages(laterRound), true)
+  assert.equal(questionThreadHasImages({ ...laterRound, answerImages: undefined, questionImages: { later: thread.answerImages.opening } }), true)
+  assert.equal(questionThreadHasImages({ ...withoutImages, questionImages: { opening: [{ module: 'course-projects', id: 'missing', imageKey: 'missing' }] } }), false)
 })
 
 test('image bubbles extend the staggered exit lifetime without changing question round counts', () => {
@@ -126,9 +303,14 @@ test('image bubbles extend the staggered exit lifetime without changing question
   assert.equal(image.altKey, 'items.parallel-programming-2026.images.ncuSharedMemory8192')
   assert.equal(image.brightness, 'high')
   assert.deepEqual(questionRoundImages(thread, 'follow-up-one'), [])
-  const withoutImages = { ...thread, questionImages: undefined }
-  assert.equal(questionConversationPartCount(thread), questionConversationPartCount(withoutImages) + 1)
-  assert.equal(conversationExitDuration(questionConversationPartCount(thread)), 680)
+  const [supplement] = questionRoundImages(thread, 'opening', 'answer')
+  assert.equal(supplement.src, '/assets/questions/nvidia-gpu-memory-hierarchy.webp')
+  assert.equal(supplement.altKey, 'items.gpu-memory-hierarchy.images.gpuMemoryHierarchy')
+  assert.deepEqual(questionRoundImages(thread, 'follow-up-one', 'answer'), [])
+  const withoutImages = { ...thread, questionImages: undefined, answerImages: undefined }
+  assert.equal(questionConversationPartCount(thread), questionConversationPartCount(withoutImages) + 2)
+  assert.equal(conversationExitDuration(questionConversationPartCount(thread))
+    - conversationExitDuration(questionConversationPartCount(withoutImages)), 2 * CONVERSATION_MOTION.exitStagger)
 })
 const projectIds = (module) => [...readFileSync(new URL(`../src/data/${module}.ts`, import.meta.url), 'utf8')
   .matchAll(/^\s+id: "([^"]+)"/gm)].map((match) => `${module}:${match[1]}`)
@@ -292,7 +474,7 @@ test('short questions remain one line, longer text uses complete measured height
 })
 
 test('bubble padding preserves short single-line questions and complete long text measurements', () => {
-  for (const [width, paddingInline, paddingBlock] of [[320, 32, 27.2], [1000, 40, 32]]) {
+  for (const [width, paddingInline, paddingBlock] of [[320, 32, 27.2], [1000, 40, 32], [320, 60, 27.2], [1000, 68, 32]]) {
     const metrics = { paddingInline, paddingBlock, lineHeight: 1.65 }
     const short = measureText('什么是内存？', metrics)
     const shortLayout = fitQuestionText(width, 440, short, metrics)

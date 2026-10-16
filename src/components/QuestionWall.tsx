@@ -5,6 +5,9 @@ import { ArchiveSectionHeader } from "@/components/SectionHeader"
 import { AppLink } from "@/components/AppLink"
 import { QuestionList } from "@/components/QuestionList"
 import { QuestionText } from "@/components/QuestionText"
+import { QuestionRoundCount } from "@/components/QuestionRoundCount"
+import { QuestionImageIndicator } from "@/components/QuestionImageIndicator"
+import { questionThreadHasImages } from "@/lib/question-images"
 import { QuestionWallLayer } from "@/components/QuestionWallLayer"
 import { Button } from "@/components/ui/button"
 import { useAnimationPreference } from "@/components/animation-provider"
@@ -68,8 +71,10 @@ function AnimatedQuestionWall() {
       if (disposed) return
       window.cancelAnimationFrame(frame)
       frame = window.requestAnimationFrame(() => {
-        const width = element.clientWidth
-        const height = element.clientHeight
+        const stageStyle = window.getComputedStyle(element)
+        // Keep the outer reaction badges inside the stage's scroll boundary.
+        const width = element.clientWidth - parseFloat(stageStyle.paddingLeft) - parseFloat(stageStyle.paddingRight)
+        const height = element.clientHeight - parseFloat(stageStyle.paddingTop) - parseFloat(stageStyle.paddingBottom)
         if (!width || !height || (!force && width === lastWidth && height === lastHeight)) return
         lastWidth = width
         lastHeight = height
@@ -142,11 +147,15 @@ function AnimatedQuestionWall() {
       <div className="question-wall-measurements" aria-hidden="true" inert>
         {questionThreads.map((thread) => {
           const content = copy(thread)
-          return <div key={thread.id} className="question-wall-text question-bubble question-bubble-question" ref={(node) => {
+          const hasImages = questionThreadHasImages(thread)
+          return <div key={thread.id} className="question-wall-text question-bubble question-bubble-question question-round-count-trigger"
+            data-has-images={hasImages || undefined} data-has-round-count={thread.rounds.length > 1 || undefined} ref={(node) => {
             if (node) measurements.current.set(thread.id, node)
             else measurements.current.delete(thread.id)
           }}>
             <span className="question-wall-title" lang={content.lang}><QuestionText text={content.rounds[thread.rounds[0]].question} /></span>
+            <QuestionRoundCount count={thread.rounds.length} />
+            <QuestionImageIndicator hasImages={hasImages} />
           </div>
         })}
       </div>
@@ -154,13 +163,15 @@ function AnimatedQuestionWall() {
       {layers.map((card, index) => {
         const thread = threadMap.get(card.id)!
         const content = copy(thread)
+        const hasImages = questionThreadHasImages(thread)
         const isInteracting = focused === card.id || hovered === card.id
         const retiring = wall.retiring === card
         const age = layers.length - index - 1
         return <QuestionWallLayer key={card.id} card={card} width={wall.width} height={wall.height}
           age={age} count={wall.cards.length} motionEnabled={motionEnabled}
           retiring={retiring} interacting={isInteracting} zIndex={index + 1}>
-          <button type="button" className="question-wall-text question-bubble question-bubble-question" data-entering={wall.incomingId === card.id || undefined}
+          <button type="button" className="question-wall-text question-bubble question-bubble-question question-round-count-trigger"
+          data-has-images={hasImages || undefined} data-has-round-count={thread.rounds.length > 1 || undefined} data-entering={wall.incomingId === card.id || undefined}
           tabIndex={retiring ? -1 : undefined}
           onAnimationEnd={(event) => {
             if (event.target === event.currentTarget && event.animationName === "question-land") setLandedId(card.id)
@@ -170,6 +181,8 @@ function AnimatedQuestionWall() {
           onFocus={() => setFocused(card.id)} onBlur={() => setFocused(null)}
           onClick={(event) => openQuestion(thread.id, event.currentTarget)}>
           <span className="question-wall-title" lang={content.lang}><QuestionText text={content.rounds[thread.rounds[0]].question} /></span>
+          <QuestionRoundCount count={thread.rounds.length} />
+          <QuestionImageIndicator hasImages={hasImages} />
           </button>
         </QuestionWallLayer>
       })}

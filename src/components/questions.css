@@ -1,8 +1,8 @@
 /* Questions share one open, editorial layout across the wall, list and reader. */
 .question-wall-section { display: flex; flex-direction: column; justify-content: center; gap: 1.25rem; }
 .question-wall-toolbar { flex-direction: column; align-items: flex-start; gap: .75rem; }
-.question-wall-stage { position: relative; isolation: isolate; height: clamp(24rem, 52svh, 36rem); width: 100%; overflow: auto; }
-.question-wall-canvas { position: relative; width: 100%; overflow: clip; }
+.question-wall-stage { position: relative; isolation: isolate; height: clamp(24rem, 52svh, 36rem); width: 100%; padding: 1.25rem; overflow: auto; }
+.question-wall-canvas { position: relative; width: 100%; overflow: clip; overflow-clip-margin: 1.25rem; }
 .question-wall-layer { position: absolute; transform-origin: center; }
 /* Keep samples measurable without rendering them in the wall's normal flow. */
 .question-wall-measurements { position: fixed; inset: 0 auto auto 0; width: 0; height: 0; overflow: hidden; contain: strict; visibility: hidden; pointer-events: none; }
@@ -29,7 +29,7 @@
 .question-list-masonry { --question-columns: 1; --question-column-gap: clamp(2rem, 4vw, 4rem); display: block; position: relative; column-gap: var(--question-column-gap); }
 .question-list-masonry > .question-list-item { width: calc((100% - (var(--question-columns) - 1) * var(--question-column-gap)) / var(--question-columns)); }
 .question-list-masonry[data-masonry-ready] > .question-list-item { position: absolute; }
-.question-list-catalog .question-thread-tags { margin-bottom: .75rem; }
+.question-list-catalog .question-thread-tags { margin-bottom: 1.25rem; }
 .question-catalog-trigger { display: flex; align-items: center; justify-content: space-between; width: 100%; gap: 1rem; text-align: left; cursor: pointer; }
 .question-catalog-title { min-width: 0; }
 .question-list-item { padding: 1.3rem 0 1.4rem; border-top: 1px solid var(--color-border); }
@@ -67,8 +67,8 @@
 
 /* Radix supplies modal behavior only; the reading surface is the entire viewport. */
 .question-conversation { --question-answer-background: var(--site-accent-surface); position: fixed; inset: 0; z-index: 50; overflow-y: auto; overscroll-behavior: contain; outline: none; background: transparent; color: var(--color-foreground); }
-.question-conversation[data-state="closed"] { animation: question-conversation-retain var(--question-conversation-exit-duration) linear; }
-@keyframes question-conversation-retain { from { opacity: 1; } to { opacity: 1; } }
+.question-conversation-exit-layer { position: fixed; inset: 0; z-index: 50; }
+.question-conversation-exit-layer, .question-conversation-exit-layer * { pointer-events: none !important; }
 .question-conversation-flow { display: flex; flex-direction: column; justify-content: center; width: min(68rem, 100%); min-height: 100%; margin-inline: auto; padding: 3.5rem 2.5rem; pointer-events: none; }
 .question-rounds { display: flex; flex-direction: column; gap: 2rem; }
 .question-round { display: flex; flex-direction: column; gap: 1.25rem; scroll-margin-top: 1rem; }
@@ -76,8 +76,16 @@
 .question-message-question { align-self: flex-start; max-width: min(78%, 40rem); }
 .question-message-answer { align-self: flex-end; }
 .question-thread-tags { display: flex; flex-wrap: wrap; gap: .4rem; list-style: none; margin: 0 0 .25rem; padding: 0; }
-.question-thread-tag { pointer-events: auto; max-width: 100%; padding: .2rem .65rem; border: 1px solid var(--color-border); border-radius: 999px; background: var(--color-popover); color: var(--text-tone-3); font-size: var(--text-xs); font-weight: var(--font-weight-normal); line-height: 1.5; overflow-wrap: anywhere; box-shadow: 0 2px 6px color-mix(in srgb, var(--color-foreground) 6%, transparent); }
+.question-thread-tag { pointer-events: auto; max-width: 100%; padding: .2rem .65rem; border: 1px solid var(--color-border); border-radius: 999px; background: var(--color-popover); color: var(--text-tone-3); font-size: var(--text-xs); font-weight: var(--font-weight-normal); line-height: 1.5; overflow-wrap: anywhere; }
+.question-thread-tag, .question-round-count, .question-image-indicator { box-shadow: 0 2px 6px color-mix(in srgb, var(--color-foreground) 6%, transparent); }
 .question-bubble { font-weight: var(--site-body-weight); pointer-events: auto; position: relative; padding: 1rem 1.25rem; border-radius: var(--radius-2xl); background: var(--color-popover); font-size: var(--text-base); line-height: 1.65; overflow-wrap: anywhere; }
+.question-round-count-trigger { position: relative; }
+.question-round-count, .question-image-indicator { position: absolute; z-index: 1; inset-inline-end: calc(.5rem - var(--question-indicator-size) / 2); display: grid; place-items: center; width: var(--question-indicator-size); height: var(--question-indicator-size); border: 1px solid var(--color-border); border-radius: 50%; background: var(--color-popover); color: var(--text-tone-2); font-size: var(--text-sm); font-weight: var(--font-weight-normal); line-height: 1; font-variant-numeric: tabular-nums; pointer-events: none; }
+.question-round-count { --question-indicator-size: 2rem; inset-block-start: calc(.5rem - var(--question-indicator-size) / 2); }
+.question-image-indicator { --question-indicator-size: 2.25rem; inset-inline-end: calc(.625rem - var(--question-indicator-size) / 2); inset-block-end: calc(.625rem - var(--question-indicator-size) / 2); }
+.question-bubble.question-round-count-trigger:is([data-has-round-count], [data-has-images]) { padding-inline-end: 2rem; }
+.question-document-trigger:is([data-has-round-count], [data-has-images]), .question-list-trigger:is([data-has-round-count], [data-has-images]) { padding-inline-end: 2.5rem; }
+.question-round-count-trigger[data-has-round-count][data-has-images] { min-block-size: 3.75rem; }
 .question-bubble-question::after, .question-message-answer > .question-bubble::after { content: ""; position: absolute; bottom: .55rem; width: .6rem; height: .75rem; background: inherit; }
 .question-bubble-question::after { left: -.45rem; clip-path: polygon(100% 0, 100% 100%, 0 100%); }
 .question-message-answer > .question-bubble::after { right: -.45rem; clip-path: polygon(0 0, 100% 100%, 0 100%); }
@@ -87,6 +95,7 @@
 .question-answer { white-space: pre-wrap; }
 .question-message-image { width: 100%; margin: 0; }
 .question-bubble.question-bubble-image { padding: .5rem; }
+.question-image-trigger { width: 100%; border: 0; cursor: zoom-in; }
 .question-image-surface { position: relative; overflow: hidden; border-radius: var(--radius-xl); }
 .question-image-surface img { display: block; width: 100%; height: auto; }
 .question-answer[data-unanswered="true"] { color: var(--text-tone-3); }
@@ -95,7 +104,7 @@
 .question-project-summary { margin-top: 3.5rem; }
 .question-project-name { min-width: 0; overflow-wrap: anywhere; }
 .question-list-trigger:focus-visible, .question-catalog-trigger:focus-visible, .question-document-trigger:focus-visible,
-.question-wall-toolbar button:focus-visible { outline: 2px solid var(--color-ring); outline-offset: 3px; }
+.question-wall-toolbar button:focus-visible, .question-image-trigger:focus-visible { outline: 2px solid var(--color-ring); outline-offset: 3px; }
 @media (min-width: 768px) {
   .question-list-catalog { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .question-list-masonry { --question-columns: 2; }
@@ -132,7 +141,7 @@
 .questions-page-plain .question-results { margin-top: var(--plain-index-item-gap); }
 .question-list-document { --question-column-gap: var(--plain-two-column-gap); }
 .question-list-document > .question-list-item { padding: 0 0 var(--plain-index-item-gap); }
-.question-list-document .question-thread-tags { gap: var(--plain-index-tag-gap); margin-bottom: .25rem; }
+.question-list-document .question-thread-tags { gap: var(--plain-index-tag-gap); margin-bottom: 1.25rem; }
 .question-list-document .question-thread-tag { font-weight: var(--font-weight-normal); overflow-wrap: anywhere; max-width: 100%; }
 .question-list-document .question-document-heading { margin: 0; padding: 0; font-size: var(--text-base); font-weight: var(--site-body-weight); line-height: var(--plain-body-line); }
 .question-document-trigger { display: block; width: 100%; padding: 0; border: 0; background: transparent; font: inherit; text-decoration-line: underline; text-decoration-thickness: var(--site-link-thickness); text-underline-offset: var(--site-link-offset); text-align: left; overflow-wrap: anywhere; cursor: pointer; }

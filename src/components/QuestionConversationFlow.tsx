@@ -1,5 +1,5 @@
 import { useLayoutEffect, useRef, type ReactNode } from "react"
-import { CONVERSATION_MOTION, conversationTravel } from "@/lib/question-conversation-motion"
+import { captureConversationFrames, animateConversationFrames } from "@/lib/question-conversation-animation"
 
 export function QuestionConversationFlow({ open, roundId, children }: {
   open: boolean
@@ -20,37 +20,14 @@ export function QuestionConversationFlow({ open, roundId, children }: {
         : 0
     }
 
-    const parts = [...flow.querySelectorAll<HTMLElement>(".question-message, .question-project-summary, [data-conversation-not-found]")]
     // Capture the current presentation before cancelling an interrupted entrance.
-    const frames = parts.map((part) => {
-      const rect = part.getBoundingClientRect()
-      const style = getComputedStyle(part)
-      const y = style.transform === "none" ? 0 : new DOMMatrixReadOnly(style.transform).m42
-      return { part, top: rect.top - y, bottom: rect.bottom - y, y, opacity: Number(style.opacity),
-        visible: rect.bottom > 0 && rect.top < window.innerHeight }
-    })
+    const frames = captureConversationFrames(flow)
     const interrupted = animations.current.length > 0
     animations.current.forEach((animation) => animation.cancel())
     animations.current = []
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
 
-    animations.current = frames.map(({ part, top, bottom, y, opacity, visible }, index) => {
-      const travel = conversationTravel(top, bottom, window.innerHeight)
-      // Off-screen answers must not sweep back through the viewport on dismissal.
-      if (!open && !visible) return part.animate([{ opacity: 0 }, { opacity: 0 }], { duration: 1, fill: "both" })
-      return part.animate(open ? [
-        { transform: `translateY(${interrupted ? y : travel.entry}px)`, opacity: interrupted ? opacity : 0 },
-        { transform: "translateY(0)", opacity: 1 },
-      ] : [
-        { transform: `translateY(${y}px)`, opacity },
-        { transform: `translateY(${travel.exit}px)`, opacity: 0 },
-      ], {
-        duration: open ? CONVERSATION_MOTION.enterDuration : CONVERSATION_MOTION.exitDuration,
-        delay: index * CONVERSATION_MOTION.stagger,
-        easing: open ? CONVERSATION_MOTION.enterEasing : CONVERSATION_MOTION.exitEasing,
-        fill: "both",
-      })
-    })
+    animations.current = animateConversationFrames(frames, open, interrupted, window.innerHeight)
   }, [open, roundId])
 
   useLayoutEffect(() => () => {

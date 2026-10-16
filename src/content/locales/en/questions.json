@@ -361,6 +361,9 @@
           "question": "After seeing long scoreboard stalls in Nsight Compute, I wondered: how many cycles do L1, L2, shared, constant, and device memory accesses take? Are L1 and L2 really that much slower than shared memory?",
           "answer": "As rough orders of magnitude, shared memory takes tens of cycles, L1 hits tens, L2 hundreds, and DRAM several hundred; architecture and access conditions matter. Shared memory has a more direct path, but bank conflicts can serialize it. Constant-cache hits are cheap when a warp reads one broadcast address; distinct addresses may serialize, and misses incur lower-level latency. Registers bypass these caches, but dependent instructions still have nonzero latency."
         }
+      },
+      "images": {
+        "gpuMemoryHierarchy": "NVIDIA Hopper H100 concept diagram showing SM registers, shared memory, L1TEX, the constant path, and connections to shared L2 and HBM device memory (Chinese diagram)"
       }
     },
     "gpu-register-allocation": {
@@ -514,6 +517,51 @@
           "answer": "No: the type depends on the base and the value. An unsuffixed decimal literal tries `int`, `long`, then `long long`; a hexadecimal literal also tries each corresponding unsigned type immediately after its signed counterpart, choosing the first type that can hold the value. Thus `1` has type `int`, and `-1` is representable, while `0x80000000` selects `unsigned int` where `int` is 32 bits. The language standard defines the candidate order; the actual type ranges depend on the implementation."
         }
       }
+    },
+    "l1-shared-memory-wavefronts": {
+      "rounds": {
+        "opening": {
+          "question": "On NVIDIA GPUs, do both the L1 and shared memory paths use wavefronts? Is shared memory about bank conflicts, while L1 is about sectors?",
+          "answer": "Both paths use wavefronts: batches of accesses that a memory pipeline stage can process in parallel. For shared memory, access width, bank mapping, and bank conflicts matter; for L1TEX, cache-line and sector distribution matter, along with the limits of the tag lookup and data access stages. For example, in the L1TEX data access stage, sector 0 of line A, sector 1 of line B, sector 2 of line C, and sector 3 of line D can be handled in one data wavefront even though their addresses are not contiguous. Accessing sector 0 in all four lines may instead require multiple wavefronts."
+        }
+      },
+      "images": {
+        "gpuMemoryHierarchy": "NVIDIA Hopper H100 concept diagram showing L1TEX, shared memory, and definitions of wavefront, sector, and bank conflict (Chinese diagram)"
+      }
+    },
+    "scoreboard-read-write-barriers": {
+      "rounds": {
+        "opening": {
+          "question": "In Nsight Compute, `Long Scoreboard` and `Short Scoreboard` appear to be stalls caused by the scoreboard mechanism. Do SASS Read/Write Barriers each have a corresponding stall category?",
+          "answer": "There is no simple one-to-one mapping. `Barrier` usually means waiting for other warps in the same thread block to reach a synchronization barrier. `Long Scoreboard` means waiting on a dependency from an L1TEX-path operation; `Short Scoreboard` mainly covers dependencies from MIO-path operations, such as shared memory accesses. Waiting on a Read/Write Barrier can appear as a scoreboard stall, but the category depends on the operation path and the reason reported by the hardware. Read and write barriers cannot each be assigned one fixed stall category."
+        },
+        "follow-up-one": {
+          "question": "So are scoreboards and Read/Write Barriers logically different concepts that may share one underlying hardware mechanism?",
+          "answer": "More precisely, they describe different layers of the same instruction-dependency management process. Read/Write Barriers are compiler-assigned SASS control information: a Write Barrier tracks when a result is ready, a Read Barrier protects source registers whose values have not yet been fully read, and later instructions use a wait mask to identify the dependencies they must wait for. The scoreboard describes the hardware side: maintaining dependency state, preventing premature use of results or overwriting of source registers still needed by an earlier operation, and determining whether an instruction can issue. These functions can share state-tracking and checking logic without requiring a separate hardware module for each concept. This does not establish that all scoreboard dependencies use SASS barriers or that every architecture has the same internal structure."
+        }
+      }
+    },
+    "async-copy-l2-cache": {
+      "rounds": {
+        "opening": {
+          "question": "Ampere's `cp.async` and Hopper's TMA bypass registers when copying from shared memory to global memory or in the opposite direction. Do these transfers still go through L2?",
+          "answer": "First, the directions differ: classic Ampere `cp.async` only supports global-to-shared copies, while Hopper TMA supports both directions. They bypass the general-purpose register file; transfers involving global memory still use the L2 cache hierarchy. I can think of L2 as an outpost in front of HBM: a read that hits in L2 does not need to fetch the data from HBM. Going through L2 does not mean every transfer reaches HBM, and writes may be handled by the cache before being written back to HBM later."
+        }
+      },
+      "images": {
+        "gpuMemoryHierarchy": "NVIDIA Hopper H100 memory hierarchy, L2 and HBM, and cp.async/TMA asynchronous copy paths (Chinese concept diagram)"
+      }
+    },
+    "pushbuffer-gpfifo-memory-location": {
+      "rounds": {
+        "opening": {
+          "question": "On NVIDIA GPUs, are Push Buffers and GPFIFO physically in the same place, for example both in CPU memory? They seem to share requirements, such as being accessible to both the CPU and GPU.",
+          "answer": "In the usual CPU-submitted command path, they have similar access requirements: the CPU side prepares their contents and the GPU front end reads them, but they do not have to reside in the same physical allocation. GPFIFO entries hold the address and length of a Push Buffer, while the Push Buffer holds the actual commands; the two are connected by address references rather than physical adjacency. NVIDIA's open UVM driver defines separate `gpfifo_loc` and `pushbuffer_loc` fields to manage their placement independently. Its code also includes a configuration with GPFIFO in device memory and the Push Buffer in system memory, demonstrating that they can reside in different memory types."
+        }
+      }
     }
-  }
+  },
+  "pairCount_one": "{{count}} question-answer pair",
+  "hasImages": "Includes images",
+  "pairCount_other": "{{count}} question-answer pairs"
 }
