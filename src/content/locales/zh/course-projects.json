@@ -345,6 +345,32 @@
         "**算法并行化与评估**：在课程提供的串行 CYK 参考程序上完成 OpenMP 并行化，通过计时脚本、实验数据和报告记录性能表现。"
       ]
     },
+    "distributed-systems-2023": {
+      "title": "分布式系统实验：NTP、ENS 与 Raft",
+      "summary": "北航《分布式系统》课程的四人小组实验，围绕网络时间同步、事件通知与分布式共识，完成协议理解、实现扩展和实验分析。",
+      "images": {
+        "ensOverview": "ENS 服务端、发布者与两个消费者的运行界面",
+        "ensWireshark": "使用 Wireshark 排查 ENS 目录服务的 UDP 注册报文",
+        "ensNetworkAdapters": "ENS 排障中的 VMware 虚拟网卡与物理网卡环境",
+        "ntpOutput": "NTP 历史运行输出：时间戳、Offset、Delay 与 Dispersion",
+        "ntpClockFilter": "NTP 八次采样、同步距离排序与时钟滤波实现",
+        "raftLogStart": "Raft 日志追加与 AppendEntries 复制触发代码",
+        "raftMajorityCommit": "Raft 日志提交中的任期检查、多数派判断与应用通知",
+        "ensSequence": "ENS 目录注册、服务发现与发布订阅时序图"
+      },
+      "points": {
+        "projectIntro": [
+          "**网络时间同步**：使用 Java 实现 NTP 客户端，获取四个时间戳并计算时间偏差、网络延迟与误差；通过连续八次采样和时钟滤波，估计 Offset、Delay 与 Dispersion。",
+          "**事件通知与解耦**：完善 ENS 服务端、发布者和消费者之间的服务发现与发布订阅流程，扩展事件分类和客户端消息队列，对接收到的更新进行缓冲与排序。",
+          "**分布式共识与容错**：基于 MIT 6.5840 实验框架，使用 Go 实现 Raft 领导者选举与日志复制，完成 2A、2B 测试，并分析节点失效、网络分区与日志恢复场景。"
+        ],
+        "personalWork": [
+          "**协作开发与交付**：承担部分实验代码实现、文档撰写、PPT 制作与讲解工作。",
+          "**网络故障诊断**：针对 ENS 程序无法连接目录服务的问题，使用 Wireshark 抓包并排查网络环境，定位目录服务与 Java 进程选择不同网卡地址的原因。",
+          "**协议理解与技术表达**：承担 NTP 实验展示，梳理时间戳、时钟偏差与滤波机制，结合实验结果讲解网络时间同步原理。"
+        ]
+      }
+    },
     "compiler": {
       "title": "SysY MIPS 编译器",
       "summary": "北航《编译技术》课程独立开发项目，以约 1 万行 Java 实现从 SysY 源码到 LLVM IR 和 32 位 MIPS 目标代码的完整编译链路。支持数组、递归与输入输出，涵盖语法与语义分析、代码生成和基础优化，并提供可配置的编译过程输出，便于调试与理解各阶段行为。",

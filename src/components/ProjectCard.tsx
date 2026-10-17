@@ -115,7 +115,7 @@ export function ProjectCard({
             </span>
           </div>
 
-          {repoLinks ? (
+          {repoLinks?.length ? (
             <div className="flex flex-col items-start gap-1.5">
               {repoLinks.map((link) => {
                 const repoContent = (
@@ -162,7 +162,7 @@ export function ProjectCard({
                 )
               })}
             </div>
-          ) : (
+          ) : project.repoName || project.repoTags?.length ? (
             <span className="flex max-w-full min-w-0 items-center gap-1.5 text-sm font-normal text-foreground/60 dark:text-foreground/75">
               {project.repoTags?.length ? (
                 <span className="flex shrink-0 flex-wrap gap-1.5">
@@ -188,7 +188,7 @@ export function ProjectCard({
                 </span>
               ) : null}
             </span>
-          )}
+          ) : null}
         </div>
 
         <div className="flex flex-wrap gap-1.5">

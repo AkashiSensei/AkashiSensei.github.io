@@ -49,5 +49,50 @@
         "markdown": "So far, static AI review can mostly only identify problems in code implementation. It still struggles to effectively review higher-level business logic or design. A better approach might be to have AI explain the code design and logic alongside checking the implementation, so that human reviewers can understand them and judge whether they make sense."
       }
     }
+  },
+  {
+    "id": "cli-distribution-completed-update",
+    "articleId": "cli-tool-design",
+    "publishedAt": "2026-10-17",
+    "locales": {
+      "zh": {
+        "anchor": { "kind": "section-end", "text": "分发（ToDo）" },
+        "markdown": "分发：Done，通过 npm 分发，本来想着用 GitHub Release 快速发布开发版本，但有点麻烦，也没必要，就没做。"
+      },
+      "en": {
+        "anchor": { "kind": "section-end", "text": "Distribution (ToDo)" },
+        "markdown": "Distribution: Done. It is distributed through npm. I originally considered using GitHub Releases to publish development builds quickly, but it was a bit of a hassle and unnecessary, so I did not do it."
+      }
+    }
+  },
+  {
+    "id": "cli-release-versioning-completed-update",
+    "articleId": "cli-tool-design",
+    "publishedAt": "2026-10-17",
+    "locales": {
+      "zh": {
+        "anchor": { "kind": "section-end", "text": "更新与版本管理（ToDo）" },
+        "markdown": "更新与版本管理：Done，为了避免引入额外的理解困难和歧义，一并统一了整个 Crater 的版本，CLI 也共享这个版本号，由 Tag 正式触发版本构建，开发版本会显示基于对应 Tag 的提交数。"
+      },
+      "en": {
+        "anchor": { "kind": "section-end", "text": "Updates and version management (ToDo)" },
+        "markdown": "Updates and version management: Done. To avoid adding confusion and ambiguity, I unified versioning across Crater, with the CLI sharing the same version number. Tags trigger release builds, and development versions show the number of commits since the corresponding tag."
+      }
+    }
+  },
+  {
+    "id": "cli-api-compatibility-completed-update",
+    "articleId": "cli-tool-design",
+    "publishedAt": "2026-10-17",
+    "locales": {
+      "zh": {
+        "anchor": { "kind": "section-end", "text": "API 版本管理（ToDo）" },
+        "markdown": "API 版本管理：Done，向前支持几个版本，向后支持几个版本，旧的 API 支持多长时间，还整出 v1、v2 多套 API 这种，对我们来说管理成本太高了。同时为了避免整个软件版本管理的变化，与其解耦，后端和CLI分别记录一个单增的序号，并记录最低支持的对方版本，以此实现握手。主要是作为排除问题的一个方向或者提醒，即使版本不一致也会尽力而为。"
+      },
+      "en": {
+        "anchor": { "kind": "section-end", "text": "API version management (ToDo)" },
+        "markdown": "API version management: Done. Deciding how many versions to support in either direction, how long to keep old APIs, and maintaining multiple API versions such as v1 and v2 would cost us too much to manage. To keep compatibility checks independent of changes to overall software versioning, the backend and CLI each record a monotonically increasing revision number and the minimum counterpart revision they support, and use these for a handshake. This mainly provides a troubleshooting clue or warning; even when versions do not match, the CLI still makes a best effort."
+      }
+    }
   }
 ]

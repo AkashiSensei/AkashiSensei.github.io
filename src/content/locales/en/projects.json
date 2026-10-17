@@ -87,7 +87,7 @@
         ],
         "personalWork": [
           "**Turning user needs into delivery**: Translated frontline feedback into features and fixes, improving workflows and error messages. Designed and built the Crater CLI framework and Agent Skills from scratch for people, scripts, and AI agents.",
-          "**Technical judgment and review**: As a core maintainer, contributed to planning and design reviews. Used AI to study mechanisms I did not yet understand, formed my own understanding, and brought that judgment into 40+ PR reviews. Wrote technical posts and mentored new contributors through delivery.",
+          "**Technical judgment and review**: Ranked fourth among the project's 26 human developers. As a core maintainer, contributed to planning and design reviews. Used AI to study mechanisms I did not yet understand, formed my own understanding, and brought that judgment into 40+ PR reviews. Wrote technical posts and mentored new contributors through delivery.",
           "**Production diagnosis**: Identified root causes and helped drive fixes for RDMA device detection, CephFS faults, job slowdowns caused by the platform, container startup failures, and cluster egress issues.",
           "**Quality assurance mechanisms**: Codified my quality judgment and experience in Skills covering development, review, documentation, and releases. Made engineering constraints, verification steps, and review requirements reusable across the team, helping contributors use AI reliably and keep the platform maintainable.",
           "**Usable development environments**: Built and refined Jupyter, CUDA, and PyTorch images early in the project, adapting them to the platform and simplifying first use and environment setup.",

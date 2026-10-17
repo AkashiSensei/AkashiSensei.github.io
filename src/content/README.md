@@ -52,6 +52,8 @@ QClaw 的后续评论 `qclaw-shutdown-update` 位于第一部分“缘起 / Why 
 
 AI PR Review 的后续评论 `ai-pr-review-design-limits-update` 位于引言“先说关键结论 / Here is the key conclusion first”段落之后、瑞士奶酪模型介绍之前，使用双语 `after-paragraph` 锚点。补充日期为 `2026-10-12`，讨论静态审查对业务逻辑与设计的局限，以及让 AI 解释设计和逻辑、由人类进一步判断的做法；日期属于作者补充，不修改文章首次发布日期。
 
+CLI 设计文章的三条完成情况补充分别为 `cli-distribution-completed-update`、`cli-release-versioning-completed-update`、`cli-api-compatibility-completed-update`，通过双语 `section-end` 锚点插在分发、更新与版本管理、API 版本管理三个 ToDo 小节末尾。补充日期为 `2026-10-17`，中文保留作者提供的原话；原 ToDo 标题、正文、阅读统计与文章发布日期保持不变。
+
 博客列表副标题下的“也在知乎”（Also on Zhihu）入口，用简短文案说明同样的文章也发布在知乎；按钮使用联系方式中的填充社交胶囊和知乎图标，共用 `socialPillActionClassName`；手机/桌面的尺寸、主题色、悬浮与焦点反馈由同一入口维护。朴素模式保留文档外链样式。
 
 标题默认从源 Markdown 提取；站点需要调整展示文案时，可在发布清单的 `locales.zh/en.title` 中设置可选覆盖，不改源稿。导入时仍先剥离源标题，再应用展示标题，列表、详情与相关文章读取同一结果；快照校验检查覆盖是否一致。当前 Codex 手机远控文章的双语标题去掉“（已解决）” / “Solved:”，封面替代文字同步。

@@ -345,6 +345,32 @@
         "**Parallelization and evaluation**: Parallelized the course’s serial CYK reference implementation with OpenMP and recorded performance using timing scripts, experiment data, and a report."
       ]
     },
+    "distributed-systems-2023": {
+      "title": "Distributed Systems Labs: NTP, ENS, and Raft",
+      "summary": "A four-person BUAA coursework project exploring clock synchronization, event notification, and consensus through protocol implementation and experiment analysis.",
+      "images": {
+        "ensOverview": "ENS server, publisher, and two consumers running together",
+        "ensWireshark": "Wireshark capture of UDP registration traffic used to diagnose ENS directory-service connectivity",
+        "ensNetworkAdapters": "VMware virtual adapters and the physical network adapter examined during ENS troubleshooting",
+        "ntpOutput": "Historical NTP output showing timestamps, offset, delay, and dispersion",
+        "ntpClockFilter": "NTP implementation with eight samples, synchronization-distance sorting, and clock filtering",
+        "raftLogStart": "Raft code that appends a log entry and triggers AppendEntries replication",
+        "raftMajorityCommit": "Raft log-commit code with term checks, majority voting, and application notification",
+        "ensSequence": "ENS sequence diagram for directory registration, service discovery, and publish-subscribe communication"
+      },
+      "points": {
+        "projectIntro": [
+          "**Clock synchronization**: Built a Java NTP client that reads four timestamps and calculates clock offset, network delay, and uncertainty. Used eight consecutive samples and clock filtering to estimate offset, delay, and dispersion.",
+          "**Event-driven communication**: Extended service discovery and publish-subscribe flows across an ENS server, publishers, and consumers. Added event categories and a client-side queue to buffer and order updates.",
+          "**Consensus and fault tolerance**: Implemented Raft leader election and log replication in Go using the MIT 6.5840 framework. Completed the 2A and 2B tests and analyzed node failures, network partitions, and log recovery."
+        ],
+        "personalWork": [
+          "**Collaborative delivery**: Contributed to the experiment code, documentation, slide preparation, and presentations.",
+          "**Network diagnosis**: Investigated why the ENS program could not connect to its directory service. Used Wireshark captures and network-adapter checks to identify different interface addresses selected by the directory service and the Java process.",
+          "**Protocol explanation**: Presented the NTP lab, explaining timestamps, clock offsets, and filtering mechanisms through the experimental results."
+        ]
+      }
+    },
     "compiler": {
       "title": "SysY MIPS Compiler",
       "summary": "An independently built compiler for BUAA's Compiler Technology course, written in roughly 10,000 lines of Java. It compiles SysY through LLVM IR to 32-bit MIPS, supports arrays, recursion, and I/O, and combines semantic checks and basic optimizations with configurable output for inspecting each compilation stage.",
