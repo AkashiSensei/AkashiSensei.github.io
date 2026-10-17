@@ -884,6 +884,17 @@
             "imageKey": "ncuSharedMemory8192"
           }
         ]
+      },
+      "answerImages": {
+        "opening": [
+          {
+            "src": "/assets/questions/nvidia-gpu-memory-hierarchy.webp",
+            "altKey": "items.gpu-memory-hierarchy.images.gpuMemoryHierarchy",
+            "width": 3200,
+            "height": 2050,
+            "brightness": "high"
+          }
+        ]
       }
     },
     {
@@ -1089,6 +1100,103 @@
         "opening",
         "follow-up-one",
         "follow-up-two"
+      ]
+    },
+    {
+      "id": "l1-shared-memory-wavefronts",
+      "tagIds": [
+        "cuda",
+        "gpu-architecture",
+        "shared-memory",
+        "nsight-compute"
+      ],
+      "relatedProjects": [
+        {
+          "module": "course-projects",
+          "id": "parallel-programming-2026",
+          "note": "推断：关联共享内存优化的 CUDA 矩阵乘法，以及 SASS、NCU 访存与 Warp 状态分析；本条进一步比较两种访问路径。"
+        },
+        {
+          "module": "course-projects",
+          "id": "vr-experiments-2026",
+          "note": "推断：关联布料仿真的 AoS 数据布局、sector 利用率分析及物理仿真中的 shared memory 使用。"
+        }
+      ],
+      "rounds": [
+        "opening"
+      ],
+      "answerImages": {
+        "opening": [
+          {
+            "src": "/assets/questions/nvidia-gpu-memory-hierarchy.webp",
+            "altKey": "items.l1-shared-memory-wavefronts.images.gpuMemoryHierarchy",
+            "width": 3200,
+            "height": 2050,
+            "brightness": "high"
+          }
+        ]
+      }
+    },
+    {
+      "id": "scoreboard-read-write-barriers",
+      "tagIds": [
+        "cuda",
+        "gpu-architecture",
+        "instruction-scheduling",
+        "sass",
+        "nsight-compute"
+      ],
+      "relatedProjects": [
+        {
+          "module": "course-projects",
+          "id": "parallel-programming-2026",
+          "note": "推断：关联 CUDA 矩阵乘法的源码、SASS、Warp 状态与同步分析，用于进一步理解指令依赖，不表示已验证 GPU 内部实现。"
+        },
+        {
+          "module": "course-projects",
+          "id": "vr-experiments-2026",
+          "note": "推断：关联 long scoreboard、barrier 等 stall 及 eligible warp 偏少的原因分析，不表示已验证 GPU 内部实现。"
+        }
+      ],
+      "rounds": [
+        "opening",
+        "follow-up-one"
+      ]
+    },
+    {
+      "id": "async-copy-l2-cache",
+      "tagIds": [
+        "cuda",
+        "gpu-architecture",
+        "memory-management",
+        "shared-memory"
+      ],
+      "relatedProjects": [],
+      "rounds": [
+        "opening"
+      ],
+      "answerImages": {
+        "opening": [
+          {
+            "src": "/assets/questions/nvidia-gpu-memory-hierarchy.webp",
+            "altKey": "items.async-copy-l2-cache.images.gpuMemoryHierarchy",
+            "width": 3200,
+            "height": 2050,
+            "brightness": "high"
+          }
+        ]
+      }
+    },
+    {
+      "id": "pushbuffer-gpfifo-memory-location",
+      "tagIds": [
+        "cuda",
+        "gpu-architecture",
+        "memory-management"
+      ],
+      "relatedProjects": [],
+      "rounds": [
+        "opening"
       ]
     }
   ]

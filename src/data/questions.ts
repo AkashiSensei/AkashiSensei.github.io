@@ -1,4 +1,5 @@
 import data from "./questions.json"
+import type { ProjectImage } from "./projects"
 
 export type QuestionProject = {
   module: "projects" | "course-projects"
@@ -12,9 +13,10 @@ export type QuestionThread = {
   relatedProjects: QuestionProject[]
   rounds: string[]
   questionImages?: Record<string, QuestionImageReference[]>
+  answerImages?: Record<string, QuestionImageReference[]>
 }
 
-export type QuestionImageReference = {
+export type QuestionImageReference = ProjectImage | {
   module: QuestionProject["module"]
   id: string
   imageKey: string

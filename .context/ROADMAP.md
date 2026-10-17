@@ -17,6 +17,8 @@
 
 - 2026-10-16 | [Crater copy and NPU repository refresh](archive/20261016_Crater-copy-and-NPU-repository-refresh.md) | Added a bilingual Crater personal-work summary and updated NPU repository references and the stats cache key to raids-lab, retaining private visibility.
 
+- 2026-10-16 | [Question wall content and reading polish](archive/20261016_Question-wall-content-and-reading-polish.md) | Added four bilingual GPU question chains (five rounds), shared answer illustrations and corner badges; preserved staggered exits while restoring background scrolling immediately and correcting image motion.
+
 - 2026-10-15 | [Question wall content expansion](archive/20261015_Question-wall-content-expansion.md) | Added 10 bilingual question chains (24 rounds), including six inherited training/MoE/Volcano/Crater chains first recorded on October 4–5 and handed over on October 12, three C++ chains and one PD-disaggregation chain; added nine tags and preserved project links, inference notes and newest-first display.
 
 - 2026-10-14 | [Knowledge showcase and Research Vault refresh](archive/20261014_Knowledge-showcase-and-research-vault-refresh.md) | Added algorithm practice and Research Vault content/media, refreshed bilingual resume cards with natural image sizing and three-bullet previews, and removed two tool status labels.
