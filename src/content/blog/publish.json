@@ -1,5 +1,41 @@
 [
   {
+    "id": "crater-job-admission-control",
+    "directory": "cloud-and-ai-infra/crater-job-admission-control",
+    "category": "cloud-and-ai-infra",
+    "tags": [
+      "Kubernetes",
+      "Volcano",
+      "Scheduling",
+      "Resource Management"
+    ],
+    "relatedProjects": [
+      "crater"
+    ],
+    "locales": {
+      "zh": {
+        "file": "zh-CN.md",
+        "summary": "在 Crater 这样的共享 AI 集群中，作业是否可以提交、何时获准参与资源分配，以及最终能否运行，属于不同阶段。文章先梳理用户、账户与 Volcano Queue 的对应关系，再沿作业生命周期说明提交校验与 Extender 接纳回调的分工，重点展开 Informer 对象缓存、接纳快照和临时配额预留如何衔接连续判断与跨轮次状态同步。随后讨论大作业等待保护与 binpack 放置的边界，以及 CPU 绑核和资源原地调整之间的取舍，结合插件配置、失败策略和单后端实例限制说明当前方案的适用范围。",
+        "reviewed": true,
+        "cover": {
+          "file": "images/0-crater-cover.png",
+          "alt": "基于 Volcano 的 AI 作业接纳与调度：文章封面"
+        }
+      },
+      "en": {
+        "file": "en-US.md",
+        "summary": "Crater separates submission validation, admission to resource allocation, and actual execution in a shared AI cluster. The article maps users and accounts to Volcano queues, then follows the job lifecycle through validation and Extender admission callbacks. It explains how Informer caches, admission snapshots, and temporary quota reservations support consecutive decisions and state synchronization between scheduling cycles. It also examines protection for waiting large jobs, the role of binpack placement, and the trade-off between CPU pinning and in-place resource resizing. Plugin configuration, failure handling, and the current single-backend-instance constraint define the approach’s practical limits.",
+        "reviewed": false,
+        "cover": {
+          "file": "images/0-crater-cover.png",
+          "alt": "AI Job Admission and Scheduling with Volcano: article cover"
+        }
+      }
+    },
+    "zhihuUrl": "https://zhuanlan.zhihu.com/p/2095893160073475357",
+    "publishedAt": "2026-10-20"
+  },
+  {
     "id": "volcano-job-scheduling-admission",
     "directory": "cloud-and-ai-infra/volcano-job-scheduling-admission",
     "category": "cloud-and-ai-infra",

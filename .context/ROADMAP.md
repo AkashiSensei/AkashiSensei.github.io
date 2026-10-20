@@ -13,6 +13,8 @@
 
 ## History
 
+- 2026-10-20 | [Knowledge Vault and Crater admission blog](archive/20261020_Knowledge-vault-and-Crater-admission-blog.md) | Updated Knowledge Vault naming and repository references, published the bilingual Crater/Volcano admission-control article with localized diagrams and confirmed publication metadata, and featured it first on the resume.
+
 - 2026-10-17 | [Distributed systems coursework and content refresh](archive/20261017_Distributed-systems-coursework-and-content-refresh.md) | Added bilingual NTP/ENS/Raft coursework with eight WebP images and ENS as the cover, documented personal contributions, added Crater ranking and three CLI completion notes, and removed empty repository rows from project cards.
 
 - 2026-10-16 | [Crater copy and NPU repository refresh](archive/20261016_Crater-copy-and-NPU-repository-refresh.md) | Added a bilingual Crater personal-work summary and updated NPU repository references and the stats cache key to raids-lab, retaining private visibility.

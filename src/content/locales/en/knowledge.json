@@ -28,7 +28,7 @@
   },
   "kinds": {
     "blog": "Blog Drafts",
-    "researchVault": "Research Vault",
+    "researchVault": "Knowledge Vault",
     "digest": "Industry Digest",
     "insights": "Engineering Insights",
     "practice": "Algorithm Practice"
@@ -49,7 +49,7 @@
       }
     },
     "paper-vault": {
-      "title": "Research Vault",
+      "title": "Knowledge Vault",
       "summary": "A personal Obsidian knowledge base for systems and AI infrastructure, covering papers, technical concepts, and domain research reports.",
       "points": [
         "Uses AI-assisted paper discovery and reading to build paper notes, indexed by topic, method, and scenario.",

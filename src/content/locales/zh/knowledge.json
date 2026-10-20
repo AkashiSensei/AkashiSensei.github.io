@@ -28,7 +28,7 @@
   },
   "kinds": {
     "blog": "博客文稿",
-    "researchVault": "研究知识库",
+    "researchVault": "知识库",
     "digest": "行业摘要",
     "insights": "工程洞见",
     "practice": "算法练习"
@@ -49,7 +49,7 @@
       }
     },
     "paper-vault": {
-      "title": "Research Vault",
+      "title": "Knowledge Vault",
       "summary": "面向系统与 AI 基础设施的个人研究知识库，用 Obsidian 整理论文、技术知识点与领域研究报告。",
       "points": [
         "用 AI 辅助论文发现、阅读与整理，按主题、方法和场景建立索引，持续积累论文笔记。",

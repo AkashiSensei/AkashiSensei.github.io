@@ -68,9 +68,9 @@ export const knowledgeEntries: KnowledgeEntry[] = [
   },
   {
     id: "paper-vault",
-    url: "https://github.com/AkashiSensei/research-vault",
-    repoName: "AkashiSensei/research-vault",
-    githubRepo: "AkashiSensei/research-vault",
+    url: "https://github.com/AkashiSensei/knowledge-vault",
+    repoName: "AkashiSensei/knowledge-vault",
+    githubRepo: "AkashiSensei/knowledge-vault",
     repoTags: ["public"],
     kind: "researchVault",
     featured: true,

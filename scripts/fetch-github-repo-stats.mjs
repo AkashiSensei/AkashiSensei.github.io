@@ -188,7 +188,7 @@ const fallbackKnowledgeRepoStats = {
     stars: 1,
     updatedAt: "2026-06-04T08:48:39Z",
   },
-  "AkashiSensei/research-vault": {
+  "AkashiSensei/knowledge-vault": {
     commits: 16,
     defaultBranch: "main",
     isPrivate: false,
