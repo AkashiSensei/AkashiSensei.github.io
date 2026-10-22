@@ -258,10 +258,10 @@ test('publication selection, bilingual content, and all runtime image files are 
       assert.equal(gallery.length, new Set([...(content.cover ? [content.cover.src] : []), ...refs]).size)
       for (const asset of gallery) {
         const src = asset.src
-        assert.match(src, /^\/assets\/blog\/[^/]+\/[^/]+\.webp$/)
+        assert.match(src, /^\/assets\/blog\/[^/]+\/[^/]+\.(?:webp|svg)$/)
         assert.equal(encodeURI(src), src, 'runtime asset URLs must remain stable through Markdown URL normalization')
         const metadata = await sharp(path.join('public', src)).metadata()
-        assert.equal(metadata.format, 'webp')
+        assert.equal(metadata.format, src.endsWith('.svg') ? 'svg' : 'webp')
         assert.equal(metadata.width, asset.width)
         assert.equal(metadata.height, asset.height)
       }
@@ -320,6 +320,43 @@ test('independent localized covers import without Markdown references and affect
     const escaping = structuredClone(entry)
     escaping.locales.zh.cover.file = '../../outside.png'
     await assert.rejects(importArticle(root, escaping, { publicRoot }), /outside blog source/)
+  } finally { await rm(temp, { recursive: true, force: true }) }
+})
+
+test('vector diagrams replace raster exports, retain original bytes, and respect source boundaries', async () => {
+  const temp = await mkdtemp(path.join(os.tmpdir(), 'blog-svg-'))
+  const root = path.join(temp, 'source')
+  const publicRoot = path.join(temp, 'public')
+  const entry = {
+    id: 'vector-fixture', directory: 'article', category: 'infra', tags: [], relatedProjects: [],
+    locales: { zh: { file: 'zh.md', summary: '摘要', reviewed: true, cover: { file: 'diagram.png', alt: '封面' } } },
+  }
+  const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="120" height="80" viewBox="0 0 120 80"><rect width="120" height="80" fill="white"/><text x="10" y="40">FSMap</text></svg>'
+  try {
+    await mkdir(path.join(root, 'article'), { recursive: true })
+    await sharp({ create: { width: 240, height: 160, channels: 3, background: 'white' } }).png().toFile(path.join(root, 'article/diagram.png'))
+    await writeFile(path.join(root, 'article/diagram.svg'), svg)
+    await writeFile(path.join(root, 'article/zh.md'), 'Title\n\n![Raster](diagram.png)\n\n![Vector](diagram.svg)')
+    const article = await importArticle(root, entry, { publicRoot })
+    const content = article.locales.zh
+    const asset = content.cover
+    assert.ok(asset.src.endsWith('.svg'))
+    assert.equal(asset.width, 120)
+    assert.equal(asset.height, 80)
+    assert.equal(asset.brightness, 'high')
+    assert.equal(await readFile(path.join(publicRoot, asset.src), 'utf8'), svg)
+    assert.equal(Object.keys(content.images).length, 1)
+    assert.equal(getBlogGalleryImages(content).length, 1)
+    assert.equal((content.markdown.match(/diagram\.svg/g) ?? []).length, 2)
+    assert.ok(render(content.markdown).includes(`src="${asset.src}"`))
+    await writeFile(path.join(root, 'article/diagram.svg'), svg.replace('FSMap', 'MON'))
+    const changed = await importArticle(root, entry, { publicRoot })
+    assert.notEqual(changed.source.contentHash, article.source.contentHash)
+    assert.notEqual(changed.locales.zh.cover.sha256, asset.sha256)
+    await rm(path.join(root, 'article/diagram.svg'))
+    await writeFile(path.join(temp, 'outside.svg'), svg)
+    await symlink(path.join(temp, 'outside.svg'), path.join(root, 'article/diagram.svg'))
+    await assert.rejects(importArticle(root, entry, { publicRoot }), /outside blog source/)
   } finally { await rm(temp, { recursive: true, force: true }) }
 })
 

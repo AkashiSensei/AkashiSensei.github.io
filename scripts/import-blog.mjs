@@ -80,7 +80,7 @@ async function validateSnapshot() {
       if (JSON.stringify(content.readingStats) !== JSON.stringify(getArticleReadingStats(content.markdown, locale))) throw new Error(`Stale reading statistics: ${entry.id}/${locale}; reimport it`)
       if (entry.locales[locale].cover && !content.cover) throw new Error(`Missing cover: ${entry.id}/${locale}`)
       for (const asset of [...Object.values(content.images), ...(content.cover ? [content.cover] : [])]) {
-        if (!asset.src.startsWith(`/assets/blog/${entry.id}/`) || !asset.src.endsWith('.webp')) throw new Error('Invalid generated asset path')
+        if (!asset.src.startsWith(`/assets/blog/${entry.id}/`) || !/\.(?:webp|svg)$/.test(asset.src)) throw new Error('Invalid generated asset path')
         const bytes = await readFile(path.join(site, 'public', asset.src))
         if (createHash('sha256').update(bytes).digest('hex') !== asset.sha256) throw new Error(`Corrupt blog image: ${asset.src}`)
       }
@@ -98,6 +98,12 @@ export async function importArticle(sourceRoot, entry, { publicRoot = path.join(
   const converted = new Map()
   const destinations = new Map()
   const importImage = async (imageFile, alt) => {
+    // Prefer the original vector diagram when Markdown references its raster export.
+    if (/\.(?:png|jpe?g|webp)$/i.test(imageFile)) {
+      const vectorFile = imageFile.slice(0, -path.extname(imageFile).length) + '.svg'
+      try { imageFile = await resolveSourceFile(root, path.relative(root, vectorFile)) }
+      catch (error) { if (error.code !== 'ENOENT') throw error }
+    }
     const bytes = await readFile(imageFile)
     fingerprint.update(path.relative(root, imageFile)).update(bytes)
     if (!converted.has(imageFile)) {
@@ -105,21 +111,22 @@ export async function importArticle(sourceRoot, entry, { publicRoot = path.join(
       // Markdown and browser URL normalization must agree with metadata keys.
       // Keep existing safe names; use stable ASCII names for spaces/non-ASCII.
       const safeName = /^[a-z0-9._-]+$/i.test(basename) ? basename : `${basename.replace(/[^a-z0-9._-]+/gi, '-').replace(/^-+|-+$/g, '') || 'image'}-${createHash('sha256').update(path.relative(root, imageFile)).digest('hex').slice(0, 12)}`
-      const name = `${safeName}.webp`
+      const isSvg = path.extname(imageFile).toLowerCase() === '.svg'
+      const name = `${safeName}.${isSvg ? 'svg' : 'webp'}`
       const src = `/assets/blog/${entry.id}/${name}`
       if (destinations.has(src) && destinations.get(src) !== imageFile) throw new Error(`Conflicting blog image names: ${src}`)
       destinations.set(src, imageFile)
-      const webp = await sharp(bytes).webp({ quality: 90, effort: 6 }).toBuffer()
-      const metadata = await sharp(webp).metadata()
-      const { data, info } = await sharp(webp).resize(48, 48, { fit: 'inside' }).removeAlpha().raw().toBuffer({ resolveWithObject: true })
+      const outputBytes = isSvg ? bytes : await sharp(bytes).webp({ quality: 90, effort: 6 }).toBuffer()
+      const metadata = await sharp(outputBytes).metadata()
+      const { data, info } = await sharp(outputBytes).resize(48, 48, { fit: 'inside' }).removeAlpha().raw().toBuffer({ resolveWithObject: true })
       let bright = 0
       for (let index = 0; index < data.length; index += info.channels) {
         if (data[index] > 225 && data[index + 1] > 225 && data[index + 2] > 225) bright++
       }
       const brightness = bright / (info.width * info.height) > 0.4 ? 'high' : 'normal'
       await mkdir(path.join(publicRoot, 'assets/blog', entry.id), { recursive: true })
-      await writeFile(path.join(publicRoot, src), webp)
-      converted.set(imageFile, { src, width: metadata.width, height: metadata.height, brightness, sha256: createHash('sha256').update(webp).digest('hex') })
+      await writeFile(path.join(publicRoot, src), outputBytes)
+      converted.set(imageFile, { src, width: metadata.width, height: metadata.height, brightness, sha256: createHash('sha256').update(outputBytes).digest('hex') })
     }
     return { ...converted.get(imageFile), alt }
   }

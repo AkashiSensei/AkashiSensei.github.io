@@ -1,5 +1,38 @@
 [
   {
+    "id": "ceph-mon-election-crash",
+    "directory": "cloud-and-ai-infra/ceph-mon-election-crash",
+    "category": "cloud-and-ai-infra",
+    "tags": [
+      "Ceph",
+      "CephFS",
+      "Troubleshooting"
+    ],
+    "relatedProjects": [],
+    "locales": {
+      "zh": {
+        "file": "zh-CN.md",
+        "summary": "实验室 Ceph 集群中的 MDS 故障，随后演变为每轮新选出的 MON leader 都立即崩溃、管理命令无法执行。文章从调用栈追到 FSMap 中悬空的 rank，结合源码分析故障标记清除、状态校验遗漏与自动缩容如何共同触发并反复重现崩溃。随后记录回退历史 FSMap 使管理面恢复的过程，以及继续扩容时 MDS 走入创建路径、原目录结构未能恢复的结果，最后说明上游修复如何阻止 MON 崩溃，并区分进程恢复与文件系统恢复的边界。",
+        "reviewed": true,
+        "cover": {
+          "file": "images/0-ceph-mon-cover.png",
+          "alt": "一份异常 FSMap，如何让 Ceph MON 反复崩溃：文章封面"
+        }
+      },
+      "en": {
+        "file": "en-US.md",
+        "summary": "An MDS failure in our lab’s Ceph cluster escalated into repeated crashes of every newly elected MON leader, leaving normal management commands unavailable. The article follows the stack trace to a dangling rank in the FSMap and examines how clearing a failure marker, incomplete consistency checks, and automatic scale-down combined to trigger a persistent crash loop. It then records how rolling back to a historical FSMap restored the control plane, why subsequent scale-up initialized a new namespace without recovering the original directories, and how an upstream code fix prevents the MON crash. Process recovery and filesystem recovery remain separate outcomes.",
+        "reviewed": false,
+        "cover": {
+          "file": "images/0-ceph-mon-cover.png",
+          "alt": "How an Inconsistent FSMap Kept Crashing Ceph MON: article cover"
+        }
+      }
+    },
+    "publishedAt": "2026-10-22",
+    "zhihuUrl": "https://zhuanlan.zhihu.com/p/2096626351285580571"
+  },
+  {
     "id": "crater-job-admission-control",
     "directory": "cloud-and-ai-infra/crater-job-admission-control",
     "category": "cloud-and-ai-infra",

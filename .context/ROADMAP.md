@@ -13,6 +13,8 @@
 
 ## History
 
+- 2026-10-22 | [Ceph MON blog and SVG diagrams](archive/20261022_Ceph-MON-blog-and-SVG-diagrams.md) | Added the bilingual Ceph MON crash investigation with confirmed publication metadata, four original SVG diagrams and a WebP cover; extended blog imports to preserve matching vectors while retaining all eight existing article snapshots.
+
 - 2026-10-20 | [Knowledge Vault and Crater admission blog](archive/20261020_Knowledge-vault-and-Crater-admission-blog.md) | Updated Knowledge Vault naming and repository references, published the bilingual Crater/Volcano admission-control article with localized diagrams and confirmed publication metadata, and featured it first on the resume.
 
 - 2026-10-17 | [Distributed systems coursework and content refresh](archive/20261017_Distributed-systems-coursework-and-content-refresh.md) | Added bilingual NTP/ENS/Raft coursework with eight WebP images and ENS as the cover, documented personal contributions, added Crater ranking and three CLI completion notes, and removed empty repository rows from project cards.
