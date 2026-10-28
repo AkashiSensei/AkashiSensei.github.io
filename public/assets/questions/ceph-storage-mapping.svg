@@ -1,0 +1,369 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="2335" viewBox="0 0 1440 2335" role="img" aria-labelledby="title desc">
+<title id="title">Ceph 数据映射与基数关系</title>
+<desc id="desc">控制服务 MON 与 MDS 独立置于顶部。CephFS、RBD、RGW 三个访问入口在下面。服务使用多个 Pool，Pool 以一对多分叉连接多个 PG 节点，对象显示在所属 PG 内。五个已展开的 PG 通过十五条连接映射到六个 OSD，展示多对多关系。三个存储节点各包含两个 OSD，每个 OSD 使用一个数据块设备，经示例 LVM 映射至物理盘。图中使用三副本与 host 故障域。</desc>
+<defs>
+<marker id="arrow-fs" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0 L8 4.5 L0 9 Z" fill="#2563b4"/></marker>
+<marker id="arrow-rbd" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0 L8 4.5 L0 9 Z" fill="#ab5c16"/></marker>
+<marker id="arrow-rgw" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0 L8 4.5 L0 9 Z" fill="#0b7b72"/></marker>
+<marker id="arrow-meta" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0 L8 4.5 L0 9 Z" fill="#7952a0"/></marker>
+<marker id="arrow-neutral" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0 L8 4.5 L0 9 Z" fill="#8292a3"/></marker>
+</defs>
+<rect width="1440" height="2335" fill="#ffffff"/>
+<g font-family="Noto Sans CJK SC, PingFang SC, Microsoft YaHei, sans-serif">
+<text x="44" y="65" font-size="40" font-weight="500" fill="#172b42" text-anchor="start">Ceph：入口、逻辑映射与物理承载</text>
+<text x="44" y="109" font-size="23" font-weight="400" fill="#596a7b" text-anchor="start">端点旁以 1 / N / M 标注基数；对象、PG 与对象副本分别表达不同层次</text>
+<rect x="44" y="145" width="1352" height="164" rx="12" fill="#f5f7f9" stroke="#c8d2dc" stroke-width="1.5"/>
+<text x="65" y="178" font-size="21" font-weight="500" fill="#596a7b" text-anchor="start">控制与元数据服务</text>
+<path d="M714 166 V290" fill="none" stroke="#8292a3" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" opacity="1"/>
+<text x="72" y="222" font-size="32" font-weight="500" fill="#172b42" text-anchor="start">MON</text>
+<text x="198" y="215" font-size="23" font-weight="400" fill="#172b42" text-anchor="start">认证、维护集群映射与成员状态</text>
+<text x="198" y="252" font-size="21" font-weight="400" fill="#596a7b" text-anchor="start">为客户端及守护进程提供控制信息</text>
+<text x="198" y="284" font-size="19" font-weight="400" fill="#596a7b" text-anchor="start">不转发日常文件内容</text>
+<rect x="760" y="194" width="184" height="82" rx="8" fill="#ffffff" stroke="#7952a0" stroke-width="1.5"/>
+<text x="852" y="228" font-size="29" font-weight="500" fill="#7952a0" text-anchor="middle">MDS</text>
+<text x="852" y="258" font-size="18" font-weight="400" fill="#596a7b" text-anchor="middle">服务于 CephFS</text>
+<text x="975" y="219" font-size="23" font-weight="400" fill="#172b42" text-anchor="start">目录、inode、布局</text>
+<text x="975" y="254" font-size="22" font-weight="400" fill="#596a7b" text-anchor="start">capability 与锁协调</text>
+<text x="975" y="284" font-size="19" font-weight="400" fill="#596a7b" text-anchor="start">元数据 I/O → metadata Pool</text>
+<path d="M100 309 V378 H904" fill="none" stroke="#8292a3" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" opacity="1" stroke-dasharray="6 6"/>
+<path d="M204 378 V430" fill="none" stroke="#8292a3" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" opacity="1" stroke-dasharray="6 6" marker-end="url(#arrow-neutral)"/>
+<path d="M554 378 V430" fill="none" stroke="#8292a3" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" opacity="1" stroke-dasharray="6 6" marker-end="url(#arrow-neutral)"/>
+<path d="M904 378 V430" fill="none" stroke="#8292a3" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" opacity="1" stroke-dasharray="6 6" marker-end="url(#arrow-neutral)"/>
+<text x="110" y="362" font-size="19" font-weight="400" fill="#596a7b" text-anchor="start">认证 / 集群映射</text>
+<path d="M320 430 V339 H852 V276" fill="none" stroke="#7952a0" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" opacity="1" stroke-dasharray="7 6" marker-end="url(#arrow-meta)"/>
+<text x="494" y="332" font-size="19" font-weight="400" fill="#7952a0" text-anchor="start">CephFS 元数据协调</text>
+<path d="M944 235 H1378 V646 H1248 V690" fill="none" stroke="#7952a0" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" opacity="1" stroke-dasharray="7 6" marker-end="url(#arrow-meta)"/>
+<text x="44" y="417" font-size="24" font-weight="500" fill="#172b42" text-anchor="start">数据访问入口</text>
+<rect x="44" y="430" width="320" height="140" rx="10" fill="#f0f6fd" stroke="#c8d2dc" stroke-width="1.5"/>
+<text x="64" y="470" font-size="30" font-weight="500" fill="#2563b4" text-anchor="start">CephFS</text>
+<text x="64" y="508" font-size="24" font-weight="400" fill="#172b42" text-anchor="start">文件 / 目录</text>
+<text x="64" y="546" font-size="20" font-weight="400" fill="#596a7b" text-anchor="start">a.bin → F.0、F.1、F.2</text>
+<rect x="394" y="430" width="320" height="140" rx="10" fill="#fff7ed" stroke="#c8d2dc" stroke-width="1.5"/>
+<text x="414" y="470" font-size="30" font-weight="500" fill="#ab5c16" text-anchor="start">RBD</text>
+<text x="414" y="508" font-size="24" font-weight="400" fill="#172b42" text-anchor="start">块设备 / 虚拟磁盘</text>
+<text x="414" y="546" font-size="20" font-weight="400" fill="#596a7b" text-anchor="start">块地址 → B.0、B.1 等对象</text>
+<rect x="744" y="430" width="320" height="140" rx="10" fill="#edf8f6" stroke="#c8d2dc" stroke-width="1.5"/>
+<text x="764" y="470" font-size="30" font-weight="500" fill="#0b7b72" text-anchor="start">RGW</text>
+<text x="764" y="508" font-size="24" font-weight="400" fill="#172b42" text-anchor="start">S3 / Swift 对象接口</text>
+<text x="764" y="546" font-size="20" font-weight="400" fill="#596a7b" text-anchor="start">上层对象 → S.0、S.1 等对象</text>
+<text x="1100" y="464" font-size="25" font-weight="500" fill="#172b42" text-anchor="start">入口 → 多个 Pool</text>
+<text x="1100" y="502" font-size="21" font-weight="400" fill="#596a7b" text-anchor="start">图示为各接口独立使用池</text>
+<text x="1100" y="536" font-size="21" font-weight="400" fill="#596a7b" text-anchor="start">共池需满足各服务的约束</text>
+<text x="1100" y="574" font-size="19" font-weight="400" fill="#596a7b" text-anchor="start">本图只展开部分示例池</text>
+<text x="1100" y="610" font-size="19" font-weight="400" fill="#596a7b" text-anchor="start">池名 / 编号均为示意</text>
+<path d="M204.0 570 V690" fill="none" stroke="#2563b4" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" opacity="1" marker-end="url(#arrow-fs)"/>
+<rect x="209.0" y="580" width="34" height="28" rx="4" fill="#ffffff" stroke="none" stroke-width="1.5"/>
+<text x="226.0" y="601" font-size="21" font-weight="500" fill="#172b42" text-anchor="middle">1</text>
+<rect x="209.0" y="655" width="34" height="28" rx="4" fill="#ffffff" stroke="none" stroke-width="1.5"/>
+<text x="226.0" y="676" font-size="21" font-weight="500" fill="#172b42" text-anchor="middle">N</text>
+<rect x="44" y="690" width="320" height="90" rx="10" fill="#f0f6fd" stroke="#c8d2dc" stroke-width="1.5"/>
+<text x="62" y="728" font-size="25" font-weight="500" fill="#2563b4" text-anchor="start">fs_data · Pool 10</text>
+<text x="62" y="762" font-size="21" font-weight="400" fill="#596a7b" text-anchor="start">文件内容对象</text>
+<path d="M554.0 570 V690" fill="none" stroke="#ab5c16" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" opacity="1" marker-end="url(#arrow-rbd)"/>
+<rect x="559.0" y="580" width="34" height="28" rx="4" fill="#ffffff" stroke="none" stroke-width="1.5"/>
+<text x="576.0" y="601" font-size="21" font-weight="500" fill="#172b42" text-anchor="middle">1</text>
+<rect x="559.0" y="655" width="34" height="28" rx="4" fill="#ffffff" stroke="none" stroke-width="1.5"/>
+<text x="576.0" y="676" font-size="21" font-weight="500" fill="#172b42" text-anchor="middle">N</text>
+<rect x="394" y="690" width="320" height="90" rx="10" fill="#fff7ed" stroke="#c8d2dc" stroke-width="1.5"/>
+<text x="412" y="728" font-size="25" font-weight="500" fill="#ab5c16" text-anchor="start">rbd_data · Pool 20</text>
+<text x="412" y="762" font-size="21" font-weight="400" fill="#596a7b" text-anchor="start">虚拟磁盘的数据对象</text>
+<path d="M904.0 570 V690" fill="none" stroke="#0b7b72" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" opacity="1" marker-end="url(#arrow-rgw)"/>
+<rect x="909.0" y="580" width="34" height="28" rx="4" fill="#ffffff" stroke="none" stroke-width="1.5"/>
+<text x="926.0" y="601" font-size="21" font-weight="500" fill="#172b42" text-anchor="middle">1</text>
+<rect x="909.0" y="655" width="34" height="28" rx="4" fill="#ffffff" stroke="none" stroke-width="1.5"/>
+<text x="926.0" y="676" font-size="21" font-weight="500" fill="#172b42" text-anchor="middle">N</text>
+<rect x="744" y="690" width="320" height="90" rx="10" fill="#edf8f6" stroke="#c8d2dc" stroke-width="1.5"/>
+<text x="762" y="728" font-size="25" font-weight="500" fill="#0b7b72" text-anchor="start">rgw_data · Pool 30</text>
+<text x="762" y="762" font-size="21" font-weight="400" fill="#596a7b" text-anchor="start">上层对象的数据部分</text>
+<rect x="1100" y="690" width="296" height="90" rx="10" fill="#f5f0fa" stroke="#c8d2dc" stroke-width="1.5"/>
+<text x="1118" y="728" font-size="25" font-weight="500" fill="#7952a0" text-anchor="start">fs_meta · Pool 11</text>
+<text x="1118" y="762" font-size="21" font-weight="400" fill="#596a7b" text-anchor="start">CephFS 元数据对象</text>
+<path d="M204.0 780 V851" fill="none" stroke="#2563b4" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" opacity="1"/>
+<path d="M118 851 H290" fill="none" stroke="#2563b4" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" opacity="1"/>
+<rect x="209.0" y="795" width="34" height="28" rx="4" fill="#ffffff" stroke="none" stroke-width="1.5"/>
+<text x="226.0" y="816" font-size="21" font-weight="500" fill="#172b42" text-anchor="middle">1</text>
+<path d="M118 851 V935" fill="none" stroke="#2563b4" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" opacity="1" marker-end="url(#arrow-fs)"/>
+<rect x="121" y="899" width="34" height="28" rx="4" fill="#ffffff" stroke="none" stroke-width="1.5"/>
+<text x="138" y="920" font-size="21" font-weight="500" fill="#172b42" text-anchor="middle">N</text>
+<path d="M290 851 V935" fill="none" stroke="#2563b4" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" opacity="1" marker-end="url(#arrow-fs)"/>
+<rect x="293" y="899" width="34" height="28" rx="4" fill="#ffffff" stroke="none" stroke-width="1.5"/>
+<text x="310" y="920" font-size="21" font-weight="500" fill="#172b42" text-anchor="middle">N</text>
+<text x="204.0" y="887" font-size="19" font-weight="400" fill="#596a7b" text-anchor="middle">包含 PG</text>
+<path d="M554.0 780 V851" fill="none" stroke="#ab5c16" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" opacity="1"/>
+<path d="M491 851 H662" fill="none" stroke="#ab5c16" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" opacity="1"/>
+<rect x="559.0" y="795" width="34" height="28" rx="4" fill="#ffffff" stroke="none" stroke-width="1.5"/>
+<text x="576.0" y="816" font-size="21" font-weight="500" fill="#172b42" text-anchor="middle">1</text>
+<path d="M491 851 V935" fill="none" stroke="#ab5c16" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" opacity="1" marker-end="url(#arrow-rbd)"/>
+<rect x="494" y="899" width="34" height="28" rx="4" fill="#ffffff" stroke="none" stroke-width="1.5"/>
+<text x="511" y="920" font-size="21" font-weight="500" fill="#172b42" text-anchor="middle">N</text>
+<path d="M662 851 V935" fill="none" stroke="#ab5c16" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" opacity="1" marker-end="url(#arrow-rbd)"/>
+<rect x="665" y="899" width="34" height="28" rx="4" fill="#ffffff" stroke="none" stroke-width="1.5"/>
+<text x="682" y="920" font-size="21" font-weight="500" fill="#172b42" text-anchor="middle">N</text>
+<text x="554.0" y="887" font-size="19" font-weight="400" fill="#596a7b" text-anchor="middle">包含 PG</text>
+<path d="M904.0 780 V851" fill="none" stroke="#0b7b72" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" opacity="1"/>
+<path d="M841 851 H1012" fill="none" stroke="#0b7b72" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" opacity="1"/>
+<rect x="909.0" y="795" width="34" height="28" rx="4" fill="#ffffff" stroke="none" stroke-width="1.5"/>
+<text x="926.0" y="816" font-size="21" font-weight="500" fill="#172b42" text-anchor="middle">1</text>
+<path d="M841 851 V935" fill="none" stroke="#0b7b72" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" opacity="1" marker-end="url(#arrow-rgw)"/>
+<rect x="844" y="899" width="34" height="28" rx="4" fill="#ffffff" stroke="none" stroke-width="1.5"/>
+<text x="861" y="920" font-size="21" font-weight="500" fill="#172b42" text-anchor="middle">N</text>
+<path d="M1012 851 V935" fill="none" stroke="#0b7b72" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" opacity="1" marker-end="url(#arrow-rgw)"/>
+<rect x="1015" y="899" width="34" height="28" rx="4" fill="#ffffff" stroke="none" stroke-width="1.5"/>
+<text x="1032" y="920" font-size="21" font-weight="500" fill="#172b42" text-anchor="middle">N</text>
+<text x="904.0" y="887" font-size="19" font-weight="400" fill="#596a7b" text-anchor="middle">包含 PG</text>
+<path d="M1248.0 780 V851" fill="none" stroke="#7952a0" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" opacity="1"/>
+<path d="M1190 851 H1348" fill="none" stroke="#7952a0" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" opacity="1"/>
+<rect x="1253.0" y="795" width="34" height="28" rx="4" fill="#ffffff" stroke="none" stroke-width="1.5"/>
+<text x="1270.0" y="816" font-size="21" font-weight="500" fill="#172b42" text-anchor="middle">1</text>
+<path d="M1190 851 V935" fill="none" stroke="#7952a0" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" opacity="1" marker-end="url(#arrow-meta)"/>
+<rect x="1193" y="899" width="34" height="28" rx="4" fill="#ffffff" stroke="none" stroke-width="1.5"/>
+<text x="1210" y="920" font-size="21" font-weight="500" fill="#172b42" text-anchor="middle">N</text>
+<path d="M1348 851 V935" fill="none" stroke="#7952a0" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" opacity="1" marker-end="url(#arrow-meta)"/>
+<rect x="1351" y="899" width="34" height="28" rx="4" fill="#ffffff" stroke="none" stroke-width="1.5"/>
+<text x="1368" y="920" font-size="21" font-weight="500" fill="#172b42" text-anchor="middle">N</text>
+<text x="1248.0" y="887" font-size="19" font-weight="400" fill="#596a7b" text-anchor="middle">包含 PG</text>
+<rect x="44" y="935" width="148" height="170" rx="10" fill="#ffffff" stroke="#2563b4" stroke-width="2"/>
+<text x="118.0" y="974" font-size="23" font-weight="500" fill="#2563b4" text-anchor="middle">PG 10.0</text>
+<text x="118.0" y="1007" font-size="19" font-weight="400" fill="#596a7b" text-anchor="middle">示例对象</text>
+<rect x="56.0" y="1024" width="58" height="36" rx="6" fill="#f0f6fd" stroke="none" stroke-width="1.5"/>
+<text x="85.0" y="1049" font-size="21" font-weight="500" fill="#2563b4" text-anchor="middle">F.0</text>
+<rect x="122.0" y="1024" width="58" height="36" rx="6" fill="#f0f6fd" stroke="none" stroke-width="1.5"/>
+<text x="151.0" y="1049" font-size="21" font-weight="500" fill="#2563b4" text-anchor="middle">F.2</text>
+<text x="118.0" y="1090" font-size="18" font-weight="400" fill="#596a7b" text-anchor="middle">1 : N 对象</text>
+<rect x="216" y="935" width="148" height="170" rx="10" fill="#ffffff" stroke="#2563b4" stroke-width="2"/>
+<text x="290.0" y="974" font-size="23" font-weight="500" fill="#2563b4" text-anchor="middle">PG 10.1</text>
+<text x="290.0" y="1007" font-size="19" font-weight="400" fill="#596a7b" text-anchor="middle">示例对象</text>
+<rect x="261.0" y="1024" width="58" height="36" rx="6" fill="#f0f6fd" stroke="none" stroke-width="1.5"/>
+<text x="290.0" y="1049" font-size="21" font-weight="500" fill="#2563b4" text-anchor="middle">F.1</text>
+<text x="290.0" y="1090" font-size="18" font-weight="400" fill="#596a7b" text-anchor="middle">1 : N 对象</text>
+<rect x="394" y="935" width="194" height="170" rx="10" fill="#ffffff" stroke="#ab5c16" stroke-width="2"/>
+<text x="491.0" y="974" font-size="23" font-weight="500" fill="#ab5c16" text-anchor="middle">PG 20.0</text>
+<text x="491.0" y="1007" font-size="19" font-weight="400" fill="#596a7b" text-anchor="middle">示例对象</text>
+<rect x="419.0" y="1024" width="68" height="36" rx="6" fill="#fff7ed" stroke="none" stroke-width="1.5"/>
+<text x="453.0" y="1049" font-size="21" font-weight="500" fill="#ab5c16" text-anchor="middle">B.0</text>
+<rect x="495.0" y="1024" width="68" height="36" rx="6" fill="#fff7ed" stroke="none" stroke-width="1.5"/>
+<text x="529.0" y="1049" font-size="21" font-weight="500" fill="#ab5c16" text-anchor="middle">B.1</text>
+<text x="491.0" y="1090" font-size="18" font-weight="400" fill="#596a7b" text-anchor="middle">1 : N 对象</text>
+<rect x="744" y="935" width="194" height="170" rx="10" fill="#ffffff" stroke="#0b7b72" stroke-width="2"/>
+<text x="841.0" y="974" font-size="23" font-weight="500" fill="#0b7b72" text-anchor="middle">PG 30.0</text>
+<text x="841.0" y="1007" font-size="19" font-weight="400" fill="#596a7b" text-anchor="middle">示例对象</text>
+<rect x="769.0" y="1024" width="68" height="36" rx="6" fill="#edf8f6" stroke="none" stroke-width="1.5"/>
+<text x="803.0" y="1049" font-size="21" font-weight="500" fill="#0b7b72" text-anchor="middle">S.0</text>
+<rect x="845.0" y="1024" width="68" height="36" rx="6" fill="#edf8f6" stroke="none" stroke-width="1.5"/>
+<text x="879.0" y="1049" font-size="21" font-weight="500" fill="#0b7b72" text-anchor="middle">S.1</text>
+<text x="841.0" y="1090" font-size="18" font-weight="400" fill="#596a7b" text-anchor="middle">1 : N 对象</text>
+<rect x="1100" y="935" width="180" height="170" rx="10" fill="#ffffff" stroke="#7952a0" stroke-width="2"/>
+<text x="1190.0" y="974" font-size="23" font-weight="500" fill="#7952a0" text-anchor="middle">PG 11.0</text>
+<text x="1190.0" y="1007" font-size="19" font-weight="400" fill="#596a7b" text-anchor="middle">示例对象</text>
+<rect x="1118.0" y="1024" width="68" height="36" rx="6" fill="#f5f0fa" stroke="none" stroke-width="1.5"/>
+<text x="1152.0" y="1049" font-size="21" font-weight="500" fill="#7952a0" text-anchor="middle">M.0</text>
+<rect x="1194.0" y="1024" width="68" height="36" rx="6" fill="#f5f0fa" stroke="none" stroke-width="1.5"/>
+<text x="1228.0" y="1049" font-size="21" font-weight="500" fill="#7952a0" text-anchor="middle">M.1</text>
+<text x="1190.0" y="1090" font-size="18" font-weight="400" fill="#596a7b" text-anchor="middle">1 : N 对象</text>
+<rect x="610" y="935" width="104" height="108" rx="10" fill="#fafbfd" stroke="#c8d2dc" stroke-width="1.5" stroke-dasharray="5 4"/>
+<text x="662.0" y="974" font-size="19" font-weight="400" fill="#596a7b" text-anchor="middle">PG 20.1</text>
+<text x="662.0" y="1008" font-size="18" font-weight="400" fill="#596a7b" text-anchor="middle">未展开</text>
+<rect x="960" y="935" width="104" height="108" rx="10" fill="#fafbfd" stroke="#c8d2dc" stroke-width="1.5" stroke-dasharray="5 4"/>
+<text x="1012.0" y="974" font-size="19" font-weight="400" fill="#596a7b" text-anchor="middle">PG 30.1</text>
+<text x="1012.0" y="1008" font-size="18" font-weight="400" fill="#596a7b" text-anchor="middle">未展开</text>
+<rect x="1300" y="935" width="96" height="108" rx="10" fill="#fafbfd" stroke="#c8d2dc" stroke-width="1.5" stroke-dasharray="5 4"/>
+<text x="1348.0" y="974" font-size="19" font-weight="400" fill="#596a7b" text-anchor="middle">PG 11.1</text>
+<text x="1348.0" y="1008" font-size="18" font-weight="400" fill="#596a7b" text-anchor="middle">未展开</text>
+<g transform="translate(24 1380) rotate(-90)">
+<text x="0" y="0" font-size="20" font-weight="400" fill="#596a7b" text-anchor="start">CRUSH + OSDMap · PG 与 OSD 为 N : M</text>
+</g>
+<rect x="44" y="1435" width="432" height="555" rx="14" fill="#f8fafc" stroke="#c8d2dc" stroke-width="1.5"/>
+<rect x="504" y="1435" width="432" height="555" rx="14" fill="#f8fafc" stroke="#c8d2dc" stroke-width="1.5"/>
+<rect x="964" y="1435" width="432" height="555" rx="14" fill="#f8fafc" stroke="#c8d2dc" stroke-width="1.5"/>
+<path d="M254.0 1105 C254.0 1240 333.3333333333333 1320 333.3333333333333 1480" fill="none" stroke="#ffffff" stroke-width="5"/>
+<path d="M254.0 1105 C254.0 1240 333.3333333333333 1320 333.3333333333333 1480" fill="none" stroke="#2563b4" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" opacity="0.76" marker-end="url(#arrow-fs)"/>
+<path d="M290.0 1105 C290.0 1240 793.3333333333334 1320 793.3333333333334 1480" fill="none" stroke="#ffffff" stroke-width="5"/>
+<path d="M290.0 1105 C290.0 1240 793.3333333333334 1320 793.3333333333334 1480" fill="none" stroke="#2563b4" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" opacity="0.76" marker-end="url(#arrow-fs)"/>
+<path d="M326.0 1105 C326.0 1240 1253.3333333333333 1320 1253.3333333333333 1480" fill="none" stroke="#ffffff" stroke-width="5"/>
+<path d="M326.0 1105 C326.0 1240 1253.3333333333333 1320 1253.3333333333333 1480" fill="none" stroke="#2563b4" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" opacity="0.76" marker-end="url(#arrow-fs)"/>
+<rect x="277.0" y="1119" width="34" height="28" rx="4" fill="#ffffff" stroke="none" stroke-width="1.5"/>
+<text x="294.0" y="1140" font-size="21" font-weight="500" fill="#2563b4" text-anchor="middle">M</text>
+<path d="M455.0 1105 C455.0 1240 156.0 1320 156.0 1480" fill="none" stroke="#ffffff" stroke-width="5"/>
+<path d="M455.0 1105 C455.0 1240 156.0 1320 156.0 1480" fill="none" stroke="#ab5c16" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" opacity="0.76" marker-end="url(#arrow-rbd)"/>
+<path d="M491.0 1105 C491.0 1240 854.6666666666666 1320 854.6666666666666 1480" fill="none" stroke="#ffffff" stroke-width="5"/>
+<path d="M491.0 1105 C491.0 1240 854.6666666666666 1320 854.6666666666666 1480" fill="none" stroke="#ab5c16" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" opacity="0.76" marker-end="url(#arrow-rbd)"/>
+<path d="M527.0 1105 C527.0 1240 1076.0 1320 1076.0 1480" fill="none" stroke="#ffffff" stroke-width="5"/>
+<path d="M527.0 1105 C527.0 1240 1076.0 1320 1076.0 1480" fill="none" stroke="#ab5c16" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" opacity="0.76" marker-end="url(#arrow-rbd)"/>
+<rect x="478.0" y="1119" width="34" height="28" rx="4" fill="#ffffff" stroke="none" stroke-width="1.5"/>
+<text x="495.0" y="1140" font-size="21" font-weight="500" fill="#ab5c16" text-anchor="middle">M</text>
+<path d="M805.0 1105 C805.0 1240 394.6666666666667 1320 394.6666666666667 1480" fill="none" stroke="#ffffff" stroke-width="5"/>
+<path d="M805.0 1105 C805.0 1240 394.6666666666667 1320 394.6666666666667 1480" fill="none" stroke="#0b7b72" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" opacity="0.76" marker-end="url(#arrow-rgw)"/>
+<path d="M841.0 1105 C841.0 1240 616.0 1320 616.0 1480" fill="none" stroke="#ffffff" stroke-width="5"/>
+<path d="M841.0 1105 C841.0 1240 616.0 1320 616.0 1480" fill="none" stroke="#0b7b72" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" opacity="0.76" marker-end="url(#arrow-rgw)"/>
+<path d="M877.0 1105 C877.0 1240 1314.6666666666667 1320 1314.6666666666667 1480" fill="none" stroke="#ffffff" stroke-width="5"/>
+<path d="M877.0 1105 C877.0 1240 1314.6666666666667 1320 1314.6666666666667 1480" fill="none" stroke="#0b7b72" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" opacity="0.76" marker-end="url(#arrow-rgw)"/>
+<rect x="828.0" y="1119" width="34" height="28" rx="4" fill="#ffffff" stroke="none" stroke-width="1.5"/>
+<text x="845.0" y="1140" font-size="21" font-weight="500" fill="#0b7b72" text-anchor="middle">M</text>
+<path d="M1154.0 1105 C1154.0 1240 202.0 1320 202.0 1480" fill="none" stroke="#ffffff" stroke-width="5"/>
+<path d="M1154.0 1105 C1154.0 1240 202.0 1320 202.0 1480" fill="none" stroke="#7952a0" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" opacity="0.76" marker-end="url(#arrow-meta)"/>
+<path d="M1190.0 1105 C1190.0 1240 662.0 1320 662.0 1480" fill="none" stroke="#ffffff" stroke-width="5"/>
+<path d="M1190.0 1105 C1190.0 1240 662.0 1320 662.0 1480" fill="none" stroke="#7952a0" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" opacity="0.76" marker-end="url(#arrow-meta)"/>
+<path d="M1226.0 1105 C1226.0 1240 1122.0 1320 1122.0 1480" fill="none" stroke="#ffffff" stroke-width="5"/>
+<path d="M1226.0 1105 C1226.0 1240 1122.0 1320 1122.0 1480" fill="none" stroke="#7952a0" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" opacity="0.76" marker-end="url(#arrow-meta)"/>
+<rect x="1177.0" y="1119" width="34" height="28" rx="4" fill="#ffffff" stroke="none" stroke-width="1.5"/>
+<text x="1194.0" y="1140" font-size="21" font-weight="500" fill="#7952a0" text-anchor="middle">M</text>
+<path d="M82.0 1105 C82.0 1240 110.0 1320 110.0 1480" fill="none" stroke="#ffffff" stroke-width="7"/>
+<path d="M82.0 1105 C82.0 1240 110.0 1320 110.0 1480" fill="none" stroke="#2563b4" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" opacity="1" marker-end="url(#arrow-fs)"/>
+<path d="M118.0 1105 C118.0 1240 570.0 1320 570.0 1480" fill="none" stroke="#ffffff" stroke-width="7"/>
+<path d="M118.0 1105 C118.0 1240 570.0 1320 570.0 1480" fill="none" stroke="#2563b4" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" opacity="1" marker-end="url(#arrow-fs)"/>
+<path d="M154.0 1105 C154.0 1240 1030.0 1320 1030.0 1480" fill="none" stroke="#ffffff" stroke-width="7"/>
+<path d="M154.0 1105 C154.0 1240 1030.0 1320 1030.0 1480" fill="none" stroke="#2563b4" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" opacity="1" marker-end="url(#arrow-fs)"/>
+<rect x="105.0" y="1119" width="34" height="28" rx="4" fill="#ffffff" stroke="none" stroke-width="1.5"/>
+<text x="122.0" y="1140" font-size="21" font-weight="500" fill="#2563b4" text-anchor="middle">M</text>
+<rect x="64" y="1480" width="184" height="180" rx="10" fill="#ffffff" stroke="#2563b4" stroke-width="2"/>
+<text x="156" y="1522" font-size="28" font-weight="500" fill="#2563b4" text-anchor="middle">OSD.0</text>
+<rect x="76" y="1544" width="160" height="36" rx="6" fill="#f0f6fd" stroke="none" stroke-width="1.5"/>
+<text x="156.0" y="1569" font-size="21" font-weight="500" fill="#2563b4" text-anchor="middle">F.0 完整副本</text>
+<text x="156" y="1613" font-size="16" font-weight="400" fill="#596a7b" text-anchor="middle">另含 F.2 / B.* / M.*</text>
+<text x="156" y="1643" font-size="18" font-weight="400" fill="#596a7b" text-anchor="middle">承载多个 PG 的对象</text>
+<rect x="218" y="1445" width="34" height="28" rx="4" fill="#ffffff" stroke="none" stroke-width="1.5"/>
+<text x="235" y="1466" font-size="21" font-weight="500" fill="#172b42" text-anchor="middle">N</text>
+<path d="M156 1660 V1730" fill="none" stroke="#8292a3" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" opacity="1" marker-end="url(#arrow-neutral)"/>
+<rect x="139" y="1680" width="34" height="28" rx="4" fill="#ffffff" stroke="none" stroke-width="1.5"/>
+<text x="156" y="1701" font-size="21" font-weight="500" fill="#172b42" text-anchor="middle">1:1</text>
+<rect x="64" y="1730" width="184" height="66" rx="7" fill="#edf1f5" stroke="#c8d2dc" stroke-width="1.5"/>
+<text x="156" y="1757" font-size="20" font-weight="400" fill="#596a7b" text-anchor="middle">数据块设备</text>
+<text x="156" y="1783" font-size="22" font-weight="400" fill="#172b42" text-anchor="middle">/dev/dm-0</text>
+<path d="M156 1796 V1860" fill="none" stroke="#8292a3" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" opacity="1" marker-end="url(#arrow-neutral)"/>
+<rect x="139" y="1812" width="34" height="28" rx="4" fill="#ffffff" stroke="none" stroke-width="1.5"/>
+<text x="156" y="1833" font-size="21" font-weight="500" fill="#172b42" text-anchor="middle">1:1</text>
+<rect x="64" y="1860" width="184" height="65" rx="7" fill="#ffffff" stroke="#c8d2dc" stroke-width="1.5"/>
+<text x="156" y="1888" font-size="22" font-weight="500" fill="#172b42" text-anchor="middle">物理盘 A0</text>
+<text x="156" y="1914" font-size="19" font-weight="400" fill="#596a7b" text-anchor="middle">HDD / SSD</text>
+<rect x="272" y="1480" width="184" height="180" rx="10" fill="#ffffff" stroke="#c8d2dc" stroke-width="1.5"/>
+<text x="364" y="1522" font-size="28" font-weight="500" fill="#172b42" text-anchor="middle">OSD.1</text>
+<rect x="284" y="1544" width="160" height="36" rx="6" fill="#f0f6fd" stroke="none" stroke-width="1.5"/>
+<text x="364.0" y="1569" font-size="21" font-weight="500" fill="#2563b4" text-anchor="middle">F.1 完整副本</text>
+<text x="364" y="1613" font-size="16" font-weight="400" fill="#596a7b" text-anchor="middle">另含 S.*</text>
+<text x="364" y="1643" font-size="18" font-weight="400" fill="#596a7b" text-anchor="middle">承载多个 PG 的对象</text>
+<rect x="426" y="1445" width="34" height="28" rx="4" fill="#ffffff" stroke="none" stroke-width="1.5"/>
+<text x="443" y="1466" font-size="21" font-weight="500" fill="#172b42" text-anchor="middle">N</text>
+<path d="M364 1660 V1730" fill="none" stroke="#8292a3" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" opacity="1" marker-end="url(#arrow-neutral)"/>
+<rect x="347" y="1680" width="34" height="28" rx="4" fill="#ffffff" stroke="none" stroke-width="1.5"/>
+<text x="364" y="1701" font-size="21" font-weight="500" fill="#172b42" text-anchor="middle">1:1</text>
+<rect x="272" y="1730" width="184" height="66" rx="7" fill="#edf1f5" stroke="#c8d2dc" stroke-width="1.5"/>
+<text x="364" y="1757" font-size="20" font-weight="400" fill="#596a7b" text-anchor="middle">数据块设备</text>
+<text x="364" y="1783" font-size="22" font-weight="400" fill="#172b42" text-anchor="middle">/dev/dm-1</text>
+<path d="M364 1796 V1860" fill="none" stroke="#8292a3" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" opacity="1" marker-end="url(#arrow-neutral)"/>
+<rect x="347" y="1812" width="34" height="28" rx="4" fill="#ffffff" stroke="none" stroke-width="1.5"/>
+<text x="364" y="1833" font-size="21" font-weight="500" fill="#172b42" text-anchor="middle">1:1</text>
+<rect x="272" y="1860" width="184" height="65" rx="7" fill="#ffffff" stroke="#c8d2dc" stroke-width="1.5"/>
+<text x="364" y="1888" font-size="22" font-weight="500" fill="#172b42" text-anchor="middle">物理盘 A1</text>
+<text x="364" y="1914" font-size="19" font-weight="400" fill="#596a7b" text-anchor="middle">HDD / SSD</text>
+<text x="66" y="1967" font-size="27" font-weight="500" fill="#172b42" text-anchor="start">存储节点 A</text>
+<text x="456" y="1966" font-size="20" font-weight="400" fill="#596a7b" text-anchor="end">1 节点 : N 个 OSD</text>
+<rect x="524" y="1480" width="184" height="180" rx="10" fill="#ffffff" stroke="#2563b4" stroke-width="2"/>
+<text x="616" y="1522" font-size="28" font-weight="500" fill="#2563b4" text-anchor="middle">OSD.2</text>
+<rect x="536" y="1544" width="160" height="36" rx="6" fill="#f0f6fd" stroke="none" stroke-width="1.5"/>
+<text x="616.0" y="1569" font-size="21" font-weight="500" fill="#2563b4" text-anchor="middle">F.0 完整副本</text>
+<text x="616" y="1613" font-size="16" font-weight="400" fill="#596a7b" text-anchor="middle">另含 F.2 / S.* / M.*</text>
+<text x="616" y="1643" font-size="18" font-weight="400" fill="#596a7b" text-anchor="middle">承载多个 PG 的对象</text>
+<rect x="678" y="1445" width="34" height="28" rx="4" fill="#ffffff" stroke="none" stroke-width="1.5"/>
+<text x="695" y="1466" font-size="21" font-weight="500" fill="#172b42" text-anchor="middle">N</text>
+<path d="M616 1660 V1730" fill="none" stroke="#8292a3" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" opacity="1" marker-end="url(#arrow-neutral)"/>
+<rect x="599" y="1680" width="34" height="28" rx="4" fill="#ffffff" stroke="none" stroke-width="1.5"/>
+<text x="616" y="1701" font-size="21" font-weight="500" fill="#172b42" text-anchor="middle">1:1</text>
+<rect x="524" y="1730" width="184" height="66" rx="7" fill="#edf1f5" stroke="#c8d2dc" stroke-width="1.5"/>
+<text x="616" y="1757" font-size="20" font-weight="400" fill="#596a7b" text-anchor="middle">数据块设备</text>
+<text x="616" y="1783" font-size="22" font-weight="400" fill="#172b42" text-anchor="middle">/dev/dm-0</text>
+<path d="M616 1796 V1860" fill="none" stroke="#8292a3" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" opacity="1" marker-end="url(#arrow-neutral)"/>
+<rect x="599" y="1812" width="34" height="28" rx="4" fill="#ffffff" stroke="none" stroke-width="1.5"/>
+<text x="616" y="1833" font-size="21" font-weight="500" fill="#172b42" text-anchor="middle">1:1</text>
+<rect x="524" y="1860" width="184" height="65" rx="7" fill="#ffffff" stroke="#c8d2dc" stroke-width="1.5"/>
+<text x="616" y="1888" font-size="22" font-weight="500" fill="#172b42" text-anchor="middle">物理盘 B0</text>
+<text x="616" y="1914" font-size="19" font-weight="400" fill="#596a7b" text-anchor="middle">HDD / SSD</text>
+<rect x="732" y="1480" width="184" height="180" rx="10" fill="#ffffff" stroke="#c8d2dc" stroke-width="1.5"/>
+<text x="824" y="1522" font-size="28" font-weight="500" fill="#172b42" text-anchor="middle">OSD.3</text>
+<rect x="744" y="1544" width="160" height="36" rx="6" fill="#f0f6fd" stroke="none" stroke-width="1.5"/>
+<text x="824.0" y="1569" font-size="21" font-weight="500" fill="#2563b4" text-anchor="middle">F.1 完整副本</text>
+<text x="824" y="1613" font-size="16" font-weight="400" fill="#596a7b" text-anchor="middle">另含 B.*</text>
+<text x="824" y="1643" font-size="18" font-weight="400" fill="#596a7b" text-anchor="middle">承载多个 PG 的对象</text>
+<rect x="886" y="1445" width="34" height="28" rx="4" fill="#ffffff" stroke="none" stroke-width="1.5"/>
+<text x="903" y="1466" font-size="21" font-weight="500" fill="#172b42" text-anchor="middle">N</text>
+<path d="M824 1660 V1730" fill="none" stroke="#8292a3" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" opacity="1" marker-end="url(#arrow-neutral)"/>
+<rect x="807" y="1680" width="34" height="28" rx="4" fill="#ffffff" stroke="none" stroke-width="1.5"/>
+<text x="824" y="1701" font-size="21" font-weight="500" fill="#172b42" text-anchor="middle">1:1</text>
+<rect x="732" y="1730" width="184" height="66" rx="7" fill="#edf1f5" stroke="#c8d2dc" stroke-width="1.5"/>
+<text x="824" y="1757" font-size="20" font-weight="400" fill="#596a7b" text-anchor="middle">数据块设备</text>
+<text x="824" y="1783" font-size="22" font-weight="400" fill="#172b42" text-anchor="middle">/dev/dm-1</text>
+<path d="M824 1796 V1860" fill="none" stroke="#8292a3" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" opacity="1" marker-end="url(#arrow-neutral)"/>
+<rect x="807" y="1812" width="34" height="28" rx="4" fill="#ffffff" stroke="none" stroke-width="1.5"/>
+<text x="824" y="1833" font-size="21" font-weight="500" fill="#172b42" text-anchor="middle">1:1</text>
+<rect x="732" y="1860" width="184" height="65" rx="7" fill="#ffffff" stroke="#c8d2dc" stroke-width="1.5"/>
+<text x="824" y="1888" font-size="22" font-weight="500" fill="#172b42" text-anchor="middle">物理盘 B1</text>
+<text x="824" y="1914" font-size="19" font-weight="400" fill="#596a7b" text-anchor="middle">HDD / SSD</text>
+<text x="526" y="1967" font-size="27" font-weight="500" fill="#172b42" text-anchor="start">存储节点 B</text>
+<text x="916" y="1966" font-size="20" font-weight="400" fill="#596a7b" text-anchor="end">1 节点 : N 个 OSD</text>
+<rect x="984" y="1480" width="184" height="180" rx="10" fill="#ffffff" stroke="#2563b4" stroke-width="2"/>
+<text x="1076" y="1522" font-size="28" font-weight="500" fill="#2563b4" text-anchor="middle">OSD.4</text>
+<rect x="996" y="1544" width="160" height="36" rx="6" fill="#f0f6fd" stroke="none" stroke-width="1.5"/>
+<text x="1076.0" y="1569" font-size="21" font-weight="500" fill="#2563b4" text-anchor="middle">F.0 完整副本</text>
+<text x="1076" y="1613" font-size="16" font-weight="400" fill="#596a7b" text-anchor="middle">另含 F.2 / B.* / M.*</text>
+<text x="1076" y="1643" font-size="18" font-weight="400" fill="#596a7b" text-anchor="middle">承载多个 PG 的对象</text>
+<rect x="1138" y="1445" width="34" height="28" rx="4" fill="#ffffff" stroke="none" stroke-width="1.5"/>
+<text x="1155" y="1466" font-size="21" font-weight="500" fill="#172b42" text-anchor="middle">N</text>
+<path d="M1076 1660 V1730" fill="none" stroke="#8292a3" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" opacity="1" marker-end="url(#arrow-neutral)"/>
+<rect x="1059" y="1680" width="34" height="28" rx="4" fill="#ffffff" stroke="none" stroke-width="1.5"/>
+<text x="1076" y="1701" font-size="21" font-weight="500" fill="#172b42" text-anchor="middle">1:1</text>
+<rect x="984" y="1730" width="184" height="66" rx="7" fill="#edf1f5" stroke="#c8d2dc" stroke-width="1.5"/>
+<text x="1076" y="1757" font-size="20" font-weight="400" fill="#596a7b" text-anchor="middle">数据块设备</text>
+<text x="1076" y="1783" font-size="22" font-weight="400" fill="#172b42" text-anchor="middle">/dev/dm-0</text>
+<path d="M1076 1796 V1860" fill="none" stroke="#8292a3" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" opacity="1" marker-end="url(#arrow-neutral)"/>
+<rect x="1059" y="1812" width="34" height="28" rx="4" fill="#ffffff" stroke="none" stroke-width="1.5"/>
+<text x="1076" y="1833" font-size="21" font-weight="500" fill="#172b42" text-anchor="middle">1:1</text>
+<rect x="984" y="1860" width="184" height="65" rx="7" fill="#ffffff" stroke="#c8d2dc" stroke-width="1.5"/>
+<text x="1076" y="1888" font-size="22" font-weight="500" fill="#172b42" text-anchor="middle">物理盘 C0</text>
+<text x="1076" y="1914" font-size="19" font-weight="400" fill="#596a7b" text-anchor="middle">HDD / SSD</text>
+<rect x="1192" y="1480" width="184" height="180" rx="10" fill="#ffffff" stroke="#c8d2dc" stroke-width="1.5"/>
+<text x="1284" y="1522" font-size="28" font-weight="500" fill="#172b42" text-anchor="middle">OSD.5</text>
+<rect x="1204" y="1544" width="160" height="36" rx="6" fill="#f0f6fd" stroke="none" stroke-width="1.5"/>
+<text x="1284.0" y="1569" font-size="21" font-weight="500" fill="#2563b4" text-anchor="middle">F.1 完整副本</text>
+<text x="1284" y="1613" font-size="16" font-weight="400" fill="#596a7b" text-anchor="middle">另含 S.*</text>
+<text x="1284" y="1643" font-size="18" font-weight="400" fill="#596a7b" text-anchor="middle">承载多个 PG 的对象</text>
+<rect x="1346" y="1445" width="34" height="28" rx="4" fill="#ffffff" stroke="none" stroke-width="1.5"/>
+<text x="1363" y="1466" font-size="21" font-weight="500" fill="#172b42" text-anchor="middle">N</text>
+<path d="M1284 1660 V1730" fill="none" stroke="#8292a3" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" opacity="1" marker-end="url(#arrow-neutral)"/>
+<rect x="1267" y="1680" width="34" height="28" rx="4" fill="#ffffff" stroke="none" stroke-width="1.5"/>
+<text x="1284" y="1701" font-size="21" font-weight="500" fill="#172b42" text-anchor="middle">1:1</text>
+<rect x="1192" y="1730" width="184" height="66" rx="7" fill="#edf1f5" stroke="#c8d2dc" stroke-width="1.5"/>
+<text x="1284" y="1757" font-size="20" font-weight="400" fill="#596a7b" text-anchor="middle">数据块设备</text>
+<text x="1284" y="1783" font-size="22" font-weight="400" fill="#172b42" text-anchor="middle">/dev/dm-1</text>
+<path d="M1284 1796 V1860" fill="none" stroke="#8292a3" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" opacity="1" marker-end="url(#arrow-neutral)"/>
+<rect x="1267" y="1812" width="34" height="28" rx="4" fill="#ffffff" stroke="none" stroke-width="1.5"/>
+<text x="1284" y="1833" font-size="21" font-weight="500" fill="#172b42" text-anchor="middle">1:1</text>
+<rect x="1192" y="1860" width="184" height="65" rx="7" fill="#ffffff" stroke="#c8d2dc" stroke-width="1.5"/>
+<text x="1284" y="1888" font-size="22" font-weight="500" fill="#172b42" text-anchor="middle">物理盘 C1</text>
+<text x="1284" y="1914" font-size="19" font-weight="400" fill="#596a7b" text-anchor="middle">HDD / SSD</text>
+<text x="986" y="1967" font-size="27" font-weight="500" fill="#172b42" text-anchor="start">存储节点 C</text>
+<text x="1376" y="1966" font-size="20" font-weight="400" fill="#596a7b" text-anchor="end">1 节点 : N 个 OSD</text>
+<text x="44" y="2042" font-size="25" font-weight="500" fill="#172b42" text-anchor="start">基数关系</text>
+<rect x="44" y="2070" width="210" height="56" rx="7" fill="#ffffff" stroke="#c8d2dc" stroke-width="1.5"/>
+<text x="149.0" y="2107" font-size="26" font-weight="500" fill="#172b42" text-anchor="middle">Pool</text>
+<rect x="424" y="2070" width="210" height="56" rx="7" fill="#ffffff" stroke="#c8d2dc" stroke-width="1.5"/>
+<text x="529.0" y="2107" font-size="26" font-weight="500" fill="#172b42" text-anchor="middle">PG</text>
+<rect x="804" y="2070" width="210" height="56" rx="7" fill="#ffffff" stroke="#c8d2dc" stroke-width="1.5"/>
+<text x="909.0" y="2107" font-size="26" font-weight="500" fill="#172b42" text-anchor="middle">OSD</text>
+<rect x="1184" y="2070" width="212" height="56" rx="7" fill="#ffffff" stroke="#c8d2dc" stroke-width="1.5"/>
+<text x="1290.0" y="2107" font-size="26" font-weight="500" fill="#172b42" text-anchor="middle">节点</text>
+<path d="M254 2098 H424" fill="none" stroke="#8292a3" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" opacity="1"/>
+<text x="272" y="2088" font-size="21" font-weight="500" fill="#172b42" text-anchor="start">1</text>
+<text x="406" y="2088" font-size="21" font-weight="500" fill="#172b42" text-anchor="end">N</text>
+<text x="339.0" y="2134" font-size="18" font-weight="400" fill="#596a7b" text-anchor="middle">包含</text>
+<path d="M634 2098 H804" fill="none" stroke="#8292a3" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" opacity="1"/>
+<text x="652" y="2088" font-size="21" font-weight="500" fill="#172b42" text-anchor="start">M</text>
+<text x="786" y="2088" font-size="21" font-weight="500" fill="#172b42" text-anchor="end">N</text>
+<text x="719.0" y="2134" font-size="18" font-weight="400" fill="#596a7b" text-anchor="middle">放置</text>
+<path d="M1014 2098 H1184" fill="none" stroke="#8292a3" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" opacity="1"/>
+<text x="1032" y="2088" font-size="21" font-weight="500" fill="#172b42" text-anchor="start">N</text>
+<text x="1166" y="2088" font-size="21" font-weight="500" fill="#172b42" text-anchor="end">1</text>
+<text x="1099.0" y="2134" font-size="18" font-weight="400" fill="#596a7b" text-anchor="middle">运行于</text>
+<text x="44" y="2184" font-size="21" font-weight="400" fill="#172b42" text-anchor="start">本图：3 副本 + host 故障域；F.0、F.1、F.2 是同一文件的不同对象，每个对象分别冗余。</text>
+<text x="44" y="2223" font-size="20" font-weight="400" fill="#596a7b" text-anchor="start">对象当前只归入一个 Pool 内的一个 PG；Pool / PG 不是物理分区；OSD 与设备的 1:1 为常见示例。</text>
+<text x="44" y="2262" font-size="20" font-weight="400" fill="#596a7b" text-anchor="start">连线交叉处不表示连接，只有端点连接节点；虚线为控制 / 元数据协调，实线为映射或承载。</text>
+<text x="44" y="2302" font-size="20" font-weight="400" fill="#596a7b" text-anchor="start">设备映射可更复杂，DB / WAL 可独立；MDS 也可能访问数据池中的回溯属性等辅助信息。</text>
+</g></svg>

@@ -115,7 +115,7 @@
       "rounds": {
         "opening": {
           "question": "My `ALU Pipe Utilization (% of active cycles)` exceeds 50%, but `Issue Slots Busy` is only 37%. Why? Are there multiple issue slots?",
-          "answer": "These measure different things. The ALU can remain active for several cycles after an instruction is issued, so activity in over half of `SM active cycles` does not require the same issue rate. There are also multiple issue slots."
+          "answer": "There is no conflict: `ALU Pipe Utilization` measures execution-pipeline activity, while `Issue Slots Busy` measures the use of instruction issue opportunities, so they are different ratios. On V100, A100, and H100, an SM has four warp schedulers, each able to issue at most one warp instruction per cycle. Each scheduler therefore provides one issue slot per cycle, for up to four across the SM. An instruction may continue executing for multiple cycles after it is issued, so pipeline activity need not coincide with a new instruction being issued in that cycle."
         }
       }
     },
@@ -379,6 +379,14 @@
         "follow-up-two": {
           "question": "But that table doesn't seem to explain the residency limit. If each thread owns one fixed row, and threads can neither share a row nor use two, why would its register count matter?",
           "answer": "The table describes ownership, not a fixed physical row per thread. The compiler determines per-thread register demand, and hardware allocates resources at its supported granularity when a block becomes resident. During execution, thread context and the SASS register number locate each value. Larger allocations leave room for fewer threads and blocks. This mapping need not use a lookup table and is not the same as CPU register renaming for out-of-order execution."
+        },
+        "follow-up-three": {
+          "question": "What are some concrete register allocation granularity examples on H100, V100, and A100?",
+          "answer": "For ordinary static register allocation on V100, A100, and H100, warp register demand is rounded up in units of 256 32-bit registers. At 32 registers per thread, a full warp needs and receives 1,024; at 33, it needs 1,056 but receives 1,280, equivalent to reserving 40 per thread even if the compiler reports 33. Saving one register therefore need not reduce the allocation; demand must cross an allocation boundary to release capacity. Whether another block can become resident also depends on SMSP partitions, whole-block resource requirements, and other limits."
+        },
+        "follow-up-four": {
+          "question": "Why is the allocation granularity expressed per warp rather than per thread?",
+          "answer": "These two accounting methods are actually equivalent: a full warp contains 32 threads, so with the same static register budget for each thread, its basic demand is 32 times the per-thread requirement, rounded up to the warp allocation unit. Calculating the warp total directly is therefore numerically equivalent to expressing the rounded capacity per thread and multiplying by 32. For example, a requirement of 33 registers per thread gives a warp demand of 1,056, rounded to 1,280 in units of 256, equivalent to reserving 40 per thread. These resources are reserved for the block when it becomes resident, but this accounting neither makes registers shared between threads nor specifies the physical register-file layout."
         }
       }
     },
@@ -420,6 +428,9 @@
           "question": "What does \"eligible\" mean? And what triggers each `enqueue`: a timer, or the completion of the previous pass?",
           "answer": "Eligible means all jobs currently visible to the scheduler that have valid queue membership and are still waiting for admission; it does not mean they will pass the admission checks. `enqueue` runs before `allocate`, so no nodes have been assigned yet, but admission policies can still check quotas and resource requirements. It has no timer of its own: it is an Action within the scheduling cycle. After the cycle finishes its actions and closes the Session, the scheduler waits for `schedule-period` before starting the next cycle—one second by default in v1.13.4. The interval between cycle starts therefore also includes execution time. Rejected jobs are retried when the next cycle traverses the candidates again."
         }
+      },
+      "images": {
+        "crossCycleSequence": "Volcano v1.15.3: a VCJob progressing from admission to execution across scheduling cycles; this thread was checked against v1.13.4"
       }
     },
     "volcano-podgroup-job-task": {
@@ -428,6 +439,9 @@
           "question": "Is a Volcano PodGroup closer to a Job or a Task? I noticed that `Inqueue` is a PodGroup state, but `enqueue` handles the whole job, so should PodGroup be closer to Job? In this context, is the whole job usually one PodGroup whose Pods need to run together?",
           "answer": "In the standard Volcano Job workflow, a PodGroup corresponds more closely to the whole Job. The Job defines Task roles, replica counts, and the execution lifecycle; its PodGroup organizes the Pods across those roles into a scheduling group, specifying queue membership and a minimum member requirement. When `enqueue` admits the job, the PodGroup moves to Inqueue. Coordinating the group does not require every replica to start at once: for eight Pods with a minimum of four, allocations can be committed once that minimum is met. Node selection and binding still operate on individual Pods."
         }
+      },
+      "images": {
+        "workloadFlow": "Volcano v1.15.3: how VCJob, Task templates, PodGroup, and member Pods relate to controllers and schedulers"
       }
     },
     "crater-volcano-quota-reservations": {
@@ -440,6 +454,9 @@
           "question": "If the Informer keeps updating the cache, when does Crater refresh the snapshot used for admission checks? Does a cache update also update that snapshot?",
           "answer": "The distinction I need here is between the continuously updated object cache and an admission snapshot reused across a batch of checks. When a callback arrives and no reusable snapshot exists, Crater builds one from cached job states and admitted usage. The Informer can keep updating the cache without changing that snapshot. Receiving `onSessionClose` invalidates it; the next callback builds a new one. If the close notification does not arrive for too long, a later request can also trigger a timeout-based rebuild. A fresh snapshot therefore reorganizes the data currently visible to Crater; it does not guarantee that Volcano's latest scheduling results have arrived."
         }
+      },
+      "images": {
+        "admissionSequence": "Volcano v1.15.3: Crater admission callbacks, state synchronization, and temporary reservation handoff"
       }
     },
     "crater-volcano-starvation-protection": {
@@ -557,6 +574,95 @@
         "opening": {
           "question": "On NVIDIA GPUs, are Push Buffers and GPFIFO physically in the same place, for example both in CPU memory? They seem to share requirements, such as being accessible to both the CPU and GPU.",
           "answer": "In the usual CPU-submitted command path, they have similar access requirements: the CPU side prepares their contents and the GPU front end reads them, but they do not have to reside in the same physical allocation. GPFIFO entries hold the address and length of a Push Buffer, while the Push Buffer holds the actual commands; the two are connected by address references rather than physical adjacency. NVIDIA's open UVM driver defines separate `gpfifo_loc` and `pushbuffer_loc` fields to manage their placement independently. Its code also includes a configuration with GPFIFO in device memory and the Push Buffer in system memory, demonstrating that they can reside in different memory types."
+        }
+      }
+    },
+    "warp-scheduler-assignment": {
+      "rounds": {
+        "opening": {
+          "question": "Once a warp is assigned to a scheduler, does it remain under that scheduler rather than being reassigned to another scheduler in the same SM on a later cycle?",
+          "answer": "During normal execution, a warp remains with the scheduler of its assigned SMSP until it finishes. What changes each cycle is which ready resident warp that scheduler selects to issue an instruction, not the warp's assignment. An idle SMSP does not temporarily take over a waiting warp from another SMSP."
+        }
+      }
+    },
+    "volcano-trial-allocation": {
+      "rounds": {
+        "opening": {
+          "question": "Why does Volcano use trial allocation instead of allocating immediately?",
+          "answer": "Finding room for one Pod does not mean its job meets the minimum requirements to run. Committing each placement immediately could leave an unusable partial job if later Pods cannot fit. Trial allocation first updates the current scheduling pass's accounting and accumulates the attempt in one `Statement`. The changes are committed once the gang requirements are met; otherwise, the corresponding operations can be rolled back."
+        },
+        "follow-up-one": {
+          "question": "If any Pod from a job is selected at the Pod-selection stage, does that trigger an attempt to place the job's Pods to meet the minimum requirement for running together?",
+          "answer": "The scheduler does not retry the whole job whenever it selects a Pod. It first selects a job, then tries its pending Pods one by one, accumulating placements to determine whether the minimum running requirements are met. Pod selection implements scheduling for that job; it does not introduce another independent scheduling objective within the job. The job expresses the gang requirements, while individual Pods carry resource requests and node constraints, so the allocation plan is realized through individual Pod placements."
+        }
+      },
+      "images": {
+        "crossCycleSequence": "Volcano v1.15.3: Pod-by-Pod trial allocation, gang checks, and Commit within the cross-cycle workflow"
+      }
+    },
+    "volcano-enqueue-plugin-votes": {
+      "rounds": {
+        "opening": {
+          "question": "How are different plugins' decisions combined in Volcano's `enqueue`?",
+          "answer": "Plugins are grouped into tiers. Within a tier, any `Reject` rejects the job; a `Permit` with no rejection allows it and skips subsequent tiers. Evaluation moves to the next tier only if every plugin in the current tier abstains, and defaults to allowing the job if all tiers abstain. Plugin tiers and ordering are therefore part of the policy, rather than simply running every check and taking their intersection. An external service connected through Extender can return `Abstain` to avoid vetoing the job and let other plugins decide."
+        },
+        "follow-up-one": {
+          "question": "Does setting Extender's `ignorable` to `true` mean it returns `Permit` when the external service cannot be reached?",
+          "answer": "In the implementation examined, an Extender request failure or timeout does return `Permit`, allowing the external-call failure to be ignored. Another plugin in the same tier can still reject the job, but without such a rejection, this `Permit` prevents subsequent tiers from running. Continuing scheduling when an external service is unavailable is therefore more than an availability choice: it also changes which checks can constrain admission."
+        }
+      },
+      "images": {
+        "extensionBoundary": "Volcano v1.15.3: the call boundary between the in-process Extender plugin and an external service"
+      }
+    },
+    "ceph-storage-mapping": {
+      "rounds": {
+        "opening": {
+          "question": "How do the CephFS, RBD, and RGW interfaces differ? Do they all store data in the same pool?",
+          "answer": "CephFS exposes files and directories, RBD exposes block devices, and RGW exposes object storage. All three ultimately store data as RADOS objects, the basic logical data units in Ceph, each belonging to a pool. They can use separate pools or, where configuration constraints allow, share a pool; sharing does not make their data mutually intelligible."
+        },
+        "follow-up-one": {
+          "question": "From a file down to disks, how do objects, pools, PGs, OSDs, and nodes relate? How does splitting a file differ from data redundancy?",
+          "answer": "A file is split into RADOS objects according to its layout: for example, a 12 MiB file can become three distinct 4 MiB objects. Each object belongs to one pool and maps to exactly one PG under the current mapping; a PG contains many objects, and an object is not split across PGs. A PG maps to a set of OSDs: three-way replication stores three complete copies of each object, while erasure coding encodes each object into shards stored on different OSDs, so file splitting and redundancy are separate steps. An OSD can host multiple PGs from different pools, making the PG-to-OSD relationship many-to-many. A node can run several OSDs; commonly, each OSD manages one data block device backed by physical storage, while placement rules determine whether data spans nodes."
+        }
+      },
+      "images": {
+        "storageMapping": "Ceph storage mapping: access interfaces, pools, PGs, OSDs, nodes, and physical disks"
+      }
+    },
+    "cephfs-mds-ranks": {
+      "rounds": {
+        "opening": {
+          "question": "How do MDS ranks relate in Ceph? Must requests go through the corresponding MDS? Are they not interchangeable replicas?",
+          "answer": "I initially pictured active MDS instances as interchangeable replicas, but their main role is to divide responsibility for metadata across directory subtrees. A client may send requests to multiple ranks, which also coordinate with each other. Standby instances take over failed ranks, so adding active MDS instances and adding replicas address different needs."
+        }
+      }
+    },
+    "cephfs-capabilities-locks": {
+      "rounds": {
+        "opening": {
+          "question": "In Ceph, what are `Fsc` and `Fscb`, and what are `isnap` and `ifile`?",
+          "answer": "These names belong to two layers: client capabilities and internal MDS locks. In `Fsc`, `F` denotes file capabilities, while `s` and `c` allow shared access to relevant metadata and caching of file reads; `Fscb` also allows buffered writes. The internal `ifile` lock protects file state such as size and timestamps, while `isnap` coordinates snapshot-related inode consistency and may also be needed by ordinary file operations."
+        },
+        "follow-up-one": {
+          "question": "Is `Fb` also a lock? Is there a simple Chinese name for it?",
+          "answer": "I can call it “write-buffering permission,” but it is a client authorization rather than an internal MDS mutex. Relinquishing it may require writing back data and synchronizing state first. Client capabilities and server-side lock states work together to keep the file state seen by different clients consistent."
+        }
+      }
+    },
+    "cephfs-failure-propagation": {
+      "rounds": {
+        "opening": {
+          "question": "Why can a localized failure make almost all of Ceph seem inaccessible? Could other data remain accessible at first, then become inaccessible as requests pile up?",
+          "answer": "The data directly unavailable and the unavailability users experience need not have the same scope. While waiting for underlying I/O, a file operation may retain locks needed by other operations, allowing the impact to spread through parent directories, coordination between MDS instances, and shared paths. An application may also stop entirely because it cannot read one critical file."
+        }
+      }
+    },
+    "llm-long-context-extension": {
+      "rounds": {
+        "opening": {
+          "question": "How can a model support longer contexts? What are the bottlenecks, and how can they be addressed? I thought that if training never covered such long contexts, positional encodings beyond the training length would be unfamiliar to the model. But does RoPE partly solve this?",
+          "answer": "I now see long-context capability as two requirements: learning to use the context and making it affordable to process. The first usually requires sufficiently long training data with tasks that actually demand connecting distant information, so the model learns to retrieve and synthesize information across long texts; simply enlarging the input window is not enough. RoPE models relative positional relationships and provides a basis for length generalization. Position interpolation or frequency scaling can improve extension, but neither replaces that learning nor guarantees successful extrapolation. The second requirement is to manage growing attention computation, memory use, and KV Cache costs through efficient attention, cache compression, and parallelism. Positional encoding is only one part of making longer contexts genuinely useful at an acceptable cost."
         }
       }
     }

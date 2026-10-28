@@ -16,7 +16,9 @@ export type QuestionThread = {
   answerImages?: Record<string, QuestionImageReference[]>
 }
 
-export type QuestionImageReference = ProjectImage | {
+export type QuestionImageReference = (ProjectImage & {
+  localizedSources?: Partial<Record<"zh" | "en", Pick<ProjectImage, "src" | "width" | "height">>>
+}) | {
   module: QuestionProject["module"]
   id: string
   imageKey: string

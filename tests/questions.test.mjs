@@ -9,7 +9,7 @@ import { fitQuestionText } from '../src/lib/question-text-layout.ts'
 import { getWallDepth, getWallMotionFrames, QUESTION_WALL_MOTION } from '../src/lib/question-wall-motion.ts'
 import { conversationTravel, conversationExitDuration, CONVERSATION_MOTION } from '../src/lib/question-conversation-motion.ts'
 import { animateConversationFrames, retainConversationExit } from '../src/lib/question-conversation-animation.ts'
-import { questionRoundImages, resolveQuestionImage, questionConversationPartCount, questionThreadHasImages } from '../src/lib/question-images.ts'
+import { questionRoundImages, resolveQuestionImage, localizeQuestionImage, questionConversationPartCount, questionThreadHasImages } from '../src/lib/question-images.ts'
 import { masonryLayout } from '../src/lib/masonry-layout.ts'
 
 test('question masonry fills the shorter column while preserving newest-first vertical order', () => {
@@ -255,6 +255,9 @@ test('question image references resolve to existing assets with reserved dimensi
           const filename = { projects: 'projects', courseProjects: 'course-projects', questions: 'questions' }[image.namespace]
           assert.ok(filename)
           for (const language of ['zh', 'en']) {
+            const localizedImage = localizeQuestionImage(image, language)
+            assert.ok(localizedImage.width > 0 && localizedImage.height > 0)
+            assert.ok(readFileSync(new URL(`../public${localizedImage.src}`, import.meta.url)).length)
             const locale = readJson(`../src/content/locales/${language}/${filename}.json`)
             const label = image.altKey.split('.').reduce((value, key) => value?.[key], locale)
             assert.equal(typeof label, 'string')
@@ -268,6 +271,22 @@ test('question image references resolve to existing assets with reserved dimensi
   assert.equal(resolveQuestionImage({ module: 'course-projects', id: 'parallel-programming-2026', imageKey: 'missing' }), undefined)
 })
 
+test('question image language changes select matching dimensions and preserve default fallbacks', () => {
+  const thread = threads.find((item) => item.id === 'crater-volcano-quota-reservations')
+  const [image] = questionRoundImages(thread, 'follow-up-one', 'answer')
+  assert.equal(localizeQuestionImage(image, 'zh-CN'), image)
+  const englishImage = localizeQuestionImage(image, 'en-US')
+  assert.equal(englishImage.src, image.localizedSources.en.src)
+  assert.deepEqual([englishImage.width, englishImage.height], [2354, 4374])
+  assert.notDeepEqual([englishImage.width, englishImage.height], [image.width, image.height])
+  assert.equal(englishImage.altKey, image.altKey)
+  assert.equal(englishImage.brightness, image.brightness)
+  const fallback = resolveQuestionImage({ src: '/example.svg', altKey: 'example', width: 320, height: 200 })
+  assert.equal(localizeQuestionImage(fallback, 'en'), fallback)
+  const projectImage = resolveQuestionImage({ module: 'course-projects', id: 'vr-experiments-2026', imageKey: 'clothDerivativeOccupancy' })
+  assert.equal(localizeQuestionImage(projectImage, 'en'), projectImage)
+})
+
 test('standalone answer supplements preserve question images and extend the conversation lifetime', () => {
   const thread = threads.find((item) => item.id === 'async-copy-l2-cache')
   assert.deepEqual(thread.relatedProjects, [])
@@ -277,8 +296,9 @@ test('standalone answer supplements preserve question images and extend the conv
   assert.equal(image.brightness, 'high')
   assert.deepEqual([image.width, image.height], [3200, 2050])
   const bytes = readFileSync(new URL(`../public${image.src}`, import.meta.url))
-  assert.equal(bytes.toString('ascii', 0, 4), 'RIFF')
-  assert.equal(bytes.toString('ascii', 8, 12), 'WEBP')
+  const svg = bytes.toString('utf8')
+  assert.match(svg, /<svg\b[^>]*xmlns="http:\/\/www\.w3\.org\/2000\/svg"/)
+  assert.match(svg, /viewBox="0 0 3200 2050"/)
   const withoutImages = { ...thread, answerImages: undefined }
   assert.equal(questionConversationPartCount(thread), questionConversationPartCount(withoutImages) + 1)
   assert.equal(conversationExitDuration(questionConversationPartCount(thread))
@@ -304,7 +324,7 @@ test('image bubbles extend the staggered exit lifetime without changing question
   assert.equal(image.brightness, 'high')
   assert.deepEqual(questionRoundImages(thread, 'follow-up-one'), [])
   const [supplement] = questionRoundImages(thread, 'opening', 'answer')
-  assert.equal(supplement.src, '/assets/questions/nvidia-gpu-memory-hierarchy.webp')
+  assert.equal(supplement.src, '/assets/questions/nvidia-gpu-memory-hierarchy.svg')
   assert.equal(supplement.altKey, 'items.gpu-memory-hierarchy.images.gpuMemoryHierarchy')
   assert.deepEqual(questionRoundImages(thread, 'follow-up-one', 'answer'), [])
   const withoutImages = { ...thread, questionImages: undefined, answerImages: undefined }

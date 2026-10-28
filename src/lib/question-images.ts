@@ -11,6 +11,13 @@ export function resolveQuestionImage(reference: QuestionImageReference) {
   return image ? { ...image, namespace: reference.module === "projects" ? "projects" as const : "courseProjects" as const } : undefined
 }
 
+export function localizeQuestionImage(image: NonNullable<ReturnType<typeof resolveQuestionImage>>, language: string) {
+  const source = "localizedSources" in image
+    ? image.localizedSources?.[language.startsWith("zh") ? "zh" : "en"]
+    : undefined
+  return source ? { ...image, ...source } : image
+}
+
 export function questionRoundImages(thread: QuestionThread, roundId: string, side: "question" | "answer" = "question") {
   const references = side === "answer" ? thread.answerImages : thread.questionImages
   return (references?.[roundId] ?? []).flatMap((reference) => {
