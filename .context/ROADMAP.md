@@ -13,6 +13,8 @@
 
 ## History
 
+- 2026-11-02 | [Interview-driven project copy refresh](archive/20261102_Interview-driven-project-copy-refresh.md) | Refined bilingual Crater decision, review and delivery responsibilities; foregrounded NPU partner collaboration and ownership, and summarized modeling methods with scoped interim results.
+
 - 2026-10-28 | [Question wall content and illustration reuse](archive/20261028_Question-wall-content-and-illustration-reuse.md) | Added eight bilingual chains (12 rounds), extended register allocation by two rounds, clarified issue slots, switched the shared CUDA diagram to SVG and added a Ceph SVG, and reused four bilingual blog illustrations across five chains with language-aware image previews.
 
 - 2026-10-22 | [Ceph MON blog and SVG diagrams](archive/20261022_Ceph-MON-blog-and-SVG-diagrams.md) | Added the bilingual Ceph MON crash investigation with confirmed publication metadata, four original SVG diagrams and a WebP cover; extended blog imports to preserve matching vectors while retaining all eight existing article snapshots.
