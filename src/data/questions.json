@@ -58,7 +58,8 @@
     "moe": "MoE",
     "volcano": "Volcano",
     "admission-control": "Admission Control",
-    "gang-scheduling": "Gang Scheduling"
+    "gang-scheduling": "Gang Scheduling",
+    "research-methodology": "Research Methodology"
   },
   "threads": [
     {
@@ -1432,6 +1433,82 @@
         "attention",
         "model-training",
         "kv-cache"
+      ],
+      "relatedProjects": [],
+      "rounds": [
+        "opening"
+      ]
+    },
+    {
+      "id": "research-definition-and-contribution",
+      "tagIds": [
+        "research-methodology",
+        "evaluation"
+      ],
+      "relatedProjects": [],
+      "rounds": [
+        "opening",
+        "follow-up-one"
+      ]
+    },
+    {
+      "id": "rl-rollout-inference-engines",
+      "tagIds": [
+        "model-training",
+        "llm-inference"
+      ],
+      "relatedProjects": [],
+      "rounds": [
+        "opening",
+        "follow-up-one"
+      ]
+    },
+    {
+      "id": "cuda-command-submission-and-graphs",
+      "tagIds": [
+        "cuda",
+        "gpu-architecture",
+        "graph-execution",
+        "performance-analysis"
+      ],
+      "relatedProjects": [],
+      "rounds": [
+        "opening",
+        "follow-up-one",
+        "follow-up-two"
+      ]
+    },
+    {
+      "id": "zero2-gradient-sharding-overlap",
+      "tagIds": [
+        "model-training",
+        "memory-management",
+        "parallel-computing"
+      ],
+      "relatedProjects": [],
+      "rounds": [
+        "opening"
+      ]
+    },
+    {
+      "id": "ffn-tensor-parallel-communication",
+      "tagIds": [
+        "parallel-computing",
+        "model-training",
+        "model-architecture"
+      ],
+      "relatedProjects": [],
+      "rounds": [
+        "opening",
+        "follow-up-one"
+      ]
+    },
+    {
+      "id": "mla-query-transform-reuse",
+      "tagIds": [
+        "attention",
+        "kv-cache",
+        "llm-inference"
       ],
       "relatedProjects": [],
       "rounds": [

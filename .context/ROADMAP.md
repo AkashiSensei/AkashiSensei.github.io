@@ -13,6 +13,8 @@
 
 ## History
 
+- 2026-11-02 | [Question wall research and model systems](archive/20261102_Question-wall-research-and-model-systems.md) | Added six bilingual chains (11 rounds) on research, RL inference engines, CUDA submission and graphs, ZeRO-2, FFN tensor parallelism and MLA query reuse; added Research Methodology, reaching 67 chains and 98 rounds.
+
 - 2026-11-02 | [Interview-driven project copy refresh](archive/20261102_Interview-driven-project-copy-refresh.md) | Refined bilingual Crater decision, review and delivery responsibilities; foregrounded NPU partner collaboration and ownership, and summarized modeling methods with scoped interim results.
 
 - 2026-10-28 | [Question wall content and illustration reuse](archive/20261028_Question-wall-content-and-illustration-reuse.md) | Added eight bilingual chains (12 rounds), extended register allocation by two rounds, clarified issue slots, switched the shared CUDA diagram to SVG and added a Ceph SVG, and reused four bilingual blog illustrations across five chains with language-aware image previews.

@@ -665,6 +665,74 @@
           "answer": "I now see long-context capability as two requirements: learning to use the context and making it affordable to process. The first usually requires sufficiently long training data with tasks that actually demand connecting distant information, so the model learns to retrieve and synthesize information across long texts; simply enlarging the input window is not enough. RoPE models relative positional relationships and provides a basis for length generalization. Position interpolation or frequency scaling can improve extension, but neither replaces that learning nor guarantees successful extrapolation. The second requirement is to manage growing attention computation, memory use, and KV Cache costs through efficient attention, cache compression, and parallelism. Positional encoding is only one part of making longer contexts genuinely useful at an acceptable cost."
         }
       }
+    },
+    "research-definition-and-contribution": {
+      "rounds": {
+        "opening": {
+          "question": "What counts as research? Most of what I have seen involves proposing a new model architecture, system architecture, or computation or storage method to improve performance or efficiency under particular scenarios and constraints. That seems too narrow, though, and I am no longer sure what research actually means.",
+          "answer": "Research systematically investigates a question that has not been adequately answered and develops an evidence-based understanding that others can examine and discuss. Proposing a method and demonstrating better performance is only one form. Discovering phenomena, explaining causes, making predictions, establishing boundaries, and testing or revising existing understanding can also be research. The key is what we now know that we did not know before, and why that new understanding deserves our trust."
+        },
+        "follow-up-one": {
+          "question": "Suppose adding a cache makes a service slower. I could study which environments, workloads, and cache types produce this effect and why, or how to investigate such problems systematically. I understand how a new method can show its value by comparison with a baseline, but how do I judge when root-cause analysis or an empirical study has done enough without such a clear comparison?",
+          "answer": "I need to assess whether the conclusion has sufficient evidence, whether its scope is clear, and what valuable contribution it makes beyond existing understanding. A worthwhile question does not automatically make its answer valuable: the study must explain what unknown it clarifies, what understanding it corrects, or what boundary it establishes. Completeness therefore depends on reaching a credible answer that contributes something, rather than necessarily beating a baseline or reaching a fixed sample size. Reliably confirming an existing conclusion or narrowing its scope can also be valuable."
+        }
+      }
+    },
+    "rl-rollout-inference-engines": {
+      "rounds": {
+        "opening": {
+          "question": "Do RL frameworks also use inference engines such as vLLM or SGLang?",
+          "answer": "Yes. I had thought of inference engines as tools for serving users, but they can also handle rollouts in reinforcement learning: generating responses or interaction trajectories with the current model. The RL framework coordinates generation, scoring, and parameter updates, while vLLM or SGLang makes generation efficient through batching, KV Cache management, and multi-GPU inference."
+        },
+        "follow-up-one": {
+          "question": "Training updates the parameters frequently, which seems different from inference. Does every weight update require restarting the inference engine?",
+          "answer": "Usually not. I had not realized that inference engines already have dedicated support for RL, so I assumed each weight update meant restarting the engine and loading the entire model again. vLLM and SGLang provide mechanisms for weight synchronization and pausing and resuming generation, allowing the engine to stay running while its weights are updated through APIs. Weight transfer, shard conversion, and handling the old KV Cache still have costs, so the RL framework and inference engine need to coordinate these steps."
+        }
+      }
+    },
+    "cuda-command-submission-and-graphs": {
+      "rounds": {
+        "opening": {
+          "question": "I remember that the CPU submits commands to the GPU through GPFIFO. How many such commands does one kernel execution need? I imagine allocating GPU global memory and copying data might each take one command, with two inputs handled separately. Does launching a kernel need just one command, or must its machine code also be moved into GPU memory?",
+          "answer": "I had assumed that each CUDA operation corresponded to one device command, but there is no fixed one-to-one mapping. An ordinary GPFIFO entry references a sequence of commands in a pushbuffer. The runtime and driver determine how allocation, copying, and launches are handled. Kernel code is usually loaded when its module loads or on first use. Later launches reuse that code and mainly prepare the entry point, arguments, and execution configuration, without uploading the entire kernel again."
+        },
+        "follow-up-one": {
+          "question": "Does that mean pushbuffer commands are fairly fine-grained, so one `cudaMalloc` might require several of them, and GPFIFO references those commands?",
+          "answer": "GPFIFO references a pushbuffer segment by address and length, and that segment can contain multiple device commands. The driver organizes commands around the operation’s parameters, current state, and dependencies. A CUDA API call does not translate into a fixed command sequence, nor does each call rebuild all state from scratch. For example, `cudaMalloc` involves CPU-side driver management and may also involve device operations. Which pushbuffer commands it needs, and how many, depend on the implementation and runtime state."
+        },
+        "follow-up-two": {
+          "question": "Does CUDA Graph capture and replay mainly save CPU-side preparation or CPU–GPU communication overhead? Is preparing and launching operations individually expensive? In Nsight Systems, I often see kernel launch times much longer than the actual execution.",
+          "answer": "CUDA Graph mainly reduces the repeated CPU work of preparing and submitting kernels individually on every iteration. Ordinary execution repeatedly goes through framework dispatch, launch-parameter preparation, and runtime and driver submission for the same computation. A graph organizes the operations and dependencies ahead of time, then launches the group together, reducing that repeated work. For short kernels, it can also narrow execution gaps where the GPU would otherwise wait for the CPU to submit the next task. Kernel computation and necessary data transfers remain, so the benefit depends on whether launch overhead limits overall execution."
+        }
+      }
+    },
+    "zero2-gradient-sharding-overlap": {
+      "rounds": {
+        "opening": {
+          "question": "ZeRO-2 further partitions gradients compared with ZeRO-1. Is its core change that gradient computation and synchronization happen concurrently and progress together? Is that what it means to shard gradients across GPUs and save each GPU from storing the full gradients?",
+          "answer": "Computing and reducing gradients incrementally, keeping only the reduced gradients each GPU owns, and promptly freeing or reusing space for the rest does save the memory needed to store the full gradients on every GPU. This is the core improvement ZeRO-2 adds to ZeRO-1. I had naturally equated this process with overlapping computation and communication, but they are different. Each GPU still computes its local gradient contributions for the entire model. Even a sequential pattern of computing a portion, communicating it, releasing its storage, and continuing computation can save memory. Overlap instead runs later backward computation concurrently with communication for gradients that are already ready, primarily reducing communication waits and improving execution efficiency."
+        }
+      }
+    },
+    "ffn-tensor-parallel-communication": {
+      "rounds": {
+        "opening": {
+          "question": "In tensor parallelism, does every FFN layer, or every matrix operation, need to exchange data?",
+          "answer": "Not necessarily. In a classic two-layer FFN, each GPU keeps the full input X. Splitting the expansion weight matrix by columns lets each GPU compute a subset of intermediate features and apply the elementwise activation independently. The projection weight matrix is split along the corresponding rows, so each GPU uses its local intermediate features to produce a partial contribution with the full output shape. An All-Reduce then sums these contributions elementwise. There is no need to gather intermediate results between the two matrix multiplications."
+        },
+        "follow-up-one": {
+          "question": "Is the intermediate nonlinear activation the reason for this partitioning? If the partitioning were reversed, would we need something like online softmax, keeping intermediate state and combining information across blocks before completing the nonlinear computation?",
+          "answer": "Yes. Elementwise FFN activations such as GELU and SiLU need the complete scalar value of each element. For a single token represented by row vector X, a dot product with one full column of the expansion weight matrix produces one scalar. Column partitioning lets a GPU finish that dot product locally and apply the activation immediately. Row partitioning with a correspondingly partitioned input gives each GPU a partial sum for the same scalar. Those intermediate results must be retained and summed across GPUs before activation, because `φ(a+b)` generally differs from `φ(a)+φ(b)`. The state being accumulated is the activation input. The original partitioning makes it complete locally, avoiding communication before the activation."
+        }
+      }
+    },
+    "mla-query-transform-reuse": {
+      "rounds": {
+        "opening": {
+          "question": "I know matrix multiplication is associative, so changing the order can reduce the total work in a chain of products. But when MLA moves the projection that reconstructs K to the Q side, transforming Q before multiplying it by the low-dimensional cache, a single Q–K pair does not seem to require less computation. Why is this more efficient?",
+          "answer": "I initially considered just one Q–K pair. In ordinary token-by-token decoding, each request has only one new Q per head, but it must be compared with many historical keys. Using `q(cW_K)ᵀ = (qW_Kᵀ)cᵀ`, the transformed Q is computed once and reused across all historical tokens. Reconstructing K first would instead require expanding each historical token’s low-dimensional cached representation separately. The gain comes from reusing one Q transformation and avoiding repeated reconstruction of historical keys, rather than reducing the computation for every individual Q–K pair by changing the multiplication order."
+        }
+      }
     }
   },
   "pairCount_one": "{{count}} question-answer pair",
